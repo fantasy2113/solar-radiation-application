@@ -1,6 +1,9 @@
 package org.josmer.application.utils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.zip.ZipEntry;
@@ -18,14 +21,13 @@ public class DwdCrawler {
     }
 
     public void download() {
-
         try {
             URL url = new URL(targetUrl + targetFile);
             URLConnection connection = url.openConnection();
             InputStream inputStream = connection.getInputStream();
             inputStream.transferTo(new FileOutputStream(targetDir + targetFile));
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -48,22 +50,20 @@ public class DwdCrawler {
             zipInputStream.closeEntry();
             zipInputStream.close();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.err.println(e.getMessage());
         }
 
     }
 
-    public void save() {
+    public void insert() {
     }
 
     public void delete() {
-        File file = new File(targetDir + targetFile);
-        if (file.delete()) {
-            System.out.println("File deleted");
+        if (new File(targetDir + targetFile).delete()) {
+            System.out.println(targetDir + targetFile + " => deleted");
         }
-        file = new File(targetDir + targetFile.replace(".zip", ".asc"));
-        if (file.delete()) {
-            System.out.println("File deleted");
+        if (new File(targetDir + targetFile.replace(".zip", ".asc")).delete()) {
+            System.out.println(targetDir + targetFile.replace(".zip", ".asc") + " => deleted");
         }
     }
 }
