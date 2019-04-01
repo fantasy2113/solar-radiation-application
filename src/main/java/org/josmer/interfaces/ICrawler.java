@@ -1,4 +1,4 @@
-package org.josmer.application.interfaces;
+package org.josmer.interfaces;
 
 public interface ICrawler {
     void download(String date) throws Exception;

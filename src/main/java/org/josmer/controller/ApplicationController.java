@@ -1,4 +1,4 @@
-package org.josmer.application.controller;
+package org.josmer.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

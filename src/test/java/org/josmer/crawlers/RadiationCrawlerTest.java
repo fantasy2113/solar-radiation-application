@@ -1,7 +1,7 @@
-package org.josmer.application.crawlers;
+package org.josmer.crawlers;
 
 
-import org.josmer.application.interfaces.ICrawler;
+import org.josmer.interfaces.ICrawler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

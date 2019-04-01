@@ -1,7 +1,7 @@
-package org.josmer.application.crawlers;
+package org.josmer.crawlers;
 
-import org.josmer.application.interfaces.ICrawler;
-import org.josmer.application.repositories.RadiationRepository;
+import org.josmer.interfaces.ICrawler;
+import org.josmer.repositories.RadiationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;

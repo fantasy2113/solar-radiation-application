@@ -1,6 +1,6 @@
-package org.josmer.application.crawlers;
+package org.josmer.crawlers;
 
-import org.josmer.application.interfaces.ICrawler;
+import org.josmer.interfaces.ICrawler;
 
 public final class DwdCrawler {
 

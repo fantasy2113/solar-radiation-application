@@ -1,4 +1,4 @@
-package org.josmer.application.entities;
+package org.josmer.entities;
 
 import org.springframework.data.annotation.Id;
 
