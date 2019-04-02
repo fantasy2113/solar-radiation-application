@@ -108,8 +108,8 @@ public final class RadiationCrawler {
         for (int row = rows.length - 1; row >= 28; row--) {
             final String[] columns = rows[row].split(" ");
             int x = 3280500;
-            Radiation radiation = new Radiation();
             for (int column = 0; column < columns.length; column++) {
+                Radiation radiation = new Radiation();
                 radiation.setRadiation(Double.valueOf(columns[column]));
                 radiation.setTyp(typ);
                 radiation.setDate(Integer.valueOf(getDate(year, month)));

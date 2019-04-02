@@ -44,13 +44,13 @@ public class RadiationRepository implements IRadiationRepository {
 
     @Override
     public void saveAll(List<Radiation> radiations) throws SQLException {
+        final String insertTableSQL = "INSERT INTO radiation (typ,date,x_min,x_max,y_min,y_max,value) VALUES (?,?,?,?,?,?,?)";
         Connection dbConnection = null;
         PreparedStatement preparedStatementInsert = null;
         try {
             dbConnection = DriverManager.getConnection(Connector.getUrl(), Connector.getUser(), Connector.getPassword());
             dbConnection.setAutoCommit(false);
             for (Radiation radiation : radiations) {
-                String insertTableSQL = "INSERT INTO radiation (typ,date,x_min,x_max,y_min,y_max,value) VALUES (?,?,?,?,?,?,?)";
                 preparedStatementInsert = dbConnection.prepareStatement(insertTableSQL);
                 preparedStatementInsert.setString(1, radiation.getTyp());
                 preparedStatementInsert.setInt(2, radiation.getDate());
