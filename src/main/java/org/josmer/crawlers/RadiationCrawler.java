@@ -91,7 +91,6 @@ public final class RadiationCrawler {
         }
     }
 
-
     public void delete() {
         System.out.println("deleting....");
         if (!new File(getPathnameZip()).delete()) {
@@ -101,7 +100,6 @@ public final class RadiationCrawler {
             System.err.println(getPathnameAsc() + " fail");
         }
     }
-
 
     private void initRadiations() {
         final String file = Toolbox.readFile(getPathnameAsc());
