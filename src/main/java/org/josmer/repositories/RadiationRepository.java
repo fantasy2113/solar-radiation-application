@@ -18,60 +18,49 @@ import java.util.Optional;
 public class RadiationRepository implements IRadiationRepository {
 
     @Override
-    public Optional<Radiation> get(long id) {
+    public Optional<Radiation> get(final long id) {
         return Optional.empty();
     }
 
     @Override
-    public List<Radiation> getAll() {
+    public List<Radiation> find(int startDate, int endDate, String typ, int yMin, int yMax, int xMin, int xMax) {
         return new ArrayList<>();
     }
 
     @Override
-    public void save(Radiation radiation) {
-
-    }
-
-    @Override
-    public void update(Radiation radiation) {
-
-    }
-
-    @Override
-    public void delete(Radiation radiation) {
-
-    }
-
-    @Override
-    public void saveAll(List<Radiation> radiations) throws SQLException {
+    public void save(final List<Radiation> radiations) {
         final String insertTableSQL = "INSERT INTO radiation (typ,date,x_min,x_max,y_min,y_max,value) VALUES (?,?,?,?,?,?,?)";
         Connection dbConnection = null;
         PreparedStatement preparedStatementInsert = null;
         try {
-            dbConnection = DriverManager.getConnection(Connector.getUrl(), Connector.getUser(), Connector.getPassword());
-            dbConnection.setAutoCommit(false);
-            for (Radiation radiation : radiations) {
-                preparedStatementInsert = dbConnection.prepareStatement(insertTableSQL);
-                preparedStatementInsert.setString(1, radiation.getTyp());
-                preparedStatementInsert.setInt(2, radiation.getDate());
-                preparedStatementInsert.setInt(3, radiation.getxMin());
-                preparedStatementInsert.setInt(4, radiation.getxMax());
-                preparedStatementInsert.setInt(5, radiation.getyMin());
-                preparedStatementInsert.setInt(6, radiation.getyMax());
-                preparedStatementInsert.setDouble(7, radiation.getRadiation());
-                preparedStatementInsert.executeUpdate();
+            try {
+                dbConnection = DriverManager.getConnection(Connector.getUrl(), Connector.getUser(), Connector.getPassword());
+                dbConnection.setAutoCommit(false);
+                for (Radiation radiation : radiations) {
+                    preparedStatementInsert = dbConnection.prepareStatement(insertTableSQL);
+                    preparedStatementInsert.setString(1, radiation.getTyp());
+                    preparedStatementInsert.setInt(2, radiation.getDate());
+                    preparedStatementInsert.setInt(3, radiation.getxMin());
+                    preparedStatementInsert.setInt(4, radiation.getxMax());
+                    preparedStatementInsert.setInt(5, radiation.getyMin());
+                    preparedStatementInsert.setInt(6, radiation.getyMax());
+                    preparedStatementInsert.setDouble(7, radiation.getRadiation());
+                    preparedStatementInsert.executeUpdate();
+                }
+                dbConnection.commit();
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+                dbConnection.rollback();
+            } finally {
+                if (preparedStatementInsert != null) {
+                    preparedStatementInsert.close();
+                }
+                if (dbConnection != null) {
+                    dbConnection.close();
+                }
             }
-            dbConnection.commit();
         } catch (SQLException e) {
             System.err.println(e.getMessage());
-            dbConnection.rollback();
-        } finally {
-            if (preparedStatementInsert != null) {
-                preparedStatementInsert.close();
-            }
-            if (dbConnection != null) {
-                dbConnection.close();
-            }
         }
     }
 }

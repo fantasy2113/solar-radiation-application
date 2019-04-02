@@ -10,7 +10,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,7 +51,6 @@ public final class RadiationCrawler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public void unzip() {
@@ -84,11 +82,8 @@ public final class RadiationCrawler {
         System.out.println("reading...");
         initRadiations();
         System.out.println("inserting...");
-        try {
-            new RadiationRepository().saveAll(radiations);
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
+        RadiationRepository radiationRepository = new RadiationRepository();
+        radiationRepository.save(radiations);
     }
 
     public void delete() {
