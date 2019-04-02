@@ -40,4 +40,9 @@ public class RadiationRepository implements IRadiationRepository {
     public void delete(Radiation radiation) {
 
     }
+
+    @Override
+    public int saveAll(List<Radiation> radiations) {
+        return 0;
+    }
 }

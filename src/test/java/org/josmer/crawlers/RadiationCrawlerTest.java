@@ -1,28 +1,26 @@
 package org.josmer.crawlers;
 
-
-import org.josmer.interfaces.ICrawler;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RadiationCrawlerTest {
-    private ICrawler crawler;
+    private RadiationCrawler radiationCrawler;
 
     @BeforeEach
     void setUp() {
-        crawler = new RadiationCrawler();
+        radiationCrawler = new RadiationCrawler(1, 1991, "GLOBAL");
     }
 
     @AfterEach
     void tearDown() throws Exception {
-        //crawler.delete();
+        radiationCrawler.delete();
     }
 
     @Test
     public void testDownload() throws Exception {
-        crawler.download("199101");
-        crawler.unzip();
-        crawler.insert();
+        radiationCrawler.download();
+        radiationCrawler.unzip();
+        radiationCrawler.insert();
     }
 }
