@@ -2,6 +2,7 @@ package org.josmer.interfaces;
 
 import org.springframework.stereotype.Component;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,8 @@ public interface IRepository<T> {
     List<T> getAll();
 
     void save(T t);
+
+    void saveAll(List<T> t) throws SQLException;
 
     void update(T t);
 

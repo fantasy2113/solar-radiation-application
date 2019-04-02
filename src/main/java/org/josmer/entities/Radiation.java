@@ -2,8 +2,7 @@ package org.josmer.entities;
 
 public class Radiation {
     private long id;
-    private int month;
-    private int year;
+    private int date;
     private int yMin;
     private int yMax;
     private int xMin;
@@ -19,20 +18,12 @@ public class Radiation {
         this.id = id;
     }
 
-    public int getMonth() {
-        return month;
+    public int getDate() {
+        return date;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
+    public void setDate(int date) {
+        this.date = date;
     }
 
     public int getyMin() {

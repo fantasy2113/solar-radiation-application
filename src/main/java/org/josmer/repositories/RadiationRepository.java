@@ -2,19 +2,20 @@ package org.josmer.repositories;
 
 
 import org.josmer.entities.Radiation;
-import org.josmer.interfaces.IRadiationConnector;
 import org.josmer.interfaces.IRadiationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.josmer.security.Connector;
 import org.springframework.stereotype.Component;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class RadiationRepository implements IRadiationRepository {
-    @Autowired
-    IRadiationConnector connector;
 
     @Override
     public Optional<Radiation> get(long id) {
@@ -42,7 +43,35 @@ public class RadiationRepository implements IRadiationRepository {
     }
 
     @Override
-    public int saveAll(List<Radiation> radiations) {
-        return 0;
+    public void saveAll(List<Radiation> radiations) throws SQLException {
+        Connection dbConnection = null;
+        PreparedStatement preparedStatementInsert = null;
+        try {
+            dbConnection = DriverManager.getConnection(Connector.getUrl(), Connector.getUser(), Connector.getPassword());
+            dbConnection.setAutoCommit(false);
+            for (Radiation radiation : radiations) {
+                String insertTableSQL = "INSERT INTO radiation (typ,date,x_min,x_max,y_min,y_max,value) VALUES (?,?,?,?,?,?,?)";
+                preparedStatementInsert = dbConnection.prepareStatement(insertTableSQL);
+                preparedStatementInsert.setString(2, radiation.getTyp());
+                preparedStatementInsert.setInt(3, radiation.getDate());
+                preparedStatementInsert.setInt(4, radiation.getxMin());
+                preparedStatementInsert.setInt(5, radiation.getxMax());
+                preparedStatementInsert.setInt(6, radiation.getyMin());
+                preparedStatementInsert.setInt(7, radiation.getyMax());
+                preparedStatementInsert.setDouble(8, radiation.getRadiation());
+                preparedStatementInsert.executeUpdate();
+            }
+            dbConnection.commit();
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            dbConnection.rollback();
+        } finally {
+            if (preparedStatementInsert != null) {
+                preparedStatementInsert.close();
+            }
+            if (dbConnection != null) {
+                dbConnection.close();
+            }
+        }
     }
 }

@@ -1,9 +1,6 @@
-package org.josmer.connector;
+package org.josmer.security;
 
-import org.springframework.stereotype.Component;
-
-@Component
-public abstract class Connector {
+public final class Connector {
     private static String user = null;
     private static String password = null;
     private static String url = null;

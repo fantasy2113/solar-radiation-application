@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -40,50 +41,63 @@ public final class RadiationCrawler {
         this.currentTargetFile = templateTargetFile.replace("{date}", date);
     }
 
-    public void download() throws Exception {
-        setCurrentTargetFile(getDate(year, month));
-        URL url = new URL(targetUrl + currentTargetFile);
-        URLConnection connection = url.openConnection();
-        InputStream inputStream = connection.getInputStream();
-        inputStream.transferTo(new FileOutputStream(getPathnameZip()));
+    public void download() {
+        try {
+            System.out.println("downloading...");
+            setCurrentTargetFile(getDate(year, month));
+            URL url = new URL(getUrl());
+            URLConnection connection = url.openConnection();
+            InputStream inputStream = connection.getInputStream();
+            inputStream.transferTo(new FileOutputStream(getPathnameZip()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void unzip() throws Exception {
-        File destDir = new File(targetDir);
-        byte[] buffer = new byte[1024];
-        ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip()));
-        ZipEntry zipEntry = zipInputStream.getNextEntry();
-        while (zipEntry != null) {
-            File file = new File(destDir, zipEntry.getName());
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            int len;
-            while ((len = zipInputStream.read(buffer)) > 0) {
-                fileOutputStream.write(buffer, 0, len);
+    public void unzip() {
+        try {
+            System.out.println("unzip...");
+            File destDir = new File(targetDir);
+            byte[] buffer = new byte[1024];
+            ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip()));
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
+            while (zipEntry != null) {
+                File file = new File(destDir, zipEntry.getName());
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                int len;
+                while ((len = zipInputStream.read(buffer)) > 0) {
+                    fileOutputStream.write(buffer, 0, len);
+                }
+                fileOutputStream.close();
+                zipEntry = zipInputStream.getNextEntry();
             }
-            fileOutputStream.close();
-            zipEntry = zipInputStream.getNextEntry();
+            zipInputStream.closeEntry();
+            zipInputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        zipInputStream.closeEntry();
-        zipInputStream.close();
     }
 
 
-    public void insert() throws Exception {
+    public void insert() {
+        System.out.println("inserting...");
         initRadiations();
-        int newRows = new RadiationRepository().saveAll(radiations);
+        try {
+            new RadiationRepository().saveAll(radiations);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
 
-    public void delete() throws Exception {
-        if (new File(getPathnameZip()).delete()) {
-            System.out.println(getPathnameZip() + " => deleted");
-        } else {
-            throw new Exception("fail");
+    public void delete() {
+        System.out.println("deleting....");
+        if (!new File(getPathnameZip()).delete()) {
+            System.err.println(getPathnameZip() + " fail");
         }
-        if (new File(getPathnameAsc()).delete()) {
-            System.out.println(getPathnameAsc() + " => deleted");
-        } else {
-            throw new Exception("fail");
+        if (!new File(getPathnameAsc()).delete()) {
+            System.err.println(getPathnameAsc() + " fail");
         }
     }
 
@@ -99,8 +113,7 @@ public final class RadiationCrawler {
             for (int column = 0; column < columns.length; column++) {
                 radiation.setRadiation(Double.valueOf(columns[column]));
                 radiation.setTyp(typ);
-                radiation.setMonth(month);
-                radiation.setYear(year);
+                radiation.setDate(Integer.valueOf(getDate(year, month)));
                 radiation.setyMin(y);
                 radiation.setyMax(y + 1000);
                 radiation.setxMin(x);
@@ -123,6 +136,10 @@ public final class RadiationCrawler {
             date.append(month);
         }
         return date.toString();
+    }
+
+    private String getUrl() {
+        return targetUrl + currentTargetFile;
     }
 
     private String getPathnameZip() {
