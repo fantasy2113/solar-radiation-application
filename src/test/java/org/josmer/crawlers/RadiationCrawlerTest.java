@@ -16,12 +16,13 @@ class RadiationCrawlerTest {
 
     @AfterEach
     void tearDown() throws Exception {
-        crawler.delete();
+        //crawler.delete();
     }
 
     @Test
     public void testDownload() throws Exception {
         crawler.download("199101");
         crawler.unzip();
+        crawler.insert();
     }
 }

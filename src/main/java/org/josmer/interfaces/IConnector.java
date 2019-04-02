@@ -1,9 +1,12 @@
 package org.josmer.interfaces;
 
+import org.springframework.stereotype.Component;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+@Component
 public interface IConnector<T> {
 
     T getEntity(PreparedStatement preparedStatement) throws SQLException;

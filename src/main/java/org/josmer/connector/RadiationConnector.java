@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Component
-public class RadiationConnector implements IRadiationConnector {
+public class RadiationConnector extends Connector implements IRadiationConnector {
     @Override
     public Radiation getEntity(PreparedStatement preparedStatement) throws SQLException {
         return null;

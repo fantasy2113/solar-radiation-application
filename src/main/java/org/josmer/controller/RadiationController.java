@@ -11,4 +11,9 @@ public class RadiationController {
     @Autowired
     IRadiationRepository radiationRepository;
 
+    @RequestMapping("/")
+    public String index() {
+        return "";
+    }
+
 }
