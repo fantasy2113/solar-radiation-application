@@ -1,7 +1,7 @@
 package org.josmer.crawlers;
 
+import org.josmer.connector.RadiationConnector;
 import org.josmer.interfaces.ICrawler;
-import org.josmer.repositories.RadiationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
@@ -19,7 +19,7 @@ public final class RadiationCrawler implements ICrawler {
     private final String targetDir;
     private String currentTargetFile;
     @Autowired
-    private RadiationRepository repository;
+    private RadiationConnector radiationConnector;
 
     public RadiationCrawler() {
         this.templateTargetFile = "grids_germany_monthly_radiation_global_{date}.zip";
@@ -62,6 +62,7 @@ public final class RadiationCrawler implements ICrawler {
 
     @Override
     public void insert() throws Exception {
+        radiationConnector.saveAll(null);
     }
 
     @Override

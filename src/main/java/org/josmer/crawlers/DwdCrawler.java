@@ -2,7 +2,7 @@ package org.josmer.crawlers;
 
 import org.josmer.interfaces.ICrawler;
 
-public final class DwdCrawler {
+public final class DwdCrawler<T> {
 
     private final ICrawler crawler;
 
