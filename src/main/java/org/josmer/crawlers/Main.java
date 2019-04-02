@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) throws Exception {
         Connector.setPassword("qw999");
         Connector.setUser("julian");
-        Connector.setUrl("jdbc:mysql://localhost:3306/solar_test");
+        Connector.setUrl("jdbc:mysql://localhost:3306/solar_test?serverTimezone=UTC");
 
         for (int year = 1991; year < 2020; year++) {
             for (int month = 1; month < 13; month++) {
@@ -20,6 +20,5 @@ public class Main {
                 System.out.println();
             }
         }
-
     }
 }

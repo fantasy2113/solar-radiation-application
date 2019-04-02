@@ -52,13 +52,13 @@ public class RadiationRepository implements IRadiationRepository {
             for (Radiation radiation : radiations) {
                 String insertTableSQL = "INSERT INTO radiation (typ,date,x_min,x_max,y_min,y_max,value) VALUES (?,?,?,?,?,?,?)";
                 preparedStatementInsert = dbConnection.prepareStatement(insertTableSQL);
-                preparedStatementInsert.setString(2, radiation.getTyp());
-                preparedStatementInsert.setInt(3, radiation.getDate());
-                preparedStatementInsert.setInt(4, radiation.getxMin());
-                preparedStatementInsert.setInt(5, radiation.getxMax());
-                preparedStatementInsert.setInt(6, radiation.getyMin());
-                preparedStatementInsert.setInt(7, radiation.getyMax());
-                preparedStatementInsert.setDouble(8, radiation.getRadiation());
+                preparedStatementInsert.setString(1, radiation.getTyp());
+                preparedStatementInsert.setInt(2, radiation.getDate());
+                preparedStatementInsert.setInt(3, radiation.getxMin());
+                preparedStatementInsert.setInt(4, radiation.getxMax());
+                preparedStatementInsert.setInt(5, radiation.getyMin());
+                preparedStatementInsert.setInt(6, radiation.getyMax());
+                preparedStatementInsert.setDouble(7, radiation.getRadiation());
                 preparedStatementInsert.executeUpdate();
             }
             dbConnection.commit();

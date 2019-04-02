@@ -118,9 +118,10 @@ public final class RadiationCrawler {
                 radiation.setyMax(y + 1000);
                 radiation.setxMin(x);
                 radiation.setxMax(x + 1000);
+                x += 1000;
+                radiations.add(radiation);
             }
             y += 1000;
-            radiations.add(radiation);
         }
         Collections.reverse(radiations);
     }
