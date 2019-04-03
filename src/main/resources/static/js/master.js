@@ -1,4 +1,4 @@
-const M_originPath = 'http://localhost:8080/';
+const M_originPath = 'https://solar-radiation-application.herokuapp.com/';
 
 function getCookie(cname) {
     var name = cname + "=";
