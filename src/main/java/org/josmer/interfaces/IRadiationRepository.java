@@ -11,4 +11,6 @@ public interface IRadiationRepository {
     List<Radiation> find(int startDate, int endDate, String typ, int yMin, int yMax, int xMin, int xMax);
 
     void save(List<Radiation> radiations);
+
+    boolean isConnected();
 }

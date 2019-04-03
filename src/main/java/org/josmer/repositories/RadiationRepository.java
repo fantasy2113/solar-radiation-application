@@ -59,6 +59,18 @@ public class RadiationRepository implements IRadiationRepository {
         }
     }
 
+    @Override
+    public boolean isConnected() {
+        try {
+            Connection dbConnection = getConnection();
+            dbConnection.close();
+            return true;
+        } catch (SQLException | URISyntaxException e) {
+            System.err.println(e.getMessage());
+        }
+        return false;
+    }
+
     private Connection getConnection() throws URISyntaxException, SQLException {
         URI dbUri = new URI(System.getenv("DATABASE_URL"));
 
