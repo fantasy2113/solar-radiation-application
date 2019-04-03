@@ -1,22 +1,13 @@
 package org.josmer.entities;
 
 public class Radiation {
-    private long id;
     private int date;
     private int yMin;
     private int yMax;
     private int xMin;
     private int xMax;
-    private float radiation;
+    private float value;
     private String typ;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public int getDate() {
         return date;
@@ -58,12 +49,12 @@ public class Radiation {
         this.xMax = xMax;
     }
 
-    public float getRadiation() {
-        return radiation;
+    public float getValue() {
+        return value;
     }
 
-    public void setRadiation(float radiation) {
-        this.radiation = radiation;
+    public void setValue(float value) {
+        this.value = value;
     }
 
     public String getTyp() {

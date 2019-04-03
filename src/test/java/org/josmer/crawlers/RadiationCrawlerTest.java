@@ -13,14 +13,13 @@ class RadiationCrawlerTest {
     }
 
     @AfterEach
-    void tearDown() throws Exception {
+    void tearDown() {
         radiationCrawler.delete();
     }
 
     @Test
-    public void testDownload() throws Exception {
+    public void testDownload() {
         radiationCrawler.download();
         radiationCrawler.unzip();
-        radiationCrawler.insert();
     }
 }
