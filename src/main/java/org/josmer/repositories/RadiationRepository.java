@@ -3,24 +3,19 @@ package org.josmer.repositories;
 
 import org.josmer.entities.Radiation;
 import org.josmer.interfaces.IRadiationRepository;
-import org.josmer.security.Connector;
 import org.springframework.stereotype.Component;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class RadiationRepository implements IRadiationRepository {
-
-    @Override
-    public Optional<Radiation> get(final long id) {
-        return Optional.empty();
-    }
 
     @Override
     public List<Radiation> find(int startDate, int endDate, String typ, int yMin, int yMax, int xMin, int xMax) {
@@ -34,7 +29,7 @@ public class RadiationRepository implements IRadiationRepository {
         PreparedStatement preparedStatementInsert = null;
         try {
             try {
-                dbConnection = DriverManager.getConnection(Connector.getUrl(), Connector.getUser(), Connector.getPassword());
+                dbConnection = getConnection();
                 dbConnection.setAutoCommit(false);
                 for (Radiation radiation : radiations) {
                     preparedStatementInsert = dbConnection.prepareStatement(insertTableSQL);
@@ -44,11 +39,11 @@ public class RadiationRepository implements IRadiationRepository {
                     preparedStatementInsert.setInt(4, radiation.getxMax());
                     preparedStatementInsert.setInt(5, radiation.getyMin());
                     preparedStatementInsert.setInt(6, radiation.getyMax());
-                    preparedStatementInsert.setDouble(7, radiation.getRadiation());
+                    preparedStatementInsert.setFloat(7, radiation.getRadiation());
                     preparedStatementInsert.executeUpdate();
                 }
                 dbConnection.commit();
-            } catch (SQLException e) {
+            } catch (SQLException | URISyntaxException e) {
                 System.err.println(e.getMessage());
                 dbConnection.rollback();
             } finally {
@@ -62,5 +57,15 @@ public class RadiationRepository implements IRadiationRepository {
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    private Connection getConnection() throws URISyntaxException, SQLException {
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+        return DriverManager.getConnection(dbUrl, username, password);
     }
 }

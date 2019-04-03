@@ -7,7 +7,7 @@ public class Radiation {
     private int yMax;
     private int xMin;
     private int xMax;
-    private double radiation;
+    private float radiation;
     private String typ;
 
     public long getId() {
@@ -58,11 +58,11 @@ public class Radiation {
         this.xMax = xMax;
     }
 
-    public double getRadiation() {
+    public float getRadiation() {
         return radiation;
     }
 
-    public void setRadiation(double radiation) {
+    public void setRadiation(float radiation) {
         this.radiation = radiation;
     }
 

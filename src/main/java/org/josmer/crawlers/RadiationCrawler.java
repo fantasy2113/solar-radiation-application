@@ -105,7 +105,7 @@ public final class RadiationCrawler {
             int x = 3280500;
             for (int column = 0; column < columns.length; column++) {
                 Radiation radiation = new Radiation();
-                radiation.setRadiation(Double.valueOf(columns[column]));
+                radiation.setRadiation(Float.valueOf(columns[column]));
                 radiation.setTyp(typ);
                 radiation.setDate(Integer.valueOf(getDate(year, month)));
                 radiation.setyMin(y);
