@@ -1,4 +1,4 @@
-const M_originPath = 'https://solar-radiation-application.herokuapp.com/';
+const M_originPath = window.location.href + '/';
 
 function getCookie(cname) {
     var name = cname + "=";
