@@ -22,18 +22,16 @@ public class RadiationRepository implements IRadiationRepository {
         geoToGk.calculate();
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        final String statement = "SELECT * FROM radiation WHERE typ = ? AND start_date >= ? AND end_date <= ? AND y_min >= ? AND y_max < ? AND x_min >= ? AND x_max < ? ;";
+        final String statement = "SELECT * FROM radiation WHERE date BETWEEN ? AND ? AND ? BETWEEN y_min AND y_max AND ? BETWEEN x_min AND x_max AND typ = ?;";
         try {
             try {
                 connection = getConnection();
                 preparedStatement = connection.prepareStatement(statement);
-                preparedStatement.setString(1, typ);
-                preparedStatement.setInt(2, startDate);
-                preparedStatement.setInt(3, endDate);
-                preparedStatement.setDouble(4, geoToGk.getHochwert());
-                preparedStatement.setDouble(5, geoToGk.getHochwert());
-                preparedStatement.setDouble(6, geoToGk.getRechtswert());
-                preparedStatement.setDouble(7, geoToGk.getRechtswert());
+                preparedStatement.setInt(1, startDate);
+                preparedStatement.setInt(2, endDate);
+                preparedStatement.setDouble(3, geoToGk.getHochwert());
+                preparedStatement.setDouble(4, geoToGk.getRechtswert());
+                preparedStatement.setString(5, typ);
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
                     radiations.add(mapToRadiation(rs));
