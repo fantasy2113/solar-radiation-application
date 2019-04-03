@@ -20,18 +20,21 @@ public class RadiationRepository implements IRadiationRepository {
         List<Radiation> radiations = new LinkedList<>();
         GeoToGk geoToGk = new GeoToGk(lon, lat);
         geoToGk.calculate();
+        final int hochwert = getValue(geoToGk.getHochwert());
+        final int rechtswert = getValue(geoToGk.getRechtswert());
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        final String statement = "SELECT * FROM radiation WHERE date BETWEEN ? AND ? AND ? BETWEEN y_min AND y_max AND ? BETWEEN x_min AND x_max AND typ = ?;";
+        final String statement = "SELECT * FROM radiation WHERE y_min = ? AND y_max = ? AND x_min = ? AND x_max = ? AND date IN (" + getIn(startDate, endDate) + ") AND typ = ? LIMIT ?;";
         try {
             try {
                 connection = getConnection();
                 preparedStatement = connection.prepareStatement(statement);
-                preparedStatement.setInt(1, startDate);
-                preparedStatement.setInt(2, endDate);
-                preparedStatement.setDouble(3, geoToGk.getHochwert());
-                preparedStatement.setDouble(4, geoToGk.getRechtswert());
+                preparedStatement.setInt(1, hochwert);
+                preparedStatement.setInt(2, hochwert + 1000);
+                preparedStatement.setInt(3, rechtswert);
+                preparedStatement.setInt(4, rechtswert + 1000);
                 preparedStatement.setString(5, typ);
+                preparedStatement.setInt(6, endDate - startDate + 1);
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
                     radiations.add(mapToRadiation(rs));
@@ -119,5 +122,32 @@ public class RadiationRepository implements IRadiationRepository {
         String password = dbUri.getUserInfo().split(":")[1];
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
         return DriverManager.getConnection(dbUrl, username, password);
+    }
+
+    private int getValue(final double value) {
+        Integer decrease = (int) value;
+        Integer increase = (int) value;
+        int decreaseCount = 0;
+        int increaseCount = 0;
+        while (!decrease.toString().endsWith("500")) {
+            decrease--;
+            decreaseCount++;
+        }
+        while (!increase.toString().endsWith("500")) {
+            increase++;
+            increaseCount++;
+        }
+        return increaseCount >= decreaseCount ? decrease : increase;
+    }
+
+    private String getIn(final int startDate, final int endDate) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = startDate; i <= endDate; i++) {
+            sb.append(i);
+            if (i != endDate) {
+                sb.append(",");
+            }
+        }
+        return sb.toString();
     }
 }

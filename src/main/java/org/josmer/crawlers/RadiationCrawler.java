@@ -2,6 +2,7 @@ package org.josmer.crawlers;
 
 import org.josmer.entities.Radiation;
 import org.josmer.repositories.RadiationRepository;
+import org.josmer.utils.RadiationTypes;
 import org.josmer.utils.Toolbox;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.net.URLConnection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -20,15 +22,16 @@ public final class RadiationCrawler {
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;
-    private final String typ;
+    private final RadiationTypes typ;
     private final int month;
     private final int year;
     private String currentTargetFile;
     private List<Radiation> radiations;
 
-    public RadiationCrawler(final int month, final int year, final String typ) {
+    public RadiationCrawler(final int month, final int year, final RadiationTypes typ) {
         this.templateTargetFile = "grids_germany_monthly_radiation_global_{date}.zip";
-        this.targetUrl = "https://opendata.dwd.de/climate_environment/CDC/grids_germany/monthly/radiation_global/";
+        this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
+                .replace("{radiation}", typ.name().toLowerCase(Locale.ENGLISH));
         this.targetDir = "temp/";
         this.radiations = new LinkedList<>();
         this.month = month;
@@ -106,7 +109,7 @@ public final class RadiationCrawler {
             for (int column = 0; column < columns.length; column++) {
                 Radiation radiation = new Radiation();
                 radiation.setValue(Float.valueOf(columns[column]));
-                radiation.setTyp(typ);
+                radiation.setTyp(typ.name());
                 radiation.setDate(Integer.valueOf(getDate(year, month)));
                 radiation.setyMin(y);
                 radiation.setyMax(y + 1000);
