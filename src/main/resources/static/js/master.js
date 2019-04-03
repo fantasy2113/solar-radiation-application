@@ -1,4 +1,3 @@
-const M_originPath = window.location.href;
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -13,4 +12,12 @@ function getCookie(cname) {
         }
     }
     return "";
+}
+
+function getPath() {
+	var url = window.location.href;
+	if (url.includes("localhost")) {
+		return 'http://localhost:8080/';
+	}
+	return 'https://solar-radiation-application.herokuapp.com/';
 }

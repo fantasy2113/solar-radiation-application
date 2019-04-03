@@ -7,7 +7,7 @@ jQuery(document).ready(function () {
     var logout_button = jQuery('#logout_button')
     logout_button.bind('click', function () {
         document.cookie = 'key=';
-        $(location).attr('href', M_originPath);
+        $(location).attr('href', getPath());
     })
 });
 

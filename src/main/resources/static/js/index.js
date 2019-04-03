@@ -10,7 +10,7 @@ jQuery(document).ready(function () {
             method: 'GET',
             success: function (data) {
                 document.cookie = 'key=' + data + ';';
-                $(location).attr('href', M_originPath + 'app');
+                $(location).attr('href', getPath() + 'app');
             }
         });
     })
