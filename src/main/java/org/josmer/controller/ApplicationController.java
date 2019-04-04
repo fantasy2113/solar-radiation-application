@@ -4,6 +4,8 @@ import org.josmer.security.Authenticator;
 import org.josmer.security.Key;
 import org.josmer.utils.Toolbox;
 import org.springframework.web.bind.annotation.*;
+import java.io.File;
+import java.io.IOException;
 
 @RestController
 public class ApplicationController {
