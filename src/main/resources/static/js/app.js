@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
     
     var export_button = jQuery('#export_button')
     export_button.bind('click', function () {
-        $.fileDownload('https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js').done(function () { alert('File download a success!'); }).fail(function () { alert('File download failed!'); });
+        $.fileDownload('getPath + 'js/jquery.fileDownload.js').done(function () { alert('File download a success!'); }).fail(function () { alert('File download failed!'); });
     })
 });
 
