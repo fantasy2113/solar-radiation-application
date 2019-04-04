@@ -1,6 +1,5 @@
 package org.josmer;
 
-import org.josmer.repositories.RadiationRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,10 +16,10 @@ import java.util.Arrays;
 public class Application {
 
     public static void main(String[] args) {
-        if (!new RadiationRepository().isConnected()) {
+        /*if (!new RadiationRepository().isConnected()) {
             System.err.println("no db connection");
             return;
-        }
+        }*/
         SpringApplication.run(Application.class, args);
     }
 
