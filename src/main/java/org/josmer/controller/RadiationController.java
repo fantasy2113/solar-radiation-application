@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/radiation")
 public final class RadiationController {
     @Autowired
-    IRadiationRepository radiationRepository;
+    private IRadiationRepository radiationRepository;
 
     @ResponseBody
     @RequestMapping(value = "/find", method = RequestMethod.GET)

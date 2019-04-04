@@ -102,23 +102,23 @@ public final class RadiationCrawler {
     private void initRadiations() {
         final String file = Toolbox.readFile(getPathnameAsc());
         final String[] rows = file.split("\\r\\n");
-        int y = 5237500;
+        int hochwert = 5237500;
         for (int row = rows.length - 1; row >= 28; row--) {
             final String[] columns = rows[row].split(" ");
-            int x = 3280500;
+            int rechtswert = 3280500;
             for (int column = 0; column < columns.length; column++) {
                 Radiation radiation = new Radiation();
                 radiation.setValue(Float.valueOf(columns[column]));
                 radiation.setTyp(typ.name());
                 radiation.setDate(Integer.valueOf(getDate(year, month)));
-                radiation.setyMin(y);
-                radiation.setyMax(y + 1000);
-                radiation.setxMin(x);
-                radiation.setxMax(x + 1000);
-                x += 1000;
+                radiation.setyMin(hochwert);
+                radiation.setyMax(hochwert + 1000);
+                radiation.setxMin(rechtswert);
+                radiation.setxMax(rechtswert + 1000);
+                rechtswert += 1000;
                 radiations.add(radiation);
             }
-            y += 1000;
+            hochwert += 1000;
         }
         Collections.reverse(radiations);
     }
