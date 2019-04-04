@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sonneneinstrahlung</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+    <script src="js/master.js?version=10" type="text/javascript"></script>
+    <script src="js/app.js?version=9" type="text/javascript"></script>
+</head>
+<body>
+<form id="panel">
+    <label for="start_date">Von:</label>
+    <input type="text" id="start_date" value="199101">
+    <label for="end_date">bis:</label>
+    <input type="text" id="end_date" value="201812">
+    <label for="lat">Lat:</label>
+    <input type="text" id="lat" value="51.0">
+    <label for="lon">Lon:</label>
+    <input type="text" id="lon" value="8.0">
+    <label for="typ">Lon:</label>
+    <input type="text" id="typ" value="GLOBAL">
+    <button id="search_button">Suche</button>
+    <button id="export_button">Export</button>
+    <button id="logout_button">Abmelden</button>
+</form>
+<form id="grid">
+    <table>
+        <thead>
+        <tr>
+            <th>Datum</th>
+            <th>Wert</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>100</td>
+            <td>150</td>
+        </tr>
+        <tr>
+            <td>50</td>
+            <td>100</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td>150</td>
+            <td>250</td>
+        </tr>
+        <tr>
+            <td colspan="3">Alle Angaben in Quadratmetern.</td>
+        </tr>
+        </tfoot>
+    </table>
+</form>
+</body>
+</html>
