@@ -9,5 +9,10 @@ jQuery(document).ready(function () {
         document.cookie = 'key=';
         $(location).attr('href', getPath());
     })
+    
+    var export_button = jQuery('#export_button')
+    export_button.bind('click', function () {
+        $.fileDownload('some/file.pdf').done(function () { alert('File download a success!'); }).fail(function () { alert('File download failed!'); });
+    })
 });
 
