@@ -16,13 +16,9 @@ public class ApplicationController {
         
         try {
          File file = new File("src/main/resources/static/test.txt");
-         
-         if(file.createNewFile())System.out.println("Success!");
-         else System.out.println ("Error, file already exists.");
-      }
-      catch(IOException ioe) {
-         ioe.printStackTrace();
-      }
+        } catch(IOException ioe) {;
+        }
+        
         return Toolbox.readFile("src/main/resources/static/html/app.html");
     }
 
