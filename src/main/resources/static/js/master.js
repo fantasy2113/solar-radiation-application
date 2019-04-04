@@ -69,6 +69,7 @@ function download(id) {
         }else {
             alert('error')';//do something...
         }
+    }
     }; 
     xhr.setRequestHeader('Content-type', 'application/*');
     xhr.send();
