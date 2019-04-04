@@ -1,19 +1,37 @@
 jQuery(document).ready(function () {
-    var click_button = jQuery('#click_button')
-    click_button.bind('click', function () {
-        console.log(getCookie('key'));
-    })
+
+    var search_button = jQuery('#search_button')
+        search_button.bind('click', function () {
+            $.ajax({
+            url: getPath() + 'find',
+            contentType: "application/json",
+              dataType: "json",
+
+                method: 'GET',
+                data: {
+                        'startDate': $('input[id=start_date]').val(),
+                        'endDate': $('input[id=end_date]').val(),
+                        'lat': $('input[id=lat]').val(),
+                        'lon': $('input[id=lon]').val(),
+                        'typ': $('input[id=typ]').val()
+                    },
+                 success: function(data)
+                    {
+                        console.log(data)
+                    }
+            });
+        })
 
     var logout_button = jQuery('#logout_button')
     logout_button.bind('click', function () {
-        document.cookie = 'key=';
+        document.cookie = 'key=;';
         $(location).attr('href', getPath());
     })
-    
+
     var export_button = jQuery('#export_button')
     export_button.bind('click', function () {
-        console.log(getPath() + 'Report0.pdf');
-        $.fileDownload(getPath() + 'Report0.pdf').done(function () { alert('File download a success!'); }).fail(function () { alert('File download failed!'); });
+
+$(location).attr('href', getPath() + "export?" + getExportQuery());
     })
 });
 

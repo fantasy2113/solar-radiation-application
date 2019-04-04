@@ -1,3 +1,10 @@
+function getExportQuery() {
+    return 'startDate=' + $('input[id=start_date]').val()
+    + '&endDate=' + $('input[id=end_date]').val()
+    + '&lat=' + $('input[id=lat]').val()
+    + '&lon=' + $('input[id=lon]').val()
+    + '&typ=' + $('input[id=typ]').val();
+}
 
 function getCookie(cname) {
     var name = cname + "=";
@@ -21,6 +28,3 @@ function getPath() {
 	}
 	return 'https://solar-radiation-application.herokuapp.com/';
 }
-
-// https://stackoverflow.com/questions/32995666/spring-rest-and-jquery-ajax-file-download
-// https://blog.exxeta.com/2016/08/03/simple-excel-export-spring-based-web-application/

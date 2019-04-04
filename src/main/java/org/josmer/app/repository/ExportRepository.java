@@ -22,12 +22,12 @@ public class ExportRepository implements IExportRepository {
 
     @Override
     public List<String> getHeaders() {
-        return List.of("Datum", "Lat", "Lon", "Typ", "Wert");
+        return List.of("Date", "Lat", "Lon", "Typ", "Value");
     }
 
     @Override
     public String getProps() {
-        return "Datum, Lat, Lon, Typ, Wert, ";
+        return "date, lat, lon, typ, value, ";
     }
 
     private Export mapToExport(double lon, double lat, Radiation radiation) {

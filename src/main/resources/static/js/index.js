@@ -4,13 +4,13 @@ jQuery(document).ready(function () {
         document.cookie = 'key=';
         $.ajax({
             beforeSend: function (request) {
-                request.setRequestHeader('login', $('input[name=username]').val());
-                request.setRequestHeader('password', $('input[name=password]').val());
+                request.setRequestHeader('login', $('input[id=username]').val());
+                request.setRequestHeader('password', $('input[id=password]').val());
             },
             url: getPath() + 'key',
             method: 'GET',
-            success: function (data) {
-                document.cookie = 'key=' + data + ';';
+            success: function (key) {
+                document.cookie = 'key=' + key + ';';
                 $(location).attr('href', getPath() + 'app');
             }
         });
