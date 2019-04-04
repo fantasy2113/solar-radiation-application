@@ -15,7 +15,7 @@ public class ApplicationController {
         }
         
         try {
-         File file = new File("src/main/resources/static/test.txt);
+         File file = new File("src/main/resources/static/test.txt");
          
          if(file.createNewFile())System.out.println("Success!");
          else System.out.println ("Error, file already exists.");
