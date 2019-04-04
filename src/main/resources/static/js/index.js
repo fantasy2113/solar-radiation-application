@@ -1,6 +1,7 @@
 jQuery(document).ready(function () {
     var button = jQuery('#login_button')
     button.bind('click', function () {
+        document.cookie = 'key=';
         $.ajax({
             beforeSend: function (request) {
                 request.setRequestHeader('login', $('input[name=username]').val());
