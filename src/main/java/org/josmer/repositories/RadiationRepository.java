@@ -112,8 +112,8 @@ public class RadiationRepository implements IRadiationRepository {
             return true;
         } catch (SQLException | URISyntaxException e) {
             System.err.println(e.getMessage());
+            return false;
         }
-        return false;
     }
 
     private Connection getConnection() throws URISyntaxException, SQLException {

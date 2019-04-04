@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class Application {
 
     public static void main(String[] args) {
-        if (!new RadiationRepository().isConnected()) {
+        if (new RadiationRepository().isConnected()) {
             System.err.println("no db connection");
             return;
         }
