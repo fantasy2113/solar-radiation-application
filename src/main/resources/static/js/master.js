@@ -21,6 +21,7 @@ function getPath() {
 	}
 	return 'https://solar-radiation-application.herokuapp.com/';
 }
+
 // https://stackoverflow.com/questions/32995666/spring-rest-and-jquery-ajax-file-download
 // https://blog.exxeta.com/2016/08/03/simple-excel-export-spring-based-web-application/
 function download(id) {
