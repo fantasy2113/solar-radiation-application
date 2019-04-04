@@ -13,15 +13,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
+@RequestMapping("/")
 public class ApplicationController {
     @Autowired
     private IExportRepository exportRepository;
     @Autowired
     private IRadiationRepository radiationRepository;
 
-    @RequestMapping(value = "/app", method = RequestMethod.GET)
+    @GetMapping(value = "/app", produces = MediaType.TEXT_HTML_VALUE)
     public String app(@CookieValue("key") final String key) {
         if (!Key.check(key)) {
             return Toolbox.readFile("src/main/resources/static/html/accessDenied.html");
@@ -29,26 +31,26 @@ public class ApplicationController {
         return Toolbox.readFile("src/main/resources/static/html/app.html");
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() {
-        return Toolbox.readFile("src/main/resources/static/html/index.html");
+    @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
+    public String login() {
+        return Toolbox.readFile("src/main/resources/static/html/login.html");
     }
 
-    @RequestMapping(value = "/key", method = RequestMethod.GET)
-    public String key(@RequestHeader(value = "login") final String login, @RequestHeader(value = "password") final String password) {
+    @GetMapping(value = "/key", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String key(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         if (!isValid(login, password)) {
             return Key.undefined();
         }
         return Key.get();
     }
 
-    @RequestMapping(value = "/export", method = RequestMethod.GET)
+    @GetMapping("/export")
     public void export(HttpServletResponse response, @CookieValue("key") final String key, @RequestParam("startDate") final int startDate, @RequestParam("endDate") final int endDate, @RequestParam("typ") final String typ, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat) {
         if (!Key.check(key)) {
             return;
         }
         try {
-            response.addHeader("Content-disposition", "attachment; filename=People.xls");
+            response.addHeader("Content-disposition", "attachment; filename=einstrahlung.xls");
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     exportRepository.getHeaders(),
@@ -60,14 +62,13 @@ public class ApplicationController {
         }
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    Export find(@CookieValue("key") final String key, SearchRequest searchRequest) {
+    @GetMapping("/find")
+    public List<Export> find(@CookieValue("key") final String key, final SearchRequest searchRequest) {
         if (!Key.check(key)) {
             return null;
         }
-        return new Export();/*(exportRepository.getAll(radiationRepository.find(searchRequest.getStartDate(), searchRequest.getEndDate(),
-                searchRequest.getTyp(), searchRequest.getLon(), searchRequest.getLat()), searchRequest.getLon(), searchRequest.getLat());*/
+        return exportRepository.getAll(radiationRepository.find(searchRequest.getStartDate(), searchRequest.getEndDate(), searchRequest.getTyp(),
+                searchRequest.getLon(), searchRequest.getLat()), searchRequest.getLon(), searchRequest.getLat());
     }
 
     protected boolean isValid(final String login, final String password) {

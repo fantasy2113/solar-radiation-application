@@ -9,6 +9,7 @@ jQuery(document).ready(function () {
             },
             url: getPath() + 'key',
             method: 'GET',
+            dataType: "text",
             success: function (key) {
                 document.cookie = 'key=' + key + ';';
                 $(location).attr('href', getPath() + 'app');
