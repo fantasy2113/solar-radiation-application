@@ -12,6 +12,7 @@ jQuery(document).ready(function () {
     
     var export_button = jQuery('#export_button')
     export_button.bind('click', function () {
+        console.log(getPath() + 'js/jquery.fileDownload.js');
         $.fileDownload(getPath() + 'js/jquery.fileDownload.js').done(function () { alert('File download a success!'); }).fail(function () { alert('File download failed!'); });
     })
 });
