@@ -6,16 +6,14 @@ import org.josmer.app.entity.Radiation;
 import org.josmer.app.logic.utils.GaussKrueger;
 import org.springframework.stereotype.Component;
 
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class RadiationRepository extends Repository implements IRadiationRepository {
+public final class RadiationRepository implements IRadiationRepository {
 
     @Override
     public List<Radiation> find(final int startDate, final int endDate, final String typ, final double lon, final double lat) {
@@ -70,40 +68,58 @@ public class RadiationRepository extends Repository implements IRadiationReposit
     }
 
     @Override
-    public void save(final List<Radiation> radiations) {
+    public void save(final List<Radiation> radiations) throws SQLException {
         final String statement = "INSERT INTO radiation (typ,date,x_min,x_max,y_min,y_max,value) VALUES (?,?,?,?,?,?,?)";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-            try {
-                connection = getConnection();
-                connection.setAutoCommit(false);
-                for (Radiation radiation : radiations) {
-                    preparedStatement = connection.prepareStatement(statement);
-                    preparedStatement.setString(1, radiation.getTyp());
-                    preparedStatement.setInt(2, radiation.getDate());
-                    preparedStatement.setInt(3, radiation.getxMin());
-                    preparedStatement.setInt(4, radiation.getxMax());
-                    preparedStatement.setInt(5, radiation.getyMin());
-                    preparedStatement.setInt(6, radiation.getyMax());
-                    preparedStatement.setFloat(7, radiation.getValue());
-                    preparedStatement.executeUpdate();
-                }
-                connection.commit();
-            } catch (SQLException | URISyntaxException e) {
-                System.err.println(e.getMessage());
-                connection.rollback();
-            } finally {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
+            connection = getConnection();
+            connection.setAutoCommit(false);
+            for (Radiation radiation : radiations) {
+                preparedStatement = connection.prepareStatement(statement);
+
+                preparedStatement.setString(1, radiation.getTyp());
+                preparedStatement.setInt(2, radiation.getDate());
+                preparedStatement.setInt(3, radiation.getxMin());
+                preparedStatement.setInt(4, radiation.getxMax());
+                preparedStatement.setInt(5, radiation.getyMin());
+                preparedStatement.setInt(6, radiation.getyMax());
+                preparedStatement.setFloat(7, radiation.getValue());
+
+                preparedStatement.executeUpdate();
             }
-        } catch (SQLException e) {
+            connection.commit();
+        } catch (SQLException | URISyntaxException e) {
             System.err.println(e.getMessage());
+            connection.rollback();
+        } finally {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
         }
+    }
+
+    @Override
+    public boolean isConnected() {
+        try {
+            Connection connection = getConnection();
+            connection.close();
+            return true;
+        } catch (SQLException | URISyntaxException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
+
+    private Connection getConnection() throws URISyntaxException, SQLException {
+        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        String username = dbUri.getUserInfo().split(":")[0];
+        String password = dbUri.getUserInfo().split(":")[1];
+        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+        return DriverManager.getConnection(dbUrl, username, password);
     }
 
     private int getGaussKrueger(final double value) {

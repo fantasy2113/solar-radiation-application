@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -86,7 +87,11 @@ public final class RadiationCrawler {
         initRadiations();
         System.out.println("inserting...");
         RadiationRepository radiationRepository = new RadiationRepository();
-        radiationRepository.save(radiations);
+        try {
+            radiationRepository.save(radiations);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public void delete() {
