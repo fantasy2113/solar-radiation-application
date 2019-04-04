@@ -13,11 +13,22 @@ public class ApplicationController {
         if (!Key.check(key)) {
             return Toolbox.readFile("src/main/resources/static/html/accessDenied.html");
         }
+        
+        try {
+         File file = new File("src/main/resources/static/test.txt);
+         
+         if(file.createNewFile())System.out.println("Success!");
+         else System.out.println ("Error, file already exists.");
+      }
+      catch(IOException ioe) {
+         ioe.printStackTrace();
+      }
         return Toolbox.readFile("src/main/resources/static/html/app.html");
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
+        
         return Toolbox.readFile("src/main/resources/static/html/index.html");
     }
 
