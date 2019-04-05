@@ -23,7 +23,7 @@ public class App {
             System.err.println("no db connection");
             return;
         }
-        insertData(true);
+        //insertData(true);
         SpringApplication.run(App.class, args);
     }
 
