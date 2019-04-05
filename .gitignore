@@ -2,3 +2,5 @@
 .idea/uiDesigner.xml
 .idea/libraries/**
 target/
+*.asc
+*.zip
