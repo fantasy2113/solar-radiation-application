@@ -26,7 +26,7 @@ jQuery(document).ready(function () {
     var logout_button = jQuery('#logout_button')
     logout_button.bind('click', function () {
         document.cookie = 'key=;';
-        $(location).attr('href', );
+        $(location).attr('href', getPath());
     })
 
     var export_button = jQuery('#export_button')
