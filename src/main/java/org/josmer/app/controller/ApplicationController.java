@@ -2,6 +2,8 @@ package org.josmer.app.controller;
 
 import org.josmer.app.core.IExportRepository;
 import org.josmer.app.core.IRadiationRepository;
+import org.josmer.app.core.RadiationTypes;
+import org.josmer.app.crawler.RadiationCrawler;
 import org.josmer.app.entity.Export;
 import org.josmer.app.logic.security.Authenticator;
 import org.josmer.app.logic.security.Key;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -44,6 +47,18 @@ public class ApplicationController {
         return Key.get();
     }
 
+    @GetMapping(value = "/insert", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String insert(@CookieValue("key") final String key) {
+        if (!Key.check(key)) {
+            return ":-(";
+        }
+
+
+        insertData();
+
+        return "done";
+    }
+
     @GetMapping("/export")
     public void export(HttpServletResponse response, @CookieValue("key") final String key, @RequestParam("startDate") final int startDate, @RequestParam("endDate") final int endDate, @RequestParam("typ") final String typ, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat) {
         if (!Key.check(key)) {
@@ -65,7 +80,7 @@ public class ApplicationController {
     @GetMapping("/find")
     public List<Export> find(@CookieValue("key") final String key, final SearchRequest searchRequest) {
         if (!Key.check(key)) {
-            return null;
+            return new LinkedList<>();
         }
         return exportRepository.getAll(radiationRepository.find(searchRequest.getStartDate(), searchRequest.getEndDate(), searchRequest.getTyp(),
                 searchRequest.getLon(), searchRequest.getLat()), searchRequest.getLon(), searchRequest.getLat());
@@ -73,6 +88,20 @@ public class ApplicationController {
 
     protected boolean isValid(final String login, final String password) {
         return new Authenticator().authenticate(login, password);
+    }
+
+    private void insertData() {
+        for (int year = 2018; year < 2019; year++) {
+            for (int month = 1; month < 13; month++) {
+                System.out.println(">>> Month: " + month + ", Year: " + year);
+                RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, RadiationTypes.GLOBAL);
+                radiationCrawler.download();
+                radiationCrawler.unzip();
+                radiationCrawler.insert();
+                radiationCrawler.delete();
+                System.out.println();
+            }
+        }
     }
 
 }

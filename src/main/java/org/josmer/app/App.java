@@ -1,7 +1,5 @@
 package org.josmer.app;
 
-import org.josmer.app.core.RadiationTypes;
-import org.josmer.app.crawler.RadiationCrawler;
 import org.josmer.app.repository.RadiationRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,7 +21,6 @@ public class App {
             System.err.println("no db connection");
             return;
         }
-        //insertData(true);
         SpringApplication.run(App.class, args);
     }
 
@@ -42,21 +39,5 @@ public class App {
         };
     }
 
-    private static void insertData(boolean isInsert) {
-        if (!isInsert) {
-            return;
-        }
-        for (int year = 2018; year < 2019; year++) {
-            for (int month = 1; month < 13; month++) {
-                System.out.println(">>> Month: " + month + ", Year: " + year);
-                RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, RadiationTypes.GLOBAL);
-                radiationCrawler.download();
-                radiationCrawler.unzip();
-                radiationCrawler.insert();
-                radiationCrawler.delete();
-                System.out.println();
-            }
-        }
-    }
 
 }
