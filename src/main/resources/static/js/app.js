@@ -16,6 +16,19 @@ jQuery(document).ready(function () {
                 },
                 success: function (data) {
                     console.log(data);
+                    $("#records_table tr").remove();
+
+                    $.each(data, function(i, item) {
+                        $('<tr>').html(
+                            '<td>' + data[i].date + '</td>'
+                            + '<td>' + data[i].lat + '</td>'
+                            + '<td>' + data[i].lon + '</td>'
+                            + '<td>' + data[i].typ + '</td>'
+                            + '<td>' + data[i].value + '</td>'
+                            + '</tr>')
+                            .appendTo('#records_table');
+                    });
+
                 },
                 error: function(jqXhr, textStatus, errorMessage){
                     console.log(jqXhr + textStatus + errorMessage);

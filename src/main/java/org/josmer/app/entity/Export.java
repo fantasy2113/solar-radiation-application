@@ -6,14 +6,14 @@ public class Export {
     private double lat;
     private double lon;
     private String typ;
-    private double value;
+    private float value;
 
 
-    public double getValue() {
+    public float getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(float value) {
         this.value = value;
     }
 

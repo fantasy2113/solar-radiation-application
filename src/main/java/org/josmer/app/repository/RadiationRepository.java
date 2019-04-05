@@ -73,7 +73,7 @@ public final class RadiationRepository implements IRadiationRepository {
         radiation.setxMax(rs.getInt("x_max"));
         radiation.setyMin(rs.getInt("y_min"));
         radiation.setyMax(rs.getInt("y_min"));
-        radiation.setValue(rs.getInt("value"));
+        radiation.setValue(rs.getFloat("value"));
         return radiation;
     }
 
