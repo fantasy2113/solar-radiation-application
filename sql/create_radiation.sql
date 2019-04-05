@@ -4,7 +4,7 @@
 
 CREATE TABLE public.radiation
 (
-    typ character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    typ character varying(10) COLLATE pg_catalog."default" NOT NULL,
     date integer NOT NULL,
     x_min integer NOT NULL,
     x_max integer NOT NULL,
@@ -19,4 +19,4 @@ WITH (
 TABLESPACE pg_default;
 
 ALTER TABLE public.radiation
-    OWNER to postgres;
+    OWNER to ntdzcywnkjukss;
