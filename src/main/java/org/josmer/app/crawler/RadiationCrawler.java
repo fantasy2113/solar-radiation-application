@@ -83,10 +83,19 @@ public final class RadiationCrawler {
 
 
     public void insert() {
+        RadiationRepository radiationRepository = new RadiationRepository();
+        inserting(radiationRepository);
+    }
+
+    public void insert(final String databaseUrl) {
+        RadiationRepository radiationRepository = new RadiationRepository(databaseUrl);
+        inserting(radiationRepository);
+    }
+
+    private void inserting(final RadiationRepository radiationRepository) {
         System.out.println("reading...");
         initRadiations();
         System.out.println("inserting...");
-        RadiationRepository radiationRepository = new RadiationRepository();
         try {
             radiationRepository.save(radiations);
         } catch (SQLException e) {

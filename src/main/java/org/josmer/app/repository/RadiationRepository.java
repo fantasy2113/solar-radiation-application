@@ -15,6 +15,16 @@ import java.util.List;
 @Component
 public final class RadiationRepository implements IRadiationRepository {
 
+    private final String databaseUrl;
+
+    public RadiationRepository(final String databaseUrl) {
+        this.databaseUrl = databaseUrl;
+    }
+
+    public RadiationRepository() {
+        this.databaseUrl = System.getenv("DATABASE_URL");
+    }
+
     @Override
     public List<Radiation> find(final int startDate, final int endDate, final String typ, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
@@ -115,7 +125,7 @@ public final class RadiationRepository implements IRadiationRepository {
     }
 
     private Connection getConnection() throws URISyntaxException, SQLException {
-        URI dbUri = new URI(System.getenv("DATABASE_URL"));
+        URI dbUri = new URI(databaseUrl);
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];
         String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
