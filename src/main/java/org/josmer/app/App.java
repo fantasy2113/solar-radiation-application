@@ -27,7 +27,7 @@ public class App {
 
         openBrowser();
 
-        if (false) {
+        if (true) {
             ExecutorService pool = Executors.newFixedThreadPool(1);
             pool.execute(new InsertHandler(new RadiationRepository()));
         }
