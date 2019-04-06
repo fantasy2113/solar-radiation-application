@@ -32,11 +32,11 @@ public class JxlsExportRepository implements IJxlsExportRepository {
 
     private Export mapToExport(double lon, double lat, Radiation radiation) {
         Export export = new Export();
-        export.setDate(parseDate(radiation.getDate()));
+        export.setDate(parseDate(radiation.getRadiationDate()));
         export.setLat(lat);
         export.setLon(lon);
-        export.setType(radiation.getType());
-        export.setValue(radiation.getValue());
+        export.setType(radiation.getRadiationType());
+        export.setValue(radiation.getRadiationvalue());
         export.setUnit("kWh/m2");
         return export;
     }

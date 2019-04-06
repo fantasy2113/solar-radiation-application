@@ -1,16 +1,14 @@
 package org.josmer.app.repository;
 
-
-import org.josmer.app.core.IMonthlyRadiationRepository;
-import org.josmer.app.entity.Radiation;
-import org.josmer.app.logic.utils.GaussKrueger;
-import org.springframework.stereotype.Component;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import org.josmer.app.core.IMonthlyRadiationRepository;
+import org.josmer.app.entity.Radiation;
+import org.josmer.app.logic.utils.GaussKrueger;
+import org.springframework.stereotype.Component;
 
 @Component
 public final class MonthlyRadiationRepository implements IMonthlyRadiationRepository {
@@ -26,12 +24,12 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
     }
 
     @Override
-    public List<Radiation> find(final int startDate, final int endDate, final String type, final double lon, final double lat) {
+    public List<Radiation> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
         gaussKrueger.calculate();
-        final int hochwert = getGaussKrueger(gaussKrueger.getHochwert());
-        final int rechtswert = getGaussKrueger(gaussKrueger.getRechtswert());
+        final int hochwert = getGkh(gaussKrueger.getHochwert());
+        final int rechtswert = getGkh(gaussKrueger.getRechtswert());
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         final String statement = "SELECT * FROM radiation WHERE y_min = ? AND y_max = ? AND x_min = ? AND x_max = ? AND date IN (" + getDates(startDate, endDate) + ") AND typ = ? LIMIT ?;";
@@ -43,7 +41,7 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
                 preparedStatement.setInt(2, hochwert + 1000);
                 preparedStatement.setInt(3, rechtswert);
                 preparedStatement.setInt(4, rechtswert + 1000);
-                preparedStatement.setString(5, type);
+                preparedStatement.setString(5, radiationType);
                 preparedStatement.setInt(6, endDate - startDate + 1);
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
@@ -67,7 +65,7 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
 
     @Override
     public void save(final List<Radiation> radiations) {
-        final String statement = "INSERT INTO radiation (typ,date,x_min,x_max,y_min,y_max,value) VALUES (?,?,?,?,?,?,?)";
+        final String statement = "INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -77,13 +75,13 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
                 for (Radiation radiation : radiations) {
                     preparedStatement = connection.prepareStatement(statement);
 
-                    preparedStatement.setString(1, radiation.getType());
-                    preparedStatement.setInt(2, radiation.getDate());
-                    preparedStatement.setInt(3, radiation.getxMin());
-                    preparedStatement.setInt(4, radiation.getxMax());
-                    preparedStatement.setInt(5, radiation.getyMin());
-                    preparedStatement.setInt(6, radiation.getyMax());
-                    preparedStatement.setFloat(7, radiation.getValue());
+                    preparedStatement.setString(1, radiation.getRadiationType());
+                    preparedStatement.setInt(2, radiation.getRadiationDate());
+                    preparedStatement.setInt(3, radiation.getGkrMin());
+                    preparedStatement.setInt(4, radiation.getGkrMax());
+                    preparedStatement.setInt(5, radiation.getGkhMin());
+                    preparedStatement.setInt(6, radiation.getGkhMax());
+                    preparedStatement.setFloat(7, radiation.getRadiationvalue());
 
                     preparedStatement.executeUpdate();
                 }
@@ -119,8 +117,8 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
     @Override
     public long count() {
         try (Connection con = getConnection();
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery("SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname='radiation';")) {
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery("SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname='radiation';")) {
             if (rs.next()) {
                 return rs.getLong(1);
             }
@@ -132,13 +130,13 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
 
     private Radiation mapToRadiation(ResultSet rs) throws SQLException {
         Radiation radiation = new Radiation();
-        radiation.setType(rs.getString("typ"));
-        radiation.setDate(rs.getInt("date"));
-        radiation.setxMin(rs.getInt("x_min"));
-        radiation.setxMax(rs.getInt("x_max"));
-        radiation.setyMin(rs.getInt("y_min"));
-        radiation.setyMax(rs.getInt("y_min"));
-        radiation.setValue(rs.getFloat("value"));
+        radiation.setRadiationType(rs.getString("radiation_typ"));
+        radiation.setRadiationDate(rs.getInt("radiation_date"));
+        radiation.setGkrMin(rs.getInt("gkr_min"));
+        radiation.setGkrMax(rs.getInt("gkr_max"));
+        radiation.setGkhMin(rs.getInt("gkh_min"));
+        radiation.setGkhMax(rs.getInt("gkh_max"));
+        radiation.setRadiationvalue(rs.getFloat("radiation_value"));
         return radiation;
     }
 
@@ -150,24 +148,48 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
         return DriverManager.getConnection(dbUrl, username, password);
     }
 
-    private int getGaussKrueger(final double value) {
+    private int getGkh(final double value) {
         Integer decrease = (int) value;
         Integer increase = (int) value;
         int decreaseCount = 0;
         int increaseCount = 0;
-        while (isStop(decrease)) {
+        while (isGkhStop(decrease)) {
             decrease--;
             decreaseCount++;
         }
-        while (isStop(increase)) {
+        while (isGkhStop(increase)) {
             increase++;
             increaseCount++;
         }
         return increaseCount >= decreaseCount ? decrease : increase;
     }
 
-    private boolean isStop(Integer increase) {
+    private boolean isGkhStop(Integer increase) {
         return !increase.toString().endsWith("500");
+    }
+
+    private int getGkr(final double value) {
+        Integer decrease = (int) value;
+        Integer increase = (int) value;
+        int decreaseCount = 0;
+        int increaseCount = 0;
+        while (isGkrStop(decrease)) {
+            decrease--;
+            decreaseCount++;
+        }
+        while (isGkrStop(increase)) {
+            increase++;
+            increaseCount++;
+        }
+        return increaseCount >= decreaseCount ? decrease : increase;
+    }
+
+    private boolean isGkrStop(Integer increase) {
+        return !increase.toString().endsWith("0500")
+                || !increase.toString().endsWith("2500")
+                || !increase.toString().endsWith("4500")
+                || !increase.toString().endsWith("6500")
+                || !increase.toString().endsWith("8500");
     }
 
     private String getDates(final int startDate, final int endDate) {

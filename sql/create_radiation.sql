@@ -4,14 +4,14 @@
 
 CREATE TABLE public.radiation
 (
-    typ character varying(10) COLLATE pg_catalog."default" NOT NULL,
-    date integer NOT NULL,
-    x_min integer NOT NULL,
-    x_max integer NOT NULL,
-    y_min integer NOT NULL,
-    y_max integer NOT NULL,
-    value real NOT NULL,
-    CONSTRAINT radiation_pkey PRIMARY KEY (typ, date, x_min, x_max, y_min, y_max)
+    radiation_type character varying(8) COLLATE pg_catalog."default" NOT NULL,
+    radiation_date integer NOT NULL,
+    gkr_min integer NOT NULL,
+    gkr_max integer NOT NULL,
+    gkh_min integer NOT NULL,
+    gkh_max integer NOT NULL,
+    radiation_value real NOT NULL,
+    CONSTRAINT radiation_pkey PRIMARY KEY (radiation_type, radiation_date, gkr_min, gkr_max, gkh_min, gkh_max)
 )
 WITH (
     OIDS = FALSE
@@ -19,4 +19,4 @@ WITH (
 TABLESPACE pg_default;
 
 ALTER TABLE public.radiation
-    OWNER to ntdzcywnkjukss;
+    OWNER to postgres;

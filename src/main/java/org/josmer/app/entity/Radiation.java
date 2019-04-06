@@ -1,67 +1,68 @@
 package org.josmer.app.entity;
 
 public class Radiation {
-    private int date;
-    private int yMin;
-    private int yMax;
-    private int xMin;
-    private int xMax;
-    private float value;
-    private String type;
 
-    public int getDate() {
-        return date;
+    private int radiationDate;
+    private int gkhMin;
+    private int gkhMax;
+    private int gkrMin;
+    private int gkrMax;
+    private float radiationvalue;
+    private String radiationType;
+
+    public int getRadiationDate() {
+        return radiationDate;
     }
 
-    public void setDate(int date) {
-        this.date = date;
+    public void setRadiationDate(int radiationDate) {
+        this.radiationDate = radiationDate;
     }
 
-    public int getyMin() {
-        return yMin;
+    public int getGkhMin() {
+        return gkhMin;
     }
 
-    public void setyMin(int yMin) {
-        this.yMin = yMin;
+    public void setGkhMin(int gkhMin) {
+        this.gkhMin = gkhMin;
     }
 
-    public int getyMax() {
-        return yMax;
+    public int getGkhMax() {
+        return gkhMax;
     }
 
-    public void setyMax(int yMax) {
-        this.yMax = yMax;
+    public void setGkhMax(int gkhMax) {
+        this.gkhMax = gkhMax;
     }
 
-    public int getxMin() {
-        return xMin;
+    public int getGkrMin() {
+        return gkrMin;
     }
 
-    public void setxMin(int xMin) {
-        this.xMin = xMin;
+    public void setGkrMin(int gkrMin) {
+        this.gkrMin = gkrMin;
     }
 
-    public int getxMax() {
-        return xMax;
+    public int getGkrMax() {
+        return gkrMax;
     }
 
-    public void setxMax(int xMax) {
-        this.xMax = xMax;
+    public void setGkrMax(int gkrMax) {
+        this.gkrMax = gkrMax;
     }
 
-    public float getValue() {
-        return value;
+    public float getRadiationvalue() {
+        return radiationvalue;
     }
 
-    public void setValue(float value) {
-        this.value = value;
+    public void setRadiationvalue(float radiationvalue) {
+        this.radiationvalue = radiationvalue;
     }
 
-    public String getType() {
-        return type;
+    public String getRadiationType() {
+        return radiationType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setRadiationType(String radiationType) {
+        this.radiationType = radiationType;
     }
 }
