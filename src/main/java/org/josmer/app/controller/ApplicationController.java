@@ -1,6 +1,7 @@
 package org.josmer.app.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +9,7 @@ import org.josmer.app.controller.request.SearchRequest;
 import org.josmer.app.core.IExportRepository;
 import org.josmer.app.core.IRadiationRepository;
 import org.josmer.app.entity.Export;
+import org.josmer.app.entity.Radiation;
 import org.josmer.app.logic.security.Authenticator;
 import org.josmer.app.logic.security.Key;
 import org.josmer.app.logic.utils.Toolbox;
@@ -52,6 +54,27 @@ public class ApplicationController {
             return "-1";
         }
         return Long.toString(radiationRep.count());
+    }
+
+    @GetMapping(value = "/add", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String add(@CookieValue("key") final String key) {
+        if (!Key.check(key)) {
+            return "-1";
+        }
+
+        List<Radiation> list = new ArrayList<>();
+        Radiation radiation = new Radiation();
+        radiation.setGkhMin(1);
+        radiation.setGkhMax(1);
+        radiation.setGkrMin(2);
+        radiation.setGkrMax(3);
+        radiation.setRadiationDate(423);
+        radiation.setRadiationValue(4353);
+        radiation.setRadiationType("sff");
+        list.add(radiation);
+
+        radiationRep.save(list);
+        return "add";
     }
 
     @GetMapping("/export")
