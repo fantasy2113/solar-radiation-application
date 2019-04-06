@@ -50,7 +50,7 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
                     radiations.add(mapToRadiation(rs));
                 }
             } catch (SQLException | URISyntaxException e) {
-                System.err.println(e);
+                System.out.println(e);
             } finally {
                 if (preparedStatement != null) {
                     preparedStatement.close();
@@ -60,7 +60,7 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            System.out.println(e);
         }
         return radiations;
     }
@@ -89,7 +89,7 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
                 }
                 connection.commit();
             } catch (SQLException | URISyntaxException e) {
-                System.err.println(e.getMessage());
+                System.out.println(e);
                 connection.rollback();
             } finally {
                 if (preparedStatement != null) {
@@ -100,7 +100,7 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e);
+            System.out.println(e);
         }
     }
 
@@ -111,7 +111,7 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
             connection.close();
             return true;
         } catch (SQLException | URISyntaxException e) {
-            System.err.println(e);
+            System.out.println(e);
             return false;
         }
     }
@@ -125,7 +125,7 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
                 return rs.getLong(1);
             }
         } catch (SQLException | URISyntaxException e) {
-            System.err.println(e);
+            System.out.println(e);
         }
         return -1;
     }

@@ -7,7 +7,7 @@ public class Insert {
 
     public static void main(String[] args) {
         if (!new MonthlyRadiationRepository().isConnected()) {
-            System.err.println("no db connection");
+            System.out.println("no db connection");
             return;
         }
         insertData();

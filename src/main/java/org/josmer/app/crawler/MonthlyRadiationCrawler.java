@@ -53,7 +53,7 @@ public final class MonthlyRadiationCrawler {
             InputStream inputStream = connection.getInputStream();
             inputStream.transferTo(new FileOutputStream(getPathnameZip()));
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
@@ -77,7 +77,7 @@ public final class MonthlyRadiationCrawler {
             zipInputStream.closeEntry();
             zipInputStream.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
     }
 
@@ -102,10 +102,10 @@ public final class MonthlyRadiationCrawler {
     public void delete() {
         System.out.println("deleting....");
         if (!new File(getPathnameZip()).delete()) {
-            System.err.println(getPathnameZip() + " fail");
+            System.out.println(getPathnameZip() + " fail");
         }
         if (!new File(getPathnameAsc()).delete()) {
-            System.err.println(getPathnameAsc() + " fail");
+            System.out.println(getPathnameAsc() + " fail");
         }
     }
 

@@ -68,7 +68,7 @@ public class ApplicationController {
                     response.getOutputStream());
             response.flushBuffer();
         } catch (Exception e) {
-            System.err.println(e);
+            System.out.println(e);
         }
     }
 
@@ -90,7 +90,7 @@ public class ApplicationController {
         try {
             return Integer.valueOf(date.replace("-", "").replace("#", ""));
         } catch (Exception e) {
-            System.err.println(e);
+            System.out.println(e);
             return 0;
         }
     }

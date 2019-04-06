@@ -21,7 +21,7 @@ public class App {
 
     public static void main(String[] args) {
         if (!new MonthlyRadiationRepository().isConnected()) {
-            System.err.println("no db connection");
+            System.out.println("no db connection");
             return;
         }
         SpringApplication.run(App.class, args);
@@ -53,7 +53,7 @@ public class App {
         try {
             new ProcessBuilder(System.getenv("DEV_BROWSER"), System.getenv("DEV_URL")).start();
         } catch (Exception e) {
-            System.err.println(e);
+            System.out.println(e);
         }
     }
 }
