@@ -59,7 +59,7 @@ public class ApplicationController {
             return;
         }
         try {
-            response.addHeader("Content-disposition", "attachment; filename=einstrahlung.xls");
+            response.addHeader("Content-disposition", "attachment; filename=sonneneinstrahlung_" + System.currentTimeMillis() + ".xls");
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     exportRepository.getHeaders(),
