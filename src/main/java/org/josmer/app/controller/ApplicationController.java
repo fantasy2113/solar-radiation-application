@@ -1,5 +1,6 @@
 package org.josmer.app.controller;
 
+import org.josmer.app.controller.request.SearchRequest;
 import org.josmer.app.core.IExportRepository;
 import org.josmer.app.core.IRadiationRepository;
 import org.josmer.app.entity.Export;

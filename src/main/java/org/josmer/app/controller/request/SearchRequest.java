@@ -1,4 +1,4 @@
-package org.josmer.app.controller;
+package org.josmer.app.controller.request;
 
 public class SearchRequest {
     private String startDate;
