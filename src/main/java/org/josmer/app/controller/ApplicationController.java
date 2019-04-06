@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/export")
-    public void export(HttpServletResponse response, @CookieValue("key") final String key, @RequestParam("startDate") final int startDate, @RequestParam("endDate") final int endDate, @RequestParam("typ") final String typ, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat) {
+    public void export(HttpServletResponse response, @CookieValue("key") final String key, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) {
         if (!Key.check(key)) {
             return;
         }
@@ -55,21 +54,23 @@ public class ApplicationController {
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     exportRepository.getHeaders(),
-                    exportRepository.getAll(radiationRepository.find(startDate, endDate, typ, lon, lat), lon, lat),
+                    exportRepository.getAll(radiationRepository.find(getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
                     exportRepository.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.err.println(e);
         }
     }
 
     @GetMapping("/find")
-    public List<Export> find(@CookieValue("key") final String key, final SearchRequest searchRequest) {
+    public List<Export> find(@CookieValue("key") final String key, final SearchRequest req) {
         if (!Key.check(key)) {
             return new LinkedList<>();
         }
-        return exportRepository.getAll(radiationRepository.find(getDate(searchRequest.getStartDate()), getDate(searchRequest.getEndDate()), searchRequest.getType(),
-                searchRequest.getLon(), searchRequest.getLat()), searchRequest.getLon(), searchRequest.getLat());
+        return exportRepository.getAll(
+                radiationRepository.find(getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(),
+                        req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
     protected boolean isValid(final String login, final String password) {
@@ -78,7 +79,7 @@ public class ApplicationController {
 
     private int getDate(final String date) {
         try {
-            return Integer.valueOf(date.replace("-", ""));
+            return Integer.valueOf(date.replace("-", "").replace("#", ""));
         } catch (Exception e) {
             System.err.println(e);
             return 0;

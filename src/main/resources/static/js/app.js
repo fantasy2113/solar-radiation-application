@@ -15,7 +15,7 @@ jQuery(document).ready(function () {
     autocomplete(document.getElementById("start_date"), dates);
     autocomplete(document.getElementById("end_date"), dates);
 
-    var search_button = jQuery('#search_button')
+    var search_button = jQuery('#search_button');
         search_button.bind('click', function () {
             $.ajax({
                 method: 'GET',
@@ -30,17 +30,20 @@ jQuery(document).ready(function () {
                     type : $('#type_select option:selected').text()
                 },
                 success: function (data) {
-                    $("#records_table tr").remove();
+                    $(".grid").remove();
+                    var tbh = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat</th><th>Lon</th><th>Art</th><th>Wert</th><th>Einheit</th></tr></thead>';
+                    var tbf = ' <tfoot><tr><td>Quelle: DWD/KU1HA</td></tr></tfoot></table>';
                     $.each(data, function(i, item) {
-                        $('<tr>').html(
-                            '<td>' + data[i].date + '</td>'
-                            + '<td>' + data[i].lat + '</td>'
-                            + '<td>' + data[i].lon + '</td>'
-                            + '<td>' + data[i].type + '</td>'
-                            + '<td>' + data[i].value + '</td>'
-                            + '</tr>')
-                            .appendTo('#records_table');
+                        tbh += '<tbody><tr>';
+                        tbh += '<td>' + data[i].date + '</td>'
+                        tbh +=  '<td>' + data[i].lat + '</td>'
+                        tbh +=  '<td>' + data[i].lon + '</td>'
+                        tbh +=  '<td>' + data[i].type + '</td>'
+                        tbh +=  '<td>' + data[i].value + '</td>'
+                        tbh +=  '<td>' + data[i].unit + '</td>'
+                        tbh +=  '</tr></tbody>' + tbf;
                     });
+                    $(".grid").append("gdfh");
                 },
                 error: function(jqXhr, textStatus, errorMessage){
                     console.log(jqXhr + textStatus + errorMessage);
@@ -48,24 +51,22 @@ jQuery(document).ready(function () {
             });
     })
 
-    var logout_button = jQuery('#logout_button')
+    var logout_button = jQuery('#logout_button');
     logout_button.bind('click', function () {
         document.cookie = 'key=;';
         $(location).attr('href', getPath());
     })
 
-    var export_button = jQuery('#export_button')
+    var export_button = jQuery('#export_button');
     export_button.bind('click', function () {
         $(location).attr('href', getPath() + 'export?' + getExportQuery());
     })
 });
 
 function getExportQuery() {
-    return 'startDate=' + $('input[id=start_date]').val()
-    + '&endDate=' + $('input[id=end_date]').val()
-    + '&lat=' + $('input[id=lat]').val()
-    + '&lon=' + $('input[id=lon]').val()
-    + '&type=' + $('#type_select option:selected').text();
+    return 'startDate=' + $('input[id=start_date]').val() + '&endDate=' + $('input[id=end_date]').val()
+                       + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
+                       + '&type=' + $('#type_select option:selected').text().replace("-", "#");
 }
 
 function autocomplete(inp, arr) {

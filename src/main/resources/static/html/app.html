@@ -11,7 +11,7 @@
 </head>
 <body>
 <header>
-    <p>Sonneneinstrahlung</p>
+    <h2>Sonneneinstrahlung WepApp<h2>
 </header>
 <form autocomplete="off">
     <div class="autocomplete">
@@ -39,11 +39,15 @@
         <option value="DIFFUSE">DIFFUSE</option>
     </select>
 </div>
-<div>
-    <button id="search_button">Suche</button>
-    <button id="export_button">Export</button>
-    <button id="logout_button">Abmelden</button>
+
+<button id="search_button">Suche</button>
+<button id="export_button">Export</button>
+<button id="logout_button">Abmelden</button>
+
+<br>
+<h3>Suchergebnis:</h3>
+<div class="result">
+    <div class="grid"></div>
 </div>
-<table id="records_table"></table>
 </body>
 </html>

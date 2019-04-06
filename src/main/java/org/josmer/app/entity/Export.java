@@ -7,7 +7,7 @@ public class Export {
     private double lon;
     private String type;
     private float value;
-
+    private String unit;
 
     public float getValue() {
         return value;
@@ -47,5 +47,13 @@ public class Export {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

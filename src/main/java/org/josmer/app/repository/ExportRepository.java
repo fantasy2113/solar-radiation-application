@@ -22,21 +22,34 @@ public class ExportRepository implements IExportRepository {
 
     @Override
     public List<String> getHeaders() {
-        return List.of("Date", "Lat", "Lon", "Typ", "Value");
+        return List.of("Date", "Lat", "Lon", "Type", "Value", "Unit");
     }
 
     @Override
     public String getProps() {
-        return "date, lat, lon, typ, value, ";
+        return "date, lat, lon, type, value, unit";
     }
 
     private Export mapToExport(double lon, double lat, Radiation radiation) {
         Export export = new Export();
-        export.setDate(String.valueOf(radiation.getDate()));
+        export.setDate(parseDate(radiation.getDate()));
         export.setLat(lat);
         export.setLon(lon);
         export.setType(radiation.getType());
         export.setValue(radiation.getValue());
+        export.setUnit("kWh/m2");
         return export;
+    }
+
+    private String parseDate(final int date) {
+        return getDate(String.valueOf(date));
+    }
+
+    public String getDate(final String date) {
+        try {
+            return date.substring(0, 4) + "-" + date.substring(4);
+        } catch (Exception e) {
+            return "undefined";
+        }
     }
 }
