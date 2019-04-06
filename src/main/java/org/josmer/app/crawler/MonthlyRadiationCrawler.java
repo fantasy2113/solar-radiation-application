@@ -1,10 +1,5 @@
 package org.josmer.app.crawler;
 
-import org.josmer.app.core.RadiationTypes;
-import org.josmer.app.entity.Radiation;
-import org.josmer.app.logic.utils.Toolbox;
-import org.josmer.app.repository.MonthlyRadiationRepository;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,8 +12,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import org.josmer.app.core.RadiationTypes;
+import org.josmer.app.entity.Radiation;
+import org.josmer.app.logic.utils.Toolbox;
+import org.josmer.app.repository.MonthlyRadiationRepository;
 
 public final class MonthlyRadiationCrawler {
+
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;
@@ -81,7 +81,6 @@ public final class MonthlyRadiationCrawler {
         }
     }
 
-
     public void insert() {
         MonthlyRadiationRepository radiationRepository = new MonthlyRadiationRepository();
         inserting(radiationRepository);
@@ -125,14 +124,13 @@ public final class MonthlyRadiationCrawler {
                 radiation.setyMax(hochwert + 1000);
                 radiation.setxMin(rechtswert);
                 radiation.setxMax(rechtswert + 1000);
-                rechtswert += 1000;
                 radiations.add(radiation);
+                rechtswert += 4000;
             }
             hochwert += 1000;
         }
         Collections.reverse(radiations);
     }
-
 
     private String getDate(final Integer year, final Integer month) {
         StringBuilder date = new StringBuilder();
