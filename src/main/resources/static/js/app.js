@@ -1,5 +1,17 @@
 jQuery(document).ready(function () {
-
+    $('#src').empty();
+    $.ajax({
+            beforeSend: function (request) {
+                request.setRequestHeader('login', $('input[id=username]').val());
+                request.setRequestHeader('password', $('input[id=password]').val());
+            },
+            url: getPath() + 'count',
+            method: 'GET',
+            dataType: "text",
+            success: function (rows) {
+               $('#rows').append('Datenbestand: <h3>' + rows + '</h3>');
+            }
+        });
 
     var dates = [];
     for(var year = 1991; year <= 2018; year++) {
