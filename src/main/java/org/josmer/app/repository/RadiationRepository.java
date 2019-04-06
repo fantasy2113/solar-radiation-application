@@ -29,20 +29,18 @@ public final class RadiationRepository implements IRadiationRepository {
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
         gaussKrueger.calculate();
         final int hochwert = getGkh(gaussKrueger.getHochwert());
-        final int rechtswert = getGkr(gaussKrueger.getRechtswert());
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        final String statement = "SELECT * FROM radiation WHERE gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_date IN (" + getDates(startDate, endDate) + ") AND radiation_type = ? LIMIT ?;";
+        final String statement = "SELECT * FROM radiation WHERE radiation_date IN " + getDates(startDate, endDate) + " AND gkh_min = ? AND gkh_max = ? AND ? BETWEEN gkr_min AND gkr_max AND radiation_type = ? LIMIT ?;";
         try {
             try {
                 connection = getConnection();
                 preparedStatement = connection.prepareStatement(statement);
                 preparedStatement.setInt(1, hochwert);
                 preparedStatement.setInt(2, hochwert + 1000);
-                preparedStatement.setInt(3, rechtswert);
-                preparedStatement.setInt(4, rechtswert + 1000);
-                preparedStatement.setString(5, radiationType);
-                preparedStatement.setInt(6, endDate - startDate + 1);
+                preparedStatement.setDouble(3, gaussKrueger.getRechtswert());
+                preparedStatement.setString(4, radiationType);
+                preparedStatement.setInt(5, endDate - startDate + 1);
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
                     radiations.add(mapToRadiation(rs));
@@ -168,50 +166,15 @@ public final class RadiationRepository implements IRadiationRepository {
         return !increase.toString().endsWith("500");
     }
 
-    private int getGkr(final double value) {
-        Integer decrease = (int) value;
-        Integer increase = (int) value;
-        int decreaseCount = 0;
-        int increaseCount = 0;
-        while (isGkrStop(decrease)) {
-            decrease--;
-            decreaseCount++;
-        }
-        while (isGkrStop(increase)) {
-            increase++;
-            increaseCount++;
-        }
-        return increaseCount >= decreaseCount ? decrease : increase;
-    }
-
-    private boolean isGkrStop(Integer increase) {
-        if (increase.toString().endsWith("0500")) {
-            return false;
-        }
-
-        if (increase.toString().endsWith("2500")) {
-            return false;
-        }
-
-        if (increase.toString().endsWith("4500")) {
-            return false;
-        }
-
-        if (increase.toString().endsWith("6500")) {
-            return false;
-        }
-
-        return !increase.toString().endsWith("8500");
-    }
-
     private String getDates(final int startDate, final int endDate) {
         StringBuilder sb = new StringBuilder();
+        sb.append("(");
         for (int i = startDate; i <= endDate; i++) {
             sb.append(i);
             if (i != endDate) {
                 sb.append(",");
             }
         }
-        return sb.toString();
+        return sb.append(")").toString();
     }
 }

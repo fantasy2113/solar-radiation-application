@@ -14,7 +14,7 @@ public class InsertHandler implements Runnable {
 
     @Override
     public void run() {
-        for (int year = 2018; year < 2019; year++) {
+        for (int year = 1991; year < 1992; year++) {
             for (int month = 1; month < 13; month++) {
                 RadiationCrawler monthlyRadiationCrawler = new RadiationCrawler(month, year, RadiationTypes.GLOBAL);
                 monthlyRadiationCrawler.download();

@@ -1,12 +1,11 @@
 package org.josmer.app.repository;
 
-import org.josmer.app.entity.Export;
-import org.josmer.app.entity.Radiation;
-import org.springframework.stereotype.Component;
-
 import java.util.LinkedList;
 import java.util.List;
 import org.josmer.app.core.IExportRepository;
+import org.josmer.app.entity.Export;
+import org.josmer.app.entity.Radiation;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ExportRepository implements IExportRepository {
@@ -22,7 +21,7 @@ public class ExportRepository implements IExportRepository {
 
     @Override
     public List<String> getHeaders() {
-        return List.of("Date", "Lat", "Lon", "Type", "Value", "Unit");
+        return List.of("Datum", "Breitengrad", "Längengrad", "Art", "Wert", "Einheit");
     }
 
     @Override
