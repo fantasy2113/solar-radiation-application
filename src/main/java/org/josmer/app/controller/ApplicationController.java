@@ -45,6 +45,14 @@ public class ApplicationController {
         return Key.get();
     }
 
+    @GetMapping(value = "/count", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String count(@CookieValue("key") final String key) {
+        if (!Key.check(key)) {
+            return "-1";
+        }
+        return Long.toString(radiationRepository.count());
+    }
+
     @GetMapping("/export")
     public void export(HttpServletResponse response, @CookieValue("key") final String key, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) {
         if (!Key.check(key)) {
