@@ -115,13 +115,13 @@ public final class RadiationCrawler {
             int rechtswert = 3280500;
             for (int column = 0; column < columns.length; column++) {
                 Radiation radiation = new Radiation();
-                radiation.setRadiationvalue(Float.valueOf(columns[column]));
+                radiation.setRadiationValue(Float.valueOf(columns[column]));
                 radiation.setRadiationType(type.name());
                 radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
                 radiation.setGkhMin(hochwert);
                 radiation.setGkhMax(hochwert + 1000);
                 radiation.setGkrMin(rechtswert);
-                radiation.setGkrMax(rechtswert + 1000);
+                radiation.setGkrMax(rechtswert + 4000);
                 radiations.add(radiation);
                 rechtswert += 4000;
             }

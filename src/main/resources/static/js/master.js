@@ -3,10 +3,10 @@ function getCookie(cname) {
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == ' ') {
+        while (c.charAt(0) === ' ') {
             c = c.substring(1);
         }
-        if (c.indexOf(name) == 0) {
+        if (c.indexOf(name) === 0) {
             return c.substring(name.length, c.length);
         }
     }
@@ -14,9 +14,9 @@ function getCookie(cname) {
 }
 
 function getPath() {
-	var url = window.location.href;
-	if (url.includes("localhost")) {
-		return 'http://localhost:8080/';
-	}
-	return 'https://solar-radiation-application.herokuapp.com/';
+    var url = window.location.href;
+    if (url.includes("localhost")) {
+        return 'http://localhost:8080/';
+    }
+    return 'https://solar-radiation-application.herokuapp.com/';
 }

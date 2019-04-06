@@ -5,10 +5,10 @@ import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import org.josmer.app.core.IRadiationRepository;
 import org.josmer.app.entity.Radiation;
 import org.josmer.app.logic.utils.GaussKrueger;
 import org.springframework.stereotype.Component;
-import org.josmer.app.core.IRadiationRepository;
 
 @Component
 public final class RadiationRepository implements IRadiationRepository {
@@ -32,7 +32,7 @@ public final class RadiationRepository implements IRadiationRepository {
         final int rechtswert = getGkr(gaussKrueger.getRechtswert());
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        final String statement = "SELECT * FROM radiation WHERE y_min = ? AND y_max = ? AND x_min = ? AND x_max = ? AND date IN (" + getDates(startDate, endDate) + ") AND typ = ? LIMIT ?;";
+        final String statement = "SELECT * FROM radiation WHERE gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_date IN (" + getDates(startDate, endDate) + ") AND radiation_type = ? LIMIT ?;";
         try {
             try {
                 connection = getConnection();
@@ -81,7 +81,7 @@ public final class RadiationRepository implements IRadiationRepository {
                     preparedStatement.setInt(4, radiation.getGkrMax());
                     preparedStatement.setInt(5, radiation.getGkhMin());
                     preparedStatement.setInt(6, radiation.getGkhMax());
-                    preparedStatement.setFloat(7, radiation.getRadiationvalue());
+                    preparedStatement.setFloat(7, radiation.getRadiationValue());
 
                     preparedStatement.executeUpdate();
                 }
@@ -130,13 +130,13 @@ public final class RadiationRepository implements IRadiationRepository {
 
     private Radiation mapToRadiation(ResultSet rs) throws SQLException {
         Radiation radiation = new Radiation();
-        radiation.setRadiationType(rs.getString("radiation_typ"));
+        radiation.setRadiationType(rs.getString("radiation_type"));
         radiation.setRadiationDate(rs.getInt("radiation_date"));
         radiation.setGkrMin(rs.getInt("gkr_min"));
         radiation.setGkrMax(rs.getInt("gkr_max"));
         radiation.setGkhMin(rs.getInt("gkh_min"));
         radiation.setGkhMax(rs.getInt("gkh_max"));
-        radiation.setRadiationvalue(rs.getFloat("radiation_value"));
+        radiation.setRadiationValue(rs.getFloat("radiation_value"));
         return radiation;
     }
 
@@ -185,11 +185,23 @@ public final class RadiationRepository implements IRadiationRepository {
     }
 
     private boolean isGkrStop(Integer increase) {
-        return !increase.toString().endsWith("0500")
-                || !increase.toString().endsWith("2500")
-                || !increase.toString().endsWith("4500")
-                || !increase.toString().endsWith("6500")
-                || !increase.toString().endsWith("8500");
+        if (increase.toString().endsWith("0500")) {
+            return false;
+        }
+
+        if (increase.toString().endsWith("2500")) {
+            return false;
+        }
+
+        if (increase.toString().endsWith("4500")) {
+            return false;
+        }
+
+        if (increase.toString().endsWith("6500")) {
+            return false;
+        }
+
+        return !increase.toString().endsWith("8500");
     }
 
     private String getDates(final int startDate, final int endDate) {

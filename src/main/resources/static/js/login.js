@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-    var button = jQuery('#login_button')
+    var button = jQuery('#login_button');
     button.bind('click', function () {
         document.cookie = 'key=';
         $.ajax({
