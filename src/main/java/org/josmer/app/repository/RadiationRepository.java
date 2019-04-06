@@ -86,7 +86,9 @@ public final class RadiationRepository implements IRadiationRepository {
                 connection.commit();
             } catch (SQLException | URISyntaxException e) {
                 System.out.println(e);
-                connection.rollback();
+                if (connection != null) {
+                    connection.rollback();
+                }
             } finally {
                 if (preparedStatement != null) {
                     preparedStatement.close();

@@ -1,5 +1,6 @@
 package org.josmer.app.controller;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
@@ -67,7 +68,7 @@ public class ApplicationController {
                     exportRep.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
@@ -89,7 +90,7 @@ public class ApplicationController {
     private int getDate(final String date) {
         try {
             return Integer.valueOf(date.replace("-", "").replace("#", ""));
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             System.out.println(e);
             return 0;
         }

@@ -3,6 +3,7 @@ package org.josmer.app.crawler;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -52,7 +53,7 @@ public final class RadiationCrawler {
             URLConnection connection = url.openConnection();
             InputStream inputStream = connection.getInputStream();
             inputStream.transferTo(new FileOutputStream(getPathnameZip()));
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
@@ -62,21 +63,21 @@ public final class RadiationCrawler {
             System.out.println("unzip...");
             File destDir = new File(targetDir);
             byte[] buffer = new byte[1024];
-            ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip()));
-            ZipEntry zipEntry = zipInputStream.getNextEntry();
-            while (zipEntry != null) {
-                File file = new File(destDir, zipEntry.getName());
-                FileOutputStream fileOutputStream = new FileOutputStream(file);
-                int len;
-                while ((len = zipInputStream.read(buffer)) > 0) {
-                    fileOutputStream.write(buffer, 0, len);
+            try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip()))) {
+                ZipEntry zipEntry = zipInputStream.getNextEntry();
+                while (zipEntry != null) {
+                    File file = new File(destDir, zipEntry.getName());
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                        int len;
+                        while ((len = zipInputStream.read(buffer)) > 0) {
+                            fileOutputStream.write(buffer, 0, len);
+                        }
+                    }
+                    zipEntry = zipInputStream.getNextEntry();
                 }
-                fileOutputStream.close();
-                zipEntry = zipInputStream.getNextEntry();
+                zipInputStream.closeEntry();
             }
-            zipInputStream.closeEntry();
-            zipInputStream.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
@@ -113,9 +114,9 @@ public final class RadiationCrawler {
         for (int row = rows.length - 1; row >= 28; row--) {
             final String[] columns = rows[row].split(" ");
             int rechtswert = 3280500;
-            for (int column = 0; column < columns.length; column++) {
+            for (String column : columns) {
                 Radiation radiation = new Radiation();
-                radiation.setRadiationValue(Float.valueOf(columns[column]));
+                radiation.setRadiationValue(Float.valueOf(column));
                 radiation.setRadiationType(type.name());
                 radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
                 radiation.setGkhMin(hochwert);
