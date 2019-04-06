@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public interface IMonthlyRadiationRepository {
+public interface IRadiationRepository {
 
     List<Radiation> find(int startDate, int endDate, String type, double lon, double lat);
 

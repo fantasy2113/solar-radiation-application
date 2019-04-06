@@ -1,8 +1,6 @@
 package org.josmer.app.controller;
 
 import org.josmer.app.controller.request.SearchRequest;
-import org.josmer.app.core.IJxlsExportRepository;
-import org.josmer.app.core.IMonthlyRadiationRepository;
 import org.josmer.app.entity.Export;
 import org.josmer.app.logic.security.Authenticator;
 import org.josmer.app.logic.security.Key;
@@ -15,14 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedList;
 import java.util.List;
+import org.josmer.app.core.IRadiationRepository;
+import org.josmer.app.core.IExportRepository;
 
 @RestController
 @RequestMapping("/")
 public class ApplicationController {
     @Autowired
-    private IJxlsExportRepository exportRep;
+    private IExportRepository exportRep;
     @Autowired
-    private IMonthlyRadiationRepository radiationRep;
+    private IRadiationRepository radiationRep;
 
     @GetMapping(value = "/app", produces = MediaType.TEXT_HTML_VALUE)
     public String app(@CookieValue("key") final String key) {

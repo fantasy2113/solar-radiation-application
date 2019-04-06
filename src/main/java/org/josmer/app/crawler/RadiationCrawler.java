@@ -12,23 +12,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import org.josmer.app.core.IRadiationRepository;
 import org.josmer.app.core.RadiationTypes;
 import org.josmer.app.entity.Radiation;
 import org.josmer.app.logic.utils.Toolbox;
-import org.josmer.app.repository.MonthlyRadiationRepository;
 
-public final class MonthlyRadiationCrawler {
+public final class RadiationCrawler {
 
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;
     private final RadiationTypes type;
+    private final List<Radiation> radiations;
     private final int month;
     private final int year;
     private String currentTargetFile;
-    private List<Radiation> radiations;
 
-    public MonthlyRadiationCrawler(final int month, final int year, final RadiationTypes type) {
+    public RadiationCrawler(final int month, final int year, final RadiationTypes type) {
         this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
                 .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
@@ -81,17 +81,15 @@ public final class MonthlyRadiationCrawler {
         }
     }
 
-    public void insert() {
-        MonthlyRadiationRepository radiationRepository = new MonthlyRadiationRepository();
+    public void insert(final IRadiationRepository radiationRepository) {
         inserting(radiationRepository);
     }
 
-    public void insert(final String databaseUrl) {
-        MonthlyRadiationRepository radiationRepository = new MonthlyRadiationRepository(databaseUrl);
+    public void insert(final String databaseUrl, final IRadiationRepository radiationRepository) {
         inserting(radiationRepository);
     }
 
-    private void inserting(final MonthlyRadiationRepository radiationRepository) {
+    private void inserting(final IRadiationRepository radiationRepository) {
         System.out.println("reading...");
         initRadiations();
         System.out.println("inserting...");

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.josmer.app.handler.InsertHandler;
-import org.josmer.app.repository.MonthlyRadiationRepository;
+import org.josmer.app.repository.RadiationRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 public class App {
 
     public static void main(String[] args) {
-        if (!new MonthlyRadiationRepository().isConnected()) {
+        if (!new RadiationRepository().isConnected()) {
             System.out.println("no db connection");
             return;
         }
@@ -29,7 +29,7 @@ public class App {
 
         if (false) {
             ExecutorService pool = Executors.newFixedThreadPool(1);
-            pool.execute(new InsertHandler());
+            pool.execute(new InsertHandler(new RadiationRepository()));
         }
     }
 

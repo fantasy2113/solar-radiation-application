@@ -5,21 +5,21 @@ import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
-import org.josmer.app.core.IMonthlyRadiationRepository;
 import org.josmer.app.entity.Radiation;
 import org.josmer.app.logic.utils.GaussKrueger;
 import org.springframework.stereotype.Component;
+import org.josmer.app.core.IRadiationRepository;
 
 @Component
-public final class MonthlyRadiationRepository implements IMonthlyRadiationRepository {
+public final class RadiationRepository implements IRadiationRepository {
 
     private final String databaseUrl;
 
-    public MonthlyRadiationRepository(final String databaseUrl) {
+    public RadiationRepository(final String databaseUrl) {
         this.databaseUrl = databaseUrl;
     }
 
-    public MonthlyRadiationRepository() {
+    public RadiationRepository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
     }
 
