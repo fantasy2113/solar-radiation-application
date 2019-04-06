@@ -34,7 +34,7 @@ public final class RadiationRepository implements IRadiationRepository {
         final int rechtswert = getGaussKrueger(gaussKrueger.getRechtswert());
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        final String statement = "SELECT * FROM radiation WHERE y_min = ? AND y_max = ? AND x_min = ? AND x_max = ? AND date IN (" + getIn(startDate, endDate) + ") AND typ = ? LIMIT ?;";
+        final String statement = "SELECT * FROM radiation WHERE y_min = ? AND y_max = ? AND x_min = ? AND x_max = ? AND date IN (" + getDates(startDate, endDate) + ") AND typ = ? LIMIT ?;";
         try {
             try {
                 connection = getConnection();
@@ -65,50 +65,42 @@ public final class RadiationRepository implements IRadiationRepository {
         return radiations;
     }
 
-    private Radiation mapToRadiation(ResultSet rs) throws SQLException {
-        Radiation radiation = new Radiation();
-        radiation.setType(rs.getString("typ"));
-        radiation.setDate(rs.getInt("date"));
-        radiation.setxMin(rs.getInt("x_min"));
-        radiation.setxMax(rs.getInt("x_max"));
-        radiation.setyMin(rs.getInt("y_min"));
-        radiation.setyMax(rs.getInt("y_min"));
-        radiation.setValue(rs.getFloat("value"));
-        return radiation;
-    }
-
     @Override
-    public void save(final List<Radiation> radiations) throws SQLException {
+    public void save(final List<Radiation> radiations) {
         final String statement = "INSERT INTO radiation (typ,date,x_min,x_max,y_min,y_max,value) VALUES (?,?,?,?,?,?,?)";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
-            connection = getConnection();
-            connection.setAutoCommit(false);
-            for (Radiation radiation : radiations) {
-                preparedStatement = connection.prepareStatement(statement);
+            try {
+                connection = getConnection();
+                connection.setAutoCommit(false);
+                for (Radiation radiation : radiations) {
+                    preparedStatement = connection.prepareStatement(statement);
 
-                preparedStatement.setString(1, radiation.getType());
-                preparedStatement.setInt(2, radiation.getDate());
-                preparedStatement.setInt(3, radiation.getxMin());
-                preparedStatement.setInt(4, radiation.getxMax());
-                preparedStatement.setInt(5, radiation.getyMin());
-                preparedStatement.setInt(6, radiation.getyMax());
-                preparedStatement.setFloat(7, radiation.getValue());
+                    preparedStatement.setString(1, radiation.getType());
+                    preparedStatement.setInt(2, radiation.getDate());
+                    preparedStatement.setInt(3, radiation.getxMin());
+                    preparedStatement.setInt(4, radiation.getxMax());
+                    preparedStatement.setInt(5, radiation.getyMin());
+                    preparedStatement.setInt(6, radiation.getyMax());
+                    preparedStatement.setFloat(7, radiation.getValue());
 
-                preparedStatement.executeUpdate();
+                    preparedStatement.executeUpdate();
+                }
+                connection.commit();
+            } catch (SQLException | URISyntaxException e) {
+                System.err.println(e.getMessage());
+                connection.rollback();
+            } finally {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
             }
-            connection.commit();
-        } catch (SQLException | URISyntaxException e) {
-            System.err.println(e.getMessage());
-            connection.rollback();
-        } finally {
-            if (preparedStatement != null) {
-                preparedStatement.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
+        } catch (SQLException e) {
+            System.err.println(e);
         }
     }
 
@@ -119,9 +111,35 @@ public final class RadiationRepository implements IRadiationRepository {
             connection.close();
             return true;
         } catch (SQLException | URISyntaxException e) {
-            System.err.println(e.getMessage());
+            System.err.println(e);
             return false;
         }
+    }
+
+    @Override
+    public long count() {
+        try (Connection con = getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery("SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname='radiation';")) {
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        } catch (SQLException | URISyntaxException e) {
+            System.err.println(e);
+        }
+        return -1;
+    }
+
+    private Radiation mapToRadiation(ResultSet rs) throws SQLException {
+        Radiation radiation = new Radiation();
+        radiation.setType(rs.getString("typ"));
+        radiation.setDate(rs.getInt("date"));
+        radiation.setxMin(rs.getInt("x_min"));
+        radiation.setxMax(rs.getInt("x_max"));
+        radiation.setyMin(rs.getInt("y_min"));
+        radiation.setyMax(rs.getInt("y_min"));
+        radiation.setValue(rs.getFloat("value"));
+        return radiation;
     }
 
     private Connection getConnection() throws URISyntaxException, SQLException {
@@ -152,7 +170,7 @@ public final class RadiationRepository implements IRadiationRepository {
         return !increase.toString().endsWith("500");
     }
 
-    private String getIn(final int startDate, final int endDate) {
+    private String getDates(final int startDate, final int endDate) {
         StringBuilder sb = new StringBuilder();
         for (int i = startDate; i <= endDate; i++) {
             sb.append(i);
