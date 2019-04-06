@@ -30,20 +30,24 @@ jQuery(document).ready(function () {
                     type : $('#type_select option:selected').text()
                 },
                 success: function (data) {
-                    $(".grid").remove();
-                    var tbh = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat</th><th>Lon</th><th>Art</th><th>Wert</th><th>Einheit</th></tr></thead>';
-                    var tbf = ' <tfoot><tr><td>Quelle: DWD/KU1HA</td></tr></tfoot></table>';
+
+                    $('#result').empty();
+                    $('#result_label').empty();
+                    $('#src').empty();
+                    var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat</th><th>Lon</th><th>Art</th><th>Wert</th><th>Einheit</th></tr></thead>';
                     $.each(data, function(i, item) {
-                        tbh += '<tbody><tr>';
-                        tbh += '<td>' + data[i].date + '</td>'
-                        tbh +=  '<td>' + data[i].lat + '</td>'
-                        tbh +=  '<td>' + data[i].lon + '</td>'
-                        tbh +=  '<td>' + data[i].type + '</td>'
-                        tbh +=  '<td>' + data[i].value + '</td>'
-                        tbh +=  '<td>' + data[i].unit + '</td>'
-                        tbh +=  '</tr></tbody>' + tbf;
+                        table += '<tbody><tr>';
+                        table += '<td>' + data[i].date + '</td>'
+                        table +=  '<td>' + data[i].lat + '</td>'
+                        table +=  '<td>' + data[i].lon + '</td>'
+                        table +=  '<td>' + data[i].type + '</td>'
+                        table +=  '<td>' + data[i].value + '</td>'
+                        table +=  '<td>' + data[i].unit + '</td>'
+                        table +=  '</tr>';
                     });
-                    $(".grid").append("gdfh");
+                    $('#result').append(table + '</tbody></table>');
+                    $('#result_label').append('<h3>Suchergebnis:</h3>');
+                    $('#src').append('<p>(Quelle: DWD/KU1HA)</p>');
                 },
                 error: function(jqXhr, textStatus, errorMessage){
                     console.log(jqXhr + textStatus + errorMessage);
