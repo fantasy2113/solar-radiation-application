@@ -22,21 +22,22 @@ public final class RadiationCrawler {
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;
-    private final RadiationTypes typ;
+    private final RadiationTypes type;
     private final int month;
     private final int year;
     private String currentTargetFile;
     private List<Radiation> radiations;
 
-    public RadiationCrawler(final int month, final int year, final RadiationTypes typ) {
-        this.templateTargetFile = "grids_germany_monthly_radiation_global_{date}.zip";
+    public RadiationCrawler(final int month, final int year, final RadiationTypes type) {
+        this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
+                .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
-                .replace("{radiation}", typ.name().toLowerCase(Locale.ENGLISH));
+                .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
         this.targetDir = "temp/";
         this.radiations = new LinkedList<>();
         this.month = month;
         this.year = year;
-        this.typ = typ;
+        this.type = type;
     }
 
     private void setCurrentTargetFile(final String date) {
@@ -118,7 +119,7 @@ public final class RadiationCrawler {
             for (int column = 0; column < columns.length; column++) {
                 Radiation radiation = new Radiation();
                 radiation.setValue(Float.valueOf(columns[column]));
-                radiation.setType(typ.name());
+                radiation.setType(type.name());
                 radiation.setDate(Integer.valueOf(getDate(year, month)));
                 radiation.setyMin(hochwert);
                 radiation.setyMax(hochwert + 1000);
