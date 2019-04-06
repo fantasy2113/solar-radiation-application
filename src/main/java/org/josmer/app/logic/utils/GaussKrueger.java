@@ -1,6 +1,7 @@
 package org.josmer.app.logic.utils;
 
 public class GaussKrueger {
+
     private final double lon;
     private final double lat;
     private double rechtswert;
@@ -18,19 +19,13 @@ public class GaussKrueger {
      * <p>
      * Mit der Funktion calculate.php lassen sich geographische Längen und Breiten für das Potsdam Kartendatum (Bessel-Ellipsoid) in deutsche Gauss-Krüger Koordinaten umrechnen:
      * <p>
-     * Copyright (c) 2006, HELMUT H. HEIMEIER
-     * Permission is hereby granted, free of charge, to any person obtaining a
-     * copy of this software and associated documentation files (the "Software"),
-     * to deal in the Software without restriction, including without limitation
-     * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-     * and/or sell copies of the Software, and to permit persons to whom the
-     * Software is furnished to do so, subject to the following conditions:
-     * The above copyright notice and this permission notice shall be included
-     * in all copies or substantial portions of the Software.
+     * Copyright (c) 2006, HELMUT H. HEIMEIER Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal
+     * in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+     * persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial
+     * portions of the Software.
      * <p>
-     * Die Funktion wandelt geographische Koordinaten in GK Koordinaten
-     * um. Geographische Länge lon und Breite lat müssen im Potsdam Datum
-     * gegeben sein. Berechnet werden Rechtswert rechtswert und Hochwert hochwert.
+     * Die Funktion wandelt geographische Koordinaten in GK Koordinaten um. Geographische Länge lon und Breite lat müssen im Potsdam Datum gegeben sein. Berechnet werden Rechtswert rechtswert und
+     * Hochwert hochwert.
      */
     public void calculate() {
         //Geographische Länge lon und Breite lat im Potsdam Datum

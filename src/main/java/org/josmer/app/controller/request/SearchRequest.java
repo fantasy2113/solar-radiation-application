@@ -1,6 +1,7 @@
 package org.josmer.app.controller.request;
 
 public class SearchRequest {
+
     private String startDate;
     private String endDate;
     private double lat;

@@ -1,6 +1,7 @@
 package org.josmer.app.logic.security;
 
 public final class Authenticator {
+
     private final String login;
     private final String pwd;
 
