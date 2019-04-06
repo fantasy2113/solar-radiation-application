@@ -29,7 +29,7 @@ public final class MonthlyRadiationRepository implements IMonthlyRadiationReposi
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
         gaussKrueger.calculate();
         final int hochwert = getGkh(gaussKrueger.getHochwert());
-        final int rechtswert = getGkh(gaussKrueger.getRechtswert());
+        final int rechtswert = getGkr(gaussKrueger.getRechtswert());
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         final String statement = "SELECT * FROM radiation WHERE y_min = ? AND y_max = ? AND x_min = ? AND x_max = ? AND date IN (" + getDates(startDate, endDate) + ") AND typ = ? LIMIT ?;";
