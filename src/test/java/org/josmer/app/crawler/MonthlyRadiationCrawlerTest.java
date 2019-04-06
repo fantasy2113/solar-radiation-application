@@ -5,22 +5,22 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class RadiationCrawlerTest {
-    private RadiationCrawler radiationCrawler;
+class MonthlyRadiationCrawlerTest {
+    private MonthlyRadiationCrawler monthlyRadiationCrawler;
 
     @BeforeEach
     void setUp() {
-        radiationCrawler = new RadiationCrawler(1, 1991, RadiationTypes.GLOBAL);
+        monthlyRadiationCrawler = new MonthlyRadiationCrawler(1, 1991, RadiationTypes.GLOBAL);
     }
 
     @AfterEach
     void tearDown() {
-        radiationCrawler.delete();
+        monthlyRadiationCrawler.delete();
     }
 
     @Test
     public void testDownload() {
-        radiationCrawler.download();
-        radiationCrawler.unzip();
+        monthlyRadiationCrawler.download();
+        monthlyRadiationCrawler.unzip();
     }
 }

@@ -1,8 +1,8 @@
 package org.josmer.app.controller;
 
 import org.josmer.app.controller.request.SearchRequest;
-import org.josmer.app.core.IExportRepository;
-import org.josmer.app.core.IRadiationRepository;
+import org.josmer.app.core.IJxlsExportRepository;
+import org.josmer.app.core.IMonthlyRadiationRepository;
 import org.josmer.app.entity.Export;
 import org.josmer.app.logic.security.Authenticator;
 import org.josmer.app.logic.security.Key;
@@ -20,9 +20,9 @@ import java.util.List;
 @RequestMapping("/")
 public class ApplicationController {
     @Autowired
-    private IExportRepository exportRepository;
+    private IJxlsExportRepository exportRep;
     @Autowired
-    private IRadiationRepository radiationRepository;
+    private IMonthlyRadiationRepository radiationRep;
 
     @GetMapping(value = "/app", produces = MediaType.TEXT_HTML_VALUE)
     public String app(@CookieValue("key") final String key) {
@@ -50,7 +50,7 @@ public class ApplicationController {
         if (!Key.check(key)) {
             return "-1";
         }
-        return Long.toString(radiationRepository.count());
+        return Long.toString(radiationRep.count());
     }
 
     @GetMapping("/export")
@@ -62,9 +62,9 @@ public class ApplicationController {
             response.addHeader("Content-disposition", "attachment; filename=sonneneinstrahlung_" + System.currentTimeMillis() + ".xls");
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
-                    exportRepository.getHeaders(),
-                    exportRepository.getAll(radiationRepository.find(getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
-                    exportRepository.getProps(),
+                    exportRep.getHeaders(),
+                    exportRep.getAll(radiationRep.find(getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
+                    exportRep.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
         } catch (Exception e) {
@@ -77,8 +77,8 @@ public class ApplicationController {
         if (!Key.check(key)) {
             return new LinkedList<>();
         }
-        return exportRepository.getAll(
-                radiationRepository.find(getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(),
+        return exportRep.getAll(
+                radiationRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(),
                         req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 

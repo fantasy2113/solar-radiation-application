@@ -1,6 +1,6 @@
 package org.josmer.app.repository;
 
-import org.josmer.app.core.IExportRepository;
+import org.josmer.app.core.IJxlsExportRepository;
 import org.josmer.app.entity.Export;
 import org.josmer.app.entity.Radiation;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class ExportRepository implements IExportRepository {
+public class JxlsExportRepository implements IJxlsExportRepository {
 
     @Override
     public List<Export> getAll(final List<Radiation> radiations, final double lon, final double lat) {

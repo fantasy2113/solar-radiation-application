@@ -3,7 +3,7 @@ package org.josmer.app.crawler;
 import org.josmer.app.core.RadiationTypes;
 import org.josmer.app.entity.Radiation;
 import org.josmer.app.logic.utils.Toolbox;
-import org.josmer.app.repository.RadiationRepository;
+import org.josmer.app.repository.MonthlyRadiationRepository;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public final class RadiationCrawler {
+public final class MonthlyRadiationCrawler {
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;
@@ -28,7 +28,7 @@ public final class RadiationCrawler {
     private String currentTargetFile;
     private List<Radiation> radiations;
 
-    public RadiationCrawler(final int month, final int year, final RadiationTypes type) {
+    public MonthlyRadiationCrawler(final int month, final int year, final RadiationTypes type) {
         this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
                 .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
@@ -83,16 +83,16 @@ public final class RadiationCrawler {
 
 
     public void insert() {
-        RadiationRepository radiationRepository = new RadiationRepository();
+        MonthlyRadiationRepository radiationRepository = new MonthlyRadiationRepository();
         inserting(radiationRepository);
     }
 
     public void insert(final String databaseUrl) {
-        RadiationRepository radiationRepository = new RadiationRepository(databaseUrl);
+        MonthlyRadiationRepository radiationRepository = new MonthlyRadiationRepository(databaseUrl);
         inserting(radiationRepository);
     }
 
-    private void inserting(final RadiationRepository radiationRepository) {
+    private void inserting(final MonthlyRadiationRepository radiationRepository) {
         System.out.println("reading...");
         initRadiations();
         System.out.println("inserting...");

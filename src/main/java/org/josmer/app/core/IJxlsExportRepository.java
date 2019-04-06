@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public interface IExportRepository {
+public interface IJxlsExportRepository {
     List<Export> getAll(List<Radiation> radiations, double lon, double lat);
 
     List<String> getHeaders();

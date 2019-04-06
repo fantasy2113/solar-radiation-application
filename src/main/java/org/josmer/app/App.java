@@ -1,7 +1,7 @@
 package org.josmer.app;
 
 import org.josmer.app.handler.InsertHandler;
-import org.josmer.app.repository.RadiationRepository;
+import org.josmer.app.repository.MonthlyRadiationRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 public class App {
 
     public static void main(String[] args) {
-        if (!new RadiationRepository().isConnected()) {
+        if (!new MonthlyRadiationRepository().isConnected()) {
             System.err.println("no db connection");
             return;
         }

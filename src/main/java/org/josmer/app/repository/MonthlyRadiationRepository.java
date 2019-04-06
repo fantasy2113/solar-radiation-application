@@ -1,7 +1,7 @@
 package org.josmer.app.repository;
 
 
-import org.josmer.app.core.IRadiationRepository;
+import org.josmer.app.core.IMonthlyRadiationRepository;
 import org.josmer.app.entity.Radiation;
 import org.josmer.app.logic.utils.GaussKrueger;
 import org.springframework.stereotype.Component;
@@ -13,15 +13,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public final class RadiationRepository implements IRadiationRepository {
+public final class MonthlyRadiationRepository implements IMonthlyRadiationRepository {
 
     private final String databaseUrl;
 
-    public RadiationRepository(final String databaseUrl) {
+    public MonthlyRadiationRepository(final String databaseUrl) {
         this.databaseUrl = databaseUrl;
     }
 
-    public RadiationRepository() {
+    public MonthlyRadiationRepository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
     }
 
