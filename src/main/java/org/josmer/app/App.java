@@ -28,7 +28,7 @@ public class App {
 
         openBrowser();
 
-        if (true) {
+        if (false) {
             ExecutorService pool = Executors.newFixedThreadPool(1);
             pool.execute(new InsertHandler());
         }
