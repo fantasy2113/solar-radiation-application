@@ -14,7 +14,7 @@ public class Insert {
     }
 
     private static void insertData() {
-        for (int year = 1991; year < 2019; year++) {
+        for (int year = 1991; year < 2020; year++) {
             for (int month = 1; month < 13; month++) {
                 System.out.println(">>> Month: " + month + ", Year: " + year);
                 MonthlyRadiationCrawler monthlyRadiationCrawler = new MonthlyRadiationCrawler(month, year, RadiationTypes.DIRECT);
