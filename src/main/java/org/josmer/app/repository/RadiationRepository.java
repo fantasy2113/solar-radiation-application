@@ -26,7 +26,7 @@ public final class RadiationRepository implements IRadiationRepository {
     }
 
     @Override
-    public List<Radiation> find(final int startDate, final int endDate, final String typ, final double lon, final double lat) {
+    public List<Radiation> find(final int startDate, final int endDate, final String type, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
         gaussKrueger.calculate();
@@ -43,14 +43,14 @@ public final class RadiationRepository implements IRadiationRepository {
                 preparedStatement.setInt(2, hochwert + 1000);
                 preparedStatement.setInt(3, rechtswert);
                 preparedStatement.setInt(4, rechtswert + 1000);
-                preparedStatement.setString(5, typ);
+                preparedStatement.setString(5, type);
                 preparedStatement.setInt(6, endDate - startDate + 1);
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
                     radiations.add(mapToRadiation(rs));
                 }
             } catch (SQLException | URISyntaxException e) {
-                System.err.println(e.getMessage());
+                System.err.println(e);
             } finally {
                 if (preparedStatement != null) {
                     preparedStatement.close();
@@ -60,14 +60,14 @@ public final class RadiationRepository implements IRadiationRepository {
                 }
             }
         } catch (SQLException e) {
-            System.err.println(e.getMessage());
+            System.err.println(e);
         }
         return radiations;
     }
 
     private Radiation mapToRadiation(ResultSet rs) throws SQLException {
         Radiation radiation = new Radiation();
-        radiation.setTyp(rs.getString("typ"));
+        radiation.setType(rs.getString("typ"));
         radiation.setDate(rs.getInt("date"));
         radiation.setxMin(rs.getInt("x_min"));
         radiation.setxMax(rs.getInt("x_max"));
@@ -88,7 +88,7 @@ public final class RadiationRepository implements IRadiationRepository {
             for (Radiation radiation : radiations) {
                 preparedStatement = connection.prepareStatement(statement);
 
-                preparedStatement.setString(1, radiation.getTyp());
+                preparedStatement.setString(1, radiation.getType());
                 preparedStatement.setInt(2, radiation.getDate());
                 preparedStatement.setInt(3, radiation.getxMin());
                 preparedStatement.setInt(4, radiation.getxMax());

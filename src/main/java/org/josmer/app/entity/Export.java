@@ -5,7 +5,7 @@ public class Export {
     private String date;
     private double lat;
     private double lon;
-    private String typ;
+    private String type;
     private float value;
 
 
@@ -33,12 +33,12 @@ public class Export {
         this.lon = lon;
     }
 
-    public String getTyp() {
-        return typ;
+    public String getType() {
+        return type;
     }
 
-    public void setTyp(String typ) {
-        this.typ = typ;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDate() {

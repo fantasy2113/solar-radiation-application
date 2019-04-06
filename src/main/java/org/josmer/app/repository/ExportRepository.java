@@ -35,7 +35,7 @@ public class ExportRepository implements IExportRepository {
         export.setDate(String.valueOf(radiation.getDate()));
         export.setLat(lat);
         export.setLon(lon);
-        export.setTyp(radiation.getTyp());
+        export.setType(radiation.getType());
         export.setValue(radiation.getValue());
         return export;
     }

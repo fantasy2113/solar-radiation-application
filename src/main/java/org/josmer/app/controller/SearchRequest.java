@@ -1,25 +1,25 @@
 package org.josmer.app.controller;
 
 public class SearchRequest {
-    private int startDate;
-    private int endDate;
+    private String startDate;
+    private String endDate;
     private double lat;
     private double lon;
-    private String typ;
+    private String type;
 
-    public int getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(int startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public int getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(int endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -39,11 +39,11 @@ public class SearchRequest {
         this.lon = lon;
     }
 
-    public String getTyp() {
-        return typ;
+    public String getType() {
+        return type;
     }
 
-    public void setTyp(String typ) {
-        this.typ = typ;
+    public void setType(String type) {
+        this.type = type;
     }
 }

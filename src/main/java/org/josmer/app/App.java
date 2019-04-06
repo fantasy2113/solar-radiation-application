@@ -1,5 +1,6 @@
 package org.josmer.app;
 
+import org.josmer.app.handler.InsertHandler;
 import org.josmer.app.repository.RadiationRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,6 +11,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Configuration
 @ComponentScan
@@ -21,11 +24,14 @@ public class App {
             System.err.println("no db connection");
             return;
         }
-
-        // ExecutorService pool = Executors.newFixedThreadPool(1);
-        // pool.execute(new InsertHandler());
-
         SpringApplication.run(App.class, args);
+
+        openBrowser();
+
+        if (false) {
+            ExecutorService pool = Executors.newFixedThreadPool(1);
+            pool.execute(new InsertHandler());
+        }
     }
 
     @Bean
@@ -43,5 +49,11 @@ public class App {
         };
     }
 
-
+    private static void openBrowser() {
+        try {
+            new ProcessBuilder(System.getenv("DEV_BROWSER"), System.getenv("DEV_URL")).start();
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
 }

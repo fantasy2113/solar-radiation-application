@@ -7,7 +7,7 @@ public class Radiation {
     private int xMin;
     private int xMax;
     private float value;
-    private String typ;
+    private String type;
 
     public int getDate() {
         return date;
@@ -57,11 +57,11 @@ public class Radiation {
         this.value = value;
     }
 
-    public String getTyp() {
-        return typ;
+    public String getType() {
+        return type;
     }
 
-    public void setTyp(String typ) {
-        this.typ = typ;
+    public void setType(String type) {
+        this.type = type;
     }
 }

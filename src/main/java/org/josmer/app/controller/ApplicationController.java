@@ -68,7 +68,7 @@ public class ApplicationController {
         if (!Key.check(key)) {
             return new LinkedList<>();
         }
-        return exportRepository.getAll(radiationRepository.find(searchRequest.getStartDate(), searchRequest.getEndDate(), searchRequest.getTyp(),
+        return exportRepository.getAll(radiationRepository.find(getDate(searchRequest.getStartDate()), getDate(searchRequest.getEndDate()), searchRequest.getType(),
                 searchRequest.getLon(), searchRequest.getLat()), searchRequest.getLon(), searchRequest.getLat());
     }
 
@@ -76,4 +76,12 @@ public class ApplicationController {
         return new Authenticator().authenticate(login, password);
     }
 
+    private int getDate(final String date) {
+        try {
+            return Integer.valueOf(date.replace("-", ""));
+        } catch (Exception e) {
+            System.err.println(e);
+            return 0;
+        }
+    }
 }
