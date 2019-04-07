@@ -44,13 +44,10 @@ public final class RadiationRepository implements IRadiationRepository {
     @Override
     public List<Radiation> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
-
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
         gaussKrueger.calculate();
-
         final int hochwert = getGkValues(gaussKrueger.getHochwert(), hochwerte);
         final int rechtswert = getGkValues(gaussKrueger.getRechtswert(), rechtswerte);
-
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -94,15 +91,13 @@ public final class RadiationRepository implements IRadiationRepository {
                 connection.setAutoCommit(false);
                 for (Radiation radiation : radiations) {
                     preparedStatement = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)");
-
                     preparedStatement.setString(1, radiation.getRadiationType());
                     preparedStatement.setInt(2, radiation.getRadiationDate());
                     preparedStatement.setInt(3, radiation.getGkrMin());
                     preparedStatement.setInt(4, radiation.getGkrMax());
                     preparedStatement.setInt(5, radiation.getGkhMin());
                     preparedStatement.setInt(6, radiation.getGkhMax());
-                    preparedStatement.setFloat(7, radiation.getRadiationValue());
-
+                    preparedStatement.setFloat(7, checkRadiationValue(radiation.getRadiationValue()));
                     preparedStatement.executeUpdate();
                 }
                 connection.commit();
@@ -171,25 +166,26 @@ public final class RadiationRepository implements IRadiationRepository {
     }
 
     private int getGkValues(final double value, final List<Integer> values) {
-        if ((int) value < Collections.min(values)) {
-            return 0;
-        }
-        if ((int) value > Collections.max(values)) {
+        final int parsedIntValue = (int) value;
+
+        if (parsedIntValue < Collections.min(values) || parsedIntValue > Collections.max(values)) {
             return 0;
         }
 
-        Integer decreasedValue = (int) value;
-        Integer increasedValue = (int) value;
+        int decreasedValue = parsedIntValue;
         int decreaseCounter = 0;
-        int increaseCounter = 0;
         while (!values.contains(decreasedValue)) {
             decreasedValue--;
             decreaseCounter++;
         }
+
+        int increasedValue = parsedIntValue;
+        int increaseCounter = 0;
         while (!values.contains(increasedValue)) {
             increasedValue++;
             increaseCounter++;
         }
+
         return increaseCounter >= decreaseCounter ? decreasedValue : increasedValue;
     }
 
@@ -203,5 +199,12 @@ public final class RadiationRepository implements IRadiationRepository {
             }
         }
         return sb.append(")").toString();
+    }
+
+    private float checkRadiationValue(final float value) {
+        if (value < 0) {
+            return 0;
+        }
+        return value;
     }
 }
