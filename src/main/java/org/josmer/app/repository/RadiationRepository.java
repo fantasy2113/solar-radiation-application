@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import org.josmer.app.core.IRadiationRepository;
@@ -33,6 +34,7 @@ public final class RadiationRepository implements IRadiationRepository {
 
     public List<Integer> getGkWerte(int min, final int n, final int offset) {
         List<Integer> values = new ArrayList<>();
+        values.add(min);
         for (int i = 0; i < n; i++) {
             values.add(min += offset);
         }
@@ -169,6 +171,13 @@ public final class RadiationRepository implements IRadiationRepository {
     }
 
     private int getGkValues(final double value, final List<Integer> values) {
+        if ((int) value < Collections.min(values)) {
+            return 0;
+        }
+        if ((int) value > Collections.max(values)) {
+            return 0;
+        }
+
         Integer decreasedValue = (int) value;
         Integer increasedValue = (int) value;
         int decreaseCounter = 0;
