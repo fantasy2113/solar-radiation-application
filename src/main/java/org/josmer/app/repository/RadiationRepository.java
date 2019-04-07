@@ -3,6 +3,7 @@ package org.josmer.app.repository;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import org.josmer.app.core.IRadiationRepository;
@@ -13,34 +14,51 @@ import org.springframework.stereotype.Component;
 @Component
 public final class RadiationRepository implements IRadiationRepository {
 
+    private final List<Integer> rwValues;
     private final String databaseUrl;
 
     public RadiationRepository(final String databaseUrl) {
         this.databaseUrl = databaseUrl;
+        this.rwValues = getRwValues();
+
     }
 
     public RadiationRepository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
+        this.rwValues = getRwValues();
+    }
+
+    public List<Integer> getRwValues() {
+        List<Integer> values = new ArrayList<>();
+        int rw = 3280500;
+        for (int i = 0; i < 654; i++) {
+            values.add(rw += 4000);
+        }
+        return values;
     }
 
     @Override
     public List<Radiation> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
+
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
         gaussKrueger.calculate();
         final int hochwert = getGkh(gaussKrueger.getHochwert());
+        final int rechtswert = getGkr(gaussKrueger.getRechtswert());
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        final String statement = "SELECT * FROM radiation WHERE radiation_date IN " + getDates(startDate, endDate) + " AND gkh_min = ? AND gkh_max = ? AND ? BETWEEN gkr_min AND gkr_max AND radiation_type = ? LIMIT ?;";
+        final String statement = "SELECT * FROM radiation WHERE radiation_date IN " + getDates(startDate, endDate) + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? LIMIT ?;";
         try {
             try {
                 connection = getConnection();
                 preparedStatement = connection.prepareStatement(statement);
                 preparedStatement.setInt(1, hochwert);
                 preparedStatement.setInt(2, hochwert + 1000);
-                preparedStatement.setDouble(3, gaussKrueger.getRechtswert());
-                preparedStatement.setString(4, radiationType);
-                preparedStatement.setInt(5, endDate - startDate + 1);
+                preparedStatement.setInt(3, rechtswert);
+                preparedStatement.setInt(4, rechtswert + 4000);
+                preparedStatement.setString(5, radiationType);
+                preparedStatement.setInt(6, endDate - startDate + 1);
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
                     radiations.add(mapToRadiation(rs));
@@ -158,6 +176,22 @@ public final class RadiationRepository implements IRadiationRepository {
             decreaseCount++;
         }
         while (isGkhStop(increase)) {
+            increase++;
+            increaseCount++;
+        }
+        return increaseCount >= decreaseCount ? decrease : increase;
+    }
+
+    private int getGkr(final double value) {
+        Integer decrease = (int) value;
+        Integer increase = (int) value;
+        int decreaseCount = 0;
+        int increaseCount = 0;
+        while (!this.rwValues.contains(decrease)) {
+            decrease--;
+            decreaseCount++;
+        }
+        while (!this.rwValues.contains(increase)) {
             increase++;
             increaseCount++;
         }
