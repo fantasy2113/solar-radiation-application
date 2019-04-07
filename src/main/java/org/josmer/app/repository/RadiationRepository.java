@@ -2,7 +2,7 @@ package org.josmer.app.repository;
 
 import org.josmer.app.core.IRadiationRepository;
 import org.josmer.app.entity.Radiation;
-import org.josmer.app.logic.utils.GaussKrueger;
+import org.josmer.app.logic.utils.Wgs84ToGk;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -45,10 +45,9 @@ public final class RadiationRepository implements IRadiationRepository {
     @Override
     public List<Radiation> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
-        GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
-        gaussKrueger.calculate();
-        final int hochwert = getGkValues(gaussKrueger.getHochwert(), hochwerte);
-        final int rechtswert = getGkValues(gaussKrueger.getRechtswert(), rechtswerte);
+        Wgs84ToGk wgs84ToGk = new Wgs84ToGk(lon, lat);
+        final int hochwert = getGkValues(wgs84ToGk.getHochwert(), hochwerte);
+        final int rechtswert = getGkValues(wgs84ToGk.getRechtswert(), rechtswerte);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -135,8 +134,8 @@ public final class RadiationRepository implements IRadiationRepository {
     @Override
     public long count() {
         try (Connection con = getConnection();
-                Statement st = con.createStatement();
-                ResultSet rs = st.executeQuery("SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname='radiation';")) {
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery("SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname='radiation';")) {
             if (rs.next()) {
                 return rs.getLong(1);
             }
