@@ -2,6 +2,7 @@ package org.josmer.app.repository;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import org.josmer.app.core.IExportRepository;
 import org.josmer.app.entity.Export;
 import org.josmer.app.entity.Radiation;
@@ -35,7 +36,7 @@ public class ExportRepository implements IExportRepository {
         export.setLat(lat);
         export.setLon(lon);
         export.setType(radiation.getRadiationType());
-        export.setValue(Float.valueOf(radiation.getRadiationValue()));
+        export.setValue(Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", radiation.getRadiationValue())));
         export.setUnit("kWh/m2");
         return export;
     }

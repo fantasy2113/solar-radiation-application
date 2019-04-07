@@ -97,7 +97,7 @@ public final class RadiationRepository implements IRadiationRepository {
                     preparedStatement.setInt(4, radiation.getGkrMax());
                     preparedStatement.setInt(5, radiation.getGkhMin());
                     preparedStatement.setInt(6, radiation.getGkhMax());
-                    preparedStatement.setString(7, checkRadiationValue(radiation.getRadiationValue()));
+                    preparedStatement.setFloat(7, checkRadiationValue(radiation.getRadiationValue()));
                     preparedStatement.executeUpdate();
                 }
                 connection.commit();
@@ -153,7 +153,7 @@ public final class RadiationRepository implements IRadiationRepository {
         radiation.setGkrMax(rs.getInt("gkr_max"));
         radiation.setGkhMin(rs.getInt("gkh_min"));
         radiation.setGkhMax(rs.getInt("gkh_max"));
-        radiation.setRadiationValue(rs.getString("radiation_value"));
+        radiation.setRadiationValue(rs.getFloat("radiation_value"));
         return radiation;
     }
 
@@ -201,9 +201,9 @@ public final class RadiationRepository implements IRadiationRepository {
         return sb.append(")").toString();
     }
 
-    private String checkRadiationValue(final String value) {
-        if (value.equals("-999")) {
-            return "0";
+    private float checkRadiationValue(final float value) {
+        if (value < 0) {
+            return 0;
         }
         return value;
     }
