@@ -10,7 +10,7 @@ CREATE TABLE public.radiation
     gkr_max integer NOT NULL,
     gkh_min integer NOT NULL,
     gkh_max integer NOT NULL,
-    radiation_value numeric(5, 2) NOT NULL,
+    radiation_value character varying(6) NOT NULL,
     CONSTRAINT radiation_pkey PRIMARY KEY (radiation_type, radiation_date, gkr_min, gkr_max, gkh_min, gkh_max)
 )
 WITH (
