@@ -14,25 +14,27 @@ import org.springframework.stereotype.Component;
 @Component
 public final class RadiationRepository implements IRadiationRepository {
 
-    private final List<Integer> rwValues;
+    private final List<Integer> rechtswerte;
+    private final List<Integer> hochwerte;
     private final String databaseUrl;
 
     public RadiationRepository(final String databaseUrl) {
         this.databaseUrl = databaseUrl;
-        this.rwValues = getRwValues();
+        this.rechtswerte = getGkWerte(3280500, 654, 4000);
+        this.hochwerte = getGkWerte(5237500, 866, 1000);
 
     }
 
     public RadiationRepository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
-        this.rwValues = getRwValues();
+        this.rechtswerte = getGkWerte(3280500, 654, 4000);
+        this.hochwerte = getGkWerte(5237500, 866, 1000);
     }
 
-    public List<Integer> getRwValues() {
+    public List<Integer> getGkWerte(int min, final int n, final int offset) {
         List<Integer> values = new ArrayList<>();
-        int rw = 3280500;
-        for (int i = 0; i < 654; i++) {
-            values.add(rw += 4000);
+        for (int i = 0; i < n; i++) {
+            values.add(min += offset);
         }
         return values;
     }
@@ -43,16 +45,17 @@ public final class RadiationRepository implements IRadiationRepository {
 
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
         gaussKrueger.calculate();
-        final int hochwert = getGkh(gaussKrueger.getHochwert());
-        final int rechtswert = getGkr(gaussKrueger.getRechtswert());
+
+        final int hochwert = getGkValues(gaussKrueger.getHochwert(), hochwerte);
+        final int rechtswert = getGkValues(gaussKrueger.getRechtswert(), rechtswerte);
 
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        final String statement = "SELECT * FROM radiation WHERE radiation_date IN " + getDates(startDate, endDate) + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? LIMIT ?;";
         try {
             try {
                 connection = getConnection();
-                preparedStatement = connection.prepareStatement(statement);
+                preparedStatement = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date IN " + getDates(startDate, endDate)
+                        + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? LIMIT ?;");
                 preparedStatement.setInt(1, hochwert);
                 preparedStatement.setInt(2, hochwert + 1000);
                 preparedStatement.setInt(3, rechtswert);
@@ -81,7 +84,6 @@ public final class RadiationRepository implements IRadiationRepository {
 
     @Override
     public void save(final List<Radiation> radiations) {
-        final String statement = "INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)";
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -89,7 +91,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 connection = getConnection();
                 connection.setAutoCommit(false);
                 for (Radiation radiation : radiations) {
-                    preparedStatement = connection.prepareStatement(statement);
+                    preparedStatement = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)");
 
                     preparedStatement.setString(1, radiation.getRadiationType());
                     preparedStatement.setInt(2, radiation.getRadiationDate());
@@ -166,40 +168,20 @@ public final class RadiationRepository implements IRadiationRepository {
         return DriverManager.getConnection(dbUrl, username, password);
     }
 
-    private int getGkh(final double value) {
-        Integer decrease = (int) value;
-        Integer increase = (int) value;
-        int decreaseCount = 0;
-        int increaseCount = 0;
-        while (isGkhStop(decrease)) {
-            decrease--;
-            decreaseCount++;
+    private int getGkValues(final double value, final List<Integer> values) {
+        Integer decreasedValue = (int) value;
+        Integer increasedValue = (int) value;
+        int decreaseCounter = 0;
+        int increaseCounter = 0;
+        while (!values.contains(decreasedValue)) {
+            decreasedValue--;
+            decreaseCounter++;
         }
-        while (isGkhStop(increase)) {
-            increase++;
-            increaseCount++;
+        while (!values.contains(increasedValue)) {
+            increasedValue++;
+            increaseCounter++;
         }
-        return increaseCount >= decreaseCount ? decrease : increase;
-    }
-
-    private int getGkr(final double value) {
-        Integer decrease = (int) value;
-        Integer increase = (int) value;
-        int decreaseCount = 0;
-        int increaseCount = 0;
-        while (!this.rwValues.contains(decrease)) {
-            decrease--;
-            decreaseCount++;
-        }
-        while (!this.rwValues.contains(increase)) {
-            increase++;
-            increaseCount++;
-        }
-        return increaseCount >= decreaseCount ? decrease : increase;
-    }
-
-    private boolean isGkhStop(Integer increase) {
-        return !increase.toString().endsWith("500");
+        return increaseCounter >= decreaseCounter ? decreasedValue : increasedValue;
     }
 
     private String getDates(final int startDate, final int endDate) {
