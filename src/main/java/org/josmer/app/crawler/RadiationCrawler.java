@@ -1,10 +1,11 @@
 package org.josmer.app.crawler;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import org.josmer.app.core.IRadiationRepository;
+import org.josmer.app.core.RadiationTypes;
+import org.josmer.app.entity.Radiation;
+import org.josmer.app.logic.utils.Toolbox;
+
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collections;
@@ -13,10 +14,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import org.josmer.app.core.IRadiationRepository;
-import org.josmer.app.core.RadiationTypes;
-import org.josmer.app.entity.Radiation;
-import org.josmer.app.logic.utils.Toolbox;
 
 public final class RadiationCrawler {
 
@@ -122,9 +119,9 @@ public final class RadiationCrawler {
                 radiation.setGkhMin(hochwert);
                 radiation.setGkhMax(hochwert + 1000);
                 radiation.setGkrMin(rechtswert);
-                radiation.setGkrMax(rechtswert + 4000);
+                radiation.setGkrMax(rechtswert + 1000);
                 radiations.add(radiation);
-                rechtswert += 4000;
+                rechtswert += 1000;
             }
             hochwert += 1000;
         }

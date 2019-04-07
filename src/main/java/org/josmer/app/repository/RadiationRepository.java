@@ -1,5 +1,10 @@
 package org.josmer.app.repository;
 
+import org.josmer.app.core.IRadiationRepository;
+import org.josmer.app.entity.Radiation;
+import org.josmer.app.logic.utils.GaussKrueger;
+import org.springframework.stereotype.Component;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
@@ -7,10 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import org.josmer.app.core.IRadiationRepository;
-import org.josmer.app.entity.Radiation;
-import org.josmer.app.logic.utils.GaussKrueger;
-import org.springframework.stereotype.Component;
 
 @Component
 public final class RadiationRepository implements IRadiationRepository {
@@ -21,14 +22,14 @@ public final class RadiationRepository implements IRadiationRepository {
 
     public RadiationRepository(final String databaseUrl) {
         this.databaseUrl = databaseUrl;
-        this.rechtswerte = getGkWerte(3280500, 654, 4000);
+        this.rechtswerte = getGkWerte(3280500, 654, 1000);
         this.hochwerte = getGkWerte(5237500, 866, 1000);
 
     }
 
     public RadiationRepository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
-        this.rechtswerte = getGkWerte(3280500, 654, 4000);
+        this.rechtswerte = getGkWerte(3280500, 654, 1000);
         this.hochwerte = getGkWerte(5237500, 866, 1000);
     }
 
@@ -58,7 +59,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 preparedStatement.setInt(1, hochwert);
                 preparedStatement.setInt(2, hochwert + 1000);
                 preparedStatement.setInt(3, rechtswert);
-                preparedStatement.setInt(4, rechtswert + 4000);
+                preparedStatement.setInt(4, rechtswert + 1000);
                 preparedStatement.setString(5, radiationType);
                 preparedStatement.setInt(6, endDate - startDate + 1);
                 ResultSet rs = preparedStatement.executeQuery();
