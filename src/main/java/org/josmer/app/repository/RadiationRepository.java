@@ -1,8 +1,8 @@
 package org.josmer.app.repository;
 
-import org.josmer.app.core.IRadiationRepository;
-import org.josmer.app.entity.Radiation;
-import org.josmer.app.logic.utils.Wgs84ToGk;
+import org.josmer.app.lib.core.IRadiationRepository;
+import org.josmer.app.lib.core.Radiation;
+import org.josmer.app.lib.geo.Wgs84ToGk;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;

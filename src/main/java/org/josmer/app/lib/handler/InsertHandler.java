@@ -1,8 +1,8 @@
-package org.josmer.app.handler;
+package org.josmer.app.lib.handler;
 
-import org.josmer.app.core.IRadiationRepository;
-import org.josmer.app.core.RadiationTypes;
-import org.josmer.app.crawler.RadiationCrawler;
+import org.josmer.app.lib.core.IRadiationRepository;
+import org.josmer.app.lib.core.RadiationTypes;
+import org.josmer.app.lib.crawler.RadiationCrawler;
 
 public class InsertHandler implements Runnable {
 

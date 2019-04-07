@@ -1,4 +1,4 @@
-package org.josmer.app.logic.utils;
+package org.josmer.app.lib.geo;
 
 public final class Wgs84ToGk {
 

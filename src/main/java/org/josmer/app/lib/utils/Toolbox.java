@@ -1,4 +1,4 @@
-package org.josmer.app.logic.utils;
+package org.josmer.app.lib.utils;
 
 import java.io.IOException;
 import java.nio.file.Files;
