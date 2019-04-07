@@ -35,7 +35,7 @@ public class ExportRepository implements IExportRepository {
         export.setLat(lat);
         export.setLon(lon);
         export.setType(radiation.getRadiationType());
-        export.setValue(radiation.getRadiationValue());
+        export.setValue(Float.valueOf(radiation.getRadiationValue()));
         export.setUnit("kWh/m2");
         return export;
     }

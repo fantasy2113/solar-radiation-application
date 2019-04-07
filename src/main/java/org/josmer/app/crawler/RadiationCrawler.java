@@ -116,7 +116,7 @@ public final class RadiationCrawler {
             int rechtswert = 3280500;
             for (String column : columns) {
                 Radiation radiation = new Radiation();
-                radiation.setRadiationValue(Float.valueOf(column));
+                radiation.setRadiationValue(column);
                 radiation.setRadiationType(type.name());
                 radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
                 radiation.setGkhMin(hochwert);

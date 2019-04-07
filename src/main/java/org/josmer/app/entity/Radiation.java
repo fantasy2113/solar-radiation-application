@@ -7,7 +7,7 @@ public class Radiation {
     private int gkhMax;
     private int gkrMin;
     private int gkrMax;
-    private float radiationValue;
+    private String radiationValue;
     private String radiationType;
 
     public int getRadiationDate() {
@@ -50,11 +50,11 @@ public class Radiation {
         this.gkrMax = gkrMax;
     }
 
-    public float getRadiationValue() {
+    public String getRadiationValue() {
         return radiationValue;
     }
 
-    public void setRadiationValue(float radiationValue) {
+    public void setRadiationValue(String radiationValue) {
         this.radiationValue = radiationValue;
     }
 
