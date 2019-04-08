@@ -1,9 +1,9 @@
 package org.josmer.application.controller;
 
-import org.josmer.application.controller.request.SearchRequest;
 import org.josmer.application.entities.Export;
 import org.josmer.application.interfaces.IExportRepository;
 import org.josmer.application.interfaces.IRadiationRepository;
+import org.josmer.application.requests.SearchRequest;
 import org.josmer.application.security.Authenticator;
 import org.josmer.application.security.Key;
 import org.josmer.application.utils.Toolbox;
