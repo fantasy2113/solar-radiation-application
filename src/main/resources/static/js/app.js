@@ -9,7 +9,7 @@ jQuery(document).ready(function () {
         method: 'GET',
         dataType: "text",
         success: function (rows) {
-            $('#rows').append('<h3>Datenbestand: ' + rows + '</h3>');
+            $('#rows').append('<b>Datenbestand: </b>' + rows);
         }
     });
 
