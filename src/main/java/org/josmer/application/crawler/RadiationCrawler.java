@@ -2,13 +2,13 @@ package org.josmer.application.crawler;
 
 import org.josmer.application.entities.Radiation;
 import org.josmer.application.enums.RadiationTypes;
-import org.josmer.application.geo.GeoPotsdamDatum;
 import org.josmer.application.interfaces.IRadiationRepository;
 import org.josmer.application.utils.Toolbox;
 
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;

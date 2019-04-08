@@ -27,23 +27,22 @@ public final class RadiationRepository implements IRadiationRepository {
     @Override
     public List<Radiation> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
-        
+
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
-        
+
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
-        
-        int rechtswert = 0;
-        if(gaussKrueger.getRechtswert().startsWith("5")) {
+
+        int rechtswert;
+        if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("5")) {
             rechtswert = getGkValues(gaussKrueger.getRechtswert() - 1600000);
-        } else if(gaussKrueger.getRechtswert().startsWith("4")) {
+        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("4")) {
             rechtswert = getGkValues(gaussKrueger.getRechtswert() - 800000);
-        } else if(gaussKrueger.getRechtswert().startsWith("3")) {
-             rechtswert = getGkValues(gaussKrueger.getRechtswert());
+        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("3")) {
+            rechtswert = getGkValues(gaussKrueger.getRechtswert());
         } else {
-           return radiations;
+            return radiations;
         }
-        
-        
+
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
