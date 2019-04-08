@@ -107,29 +107,11 @@ public final class RadiationCrawler {
     private void initRadiations() {
         final String file = Toolbox.readFile(getPathnameAsc());
         final String[] rows = file.split("\\r\\n");
-        GeoPotsdamDatum geoPotsdamDatum = new GeoPotsdamDatum();
         int hochwert = 5237500;
         for (int row = rows.length - 1; row >= 28; row--) {
             final String[] columns = rows[row].split(" ");
             int rechtswert = 3280500;
-            
-            boolean isAdd10 = true;
-            boolean isAdd13 = true;
-
             for (String column : columns) {
-                
-                 geoPotsdamDatum.gkToGeo(rechtswert, hochwert);
-
-                if (geoPotsdamDatum.getLonGeo() > 10.3 && isAdd10) {
-                    rechtswert += 800000;
-                    isAdd10 = false;
-                }
-
-                if (geoPotsdamDatum.getLonGeo() > 13.3 && isAdd13) {
-                    rechtswert += 800000;
-                    isAdd13 = false;
-                }
-                
                 Radiation radiation = new Radiation();
                 radiation.setRadiationValue(Float.parseFloat(column));
                 radiation.setRadiationType(type.name());
@@ -139,12 +121,11 @@ public final class RadiationCrawler {
                 radiation.setGkrMin(rechtswert);
                 radiation.setGkrMax(rechtswert + 1000);
                 radiations.add(radiation);
-                
                 rechtswert += 1000;
             }
             hochwert += 1000;
         }
-        //Collections.reverse(radiations);
+        Collections.reverse(radiations);
     }
 
     private String getDate(final Integer year, final Integer month) {
