@@ -37,8 +37,10 @@ public final class RadiationRepository implements IRadiationRepository {
             rechtswert = getGkValues(gaussKrueger.getRechtswert() - 1600000);
         } else if(gaussKrueger.getRechtswert().startsWith("4")) {
             rechtswert = getGkValues(gaussKrueger.getRechtswert() - 800000);
+        } else if(gaussKrueger.getRechtswert().startsWith("3")) {
+             rechtswert = getGkValues(gaussKrueger.getRechtswert());
         } else {
-            rechtswert = getGkValues(gaussKrueger.getRechtswert());
+           return radiations;
         }
         
         
