@@ -2,13 +2,13 @@ package org.josmer.application.crawler;
 
 import org.josmer.application.entities.Radiation;
 import org.josmer.application.enums.RadiationTypes;
+import org.josmer.application.geo.GeoPotsdamDatum;
 import org.josmer.application.interfaces.IRadiationRepository;
 import org.josmer.application.utils.Toolbox;
 
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -107,11 +107,40 @@ public final class RadiationCrawler {
     private void initRadiations() {
         final String file = Toolbox.readFile(getPathnameAsc());
         final String[] rows = file.split("\\r\\n");
+        GeoPotsdamDatum geoPotsdamDatum = new GeoPotsdamDatum();
         int hochwert = 5237500;
         for (int row = rows.length - 1; row >= 28; row--) {
             final String[] columns = rows[row].split(" ");
             int rechtswert = 3280500;
+
+            boolean isAdd7 = true;
+            boolean isAdd10 = true;
+            boolean isAdd13 = true;
+            boolean isAdd15 = true;
+
             for (String column : columns) {
+                geoPotsdamDatum.gkToGeo(rechtswert, hochwert);
+
+                if (geoPotsdamDatum.getLp() >= 7.3 && isAdd7) {
+                    rechtswert += 500000;
+                    isAdd7 = false;
+                }
+
+                if (geoPotsdamDatum.getLp() >= 10.3 && isAdd10) {
+                    rechtswert += 500000;
+                    isAdd10 = false;
+                }
+
+                if (geoPotsdamDatum.getLp() >= 13.3 && isAdd13) {
+                    rechtswert += 500000;
+                    isAdd13 = false;
+                }
+
+                if (geoPotsdamDatum.getLp() >= 15 && isAdd15) {
+                    rechtswert += 500000;
+                    isAdd15 = false;
+                }
+
                 Radiation radiation = new Radiation();
                 radiation.setRadiationValue(Float.parseFloat(column));
                 radiation.setRadiationType(type.name());
@@ -125,7 +154,7 @@ public final class RadiationCrawler {
             }
             hochwert += 1000;
         }
-        Collections.reverse(radiations);
+        //Collections.reverse(radiations);
     }
 
     private String getDate(final Integer year, final Integer month) {

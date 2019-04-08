@@ -6,10 +6,10 @@ import org.josmer.application.repositories.RadiationRepository;
 public class Insert {
 
     public static void main(String[] args) {
-        if (!new RadiationRepository().isConnected()) {
+        /*if (!new RadiationRepository().isConnected()) {
             System.out.println("no db connection");
             return;
-        }
+        }*/
         insertData(RadiationTypes.GLOBAL);
         insertData(RadiationTypes.DIRECT);
         insertData(RadiationTypes.DIFFUSE);

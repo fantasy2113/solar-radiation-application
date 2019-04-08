@@ -5,7 +5,7 @@ public class GeoPotsdamDatum {
     private double lp;
     private double bp;
 
-    private void gkToGeo(final double rw, final double hw) {
+    public void gkToGeo(final double rw, final double hw) {
         double a = 6377397.155;
         double f = 3.34277321e-3;
         double c = a / (1 - f);
