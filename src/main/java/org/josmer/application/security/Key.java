@@ -1,4 +1,4 @@
-package org.josmer.app.lib.security;
+package org.josmer.application.security;
 
 public class Key {
 

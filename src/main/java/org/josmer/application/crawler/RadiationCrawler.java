@@ -1,9 +1,9 @@
-package org.josmer.app.lib.crawler;
+package org.josmer.application.crawler;
 
-import org.josmer.app.lib.core.IRadiationRepository;
-import org.josmer.app.lib.core.Radiation;
-import org.josmer.app.lib.core.RadiationTypes;
-import org.josmer.app.lib.utils.Toolbox;
+import org.josmer.application.entities.Radiation;
+import org.josmer.application.enums.RadiationTypes;
+import org.josmer.application.interfaces.IRadiationRepository;
+import org.josmer.application.utils.Toolbox;
 
 import java.io.*;
 import java.net.URL;

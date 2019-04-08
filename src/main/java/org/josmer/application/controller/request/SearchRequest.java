@@ -1,4 +1,4 @@
-package org.josmer.app.controller.request;
+package org.josmer.application.controller.request;
 
 public class SearchRequest {
 

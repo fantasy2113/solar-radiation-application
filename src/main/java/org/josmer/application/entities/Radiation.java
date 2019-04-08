@@ -1,4 +1,4 @@
-package org.josmer.app.lib.core;
+package org.josmer.application.entities;
 
 public class Radiation {
 

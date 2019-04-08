@@ -1,7 +1,7 @@
-package org.josmer.app.lib.crawler;
+package org.josmer.application.crawler;
 
-import org.josmer.app.lib.core.RadiationTypes;
-import org.josmer.app.repository.RadiationRepository;
+import org.josmer.application.enums.RadiationTypes;
+import org.josmer.application.repositories.RadiationRepository;
 
 public class Insert {
 

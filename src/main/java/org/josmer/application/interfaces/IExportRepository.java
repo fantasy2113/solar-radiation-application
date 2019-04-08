@@ -1,5 +1,7 @@
-package org.josmer.app.lib.core;
+package org.josmer.application.interfaces;
 
+import org.josmer.application.entities.Export;
+import org.josmer.application.entities.Radiation;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
