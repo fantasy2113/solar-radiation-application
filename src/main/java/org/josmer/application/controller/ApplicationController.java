@@ -70,7 +70,7 @@ public class ApplicationController {
                     response.getOutputStream());
             response.flushBuffer();
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -92,7 +92,7 @@ public class ApplicationController {
         try {
             return Integer.valueOf(date.replace("-", "").replace("#", ""));
         } catch (NumberFormatException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return 0;
         }
     }

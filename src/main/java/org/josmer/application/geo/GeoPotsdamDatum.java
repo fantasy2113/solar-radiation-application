@@ -2,8 +2,8 @@ package org.josmer.application.geo;
 
 public class GeoPotsdamDatum {
 
-    private double lp;
-    private double bp;
+    private double lonGeo;
+    private double latGeo;
 
     public void gkToGeo(final double rw, final double hw) {
         double a = 6377397.155;
@@ -47,19 +47,19 @@ public class GeoPotsdamDatum {
         double l1 = 1 / (nd * cos1);
         double l3 = -(1 + 2 * tan2 + etasq) / (6 * nd3 * cos1);
         double l5 = (5 + 28 * tan2 + 24 * tan4) / (120 * nd5 * cos1);
-        bp = bf + (180 / Math.PI) * (b2 * dy2 + b4 * dy4 + b6 * dy6);
-        lp = lh + (180 / Math.PI) * (l1 * dy + l3 * dy3 + l5 * dy5);
-        if (lp < 5 || lp > 16 || bp < 46 || bp > 56) {
-            this.lp = 0;
-            this.bp = 0;
+        this.latGeo = bf + (180 / Math.PI) * (b2 * dy2 + b4 * dy4 + b6 * dy6);
+        this.lonGeo = lh + (180 / Math.PI) * (l1 * dy + l3 * dy3 + l5 * dy5);
+        if (lonGeo < 5 || this.lonGeo > 16 || this.latGeo < 46 || this.latGeo > 56) {
+            this.lonGeo = 0;
+            this.latGeo = 0;
         }
     }
 
-    public double getLp() {
-        return lp;
+    public double getLonGeo() {
+        return lonGeo;
     }
 
-    public double getBp() {
-        return bp;
+    public double getLatGeo() {
+        return latGeo;
     }
 }

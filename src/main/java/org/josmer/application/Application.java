@@ -53,7 +53,7 @@ public class Application {
         try {
             new ProcessBuilder(System.getenv("DEV_BROWSER"), System.getenv("DEV_URL")).start();
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 }

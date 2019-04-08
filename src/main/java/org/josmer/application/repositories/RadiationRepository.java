@@ -8,46 +8,28 @@ import org.springframework.stereotype.Component;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 @Component
 public final class RadiationRepository implements IRadiationRepository {
 
-    private final List<Integer> rechtswerte;
-    private final List<Integer> hochwerte;
     private final String databaseUrl;
 
     public RadiationRepository(final String databaseUrl) {
         this.databaseUrl = databaseUrl;
-        this.rechtswerte = getGkWerte(3280500, 654, 1000);
-        this.hochwerte = getGkWerte(5237500, 866, 1000);
-
     }
 
     public RadiationRepository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
-        this.rechtswerte = getGkWerte(3280500, 654, 1000);
-        this.hochwerte = getGkWerte(5237500, 866, 1000);
-    }
-
-    public List<Integer> getGkWerte(int min, final int n, final int offset) {
-        List<Integer> values = new ArrayList<>();
-        values.add(min);
-        for (int i = 0; i < n; i++) {
-            values.add(min += offset);
-        }
-        return values;
     }
 
     @Override
     public List<Radiation> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
-        final int hochwert = getGkValues(gaussKrueger.getHochwert(), hochwerte);
-        final int rechtswert = getGkValues(gaussKrueger.getRechtswert(), rechtswerte);
+        final int hochwert = getGkValues(gaussKrueger.getHochwert());
+        final int rechtswert = getGkValues(gaussKrueger.getRechtswert());
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -66,7 +48,7 @@ public final class RadiationRepository implements IRadiationRepository {
                     radiations.add(mapToRadiation(rs));
                 }
             } catch (SQLException | URISyntaxException e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
             } finally {
                 if (preparedStatement != null) {
                     preparedStatement.close();
@@ -76,7 +58,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return radiations;
     }
@@ -102,7 +84,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 }
                 connection.commit();
             } catch (SQLException | URISyntaxException e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
                 if (connection != null) {
                     connection.rollback();
                 }
@@ -115,7 +97,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -126,7 +108,7 @@ public final class RadiationRepository implements IRadiationRepository {
             connection.close();
             return true;
         } catch (SQLException | URISyntaxException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return false;
         }
     }
@@ -140,7 +122,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 return rs.getLong(1);
             }
         } catch (SQLException | URISyntaxException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return -1;
     }
@@ -165,23 +147,18 @@ public final class RadiationRepository implements IRadiationRepository {
         return DriverManager.getConnection(dbUrl, username, password);
     }
 
-    private int getGkValues(final double value, final List<Integer> values) {
-        final int parsedIntValue = (int) value;
+    private int getGkValues(final double value) {
 
-        if (parsedIntValue < Collections.min(values) || parsedIntValue > Collections.max(values)) {
-            return 0;
-        }
-
-        int decreasedValue = parsedIntValue;
+        Integer decreasedValue = (int) value;
         int decreaseCounter = 0;
-        while (!values.contains(decreasedValue)) {
+        while (!decreasedValue.toString().endsWith("500")) {
             decreasedValue--;
             decreaseCounter++;
         }
 
-        int increasedValue = parsedIntValue;
+        Integer increasedValue = (int) value;
         int increaseCounter = 0;
-        while (!values.contains(increasedValue)) {
+        while (!increasedValue.toString().endsWith("500")) {
             increasedValue++;
             increaseCounter++;
         }

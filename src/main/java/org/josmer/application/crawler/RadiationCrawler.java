@@ -51,7 +51,7 @@ public final class RadiationCrawler {
             InputStream inputStream = connection.getInputStream();
             inputStream.transferTo(new FileOutputStream(getPathnameZip()));
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -75,7 +75,7 @@ public final class RadiationCrawler {
                 zipInputStream.closeEntry();
             }
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -121,22 +121,22 @@ public final class RadiationCrawler {
             for (String column : columns) {
                 geoPotsdamDatum.gkToGeo(rechtswert, hochwert);
 
-                if (geoPotsdamDatum.getLp() >= 7.3 && isAdd7) {
+                if (geoPotsdamDatum.getLonGeo() >= 7.3 && isAdd7) {
                     rechtswert += 500000;
                     isAdd7 = false;
                 }
 
-                if (geoPotsdamDatum.getLp() >= 10.3 && isAdd10) {
+                if (geoPotsdamDatum.getLonGeo() >= 10.3 && isAdd10) {
                     rechtswert += 500000;
                     isAdd10 = false;
                 }
 
-                if (geoPotsdamDatum.getLp() >= 13.3 && isAdd13) {
+                if (geoPotsdamDatum.getLonGeo() >= 13.3 && isAdd13) {
                     rechtswert += 500000;
                     isAdd13 = false;
                 }
 
-                if (geoPotsdamDatum.getLp() >= 15 && isAdd15) {
+                if (geoPotsdamDatum.getLonGeo() >= 15 && isAdd15) {
                     rechtswert += 500000;
                     isAdd15 = false;
                 }
