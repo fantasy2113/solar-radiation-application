@@ -27,9 +27,21 @@ public final class RadiationRepository implements IRadiationRepository {
     @Override
     public List<Radiation> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
+        
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
+        
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
-        final int rechtswert = getGkValues(gaussKrueger.getRechtswert());
+        
+        int rechtswert = 0;
+        if(gaussKrueger.getRechtswert().startsWith("5")) {
+            rechtswert = getGkValues(gaussKrueger.getRechtswert() - 1600000);
+        } else if(gaussKrueger.getRechtswert().startsWith("4")) {
+            rechtswert = getGkValues(gaussKrueger.getRechtswert() - 800000);
+        } else {
+            rechtswert = getGkValues(gaussKrueger.getRechtswert());
+        }
+        
+        
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {
@@ -79,7 +91,7 @@ public final class RadiationRepository implements IRadiationRepository {
                     preparedStatement.setInt(4, radiation.getGkrMax());
                     preparedStatement.setInt(5, radiation.getGkhMin());
                     preparedStatement.setInt(6, radiation.getGkhMax());
-                    preparedStatement.setFloat(7, checkRadiationValue(radiation.getRadiationValue()));
+                    preparedStatement.setFloat(7, radiation.getRadiationValue());
                     preparedStatement.executeUpdate();
                 }
                 connection.commit();
@@ -176,12 +188,5 @@ public final class RadiationRepository implements IRadiationRepository {
             }
         }
         return sb.append(")").toString();
-    }
-
-    private float checkRadiationValue(final float value) {
-        if (value < 0) {
-            return 0;
-        }
-        return value;
     }
 }
