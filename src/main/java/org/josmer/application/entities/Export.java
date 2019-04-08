@@ -8,6 +8,7 @@ public class Export {
     private String type;
     private double value;
     private String unit;
+    private String source;
 
     public double getValue() {
         return value;
@@ -55,5 +56,13 @@ public class Export {
 
     public void setUnit(String unit) {
         this.unit = unit;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

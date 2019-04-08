@@ -14,7 +14,7 @@ jQuery(document).ready(function () {
     });
 
     var dates = [];
-    for (var year = 1991; year <= 2018; year++) {
+    for (var year = 1991; year <= 2019; year++) {
         for (var month = 1; month <= 12; month++) {
             if (month.toString().length === 1) {
                 dates.push(year.toString() + '-0' + month.toString());
@@ -47,7 +47,7 @@ jQuery(document).ready(function () {
                 type: $('#type_select option:selected').text()
             },
             success: function (data) {
-                var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat</th><th>Lon</th><th>Art</th><th>Wert</th><th>Einheit</th></tr></thead>';
+                var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat</th><th>Lon</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Quelle</th></tr></thead>';
                 $.each(data, function (i, item) {
                     table += '<tbody><tr>';
                     table += '<td>' + data[i].date + '</td>'
@@ -56,6 +56,7 @@ jQuery(document).ready(function () {
                     table += '<td>' + data[i].type + '</td>'
                     table += '<td>' + data[i].value + '</td>'
                     table += '<td>' + data[i].unit + '</td>'
+                    table += '<td>' + data[i].source+ '</td>'
                     table += '</tr>';
                 });
                 $('#result').append(table + '</tbody></table>');
