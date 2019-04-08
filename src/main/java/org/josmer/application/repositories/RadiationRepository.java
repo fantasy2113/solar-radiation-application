@@ -48,7 +48,7 @@ public final class RadiationRepository implements IRadiationRepository {
         try {
             try {
                 connection = getConnection();
-                preparedStatement = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date IN " + getDates(startDate, endDate)
+                preparedStatement = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
                         + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? LIMIT ?;");
                 preparedStatement.setInt(1, hochwert);
                 preparedStatement.setInt(2, hochwert + 1000);
@@ -179,9 +179,9 @@ public final class RadiationRepository implements IRadiationRepository {
         return increaseCounter >= decreaseCounter ? decreasedValue : increasedValue;
     }
 
-    private String getDates(final int startDate, final int endDate) {
+    private String getInDates(final int startDate, final int endDate) {
         StringBuilder sb = new StringBuilder();
-        sb.append("(");
+        sb.append("IN (");
         for (int i = startDate; i <= endDate; i++) {
             sb.append(i);
             if (i != endDate) {
