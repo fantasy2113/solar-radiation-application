@@ -32,7 +32,6 @@ jQuery(document).ready(function () {
 
         $('#result').empty();
         $('#result_label').empty();
-        $('#src').empty();
 
         $.ajax({
             method: 'GET',
@@ -47,7 +46,7 @@ jQuery(document).ready(function () {
                 type: $('#type_select option:selected').text()
             },
             success: function (data) {
-                var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat</th><th>Lon</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Quelle</th></tr></thead>';
+                var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat (WGS84)</th><th>Lon (WGS84)</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Quelle</th></tr></thead>';
                 $.each(data, function (i, item) {
                     table += '<tbody><tr>';
                     table += '<td>' + data[i].date + '</td>'
@@ -61,7 +60,6 @@ jQuery(document).ready(function () {
                 });
                 $('#result').append(table + '</tbody></table>');
                 $('#result_label').append('<h3>Suchergebnis:</h3>');
-                $('#src').append('<p>(Quelle: DWD/KU1HA)</p>');
             },
             error: function (jqXhr, textStatus, errorMessage) {
                 console.log(jqXhr + textStatus + errorMessage);
