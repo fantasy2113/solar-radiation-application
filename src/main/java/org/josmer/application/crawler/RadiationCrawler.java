@@ -121,17 +121,17 @@ public final class RadiationCrawler {
             for (String column : columns) {
                 geoPotsdamDatum.gkToGeo(rechtswert, hochwert);
 
-                if (geoPotsdamDatum.getLonGeo() >= 7.3 && isAdd7) {
+                /*if (geoPotsdamDatum.getLonGeo() >= 7.5 && isAdd7) {
                     rechtswert += 500000;
                     isAdd7 = false;
-                }
+                }*/
 
-                if (geoPotsdamDatum.getLonGeo() >= 10.3 && isAdd10) {
+                if (geoPotsdamDatum.getLonGeo() >= 10.5 && isAdd10) {
                     rechtswert += 500000;
                     isAdd10 = false;
                 }
 
-                if (geoPotsdamDatum.getLonGeo() >= 13.3 && isAdd13) {
+                if (geoPotsdamDatum.getLonGeo() >= 13.5 && isAdd13) {
                     rechtswert += 500000;
                     isAdd13 = false;
                 }

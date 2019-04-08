@@ -26,12 +26,12 @@ public class ApplicationController {
     @Autowired
     private IRadiationRepository radiationRep;
 
-    @GetMapping(value = "/application", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/app", produces = MediaType.TEXT_HTML_VALUE)
     public String app(@CookieValue("key") final String key) {
         if (!Key.check(key)) {
             return Toolbox.readFile("src/main/resources/static/html/accessDenied.html");
         }
-        return Toolbox.readFile("src/main/resources/static/html/application.html");
+        return Toolbox.readFile("src/main/resources/static/html/app.html");
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
