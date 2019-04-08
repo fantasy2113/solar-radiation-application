@@ -169,14 +169,14 @@ public final class RadiationRepository implements IRadiationRepository {
             decreaseCounter++;
         }
 
-        Integer increasedValue = (int) value;
+        /*Integer increasedValue = (int) value;
         int increaseCounter = 0;
         while (!increasedValue.toString().endsWith("500")) {
             increasedValue++;
             increaseCounter++;
-        }
+        }*/
 
-        return increaseCounter >= decreaseCounter ? decreasedValue : increasedValue;
+        return /*increaseCounter >= decreaseCounter ? */decreasedValue /*: increasedValue*/;
     }
 
     private String getInDates(final int startDate, final int endDate) {
