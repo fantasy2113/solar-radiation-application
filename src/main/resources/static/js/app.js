@@ -29,10 +29,7 @@ jQuery(document).ready(function () {
 
     var search_button = jQuery('#search_button');
     search_button.bind('click', function () {
-
         $('#result').empty();
-        $('#result_label').empty();
-
         $.ajax({
             method: 'GET',
             url: getPath() + 'find',
@@ -59,7 +56,6 @@ jQuery(document).ready(function () {
                     table += '</tr>';
                 });
                 $('#result').append(table + '</tbody></table>');
-                $('#result_label').append('<h3>Suchergebnis:</h3>');
             },
             error: function (jqXhr, textStatus, errorMessage) {
                 console.log(jqXhr + textStatus + errorMessage);
