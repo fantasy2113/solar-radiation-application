@@ -23,7 +23,7 @@ public class ExportRepository implements IExportRepository {
 
     @Override
     public List<String> getHeaders() {
-        return List.of("Datum", "Breitengrad (WGS84)", "Längengrad (WGS84)", "Art", "Wert", "Einheit", "Quelle");
+        return List.of("Datum", "Breitengrad (WGS84)", "Längengrad (WGS84)", "Art", "Wert", "Einheit", "Auflösung", "Quelle");
     }
 
     @Override
