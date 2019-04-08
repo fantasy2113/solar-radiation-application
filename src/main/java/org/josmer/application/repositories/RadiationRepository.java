@@ -1,7 +1,7 @@
 package org.josmer.application.repositories;
 
 import org.josmer.application.entities.Radiation;
-import org.josmer.application.geo.Wgs84ToGk;
+import org.josmer.application.geo.GaussKrueger;
 import org.josmer.application.interfaces.IRadiationRepository;
 import org.springframework.stereotype.Component;
 
@@ -45,9 +45,9 @@ public final class RadiationRepository implements IRadiationRepository {
     @Override
     public List<Radiation> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
-        Wgs84ToGk wgs84ToGk = new Wgs84ToGk(lon, lat);
-        final int hochwert = getGkValues(wgs84ToGk.getHochwert(), hochwerte);
-        final int rechtswert = getGkValues(wgs84ToGk.getRechtswert(), rechtswerte);
+        GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
+        final int hochwert = getGkValues(gaussKrueger.getHochwert(), hochwerte);
+        final int rechtswert = getGkValues(gaussKrueger.getRechtswert(), rechtswerte);
         Connection connection = null;
         PreparedStatement preparedStatement = null;
         try {

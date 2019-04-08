@@ -1,13 +1,13 @@
 package org.josmer.application.geo;
 
-public final class Wgs84ToGk {
+public final class GaussKrueger {
 
     private double lon;
     private double lat;
     private double rechtswert;
     private double hochwert;
 
-    public Wgs84ToGk(final double lon, final double lat) {
+    public GaussKrueger(final double lon, final double lat) {
         this.lon = lon;
         this.lat = lat;
         wgs84ToPot();
