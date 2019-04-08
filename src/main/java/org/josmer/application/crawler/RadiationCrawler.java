@@ -119,9 +119,23 @@ public final class RadiationCrawler {
             boolean isAdd15 = true;
 
             for (String column : columns) {
-                geoPotsdamDatum.gkToGeo(rechtswert, hochwert);
+                
 
-                /*if (geoPotsdamDatum.getLonGeo() >= 7.5 && isAdd7) {
+               
+
+                Radiation radiation = new Radiation();
+                radiation.setRadiationValue(Float.parseFloat(column));
+                radiation.setRadiationType(type.name());
+                radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
+                radiation.setGkhMin(hochwert);
+                radiation.setGkhMax(hochwert + 1000);
+                radiation.setGkrMin(rechtswert);
+                radiation.setGkrMax(rechtswert + 1000);
+                radiations.add(radiation);
+                rechtswert += 1000;
+                
+                 geoPotsdamDatum.gkToGeo(rechtswert, hochwert);
+             /*if (geoPotsdamDatum.getLonGeo() >= 7.5 && isAdd7) {
                     rechtswert += 500000;
                     isAdd7 = false;
                 }*/
@@ -136,23 +150,16 @@ public final class RadiationCrawler {
                     isAdd13 = false;
                 }
 
-                if (geoPotsdamDatum.getLonGeo() >= 15 && isAdd15) {
+                if (geoPotsdamDatum.getLonGeo() >= 13 && isAdd15) {
                     rechtswert += 800000;
                     isAdd15 = false;
                 }
-
-                Radiation radiation = new Radiation();
-                radiation.setRadiationValue(Float.parseFloat(column));
-                radiation.setRadiationType(type.name());
-                radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
-                radiation.setGkhMin(hochwert);
-                radiation.setGkhMax(hochwert + 1000);
-                radiation.setGkrMin(rechtswert);
-                radiation.setGkrMax(rechtswert + 1000);
-                radiations.add(radiation);
-                rechtswert += 1000;
+                
             }
             hochwert += 1000;
+            
+            
+           
         }
         //Collections.reverse(radiations);
     }
