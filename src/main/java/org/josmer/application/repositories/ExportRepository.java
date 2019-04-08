@@ -23,12 +23,12 @@ public class ExportRepository implements IExportRepository {
 
     @Override
     public List<String> getHeaders() {
-        return List.of("Datum", "Lat (WGS84)", "Lon (WGS84)", "Art", "Wert", "Einheit", "Quelle");
+        return List.of("Datum", "Breitengrad (WGS84)", "Längengrad (WGS84)", "Art", "Wert", "Einheit", "Quelle");
     }
 
     @Override
     public String getProps() {
-        return "date, lat, lon, type, value, unit, source, ";
+        return "date, lat, lon, type, value, unit, resolution, source, ";
     }
 
     private Export mapToExport(double lon, double lat, Radiation radiation) {
@@ -39,6 +39,7 @@ public class ExportRepository implements IExportRepository {
         export.setType(radiation.getRadiationType());
         export.setValue(Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", radiation.getRadiationValue())));
         export.setUnit("kWh/m2");
+        export.setResolution("1 km2");
         export.setSource("DWD/KU1HA");
         return export;
     }

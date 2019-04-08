@@ -8,6 +8,7 @@ public class Export {
     private String type;
     private double value;
     private String unit;
+    private String resolution;
     private String source;
 
     public double getValue() {
@@ -64,5 +65,13 @@ public class Export {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
     }
 }
