@@ -1,70 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta content="width=device-width, initial-scale=1" name="viewport">
-        <title>Sonneneinstrahlung</title>
-        <link href="css/style.css" rel="stylesheet">
-        <link rel="stylesheet" href="../css/style.css" type="text/css"/>
-        <link rel="stylesheet" href="../css/style.css" type="text/css">
-        <link rel="stylesheet" href="../css/style.css" type="text/css"/>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
-        <script src="js/master.js?version=25" type="text/javascript"></script>
-        <script src="js/app.js?version=25" type="text/javascript"></script>
-        <style>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Sonneneinstrahlung</title>
+    <link href="css/style.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/style.css" rel="stylesheet" type="text/css">
+    <link href="../css/style.css" rel="stylesheet" type="text/css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+    <script src="js/master.js?version=25" type="text/javascript"></script>
+    <script src="js/app.js?version=25" type="text/javascript"></script>
+    <style>
             table, th, td {
                 border: 1px solid black;
             }
 
-        </style>
-    </head>
-    <body>
-        <header>
-            <h2>Sonneneinstrahlung WepApp</h2>
-            <h4>Kontakt: julian.osmer@outlook.de</h4>
-        </header>
-        <div id="rows">
 
-        </div>
-        <form autocomplete="off">
-            <div class="autocomplete">
-                <label for="start_date">Von:</label>
-                <input id="start_date" type="text" value="1991-01">
-            </div>
-        </form>
-        <form autocomplete="off">
-            <div class="autocomplete">
-                <label for="end_date">Bis:&nbsp;</label>
-                <input id="end_date" type="text" value="1991-12">
-            </div>
-        </form>
-        <div>
-            <label for="lat">Lat:&nbsp;</label>
-            <input id="lat" step="0.001" type="number" value="51.256">
-        </div>
-        <div>
-            <label for="lon">Lon:</label>
-            <input id="lon" step="0.001" type="number" value="9.527">
-        </div>
-        <div>
-            <label for="type_select">Art:&nbsp;</label>
-            <select id="type_select">
-                <option value="GLOBAL">GLOBAL</option>
-                <option value="DIRECT">DIRECT</option>
-                <option value="DIFFUSE">DIFFUSE</option>
-            </select>
-        </div>
-        <div>
-            <button id="search_button">Suche</button>
-            <button id="export_button">Export</button>
-            <button id="logout_button">Abmelden</button>
-        </div>
-        <br>
-        <div id="result_label">
-        </div>
-        <div id="result">
-        </div>
-        <div id="src">
-        </div>
-    </body>
+
+
+
+    </style>
+</head>
+<body>
+<header>
+    <h2>Sonneneinstrahlung WepApp</h2>
+    <h4>Kontakt: julian.osmer@outlook.de</h4>
+</header>
+<div id="rows">
+
+</div>
+<form autocomplete="off">
+    <div class="autocomplete">
+        <label for="start_date"><b>Von:</b></label>
+        <input id="start_date" type="text" value="1991-01">
+    </div>
+</form>
+<form autocomplete="off">
+    <div class="autocomplete">
+        <label for="end_date"><b>Bis:&nbsp;</b></label>
+        <input id="end_date" type="text" value="1991-12">
+    </div>
+</form>
+<br>
+<div>
+    <label><b>Dezimalgrad (WGS84)</b></label>
+</div>
+<div>
+    <label for="lat"><b>Lat:&nbsp;</b></label>
+    <input id="lat" step="0.000001" type="number" value="52.519981">
+</div>
+<div>
+    <label for="lon"><b>Lon:</b></label>
+    <input id="lon" step="0.000001" type="number" value="13.373108">
+</div>
+<br>
+<div>
+    <label for="type_select"><b>Art:&nbsp;</b></label>
+    <select id="type_select">
+        <option value="GLOBAL">GLOBAL</option>
+        <option value="DIRECT">DIRECT</option>
+        <option value="DIFFUSE">DIFFUSE</option>
+    </select>
+</div>
+<br>
+<div>
+    <button id="search_button">Suche</button>
+    <button id="export_button">Export</button>
+    <button id="logout_button">Abmelden</button>
+</div>
+<br>
+<div id="result_label">
+</div>
+<div id="result">
+</div>
+<div id="src">
+</div>
+</body>
 </html>
