@@ -127,17 +127,17 @@ public final class RadiationCrawler {
                 }*/
 
                 if (geoPotsdamDatum.getLonGeo() >= 10.5 && isAdd10) {
-                    rechtswert += 500000;
+                    rechtswert += 800000;
                     isAdd10 = false;
                 }
 
                 if (geoPotsdamDatum.getLonGeo() >= 13.5 && isAdd13) {
-                    rechtswert += 500000;
+                    rechtswert += 800000;
                     isAdd13 = false;
                 }
 
                 if (geoPotsdamDatum.getLonGeo() >= 15 && isAdd15) {
-                    rechtswert += 500000;
+                    rechtswert += 800000;
                     isAdd15 = false;
                 }
 
