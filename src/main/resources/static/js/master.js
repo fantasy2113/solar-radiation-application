@@ -18,5 +18,5 @@ function getPath() {
     if (url.includes("localhost")) {
         return 'http://localhost:8080/';
     }
-    return 'https://sonnenkarte-deutschland.herokuapp.com/';
+    return 'https://sonneneinstrahlung.herokuapp.com/';
 }
