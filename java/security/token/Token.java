@@ -4,14 +4,14 @@ import com.orbis.coreserver.api.security.crypting.Crypt;
 import com.orbis.coreserver.base.Authentication;
 import com.orbis.coreserver.base.Toolbox;
 import com.orbis.coreserver.base.entities.UserRight;
-import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.LoggerFactory;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 
 public final class Token {
 
-    private static final Logger LOGGER = LogManager.getLogger(Token.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Token.class.getName());
     private static String delimiter = null;
     private static String theToken = null;
     private static Crypt crypt = null;

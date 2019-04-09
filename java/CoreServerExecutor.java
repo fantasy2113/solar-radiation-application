@@ -1,7 +1,7 @@
 package com.orbis.coreserver.config;
 
 import com.orbis.coreserver.base.interfaces.executor.IExecutor;
-import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.LoggerFactory;
 import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
 
@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class CoreServerExecutor {
 
-    private static final Logger LOGGER = LogManager.getLogger(CoreServerExecutor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(CoreServerExecutor.class.getName());
     private final Set<Class<? extends IExecutor>> executorsClasses;
 
     public CoreServerExecutor() {

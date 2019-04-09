@@ -4,8 +4,8 @@ import de.josmer.application.entities.Radiation;
 import de.josmer.application.enums.RadiationTypes;
 import de.josmer.application.interfaces.IRadiationRepository;
 import de.josmer.application.utils.Toolbox;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URL;
@@ -18,7 +18,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public final class RadiationCrawler {
-    private static final Logger LOGGER = LogManager.getLogger(RadiationCrawler.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(RadiationCrawler.class.getName());
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;

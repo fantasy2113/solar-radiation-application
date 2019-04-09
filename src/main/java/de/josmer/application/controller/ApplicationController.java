@@ -7,9 +7,9 @@ import de.josmer.application.requests.SearchRequest;
 import de.josmer.application.security.Authenticator;
 import de.josmer.application.security.Key;
 import de.josmer.application.utils.Toolbox;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jxls.template.SimpleExporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 public class ApplicationController {
-    private static final Logger LOGGER = LogManager.getLogger(ApplicationController.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class.getName());
 
     @Autowired
     private IExportRepository exportRep;

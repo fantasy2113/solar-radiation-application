@@ -1,8 +1,8 @@
 package de.josmer.application.repositories;
 
 import de.josmer.application.interfaces.ILogRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 @Component
 public final class LogRepository implements ILogRepository {
 
-    private static final Logger LOGGER = LogManager.getLogger(LogRepository.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogRepository.class.getName());
 
     @Override
     public List<String> infoLogs() {

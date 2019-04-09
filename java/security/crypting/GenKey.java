@@ -1,7 +1,7 @@
 package com.orbis.coreserver.api.security.crypting;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.LoggerFactory;
 import org.apache.logging.log4j.Logger;
 
 import javax.crypto.KeyGenerator;
@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class GenKey {
 
-    private static final Logger LOGGER = LogManager.getLogger(GenKey.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenKey.class.getName());
 
     private GenKey() {
     }

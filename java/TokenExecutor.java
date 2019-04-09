@@ -2,7 +2,7 @@ package com.orbis.coreserver.executors;
 
 import com.orbis.coreserver.api.security.token.Token;
 import com.orbis.coreserver.base.interfaces.executor.IExecutor;
-import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.LoggerFactory;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 public final class TokenExecutor implements IExecutor {
 
-    private static final Logger LOGGER = LogManager.getLogger(TokenExecutor.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenExecutor.class.getName());
 
     @Override
     public void start() {

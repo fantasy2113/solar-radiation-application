@@ -3,12 +3,12 @@ package de.josmer.application.handler;
 import de.josmer.application.crawler.Insert;
 import de.josmer.application.enums.RadiationTypes;
 import de.josmer.application.interfaces.IRadiationRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class InsertHandler implements Runnable {
-    private static final Logger LOGGER = LogManager.getLogger(InsertHandler.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(InsertHandler.class.getName());
     @Autowired
     private IRadiationRepository radiationRepository;
 

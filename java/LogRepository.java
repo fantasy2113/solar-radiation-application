@@ -1,7 +1,7 @@
 package com.orbis.coreserver.repositories;
 
 import com.orbis.coreserver.base.interfaces.repositories.ILogRepository;
-import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.LoggerFactory;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 public final class LogRepository implements ILogRepository {
 
-    private static final Logger LOGGER = LogManager.getLogger(LogRepository.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogRepository.class.getName());
 
     @Override
     public List<String> infoLogs() {

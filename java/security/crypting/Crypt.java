@@ -2,7 +2,7 @@ package com.orbis.coreserver.api.security.crypting;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.LoggerFactory;
 import org.apache.logging.log4j.Logger;
 
 import javax.crypto.BadPaddingException;
@@ -16,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 
 public final class Crypt {
 
-    private static final Logger LOGGER = LogManager.getLogger(Crypt.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Crypt.class.getName());
     private Cipher deCryptCipher = null;
     private Cipher enCryptCipher = null;
 

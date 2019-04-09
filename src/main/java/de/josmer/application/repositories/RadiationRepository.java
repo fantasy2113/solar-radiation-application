@@ -3,8 +3,8 @@ package de.josmer.application.repositories;
 import de.josmer.application.entities.Radiation;
 import de.josmer.application.geo.GaussKrueger;
 import de.josmer.application.interfaces.IRadiationRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Component
 public final class RadiationRepository implements IRadiationRepository {
-    private static final Logger LOGGER = LogManager.getLogger(RadiationRepository.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(RadiationRepository.class.getName());
     private final String databaseUrl;
 
     public RadiationRepository(final String databaseUrl) {

@@ -1,6 +1,6 @@
 package com.orbis.coreserver.base;
 
-import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.LoggerFactory;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Optional;
@@ -8,7 +8,7 @@ import java.util.OptionalInt;
 
 public class Authentication {
 
-    private static final Logger LOGGER = LogManager.getLogger(Authentication.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Authentication.class.getName());
     private String token;
     private int userId;
 

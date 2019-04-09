@@ -2,11 +2,12 @@ package de.josmer.application.crawler;
 
 import de.josmer.application.enums.RadiationTypes;
 import de.josmer.application.repositories.RadiationRepository;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class Insert {
-    private static final Logger LOGGER = LogManager.getLogger(Insert.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Insert.class.getName());
 
     public static void main(String[] args) {
         if (!new RadiationRepository().isConnected()) {
