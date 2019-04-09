@@ -18,14 +18,8 @@ import java.util.concurrent.Executors;
 public class Application {
 
     public static void main(String[] args) {
-        if (!new RadiationRepository().isConnected()) {
-            System.out.println("no db connection");
-            return;
-        }
         SpringApplication.run(Application.class, args);
-
         openBrowser();
-
         if (false) {
             ExecutorService pool = Executors.newFixedThreadPool(1);
             pool.execute(new InsertHandler(new RadiationRepository()));
