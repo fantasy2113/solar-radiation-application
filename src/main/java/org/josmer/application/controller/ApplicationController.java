@@ -26,6 +26,11 @@ public class ApplicationController {
     private IRadiationRepository radiationRep;
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
+    public String login() {
+        return Toolbox.readFile("src/main/resources/static/html/login.html");
+    }
+
+    @GetMapping(value = "/app", produces = MediaType.TEXT_HTML_VALUE)
     public String app(@CookieValue("key") final String key) {
         if (key == null || !Key.check(key)) {
             return Toolbox.readFile("src/main/resources/static/html/login.html");

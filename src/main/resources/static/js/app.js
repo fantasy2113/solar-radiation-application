@@ -1,4 +1,25 @@
 jQuery(document).ready(function () {
+
+    var date = new Date();
+    var dates = [];
+    for (var year = 1991; year <= date.getFullYear(); year++) {
+        if (year != date.getFullYear()) {
+            for (var month = 1; month <= 12; month++) {
+                pushToDates(dates, year, month);
+            }
+        } else {
+            var end;
+            if (date.getDay() > 15) {
+                end = date.getMonth() - 1;
+            } else {
+                end = date.getMonth() - 2;
+            }
+            for (var currentMonth = 1; currentMonth <= end; currentMonth++) {
+                pushToDates(dates, year, currentMonth);
+            }
+        }
+    }
+
     $('#src').empty();
     $.ajax({
         beforeSend: function (request) {
@@ -13,19 +34,10 @@ jQuery(document).ready(function () {
         }
     });
 
-    var dates = [];
-    for (var year = 1991; year <= 2019; year++) {
-        for (var month = 1; month <= 12; month++) {
-            if (month.toString().length === 1) {
-                dates.push(year.toString() + '-0' + month.toString());
-            } else {
-                dates.push(year.toString() + '-' + month.toString());
-            }
-        }
-    }
-
+    $('#end_date').val(dates[dates.length - 1]);
     autocomplete(document.getElementById("start_date"), dates);
     autocomplete(document.getElementById("end_date"), dates);
+
 
     var search_button = jQuery('#search_button');
     search_button.bind('click', function () {
@@ -77,6 +89,14 @@ function getExportQuery() {
     return 'startDate=' + $('input[id=start_date]').val() + '&endDate=' + $('input[id=end_date]').val()
         + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
         + '&type=' + $('#type_select option:selected').text().replace("-", "#");
+}
+
+function pushToDates(dates, year, month) {
+    if (month.toString().length === 1) {
+        dates.push(year.toString() + '-0' + month.toString());
+    } else {
+        dates.push(year.toString() + '-' + month.toString());
+    }
 }
 
 function autocomplete(inp, arr) {
