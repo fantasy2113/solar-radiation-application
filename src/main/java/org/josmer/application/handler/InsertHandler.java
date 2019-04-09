@@ -3,14 +3,11 @@ package org.josmer.application.handler;
 import org.josmer.application.crawler.RadiationCrawler;
 import org.josmer.application.enums.RadiationTypes;
 import org.josmer.application.interfaces.IRadiationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class InsertHandler implements Runnable {
-
-    private final IRadiationRepository radiationRepository;
-
-    public InsertHandler(IRadiationRepository radiationRepository) {
-        this.radiationRepository = radiationRepository;
-    }
+    @Autowired
+    private IRadiationRepository radiationRepository;
 
     @Override
     public void run() {

@@ -1,7 +1,6 @@
 package org.josmer.application;
 
 import org.josmer.application.handler.InsertHandler;
-import org.josmer.application.repositories.RadiationRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,16 +21,14 @@ public class Application {
         openBrowser();
         if (false) {
             ExecutorService pool = Executors.newFixedThreadPool(1);
-            pool.execute(new InsertHandler(new RadiationRepository()));
+            pool.execute(new InsertHandler());
         }
     }
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
-
             System.out.println("Let's inspect the beans provided by Spring Boot:");
-
             String[] beanNames = ctx.getBeanDefinitionNames();
             Arrays.sort(beanNames);
             for (String beanName : beanNames) {
@@ -43,6 +40,9 @@ public class Application {
 
     private static void openBrowser() {
         try {
+            if (System.getenv("DEV_BROWSER") == null || System.getenv("DEV_URL") == null) {
+                return;
+            }
             new ProcessBuilder(System.getenv("DEV_BROWSER"), System.getenv("DEV_URL")).start();
         } catch (Exception e) {
             System.out.println(e.getMessage());
