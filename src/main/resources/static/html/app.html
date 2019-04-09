@@ -13,6 +13,19 @@
             border: 1px solid black;
             border-collapse: collapse;
         }
+
+        input {
+            margin: 2px 0;
+            width: 150px;
+        }
+
+        button {
+            width: 91px;
+        }
+
+        select {
+            width: 150px;
+        }
     </style>
 </head>
 <body style="background-color:whitesmoke">
@@ -31,8 +44,8 @@
 </form>
 <form autocomplete="off">
     <div class="autocomplete">
-        <label for="end_date"><b>Bis:&nbsp;</b></label>
-        <input id="end_date" type="text">
+        <label for="end_date"><b>Bis:</b></label>
+        <input id="end_date" style="margin-left: 4px;" type="text">
     </div>
 </form>
 <br>
@@ -40,8 +53,8 @@
     <label><b>Dezimalgrad</b> (WGS84)</label>
 </div>
 <div>
-    <label for="lat"><b>Lat:&nbsp;</b></label>
-    <input id="lat" step="0.000001" type="number" value="52.519981">
+    <label for="lat"><b>Lat:</b></label>
+    <input id="lat" step="0.000001" style="margin-left: 4px;" type="number" value="52.519981">
 </div>
 <div>
     <label for="lon"><b>Lon:</b></label>
@@ -49,8 +62,8 @@
 </div>
 <br>
 <div>
-    <label for="type_select"><b>Art:&nbsp;</b></label>
-    <select id="type_select">
+    <label for="type_select"><b>Art:</b></label>
+    <select id="type_select" style="margin-left: 4px;">
         <option value="GLOBAL">GLOBAL</option>
         <option value="DIRECT">DIRECT</option>
         <option value="DIFFUSE">DIFFUSE</option>
