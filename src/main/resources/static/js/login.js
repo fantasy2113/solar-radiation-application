@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
             dataType: "text",
             success: function (key) {
                 document.cookie = 'key=' + key + ';';
-                $(location).attr('href', getPath() + 'app');
+                $(location).attr('href', getPath());
             }
         });
     })

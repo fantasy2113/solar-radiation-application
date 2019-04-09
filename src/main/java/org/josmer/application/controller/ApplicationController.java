@@ -18,7 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/")
 public class ApplicationController {
 
     @Autowired
@@ -26,17 +25,12 @@ public class ApplicationController {
     @Autowired
     private IRadiationRepository radiationRep;
 
-    @GetMapping(value = "/app", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
     public String app(@CookieValue("key") final String key) {
         if (!Key.check(key)) {
-            return Toolbox.readFile("src/main/resources/static/html/accessDenied.html");
+            return Toolbox.readFile("src/main/resources/static/html/login.html");
         }
         return Toolbox.readFile("src/main/resources/static/html/app.html");
-    }
-
-    @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
-    public String login() {
-        return Toolbox.readFile("src/main/resources/static/html/login.html");
     }
 
     @GetMapping(value = "/key", produces = MediaType.TEXT_PLAIN_VALUE)

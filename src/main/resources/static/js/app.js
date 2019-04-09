@@ -46,14 +46,14 @@ jQuery(document).ready(function () {
                 var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat (WGS84)</th><th>Lon (WGS84)</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Auflösung</th><th>Quelle</th></tr></thead>';
                 $.each(data, function (i, item) {
                     table += '<tbody><tr>';
-                    table += '<td>' + data[i].date + '</td>'
-                    table += '<td>' + data[i].lat + '</td>'
-                    table += '<td>' + data[i].lon + '</td>'
-                    table += '<td>' + data[i].type + '</td>'
-                    table += '<td>' + data[i].value + '</td>'
-                    table += '<td>' + data[i].unit + '</td>'
-                    table += '<td>' + data[i].resolution + '</td>'
-                    table += '<td>' + data[i].source+ '</td>'
+                    table += '<td>' + data[i].date + '</td>';
+                    table += '<td>' + data[i].lat + '</td>';
+                    table += '<td>' + data[i].lon + '</td>';
+                    table += '<td>' + data[i].type + '</td>';
+                    table += '<td>' + data[i].value + '</td>';
+                    table += '<td>' + data[i].unit + '</td>';
+                    table += '<td>' + data[i].resolution + '</td>';
+                    table += '<td>' + data[i].source + '</td>';
                     table += '</tr>';
                 });
                 $('#result').append(table + '</tbody></table>');
@@ -62,13 +62,13 @@ jQuery(document).ready(function () {
                 console.log(jqXhr + textStatus + errorMessage);
             }
         });
-    })
+    });
 
     var logout_button = jQuery('#logout_button');
     logout_button.bind('click', function () {
         document.cookie = 'key=;';
-        $(location).attr('href', getPath());
-    })
+        $(location).attr('href');
+    });
 
     var export_button = jQuery('#export_button');
     export_button.bind('click', function () {
@@ -78,8 +78,8 @@ jQuery(document).ready(function () {
 
 function getExportQuery() {
     return 'startDate=' + $('input[id=start_date]').val() + '&endDate=' + $('input[id=end_date]').val()
-            + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
-            + '&type=' + $('#type_select option:selected').text().replace("-", "#");
+        + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
+        + '&type=' + $('#type_select option:selected').text().replace("-", "#");
 }
 
 function autocomplete(inp, arr) {
@@ -151,6 +151,7 @@ function autocomplete(inp, arr) {
             }
         }
     });
+
     function addActive(x) {
         /*a function to classify an item as "active":*/
         if (!x)
@@ -164,12 +165,14 @@ function autocomplete(inp, arr) {
         /*add class "autocomplete-active":*/
         x[currentFocus].classList.add("autocomplete-active");
     }
+
     function removeActive(x) {
         /*a function to remove the "active" class from all autocomplete items:*/
         for (var i = 0; i < x.length; i++) {
             x[i].classList.remove("autocomplete-active");
         }
     }
+
     function closeAllLists(elmnt) {
         /*close all autocomplete lists in the document,
          except the one passed as an argument:*/
@@ -180,6 +183,7 @@ function autocomplete(inp, arr) {
             }
         }
     }
+
     /*execute a function when someone clicks in the document:*/
     document.addEventListener("click", function (e) {
         closeAllLists(e.target);
