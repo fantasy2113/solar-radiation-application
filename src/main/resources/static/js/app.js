@@ -42,7 +42,7 @@ jQuery(document).ready(function () {
                 type: $('#type_select option:selected').text()
             },
             success: function (data) {
-                var table = '<table bgcolor="#FFFFFF" id="result_table"><thead><tr><th>Datum</th><th>Lat (WGS84)</th><th>Lon (WGS84)</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Auflösung</th><th>Quelle</th></tr></thead>';
+                var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat (WGS84)</th><th>Lon (WGS84)</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Auflösung</th><th>Quelle</th></tr></thead>';
                 $.each(data, function (i, item) {
                     table += '<tbody><tr>';
                     table += '<td>' + item.date + '</td>';
