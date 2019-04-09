@@ -27,7 +27,7 @@ public class ApplicationController {
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
     public String app(@CookieValue("key") final String key) {
-        if (!Key.check(key)) {
+        if (key == null || !Key.check(key)) {
             return Toolbox.readFile("src/main/resources/static/html/login.html");
         }
         return Toolbox.readFile("src/main/resources/static/html/app.html");
