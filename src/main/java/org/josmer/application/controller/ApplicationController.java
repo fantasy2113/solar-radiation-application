@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -76,7 +75,7 @@ public class ApplicationController {
     @GetMapping("/find")
     public List<Export> find(@CookieValue("key") final String key, final SearchRequest req) {
         if (!Key.check(key)) {
-            return new LinkedList<>();
+            return null;
         }
         return exportRep.getAll(
                 radiationRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(),
