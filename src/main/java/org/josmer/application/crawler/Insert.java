@@ -15,7 +15,7 @@ public class Insert {
         insertData(RadiationTypes.DIFFUSE);
     }
 
-    private static void insertData(RadiationTypes type) {
+    public static void insertData(RadiationTypes type) {
         for (int year = 1991; year < 2020; year++) {
             for (int month = 1; month < 13; month++) {
                 System.out.println(">>> Month: " + month + ", Year: " + year);
