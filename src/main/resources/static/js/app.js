@@ -46,14 +46,14 @@ jQuery(document).ready(function () {
                 var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat (WGS84)</th><th>Lon (WGS84)</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Auflösung</th><th>Quelle</th></tr></thead>';
                 $.each(data, function (i, item) {
                     table += '<tbody><tr>';
-                    table += '<td>' + data[i].date + '</td>';
-                    table += '<td>' + data[i].lat + '</td>';
-                    table += '<td>' + data[i].lon + '</td>';
-                    table += '<td>' + data[i].type + '</td>';
-                    table += '<td>' + data[i].value + '</td>';
-                    table += '<td>' + data[i].unit + '</td>';
-                    table += '<td>' + data[i].resolution + '</td>';
-                    table += '<td>' + data[i].source + '</td>';
+                    table += '<td>' + item.date + '</td>';
+                    table += '<td>' + item.lat + '</td>';
+                    table += '<td>' + item.lon + '</td>';
+                    table += '<td>' + item.type + '</td>';
+                    table += '<td>' + item.value + '</td>';
+                    table += '<td>' + item.unit + '</td>';
+                    table += '<td>' + item.resolution + '</td>';
+                    table += '<td>' + item.source + '</td>';
                     table += '</tr>';
                 });
                 $('#result').append(table + '</tbody></table>');
