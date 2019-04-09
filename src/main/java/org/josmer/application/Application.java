@@ -19,7 +19,7 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         openBrowser();
-        if (true) {
+        if (false) {
             ExecutorService pool = Executors.newFixedThreadPool(1);
             pool.execute(new InsertHandler());
         }

@@ -49,7 +49,7 @@ public final class RadiationRepository implements IRadiationRepository {
             try {
                 connection = getConnection();
                 preparedStatement = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
-                        + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? LIMIT ?;");
+                        + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? ORDER BY radiation_date ASC LIMIT ?;");
                 preparedStatement.setInt(1, hochwert);
                 preparedStatement.setInt(2, hochwert + 1000);
                 preparedStatement.setInt(3, rechtswert);
