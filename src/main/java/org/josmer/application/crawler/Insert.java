@@ -1,13 +1,16 @@
 package org.josmer.application.crawler;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.josmer.application.enums.RadiationTypes;
 import org.josmer.application.repositories.RadiationRepository;
 
 public class Insert {
+    private static final Logger LOGGER = LogManager.getLogger(Insert.class.getName());
 
     public static void main(String[] args) {
         if (!new RadiationRepository().isConnected()) {
-            System.out.println("no db connection");
+            LOGGER.info("no db connection");
             return;
         }
         insertData(RadiationTypes.GLOBAL);
@@ -18,13 +21,12 @@ public class Insert {
     public static void insertData(RadiationTypes type) {
         for (int year = 1991; year < 2020; year++) {
             for (int month = 1; month < 13; month++) {
-                System.out.println(">>> Month: " + month + ", Year: " + year);
+                LOGGER.info(">>> Month: " + month + ", Year: " + year);
                 RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, type);
                 radiationCrawler.download();
                 radiationCrawler.unzip();
                 radiationCrawler.insert(new RadiationRepository());
                 radiationCrawler.delete();
-                System.out.println();
             }
         }
     }

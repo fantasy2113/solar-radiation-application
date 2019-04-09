@@ -1,5 +1,7 @@
 package org.josmer.application.crawler;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.josmer.application.entities.Radiation;
 import org.josmer.application.enums.RadiationTypes;
 import org.josmer.application.interfaces.IRadiationRepository;
@@ -16,7 +18,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public final class RadiationCrawler {
-
+    private static final Logger LOGGER = LogManager.getLogger(RadiationCrawler.class.getName());
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;
@@ -44,20 +46,20 @@ public final class RadiationCrawler {
 
     public void download() {
         try {
-            System.out.println("downloading...");
+            LOGGER.info("downloading...");
             setCurrentTargetFile(getDate(year, month));
             URL url = new URL(getUrl());
             URLConnection connection = url.openConnection();
             InputStream inputStream = connection.getInputStream();
             inputStream.transferTo(new FileOutputStream(getPathnameZip()));
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
     }
 
     public void unzip() {
         try {
-            System.out.println("unzip...");
+            LOGGER.info("unzip...");
             File destDir = new File(targetDir);
             byte[] buffer = new byte[1024];
             try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip()))) {
@@ -75,7 +77,7 @@ public final class RadiationCrawler {
                 zipInputStream.closeEntry();
             }
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
     }
 
@@ -88,19 +90,19 @@ public final class RadiationCrawler {
     }
 
     private void inserting(final IRadiationRepository radiationRepository) {
-        System.out.println("reading...");
+        LOGGER.info("reading...");
         initRadiations();
-        System.out.println("inserting...");
+        LOGGER.info("inserting...");
         radiationRepository.save(radiations);
     }
 
     public void delete() {
-        System.out.println("deleting....");
+        LOGGER.info("deleting....");
         if (!new File(getPathnameZip()).delete()) {
-            System.out.println(getPathnameZip() + " fail");
+            LOGGER.info(getPathnameZip() + " fail");
         }
         if (!new File(getPathnameAsc()).delete()) {
-            System.out.println(getPathnameAsc() + " fail");
+            LOGGER.info(getPathnameAsc() + " fail");
         }
     }
 

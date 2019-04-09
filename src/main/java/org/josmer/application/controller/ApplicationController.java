@@ -1,5 +1,7 @@
 package org.josmer.application.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.josmer.application.entities.Export;
 import org.josmer.application.interfaces.IExportRepository;
 import org.josmer.application.interfaces.IRadiationRepository;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @RestController
 public class ApplicationController {
+    private static final Logger LOGGER = LogManager.getLogger(ApplicationController.class.getName());
 
     @Autowired
     private IExportRepository exportRep;
@@ -68,7 +71,7 @@ public class ApplicationController {
                     response.getOutputStream());
             response.flushBuffer();
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
     }
 
@@ -90,7 +93,7 @@ public class ApplicationController {
         try {
             return Integer.valueOf(date.replace("-", "").replace("#", ""));
         } catch (NumberFormatException e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
             return 0;
         }
     }

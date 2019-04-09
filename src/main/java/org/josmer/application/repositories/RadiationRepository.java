@@ -1,5 +1,7 @@
 package org.josmer.application.repositories;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.josmer.application.entities.Radiation;
 import org.josmer.application.geo.GaussKrueger;
 import org.josmer.application.interfaces.IRadiationRepository;
@@ -13,7 +15,7 @@ import java.util.List;
 
 @Component
 public final class RadiationRepository implements IRadiationRepository {
-
+    private static final Logger LOGGER = LogManager.getLogger(RadiationRepository.class.getName());
     private final String databaseUrl;
 
     public RadiationRepository(final String databaseUrl) {
@@ -61,7 +63,7 @@ public final class RadiationRepository implements IRadiationRepository {
                     radiations.add(mapToRadiation(rs));
                 }
             } catch (SQLException | URISyntaxException e) {
-                System.out.println(e.getMessage());
+                LOGGER.info(e.getMessage());
             } finally {
                 if (preparedStatement != null) {
                     preparedStatement.close();
@@ -71,7 +73,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
         return radiations;
     }
@@ -97,7 +99,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 }
                 connection.commit();
             } catch (SQLException | URISyntaxException e) {
-                System.out.println(e.getMessage());
+                LOGGER.info(e.getMessage());
                 if (connection != null) {
                     connection.rollback();
                 }
@@ -110,7 +112,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
     }
 
@@ -121,7 +123,7 @@ public final class RadiationRepository implements IRadiationRepository {
             connection.close();
             return true;
         } catch (SQLException | URISyntaxException e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
             return false;
         }
     }
@@ -135,7 +137,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 return rs.getLong(1);
             }
         } catch (SQLException | URISyntaxException e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
         return -1;
     }

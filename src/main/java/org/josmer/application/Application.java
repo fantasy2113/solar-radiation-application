@@ -1,5 +1,8 @@
 package org.josmer.application;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.josmer.application.crawler.Insert;
 import org.josmer.application.handler.InsertHandler;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +18,7 @@ import java.util.concurrent.Executors;
 @Configuration
 @SpringBootApplication
 public class Application {
+    private static final Logger LOGGER = LogManager.getLogger(Insert.class.getName());
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -25,19 +29,6 @@ public class Application {
         }
     }
 
-    @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
-            System.out.println("Let's inspect the beans provided by Spring Boot:");
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            Arrays.sort(beanNames);
-            for (String beanName : beanNames) {
-                System.out.println(beanName);
-            }
-
-        };
-    }
-
     private static void openBrowser() {
         try {
             if (System.getenv("DEV_BROWSER") == null || System.getenv("DEV_URL") == null) {
@@ -45,7 +36,20 @@ public class Application {
             }
             new ProcessBuilder(System.getenv("DEV_BROWSER"), System.getenv("DEV_URL")).start();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
+    }
+
+    @Bean
+    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+        return args -> {
+            LOGGER.info("Let's inspect the beans provided by Spring Boot:");
+            String[] beanNames = ctx.getBeanDefinitionNames();
+            Arrays.sort(beanNames);
+            for (String beanName : beanNames) {
+                LOGGER.info(beanName);
+            }
+
+        };
     }
 }
