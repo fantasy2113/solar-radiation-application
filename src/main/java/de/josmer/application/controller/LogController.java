@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public final class ServerController {
+public final class LogController {
     @Autowired
     private ILogRepository logRepository;
 
 
     @GetMapping(value = "/logs", produces = MediaType.TEXT_HTML_VALUE)
     public final String logs() {
-        return logs(logRepository.infoLogs());
+        return logs(logRepository.getLogs());
     }
 
     private String logs(final List<String> logs) {

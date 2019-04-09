@@ -21,14 +21,10 @@ public final class LogRepository implements ILogRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogRepository.class.getName());
 
     @Override
-    public List<String> infoLogs() {
-        return readLog("./logs/app.log");
+    public List<String> getLogs() {
+        return readLog("logs/spring-boot-logger.log");
     }
 
-    @Override
-    public List<String> errorLogs() {
-        return readLog("./logs/error.log");
-    }
 
     private List<String> readLog(final String path) {
         List<String> logs = getLogs(path);

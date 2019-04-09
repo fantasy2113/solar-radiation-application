@@ -4,7 +4,5 @@ import java.util.List;
 
 public interface ILogRepository {
 
-    List<String> infoLogs();
-
-    List<String> errorLogs();
+    List<String> getLogs();
 }
