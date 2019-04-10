@@ -20,13 +20,12 @@ public class Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
 
     public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+        openBrowser();
         if (true) {
             ExecutorService pool = Executors.newFixedThreadPool(1);
             pool.execute(new InsertHandler());
         }
-
-        SpringApplication.run(Application.class, args);
-        openBrowser();
     }
 
     private static void openBrowser() {
