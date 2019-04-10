@@ -23,7 +23,7 @@ public class InsertHandler implements Runnable {
         insertData(RadiationTypes.DIFFUSE);
     }
 
-    public void insertData(RadiationTypes type) {
+    private void insertData(RadiationTypes type) {
         for (int year = 1991; year < 2020; year++) {
             for (int month = 1; month < 13; month++) {
                 LOGGER.info(">>> Month: " + month + ", Year: " + year);
