@@ -4,3 +4,4 @@
 target/
 *.asc
 *.zip
+*.log
