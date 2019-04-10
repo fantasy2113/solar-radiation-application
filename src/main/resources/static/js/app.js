@@ -42,7 +42,7 @@ jQuery(document).ready(function () {
                 type: $('#type_select option:selected').text()
             },
             success: function (data) {
-                var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat (WGS84)</th><th>Lon (WGS84)</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Auflösung</th><th>Quelle</th></tr></thead>';
+                var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat</th><th>Lon</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Dim</th><th>Quelle</th></tr></thead>';
                 $.each(data, function (i, item) {
                     table += '<tbody><tr>';
                     table += '<td>' + item.date + '</td>';
@@ -51,7 +51,7 @@ jQuery(document).ready(function () {
                     table += '<td>' + item.type + '</td>';
                     table += '<td>' + item.value + '</td>';
                     table += '<td>' + item.unit + '</td>';
-                    table += '<td>' + item.resolution + '</td>';
+                    table += '<td>' + item.dim + '</td>';
                     table += '<td>' + item.source + '</td>';
                     table += '</tr>';
                 });
@@ -87,12 +87,11 @@ function initDateInputs(startYear) {
                 pushToDates(dates, year, month);
             }
         } else {
-            var end;
-            if (date.getDay() > 14) {
-                end = date.getMonth();
-            } else {
-                end = date.getMonth() - 1;
+            if (date.getDay() < 15) {
+                date.setMonth(date.getMonth() - 1);
             }
+
+            var end = date.getMonth();
             for (var currentMonth = 1; currentMonth <= end; currentMonth++) {
                 pushToDates(dates, year, currentMonth);
             }

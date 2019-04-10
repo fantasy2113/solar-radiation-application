@@ -40,7 +40,7 @@ public class ExportRepository implements IExportRepository {
         export.setType(radiation.getRadiationType());
         export.setValue(getValue(radiation));
         export.setUnit("kWh/m2");
-        export.setResolution("km2");
+        export.setDim("1km2");
         export.setSource("DWD");
         return export;
     }

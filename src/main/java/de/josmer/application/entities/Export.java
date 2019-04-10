@@ -8,7 +8,7 @@ public class Export {
     private String type;
     private double value;
     private String unit;
-    private String resolution;
+    private String dim;
     private String source;
 
     public double getValue() {
@@ -67,11 +67,11 @@ public class Export {
         this.source = source;
     }
 
-    public String getResolution() {
-        return resolution;
+    public String getDim() {
+        return dim;
     }
 
-    public void setResolution(String resolution) {
-        this.resolution = resolution;
+    public void setDim(String dim) {
+        this.dim = dim;
     }
 }

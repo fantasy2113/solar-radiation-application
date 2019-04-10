@@ -1,7 +1,5 @@
 package de.josmer.application;
 
-import de.josmer.application.enums.RadiationTypes;
-import de.josmer.application.handler.InsertHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -21,9 +19,9 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         openBrowser();
-        new InsertHandler(RadiationTypes.GLOBAL).start();
+        /*new InsertHandler(RadiationTypes.GLOBAL).start();
         new InsertHandler(RadiationTypes.DIFFUSE).start();
-        new InsertHandler(RadiationTypes.DIRECT).start();
+        new InsertHandler(RadiationTypes.DIRECT).start();*/
     }
 
     private static void openBrowser() {
