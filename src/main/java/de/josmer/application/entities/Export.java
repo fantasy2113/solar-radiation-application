@@ -3,8 +3,8 @@ package de.josmer.application.entities;
 public class Export {
 
     private String date;
-    private double lat;
-    private double lon;
+    private String lat;
+    private String lon;
     private String type;
     private double value;
     private String unit;
@@ -19,19 +19,19 @@ public class Export {
         this.value = value;
     }
 
-    public double getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat(double lat) {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 
-    public double getLon() {
+    public String getLon() {
         return lon;
     }
 
-    public void setLon(double lon) {
+    public void setLon(String lon) {
         this.lon = lon;
     }
 

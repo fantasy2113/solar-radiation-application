@@ -3,6 +3,7 @@ package de.josmer.application.repositories;
 import de.josmer.application.entities.Export;
 import de.josmer.application.entities.Radiation;
 import de.josmer.application.interfaces.IExportRepository;
+import org.apache.commons.math3.util.Precision;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -34,14 +35,22 @@ public class ExportRepository implements IExportRepository {
     private Export mapToExport(double lon, double lat, Radiation radiation) {
         Export export = new Export();
         export.setDate(parseDate(radiation.getRadiationDate()));
-        export.setLat(lat);
-        export.setLon(lon);
+        export.setLat(round(lat));
+        export.setLon(round(lon));
         export.setType(radiation.getRadiationType());
-        export.setValue(Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", radiation.getRadiationValue())));
+        export.setValue(getValue(radiation));
         export.setUnit("kWh/m2");
-        export.setResolution("1 km2");
-        export.setSource("DWD/KU1HA");
+        export.setResolution("km2");
+        export.setSource("DWD");
         return export;
+    }
+
+    private String round(double lat) {
+        return String.format(Locale.ENGLISH, "%.3f", Precision.round(lat, 3));
+    }
+
+    private double getValue(Radiation radiation) {
+        return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", radiation.getRadiationValue()));
     }
 
     private String parseDate(final int date) {
