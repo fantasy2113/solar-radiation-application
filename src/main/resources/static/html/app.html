@@ -16,23 +16,34 @@
         }
 
         input {
-            margin: 2px 0;
+            margin: 3px 0;
             width: 150px;
+            height: 25px;
+            background-color: white;
         }
 
         button {
+            height: 25px;
             width: 91px;
+            background-color: white;
+            border: 1px solid darkgray;
         }
 
         select {
+            height: 25px;
             width: 150px;
+            background-color: white;
         }
     </style>
 </head>
 <body style="background-color:whitesmoke">
-<div>
-    <h2>sonneneinstrahlungDB</h2>
+<div style="background-color:white;width:190px;height:25px;text-align: center;vertical-align: middle;line-height:25px;">
+    <h3>sonneneinstrahlungDB</h3>
 </div>
+<br>
+<div id="rows">
+</div>
+<br>
 <div>
     <button id="logout_button">Abmelden</button>
 </div>
@@ -69,9 +80,6 @@
         <option value="DIRECT">DIRECT</option>
         <option value="DIFFUSE">DIFFUSE</option>
     </select>
-</div>
-<br>
-<div id="rows">
 </div>
 <br>
 <div>
