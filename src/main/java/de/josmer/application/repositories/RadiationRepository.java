@@ -85,7 +85,7 @@ public final class RadiationRepository implements IRadiationRepository {
         try {
             try {
                 connection = getConnection();
-                //connection.setAutoCommit(false);
+                connection.setAutoCommit(false);
                 for (Radiation radiation : radiations) {
                     preparedStatement = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)");
                     preparedStatement.setString(1, radiation.getRadiationType());
@@ -97,7 +97,7 @@ public final class RadiationRepository implements IRadiationRepository {
                     preparedStatement.setFloat(7, radiation.getRadiationValue());
                     preparedStatement.executeUpdate();
                 }
-                //connection.commit();
+                connection.commit();
                 LOGGER.info("insert month");
             } catch (SQLException | URISyntaxException e) {
                 LOGGER.info(e.getMessage());
