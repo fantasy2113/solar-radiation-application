@@ -10,7 +10,7 @@
 
 .autocomplete-items {
     position: absolute;
-    border: 1px solid darkgray;
+    border: 1px solid black;
     border-bottom: none;
     border-top: none;
     z-index: 99;
@@ -23,7 +23,7 @@
 .autocomplete-items div {
     cursor: pointer;
     background-color: white;
-    border-bottom: 1px solid darkgray;
+    border-bottom: 1px solid black;
 }
 
 .autocomplete-items div:hover {
@@ -33,6 +33,6 @@
 
 .autocomplete-active {
     /*when navigating through the items using the arrow keys:*/
-    background-color: DodgerBlue !important;
+    background-color: white !important;
     color: whitesmoke;
 }

@@ -11,7 +11,7 @@ jQuery(document).ready(function () {
         method: 'GET',
         dataType: "text",
         success: function (rows) {
-            $('#rows').append('<b>Datenbestand: </b>' + rows);
+            $('#rows').append('<b>Datenanzahl: </b>' + rows);
         }
     });
 
@@ -24,7 +24,6 @@ jQuery(document).ready(function () {
             initDateInputs(2015);
         }
     });
-
 
     var search_button = jQuery('#search_button');
     search_button.bind('click', function () {
