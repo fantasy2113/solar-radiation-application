@@ -17,6 +17,7 @@ jQuery(document).ready(function () {
 
     var type_select = jQuery('#type_select');
     type_select.bind('change', function () {
+        $('#jsGrid').empty();
         var selected_value = $('#type_select option:selected').text();
         if (selected_value === 'GLOBAL') {
             initDateInputs(1991);
@@ -25,9 +26,29 @@ jQuery(document).ready(function () {
         }
     });
 
+    var start_date_select = jQuery('#start_date');
+    start_date_select.bind('change', function () {
+        $('#jsGrid').empty();
+    });
+
+    var end_date_select = jQuery('#end_date');
+    end_date_select.bind('change', function () {
+        $('#jsGrid').empty();
+    });
+
+    var lon_input = jQuery('#lon');
+    lon_input.bind('change', function () {
+        $('#jsGrid').empty();
+    });
+
+    var lat_input = jQuery('#lat');
+    lat_input.bind('change', function () {
+        $('#jsGrid').empty();
+    });
+
     var search_button = jQuery('#search_button');
     search_button.bind('click', function () {
-        $('#result').empty();
+        $('#jsGrid').empty();
         $.ajax({
             method: 'GET',
             url: getPath() + 'find',
@@ -40,21 +61,23 @@ jQuery(document).ready(function () {
                 lon: $('input[id=lon]').val(),
                 type: $('#type_select option:selected').text()
             },
-            success: function (data) {
-                var table = '<table id="result_table"><thead><tr><th>Datum</th><th>Lat</th><th>Lon</th><th>Art</th><th>Wert</th><th>Einheit</th><th>Dim</th><th>Quelle</th></tr></thead>';
-                $.each(data, function (i, item) {
-                    table += '<tbody><tr>';
-                    table += '<td>' + item.date + '</td>';
-                    table += '<td>' + item.lat + '</td>';
-                    table += '<td>' + item.lon + '</td>';
-                    table += '<td>' + item.type + '</td>';
-                    table += '<td>' + item.value + '</td>';
-                    table += '<td>' + item.unit + '</td>';
-                    table += '<td>' + item.dim + '</td>';
-                    table += '<td>' + item.source + '</td>';
-                    table += '</tr>';
+            success: function (json) {
+                console.log(json);
+                $("#jsGrid").jsGrid({
+                    width: "auto",
+                    height: "800",
+
+                    data: json,
+
+                    fields: [
+                        {name: "datum", type: "text"},
+                        {name: "lat", type: "number"},
+                        {name: "lon", type: "number"},
+                        {name: "wert", type: "number"},
+                        {name: "einheit", type: "text"},
+                        {name: "dim", type: "text"}
+                    ]
                 });
-                $('#result').append(table + '</tbody></table>');
             }
         });
     });

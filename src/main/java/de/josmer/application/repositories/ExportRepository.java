@@ -34,14 +34,14 @@ public class ExportRepository implements IExportRepository {
 
     private Export mapToExport(double lon, double lat, Radiation radiation) {
         Export export = new Export();
-        export.setDate(parseDate(radiation.getRadiationDate()));
+        export.setDatum(parseDate(radiation.getRadiationDate()));
         export.setLat(round(lat));
         export.setLon(round(lon));
-        export.setType(radiation.getRadiationType());
-        export.setValue(getValue(radiation));
-        export.setUnit("kWh/m2");
+        export.setArt(radiation.getRadiationType());
+        export.setWert(getValue(radiation));
+        export.setEinheit("kWh/m2");
         export.setDim("1km2");
-        export.setSource("DWD");
+        export.setQuelle("DWD");
         return export;
     }
 
