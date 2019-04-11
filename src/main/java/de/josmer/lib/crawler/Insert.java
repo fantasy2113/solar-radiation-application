@@ -10,10 +10,6 @@ public class Insert {
     private static final Logger LOGGER = LoggerFactory.getLogger(Insert.class.getName());
 
     public static void main(String[] args) {
-        if (!new RadiationRepository().isConnected()) {
-            LOGGER.info("no db connection");
-            return;
-        }
         insertData(RadiationTypes.GLOBAL);
         insertData(RadiationTypes.DIRECT);
         insertData(RadiationTypes.DIFFUSE);
