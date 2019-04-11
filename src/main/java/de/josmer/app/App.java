@@ -4,6 +4,7 @@ import de.josmer.app.lib.enums.RadiationTypes;
 import de.josmer.app.lib.handler.InsertHandler;
 import de.josmer.app.lib.handler.TokenHandler;
 import de.josmer.app.lib.security.Token;
+import de.josmer.app.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -21,9 +22,10 @@ public class App {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class.getName());
 
     public static void main(String[] args) {
-        Token.init();
         SpringApplication.run(App.class, args);
         openBrowser();
+        Token.init();
+        new UserRepository().saveUser("user", "abc123");
         new InsertHandler(RadiationTypes.GLOBAL).start();
         new InsertHandler(RadiationTypes.DIFFUSE).start();
         new InsertHandler(RadiationTypes.DIRECT).start();

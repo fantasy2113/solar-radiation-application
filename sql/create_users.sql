@@ -1,15 +1,15 @@
--- Table: public."user"
+-- Table: public.users
 
--- DROP TABLE public."user";
+-- DROP TABLE public.users;
 
-CREATE TABLE public."user"
+CREATE TABLE public.users
 (
-    id integer NOT NULL DEFAULT nextval('user_id_seq'::regclass),
+    id bigserial NOT NULL UNIQUE,
     password character varying(60) COLLATE pg_catalog."default" NOT NULL,
     login character varying(12) COLLATE pg_catalog."default" NOT NULL,
     is_active boolean NOT NULL,
     CONSTRAINT user_pkey PRIMARY KEY (id, login),
-    CONSTRAINT login UNIQUE (login)
+    CONSTRAINT unique_login UNIQUE (login)
 
 )
 WITH (
@@ -17,5 +17,5 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."user"
+ALTER TABLE public.users
     OWNER to postgres;
