@@ -29,7 +29,7 @@ public class ExportRepository implements IExportRepository {
 
     @Override
     public String getProps() {
-        return "date, lat, lon, type, value, unit, dim, source, ";
+        return "datum, lat, lon, art, wert, einheit, dim, quelle, ";
     }
 
     private Export mapToExport(double lon, double lat, Radiation radiation) {
@@ -40,8 +40,8 @@ public class ExportRepository implements IExportRepository {
         export.setArt(radiation.getRadiationType());
         export.setWert(getValue(radiation));
         export.setEinheit("kWh/m2");
-        export.setDim("1km2");
-        export.setQuelle("DWD");
+        export.setDim("1 km2");
+        export.setQuelle("DWD CDC");
         return export;
     }
 
