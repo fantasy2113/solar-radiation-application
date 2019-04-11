@@ -62,20 +62,19 @@ jQuery(document).ready(function () {
                 type: $('#type_select option:selected').text()
             },
             success: function (json) {
-                console.log(json);
                 $("#jsGrid").jsGrid({
-                    width: "auto",
-                    height: "800",
+                    width: "620",
+                    height: "620",
 
                     data: json,
 
                     fields: [
-                        {name: "datum", type: "text"},
-                        {name: "lat", type: "number"},
-                        {name: "lon", type: "number"},
-                        {name: "wert", type: "number"},
-                        {name: "einheit", type: "text"},
-                        {name: "dim", type: "text"}
+                        {name: "date", title: "Datum", type: "text"},
+                        {name: "lat", title: "Lat", type: "number"},
+                        {name: "lon", title: "Lon", type: "number"},
+                        {name: "value", title: "Wert", type: "number"},
+                        {name: "unit", title: "Einheit", type: "text"},
+                        {name: "dim", title: "Dim", type: "text"}
                     ]
                 });
             }

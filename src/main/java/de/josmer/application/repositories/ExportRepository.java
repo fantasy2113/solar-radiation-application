@@ -29,19 +29,19 @@ public class ExportRepository implements IExportRepository {
 
     @Override
     public String getProps() {
-        return "datum, lat, lon, art, wert, einheit, dim, quelle, ";
+        return "date, lat, lon, type, value, unit, dim, source, ";
     }
 
     private Export mapToExport(double lon, double lat, Radiation radiation) {
         Export export = new Export();
-        export.setDatum(parseDate(radiation.getRadiationDate()));
+        export.setDate(parseDate(radiation.getRadiationDate()));
         export.setLat(round(lat));
         export.setLon(round(lon));
-        export.setArt(radiation.getRadiationType());
-        export.setWert(getValue(radiation));
-        export.setEinheit("kWh/m2");
+        export.setType(radiation.getRadiationType());
+        export.setValue(getValue(radiation));
+        export.setUnit("kWh/m2");
         export.setDim("1 km2");
-        export.setQuelle("DWD CDC");
+        export.setSource("DWD CDC");
         return export;
     }
 

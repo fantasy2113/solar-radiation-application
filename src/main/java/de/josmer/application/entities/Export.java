@@ -2,21 +2,21 @@ package de.josmer.application.entities;
 
 public class Export {
 
-    private String datum;
+    private String date;
     private String lat;
     private String lon;
-    private String art;
-    private double wert;
-    private String einheit;
+    private String type;
+    private double value;
+    private String unit;
     private String dim;
-    private String quelle;
+    private String source;
 
-    public double getWert() {
-        return wert;
+    public double getValue() {
+        return value;
     }
 
-    public void setWert(double wert) {
-        this.wert = wert;
+    public void setValue(double value) {
+        this.value = value;
     }
 
     public String getLat() {
@@ -35,36 +35,36 @@ public class Export {
         this.lon = lon;
     }
 
-    public String getArt() {
-        return art;
+    public String getType() {
+        return type;
     }
 
-    public void setArt(String art) {
-        this.art = art;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getDatum() {
-        return datum;
+    public String getDate() {
+        return date;
     }
 
-    public void setDatum(String datum) {
-        this.datum = datum;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getEinheit() {
-        return einheit;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setEinheit(String einheit) {
-        this.einheit = einheit;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
-    public String getQuelle() {
-        return quelle;
+    public String getSource() {
+        return source;
     }
 
-    public void setQuelle(String quelle) {
-        this.quelle = quelle;
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getDim() {
