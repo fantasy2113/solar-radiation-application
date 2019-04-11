@@ -27,11 +27,11 @@ public class UserRepository extends Repository<User> implements IUserRepository 
     public Optional<User> get(int id) {
 
 
-        return null;
+        return Optional.empty();
     }
 
     @Override
     public Optional<User> get(String login) {
-        return null;
+        return Optional.empty();
     }
 }

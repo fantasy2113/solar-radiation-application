@@ -10,8 +10,8 @@ jQuery(document).ready(function () {
             url: getPath() + 'token',
             method: 'GET',
             dataType: "text",
-            success: function (key) {
-                document.cookie = 'token=' + key + ';';
+            success: function (token) {
+                document.cookie = 'token=' + token + ';';
                 $(location).attr('href', getPath() + 'app');
             }
         });

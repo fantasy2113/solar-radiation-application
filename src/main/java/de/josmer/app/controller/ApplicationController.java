@@ -12,6 +12,7 @@ import de.josmer.app.lib.utils.Toolbox;
 import org.jxls.template.SimpleExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +24,11 @@ import java.util.Optional;
 @RestController
 public class ApplicationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class.getName());
+    @Autowired
     private IExportRepository exportRep;
+    @Autowired
     private IRadiationRepository radiationRep;
+    @Autowired
     private IUserRepository userRepository;
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
