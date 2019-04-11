@@ -2,6 +2,7 @@ package de.josmer.application;
 
 import de.josmer.application.enums.RadiationTypes;
 import de.josmer.application.handler.InsertHandler;
+import de.josmer.application.security.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +20,7 @@ public class Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
 
     public static void main(String[] args) {
+        Token.init();
         SpringApplication.run(Application.class, args);
         openBrowser();
         new InsertHandler(RadiationTypes.GLOBAL).start();

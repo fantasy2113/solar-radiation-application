@@ -10,7 +10,5 @@ public interface IRadiationRepository {
 
     void save(List<Radiation> radiations);
 
-    boolean isConnected();
-
     long count();
 }

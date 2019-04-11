@@ -3,27 +3,22 @@ package de.josmer.application.repositories;
 import de.josmer.application.entities.Radiation;
 import de.josmer.application.geo.GaussKrueger;
 import de.josmer.application.interfaces.IRadiationRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public final class RadiationRepository implements IRadiationRepository {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RadiationRepository.class.getName());
-    private final String databaseUrl;
+public final class RadiationRepository extends Repository<Radiation> implements IRadiationRepository {
 
     public RadiationRepository(final String databaseUrl) {
-        this.databaseUrl = databaseUrl;
+        super(databaseUrl);
     }
 
     public RadiationRepository() {
-        this.databaseUrl = System.getenv("DATABASE_URL");
+        super();
     }
 
     @Override
@@ -60,7 +55,7 @@ public final class RadiationRepository implements IRadiationRepository {
                 preparedStatement.setInt(6, endDate - startDate + 1);
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
-                    radiations.add(mapToRadiation(rs));
+                    radiations.add(map(rs));
                 }
             } catch (SQLException | URISyntaxException e) {
                 LOGGER.info(e.getMessage());
@@ -118,18 +113,6 @@ public final class RadiationRepository implements IRadiationRepository {
     }
 
     @Override
-    public boolean isConnected() {
-        try {
-            Connection connection = getConnection();
-            connection.close();
-            return true;
-        } catch (SQLException | URISyntaxException e) {
-            LOGGER.info(e.getMessage());
-            return false;
-        }
-    }
-
-    @Override
     public long count() {
         try (Connection con = getConnection();
              Statement st = con.createStatement();
@@ -143,7 +126,7 @@ public final class RadiationRepository implements IRadiationRepository {
         return -1;
     }
 
-    private Radiation mapToRadiation(ResultSet rs) throws SQLException {
+    protected Radiation map(ResultSet rs) throws SQLException {
         Radiation radiation = new Radiation();
         radiation.setRadiationType(rs.getString("radiation_type"));
         radiation.setRadiationDate(rs.getInt("radiation_date"));
@@ -155,13 +138,6 @@ public final class RadiationRepository implements IRadiationRepository {
         return radiation;
     }
 
-    private Connection getConnection() throws URISyntaxException, SQLException {
-        URI dbUri = new URI(databaseUrl);
-        String username = dbUri.getUserInfo().split(":")[0];
-        String password = dbUri.getUserInfo().split(":")[1];
-        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-        return DriverManager.getConnection(dbUrl, username, password);
-    }
 
     private int getGkValues(final double value) {
 
