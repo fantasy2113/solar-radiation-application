@@ -1,18 +1,21 @@
-package de.josmer.app.lib.crawler;
+package de.josmer.app.lib.utils;
 
+import de.josmer.app.lib.crawler.RadiationCrawler;
 import de.josmer.app.lib.enums.RadiationTypes;
 import de.josmer.app.repositories.RadiationRepository;
+import de.josmer.app.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class Insert {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Insert.class.getName());
+public class InsertMain {
+    private static final Logger LOGGER = LoggerFactory.getLogger(InsertMain.class.getName());
 
     public static void main(String[] args) {
-        insertData(RadiationTypes.GLOBAL);
-        insertData(RadiationTypes.DIRECT);
-        insertData(RadiationTypes.DIFFUSE);
+        //insertData(RadiationTypes.GLOBAL);
+        //insertData(RadiationTypes.DIRECT);
+        //insertData(RadiationTypes.DIFFUSE);
+        new UserRepository().saveUser("user", "abc123");
     }
 
     public static void insertData(RadiationTypes type) {

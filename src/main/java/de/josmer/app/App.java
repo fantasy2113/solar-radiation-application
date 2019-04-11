@@ -2,6 +2,7 @@ package de.josmer.app;
 
 import de.josmer.app.lib.enums.RadiationTypes;
 import de.josmer.app.lib.handler.InsertHandler;
+import de.josmer.app.lib.handler.TokenHandler;
 import de.josmer.app.lib.security.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ public class App {
         new InsertHandler(RadiationTypes.GLOBAL).start();
         new InsertHandler(RadiationTypes.DIFFUSE).start();
         new InsertHandler(RadiationTypes.DIRECT).start();
+        new TokenHandler().start();
     }
 
     private static void openBrowser() {

@@ -55,7 +55,7 @@ public final class RadiationRepository extends Repository<Radiation> implements 
                 preparedStatement.setInt(6, endDate - startDate + 1);
                 ResultSet rs = preparedStatement.executeQuery();
                 while (rs.next()) {
-                    radiations.add(map(rs));
+                    radiations.add(mapToEntity(rs));
                 }
             } catch (SQLException | URISyntaxException e) {
                 LOGGER.info(e.getMessage());
@@ -126,7 +126,7 @@ public final class RadiationRepository extends Repository<Radiation> implements 
         return -1;
     }
 
-    protected Radiation map(ResultSet rs) throws SQLException {
+    protected Radiation mapToEntity(ResultSet rs) throws SQLException {
         Radiation radiation = new Radiation();
         radiation.setRadiationType(rs.getString("radiation_type"));
         radiation.setRadiationDate(rs.getInt("radiation_date"));

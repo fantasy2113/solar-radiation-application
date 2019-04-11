@@ -30,5 +30,5 @@ public abstract class Repository<E> {
         return DriverManager.getConnection(dbUrl, username, password);
     }
 
-    protected abstract E map(ResultSet rs) throws SQLException;
+    protected abstract E mapToEntity(ResultSet rs) throws SQLException;
 }

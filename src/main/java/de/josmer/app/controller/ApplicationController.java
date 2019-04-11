@@ -48,7 +48,7 @@ public class ApplicationController {
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
     public String token(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         final Optional<User> optionalUser = userRepository.get(login);
-        if (optionalUser.isPresent() && optionalUser.get().getPassword().equals(password)) {
+        if (optionalUser.isPresent() && Toolbox.isPassword(password, optionalUser.get().getPassword())) {
             LOGGER.info("login");
             return Token.get(optionalUser.get().getId());
         }
@@ -105,6 +105,7 @@ public class ApplicationController {
     private boolean isAccess(final Authentication auth) {
         return auth.getToken().isPresent() && auth.getUserId().isPresent()
                 && userRepository.get(auth.getUserId().getAsInt()).isPresent()
+                && userRepository.get(auth.getUserId().getAsInt()).get().isActive()
                 && Token.check(auth.getToken().get());
     }
 }

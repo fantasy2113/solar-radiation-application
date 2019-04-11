@@ -8,13 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-public final class InsertHandler implements Runnable {
+public final class InsertHandler extends Handler {
     private static final Logger LOGGER = LoggerFactory.getLogger(InsertHandler.class.getName());
     private final RadiationTypes radiationTypes;
 
@@ -22,11 +17,6 @@ public final class InsertHandler implements Runnable {
         this.radiationTypes = radiationTypes;
     }
 
-    public void start() {
-        ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
-        long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
-        tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
-    }
 
     @Override
     public void run() {
