@@ -48,14 +48,18 @@ public class ApplicationController {
 
     @GetMapping(value = "/save_user", produces = MediaType.TEXT_HTML_VALUE)
     public String saveUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+        if (login == null || password == null || login.equals("") || password.equals("")) {
+            return "Fehler: Benutzername oder Passwort sind nicht lang genug!";
+        }
+
         if (userRepository.get(login).isPresent()) {
             return "Fehler: Benutzername ist schon vorhanden!";
         }
 
-        Pattern special = Pattern.compile("[!#$%&*()_+=|<>?{}\\[\\]~]");
-        Matcher hasSpecial = special.matcher(password);
-        if (hasSpecial.find()) {
-            return "Fehler: Benutzername enthält ungültige Zeichen!";
+        Pattern special = Pattern.compile("[!#$%&*()_+=|<>?{}\\[\\]~ ]");
+        Matcher hasSpecial = special.matcher(login);
+        if (hasSpecial.find() || password.contains(" ")) {
+            return "Fehler: Benutzername oder Passwort enthalten ungültige Zeichen!";
         }
 
         userRepository.saveUser(login, password);
