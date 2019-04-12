@@ -20,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 public class ApplicationController {
@@ -44,6 +46,27 @@ public class ApplicationController {
         return Toolbox.readFile("src/main/resources/static/html/login.html");
     }
 
+    @GetMapping(value = "/save_user", produces = MediaType.TEXT_HTML_VALUE)
+    public String saveUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+        if (userRepository.get(login).isPresent()) {
+            return "Fehler: Benutzername ist schon vorhanden!";
+        }
+
+        Pattern special = Pattern.compile("[!#$%&*()_+=|<>?{}\\[\\]~]");
+        Matcher hasSpecial = special.matcher(password);
+        if (hasSpecial.find()) {
+            return "Fehler: Benutzername enthält ungültige Zeichen!";
+        }
+
+        userRepository.saveUser(login, password);
+
+        Optional<User> optionalUser = userRepository.get(login);
+        if (optionalUser.isPresent() && optionalUser.get().isActive()) {
+            return Token.get(optionalUser.get().getId());
+        }
+
+        return "Fehler: Etwas ist schief gelaufen!";
+    }
 
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
     public String token(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {

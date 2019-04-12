@@ -23,7 +23,7 @@ public final class LogController {
     private String logs(final List<String> logs) {
         StringBuilder html = new StringBuilder();
 
-        html.append("<!DOCTYPE html><html><title>Core-Server</title><body>");
+        html.append("<!DOCTYPE html><html><title>Logs</title><body>");
         html.append("<table style=\"text-align:left;\">");
 
         html.append("<tr>");
