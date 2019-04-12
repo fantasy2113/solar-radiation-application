@@ -3,6 +3,7 @@ package de.josmer.app;
 import de.josmer.app.lib.enums.RadiationTypes;
 import de.josmer.app.lib.handler.InsertHandler;
 import de.josmer.app.lib.handler.TokenHandler;
+import de.josmer.app.lib.interfaces.IUserRepository;
 import de.josmer.app.lib.security.Token;
 import de.josmer.app.repositories.UserRepository;
 import org.slf4j.Logger;
@@ -23,9 +24,15 @@ public class App {
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
+
         openBrowser();
         Token.init();
-        new UserRepository().saveUser("user", "abc123");
+
+        IUserRepository userRepository = new UserRepository();
+        if (userRepository.get("admin").isEmpty()) {
+            userRepository.saveUser("admin", "Super71212!");
+        }
+
         new InsertHandler(RadiationTypes.GLOBAL).start();
         new InsertHandler(RadiationTypes.DIFFUSE).start();
         new InsertHandler(RadiationTypes.DIRECT).start();
