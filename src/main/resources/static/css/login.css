@@ -1,0 +1,18 @@
+input {
+    height: 25px;
+    margin: 3px 0;
+    width: 190px;
+    border: none;
+}
+
+button {
+    height: 30px;
+    margin: 5px 0;
+    width: 190px;
+    background-color: gold;
+    border: none;
+}
+
+body {
+    background-color: white;
+}

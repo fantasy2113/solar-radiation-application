@@ -13,6 +13,16 @@ function getCookie(cname) {
     return "";
 }
 
+String.prototype.includes = function (str) {
+    var returnValue = false;
+
+    if (this.indexOf(str) !== -1) {
+        returnValue = true;
+    }
+
+    return returnValue;
+};
+
 function getPath() {
     var url = window.location.href;
     if (url.includes("localhost")) {
