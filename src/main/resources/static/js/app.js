@@ -64,7 +64,7 @@ jQuery(document).ready(function () {
             success: function (json) {
                 $("#jsGrid").jsGrid({
                     width: "620",
-                    height: "620",
+                    height: "750",
 
                     data: json,
 

@@ -1,14 +1,14 @@
 input {
     height: 25px;
     margin: 3px 0;
-    width: 190px;
+    width: 247px;
     border: none;
 }
 
 button {
     height: 30px;
     margin: 5px 0;
-    width: 190px;
+    width: 247px;
     background-color: gold;
     border: none;
 }
