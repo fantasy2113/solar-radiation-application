@@ -1,26 +1,22 @@
-package de.josmer.application.sun;
+package de.josmer.app.lib.sun;
+
+import java.time.LocalDateTime;
+import java.util.Random;
 
 public class SunToolBox {
     /// <summary>global for-loop start - 24 Hours</summary>
-    public const
-    int MONTH_12 = 12;
+    public static final int MONTH_12 = 12;
     /// <summary>global for-loop start - 24 Hours</summary>
-    public const
-    int FOR_START = 0;
-    /// <summary>global for-loop end [i smaller FOR_END] - 24 Hours</summary>
-    public const
-    int FOR_END = 24;
+    public static final int FOR_START = 0;
     /// <summary>see Regenerative Energiesysteme [Quaschning] 2.6.2 ==> Perez-Modell</summary>
-    public const
-    double K = 1.041;
+    public static final double K = 1.041;
     /// <summary>see Regenerative Energiesysteme [Quaschning] 2.6.2 ==> Perez-Modell</summary>
-    public const
-    double Eo = 1360.8;
-    public const
-    double EoTAG = 1367;
+    public static final double Eo = 1360.8;
+    public static final double EoTAG = 1367;
     /// <summary>convert degree to  radian RAD * [degree val]</summary>
-    public const
-    double RAD = Math.PI / 180.0;
+    public static final double RAD = Math.PI / 180.0;
+    /// <summary>global for-loop end [i smaller FOR_END] - 24 Hours</summary>
+    private static final int FOR_END = 24;
 
     /// <summary>
     /// covert degree to radian
@@ -44,49 +40,49 @@ public class SunToolBox {
     /// <param name="val"></param>
     /// <returns></returns>
     public static double Tan(double val) {
-        return Math.Tan(GetRad(val));
+        return Math.tan(GetRad(val));
     }
 
     /// <summary>cos with degree to radian convert</summary>
     /// <param name="val">degree value</param>
     /// <returns>cos(degree to radian)=x</returns>
     public static double Cos(double val) {
-        return Math.Cos(GetRad(val));
+        return Math.cos(GetRad(val));
     }
 
     /// <summary>sin with degree to radian convert</summary>
     /// <param name="val">degree value</param>
     /// <returns>sin(degree to radian)=x</returns>
     public static double Sin(double val) {
-        return Math.Sin(GetRad(val));
+        return Math.sin(GetRad(val));
     }
 
     /// <summary>cos with degree to radian convert</summary>
     /// <param name="val">degree value</param>
     /// <returns>cos(degree to radian)=x</returns>
     public static double Cosh(double val) {
-        return Math.Cos(GetRad(val));
+        return Math.cos(GetRad(val));
     }
 
     /// <summary>sin with degree to radian convert</summary>
     /// <param name="val">degree value</param>
     /// <returns>sin(degree to radian)=x</returns>
     public static double Sinh(double val) {
-        return Math.Sin(GetRad(val));
+        return Math.sin(GetRad(val));
     }
 
     /// <summary>acos with degree to radian convert</summary>
     /// <param name="val"></param>
     /// <returns>Acos(degree to radian)=x</returns>
     public static double Acos(double val) {
-        return Math.Acos(GetRad(val));
+        return Math.acos(GetRad(val));
     }
 
     /// <summary>Asin with degree to radian convert</summary>
     /// <param name="val"></param>
     /// <returns>Asin(degree to radian)=x</returns>
     public static double Asin(double val) {
-        return Math.Asin(GetRad(val));
+        return Math.asin(GetRad(val));
     }
 
     /// <summary>getter for days in a specific month</summary>
@@ -94,7 +90,7 @@ public class SunToolBox {
     /// <param name="month">month number</param>
     /// <returns>days</returns>
     public static int GetDaysInMonth(int year, int month) {
-        return LocalDateTime.DaysInMonth(year, month);
+        return 30;
     }
 
     /// <summary>generate a double value</summary>
@@ -102,8 +98,8 @@ public class SunToolBox {
     /// <param name="two">to</param>
     /// <returns>double between one and two</returns>
     public static double GenRand(double one, double two) {
-        Random rand = new Random(LocalDateTime.Now.Millisecond);
-        return one + rand.NextDouble() * (two - one);
+        Random rand = new Random(LocalDateTime.now().getNano());
+        return one + rand.nextDouble() * (two - one);
     }
 
     /// <summary>

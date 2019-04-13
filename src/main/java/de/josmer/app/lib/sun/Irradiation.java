@@ -1,10 +1,12 @@
-package de.josmer.application.sun;
+package de.josmer.app.lib.sun;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Irradiation {
 
+    private static Map<String, double[]> FTabelle;
     private final String F_11 = "F11";
     private final String F_12 = "F12";
     private final String F_13 = "F13";
@@ -17,7 +19,6 @@ public class Irradiation {
     private double MEReflGen;
     private double MEGlobalGenEffective;
     private double MEGlobalGen;
-    private static Map<String, double[]> FTabelle;
     private double Albedo = 0;
     private double Ae = 0;
     private double Ye = 0;
@@ -50,35 +51,6 @@ public class Irradiation {
         this.Albedo = Albedo;
         MSunPos = new SunPosition();
         InitFTabelle();
-    }
-
-    /// <summary>
-    /// http://files.pvsyst.com/help/iam_loss.htm
-    /// </summary>
-    /// <param name="bo"></param>
-    /// <returns></returns>
-    private double GetIAM(double bo =0.05) {
-        double retVal = 1 - bo * (1 / SunToolBox.Cos(Aoi - 1));
-        if (Math.Abs(Aoi) >= 90) {
-            retVal = 0;
-        }
-        retVal = Math.Max(0, retVal);
-        return retVal;
-    }
-
-    /// <summary>
-    /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/pvsystem.py#L2118
-    /// </summary>
-    /// <param name="percent"></param>
-    /// <returns></returns>
-    private double GetShading(double shading =5) {
-        if (shading < 0) {
-            return 1;
-        } else if (shading > 10) {
-            return 0.9;
-        } else {
-            return (100 - shading) / 100;
-        }
     }
 
     private void InitFTabelle() {
@@ -137,7 +109,7 @@ public class Irradiation {
     /// <param name="Dt"></param>
     private void SetEDirHorExtra(LocalDateTime Dt) {
         double b = MSunPos.CalculateSimpleDayAngle(Dt.DayOfYear, Dt.Year);
-        double RoverR0sqrd = (1.00011 + 0.034221 * Math.Cos(b) + 0.00128 * Math.Sin(b) + 0.000719 * Math.Cos(2 * b) + 7.7e-05 * Math.Sin(2 * b));
+        double RoverR0sqrd = (1.00011 + 0.034221 * Math.cos(b) + 0.00128 * Math.sin(b) + 0.000719 * Math.cos(2 * b) + 7.7e-05 * Math.sin(2 * b));
         EDirHorExtra = SunToolBox.Eo * RoverR0sqrd;
     }
 
@@ -147,9 +119,9 @@ public class Irradiation {
     private void SetF1AndF2() {
         double z = SunToolBox.GetRad(MSunPos.MZenithAtmosphericRefractionCorrection());
         F1 = (F11 + F12 * Delta + F13 * z);
-        F1 = Math.Max(F1, 0);
+        F1 = Math.max(F1, 0);
         F2 = (F21 + F22 * Delta + F23 * z);
-        F2 = Math.Max(F2, 0);
+        F2 = Math.max(F2, 0);
     }
 
     /// <summary>
@@ -158,7 +130,7 @@ public class Irradiation {
     /// </summary>
     private void SetAoi() {
         AoiProjection = SunToolBox.Cos(Ye) * SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + SunToolBox.Sin(Ye) * SunToolBox.Sin(MSunPos.MZenithAtmosphericRefractionCorrection()) * SunToolBox.Cos(MSunPos.MAs - Ae);
-        Aoi = SunToolBox.GetDeg(Math.Acos(AoiProjection));
+        Aoi = SunToolBox.GetDeg(Math.acos(AoiProjection));
     }
 
     /// <summary>
@@ -166,7 +138,7 @@ public class Irradiation {
     /// </summary>
     private void SetAirMass() {
         //AirMass = 1.0 / SunToolBox.Cos(MSunPos.MZenith);
-        AirMass = (1.0 / (SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + 0.50572 * ((Math.Pow((6.07995 + (90 - MSunPos.MZenithAtmosphericRefractionCorrection())), -1.6364)))));
+        AirMass = (1.0 / (SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + 0.50572 * ((Math.pow((6.07995 + (90 - MSunPos.MZenithAtmosphericRefractionCorrection())), -1.6364)))));
     }
 
     /// <summary>
@@ -183,9 +155,9 @@ public class Irradiation {
     /// </summary>
     private void SetAandB() {
         A = AoiProjection;
-        A = Math.Max(A, 0);
+        A = Math.max(A, 0);
         B = SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection());
-        B = Math.Max(B, SunToolBox.Cos(85));
+        B = Math.max(B, SunToolBox.Cos(85));
     }
 
     /// <summary>
@@ -193,7 +165,7 @@ public class Irradiation {
     /// </summary>
     /// <param name="EGlobalHor"></param>
     private void SetMEReflGen(double EDiffHor, double EDirHor, double EGlobalHor) {
-        MEReflGen = EGlobalHor * Albedo * (1 - SunToolBox.Cos(Ye)) * 0.5;
+        MEReflGen = EGlobalHor * Albedo * (1.0 - SunToolBox.Cos(Ye)) * 0.5;
     }
 
     /// <summary>
@@ -204,7 +176,7 @@ public class Irradiation {
         double cosSolarZenith = SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection());
         double ratio = AoiProjection / cosSolarZenith;
         MEDirGen = EDirHor * ratio;
-        MEDirGen = Math.Max(MEDirGen, 0);
+        MEDirGen = Math.max(MEDirGen, 0);
     }
 
     /// <summary>
@@ -214,7 +186,7 @@ public class Irradiation {
     /// <param name="EDirHor"></param>
     private void SetHimmelsklarheitsindex(double EDiffHor, double EDirHor, double EGlobalHor) {
         double z = SunToolBox.GetRad(MSunPos.MZenithAtmosphericRefractionCorrection());
-        Himmelsklarheitsindex = ((EDiffHor + EDirHor) / EDiffHor + SunToolBox.K * Math.Pow(z, 3)) / (1 + SunToolBox.K * Math.Pow(z, 3));
+        Himmelsklarheitsindex = ((EDiffHor + EDirHor) / EDiffHor + SunToolBox.K * Math.pow(z, 3)) / (1 + SunToolBox.K * Math.pow(z, 3));
     }
 
     /// <summary>
@@ -225,14 +197,14 @@ public class Irradiation {
         double term1 = 0.5 * (1 - F1) * (1 + SunToolBox.Cos(Ye));
         double term2 = F1 * A / B;
         double term3 = F2 * SunToolBox.Sin(Ye);
-        MEDiffGen = Math.Max(0, EDiffHor * (term1 + term2 + term3));
+        MEDiffGen = Math.max(0, EDiffHor * (term1 + term2 + term3));
     }
 
     public void SetMEDiffGenHayDavies(double EDiffHor, double EDirHor, double EGlobalHor) {
         double term1 = 1 - AnisotropyIndex;
         double term2 = 0.5 * (1 + SunToolBox.Cos(Ye));
         MEDiffGen = EDiffHor * (AnisotropyIndex * ProjectionRatio + term1 * term2);
-        MEDiffGen = Math.Max(MEDiffGen, 0);
+        MEDiffGen = Math.max(MEDiffGen, 0);
     }
 
     public void CalculateHour(double EDiffHor, double EDirHor, double EGlobalHor, LocalDateTime Dt, int DiffModel, double shading) {
@@ -263,7 +235,6 @@ public class Irradiation {
                     break;
             }
             MEGlobalGen = MEDiffGen + MEDirGen + MEReflGen;
-            MEGlobalGenEffective = (MEDiffGen + (MEDirGen * GetIAM()) + MEReflGen) * GetShading(shading);
         }
     }
 

@@ -5,9 +5,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import java.time.LocalLocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
+import java.time.format.LocalDateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,11 +35,11 @@ public final class Toolbox {
     }
 
     public static String dateTimeNow() {
-        return LocalDateTime.now(ZoneId.of("Europe/Berlin")).format(DateTimeFormatter.ofPattern(PATTERN));
+        return LocalLocalDateTime.now(ZoneId.of("Europe/Berlin")).format(LocalDateTimeFormatter.ofPattern(PATTERN));
 
     }
 
-    public static String parseDateTime(final Timestamp timestamp) {
+    public static String parseLocalDateTime(final Timestamp timestamp) {
         return new SimpleDateFormat(PATTERN).format(timestamp);
     }
 

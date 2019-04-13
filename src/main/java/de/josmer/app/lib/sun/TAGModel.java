@@ -1,16 +1,22 @@
-package de.josmer.application.sun;
+package de.josmer.app.lib.sun;
+
+import java.time.LocalDateTime;
+import java.util.Random;
 
 public class TAGModel {
 
-    private const
-    double E0 = 1367.0;
+    private static final double E0 = 1367.0;
     private Random Rand;
 
     /// <summary>
     /// constructor
     /// </summary>
     public TAGModel() {
-        Rand = new Random((int) (LocalDateTime.Now.Ticks % int.MaxValue));
+        Rand = new Random(LocalDateTime.now().getNano());
+    }
+
+    private static double DegreeToRad(double deg) {
+        return deg * Math.PI / 180;
     }
 
     /// <summary>
@@ -30,11 +36,11 @@ public class TAGModel {
         // init sun angle in degree
         double sumSinGammaS = 0.0;
         for (int h = 0; h < 24; h++) {
-            LocalDateTime dt = new LocalDateTime(day.Year, day.Month, day.Day, h, day.Minute, 0);
+            LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), day.getHour(), day.getMinute());
             sunPos.SunPositionDIN(dt, lat, lon, 1);
             sunYOfh[h] = sunPos.MYsAtmosphericRefractionCorrection();
             if (sunPos.MYsAtmosphericRefractionCorrection() > 0) {
-                sumSinGammaS += Math.Sin(DegreeToRad(sunPos.MYsAtmosphericRefractionCorrection()));
+                sumSinGammaS += Math.sin(DegreeToRad(sunPos.MYsAtmosphericRefractionCorrection()));
             }
         }
         //double HE0Hor = E0 * sumSinGammaS;    // * 1h -> Wh/m2
@@ -42,9 +48,9 @@ public class TAGModel {
         double Kt = hGlob / HE0Hor;
 
         // formula 4.5
-        double phi1 = 0.38 + 0.06 * Math.Cos(7.4 * Kt - 2.5);
+        double phi1 = 0.38 + 0.06 * Math.cos(7.4 * Kt - 2.5);
 
-        bool recalc = false;
+        boolean recalc = false;
         int cnt = 0;
         double[] KtOfh = null;
         double[] EgHorOfh = null;
@@ -62,14 +68,14 @@ public class TAGModel {
             EgHorOfh = new double[24];
             HSynHor = 0.0;
             KtSyn = 0.0;
-            for (int h = 0; h < KtOfh.Length; h++) {
+            for (int h = 0; h < KtOfh.length; h++) {
                 double kt = KtOfh[h];
                 if (kt == 0.0) {
                     continue;
                 }
 
                 // formula 4.11
-                double ktMax = 0.88 * Math.Cos((Math.PI * (h + 1 - 12.5)) / 30.0);
+                double ktMax = 0.88 * Math.cos((Math.PI * (h + 1 - 12.5)) / 30.0);
                 if (kt < 0.0) {
                     recalc = true;
                     break;
@@ -78,7 +84,7 @@ public class TAGModel {
                     break;
                 } else {
                     // formula 4.12
-                    EgHorOfh[h] = KtOfh[h] * E0 * Math.Sin(DegreeToRad(sunYOfh[h]));
+                    EgHorOfh[h] = KtOfh[h] * E0 * Math.sin(DegreeToRad(sunYOfh[h]));
                     // summarize syntetic energy of hours
                     HSynHor += EgHorOfh[h]; // W/m2 * 1h => Wh/m2
                 }
@@ -89,7 +95,7 @@ public class TAGModel {
                 // calculate syntetic clearness index of hour values
                 KtSyn = HSynHor / HE0Hor;
                 // check difference with cleaness index of daily irradiation is greater 3%
-                double diff = Math.Abs(KtSyn - Kt) / Kt * 100.0;
+                double diff = Math.abs(KtSyn - Kt) / Kt * 100.0;
                 if (diff > 3.0) {
                     //Console.WriteLine(string.Format("   -> Diff KtSyn={0:N2} from Kt={1:N2} : {2:N2}%", KtSyn, Kt, diff));
                     recalc = true;
@@ -135,15 +141,15 @@ public class TAGModel {
             if (sunYOfh[h] > 0.0) {
                 // formula 4.6
                 double YsDeg = DegreeToRad(sunYOfh[h]);
-                double Ktm = -0.19 + 1.12 * Kt + 0.24 * Math.Exp(-8 * Kt)
-                        + (0.32 - 1.6 * Math.Pow(Kt - 0.5, 2))
-                        * Math.Exp((-0.19 - 2.27 * Math.Pow(Kt, 2) + 2.51 * Math.Pow(Kt, 3)) / Math.Sin(YsDeg));
+                double Ktm = -0.19 + 1.12 * Kt + 0.24 * Math.exp(-8 * Kt)
+                        + (0.32 - 1.6 * Math.pow(Kt - 0.5, 2))
+                        * Math.exp((-0.19 - 2.27 * Math.pow(Kt, 2) + 2.51 * Math.pow(Kt, 3)) / Math.sin(YsDeg));
                 // formula 4.7
-                double sigma = 0.14 * Math.Exp(-20 * Math.Pow(Kt - 0.35, 2)) * Math.Exp(3 * (Math.Pow(Kt - 0.45, 2) + 16 * Math.Pow(Kt, 5)) * (1 - Math.Sin(YsDeg)));
+                double sigma = 0.14 * Math.exp(-20 * Math.pow(Kt - 0.35, 2)) * Math.exp(3 * (Math.pow(Kt - 0.45, 2) + 16 * Math.pow(Kt, 5)) * (1 - Math.sin(YsDeg)));
 
                 // formula 4.8
-                double z = Rand.NextDouble();
-                double r = sigma * Math.Sqrt(1 - Math.Pow(phi1, 2)) * ((Math.Pow(z, 0.135) - Math.Pow(1 - z, 0.135)) / 0.1975);
+                double z = Rand.nextDouble();
+                double r = sigma * Math.sqrt(1 - Math.pow(phi1, 2)) * ((Math.pow(z, 0.135) - Math.pow(1 - z, 0.135)) / 0.1975);
 
                 // formula 4.9
                 if (h > 0) {
@@ -164,10 +170,6 @@ public class TAGModel {
 
     private double E0ofDay(LocalDateTime day) {
         // formula 4.4
-        return E0 * (1 - 0.0334 * Math.Cos(0.0172 * (double) day.DayOfYear - 0.04747));
-    }
-
-    private static double DegreeToRad(double deg) {
-        return deg * Math.PI / 180;
+        return E0 * (1 - 0.0334 * Math.cos(0.0172 * (double) day.getDayOfYear() - 0.04747));
     }
 }

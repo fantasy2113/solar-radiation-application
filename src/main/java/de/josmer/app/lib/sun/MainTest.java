@@ -1,8 +1,8 @@
-package de.josmer.application.sun;
+package de.josmer.app.lib.sun;
 
 public class MainTest {
     public static void Main(string[] args) {
-        Dictionary <string, double> PRDict = new Dictionary<string, double>();
+        Dictionary<string, double> PRDict = new Dictionary<string, double>();
         PRDict.Add("Optimal, no shading (PR=0.8)", 0.8);
         PRDict.Add("Good, no shading (PR=0.75)", 0.75);
         PRDict.Add("Good, slightly shading (PR=0.70)", 0.7);
@@ -28,12 +28,12 @@ public class MainTest {
         double yearTAGModelHorSum = 0;
         double yearSumGenEffective = 0;
         double yearSumGenGEN = 0;
-        double[] dirArr = new double[] { 5,12,31,69,81,81,71,67,41,19,10,4 }; // Berlin
-        double[] diffArr = new double[] { 14,22,44,59,78,85,87,67,53,32,17,11 }; // Berlin
+        double[] dirArr = new double[]{5, 12, 31, 69, 81, 81, 71, 67, 41, 19, 10, 4}; // Berlin
+        double[] diffArr = new double[]{14, 22, 44, 59, 78, 85, 87, 67, 53, 32, 17, 11}; // Berlin
         for (int i = 0; i < 12; i++) {
             dirArr[i] = dirArr[i] * 1000;
             diffArr[i] = diffArr[i] * 1000;
-            Console.WriteLine("Month: [" + (i + 1) + "] ==> [EDiffHor: " + diffArr[i] + "] & [EDirHor: " + dirArr[i] +"]");
+            Console.WriteLine("Month: [" + (i + 1) + "] ==> [EDiffHor: " + diffArr[i] + "] & [EDirHor: " + dirArr[i] + "]");
         }
         Console.WriteLine("==> Output");
         for (int month = 0; month < 12; month++) {
@@ -41,7 +41,7 @@ public class MainTest {
             //Console.WriteLine("\n####### ####### ####### ####### #######");
             //Console.WriteLine("\nDate = " + Dt.ToString("yyyy-MM"));
             double eDiffHor = diffArr[month];
-            double eDirHor = dirArr[month]; ;
+            double eDirHor = dirArr[month];
             double eGlobalHor = eDiffHor + eDirHor;
             double diffAmount = eDiffHor / eGlobalHor;
             double dirAmount = eDirHor / eGlobalHor;
@@ -74,4 +74,4 @@ public class MainTest {
         Console.WriteLine("Year EGlobalIncEff = " + yearSumGenEffective);
         Console.WriteLine("Press key to exit");
         Console.ReadLine();
-}
+    }
