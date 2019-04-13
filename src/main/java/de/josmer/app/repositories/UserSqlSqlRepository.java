@@ -45,7 +45,6 @@ public class UserSqlSqlRepository extends SqlRepository<User> implements IUserSq
         return Optional.empty();
     }
 
-
     @Override
     public Optional<User> get(final String login) {
         try (Connection connection = getConnection();
