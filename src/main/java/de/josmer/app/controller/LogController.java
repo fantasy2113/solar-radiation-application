@@ -11,9 +11,12 @@ import java.util.List;
 
 @RestController
 public final class LogController {
-    @Autowired
-    private ILogRepository logRepository;
+    private final ILogRepository logRepository;
 
+    @Autowired
+    public LogController(ILogRepository logRepository) {
+        this.logRepository = logRepository;
+    }
 
     @GetMapping(value = "/logs", produces = MediaType.TEXT_HTML_VALUE)
     public final String logs() {

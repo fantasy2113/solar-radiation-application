@@ -2,7 +2,7 @@ package de.josmer.app.lib.crawler;
 
 import de.josmer.app.entities.Radiation;
 import de.josmer.app.lib.enums.RadiationTypes;
-import de.josmer.app.lib.interfaces.IRadiationSqlRepository;
+import de.josmer.app.lib.interfaces.IRadiationRepository;
 import de.josmer.app.lib.utils.Toolbox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,15 +83,15 @@ public final class RadiationCrawler {
         }
     }
 
-    public void insert(final IRadiationSqlRepository radiationRepository) {
+    public void insert(final IRadiationRepository radiationRepository) {
         inserting(radiationRepository);
     }
 
-    public void insert(final String databaseUrl, final IRadiationSqlRepository radiationRepository) { // NOSONAR
+    public void insert(final String databaseUrl, final IRadiationRepository radiationRepository) { // NOSONAR
         inserting(radiationRepository);
     }
 
-    private void inserting(final IRadiationSqlRepository radiationRepository) {
+    private void inserting(final IRadiationRepository radiationRepository) {
         LOGGER.info("reading...");
         initRadiations();
         LOGGER.info("inserting...");

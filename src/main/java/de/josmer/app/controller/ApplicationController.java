@@ -5,8 +5,8 @@ import de.josmer.app.entities.Export;
 import de.josmer.app.entities.User;
 import de.josmer.app.lib.geo.GaussKrueger;
 import de.josmer.app.lib.interfaces.IExportRepository;
-import de.josmer.app.lib.interfaces.IRadiationSqlRepository;
-import de.josmer.app.lib.interfaces.IUserSqlRepository;
+import de.josmer.app.lib.interfaces.IRadiationRepository;
+import de.josmer.app.lib.interfaces.IUserRepository;
 import de.josmer.app.lib.security.Authentication;
 import de.josmer.app.lib.security.Token;
 import de.josmer.app.lib.utils.Toolbox;
@@ -29,12 +29,16 @@ import java.util.regex.Pattern;
 @RestController
 public class ApplicationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class.getName());
+    private final IExportRepository exportRep;
+    private final IRadiationRepository radiationRepository;
+    private final IUserRepository userRepository;
+
     @Autowired
-    private IExportRepository exportRep;
-    @Autowired
-    private IRadiationSqlRepository radiationSqlRepository;
-    @Autowired
-    private IUserSqlRepository userSqlRepository;
+    public ApplicationController(IExportRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository) {
+        this.exportRep = exportRep;
+        this.radiationRepository = radiationRepository;
+        this.userRepository = userRepository;
+    }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
     public String login() {
@@ -54,7 +58,7 @@ public class ApplicationController {
         if (login == null || password == null || login.equals("") || password.equals("")) {
             return "Benutzername oder Passwort sind nicht lang genug!";
         }
-        if (userSqlRepository.get(login).isPresent()) {
+        if (userRepository.get(login).isPresent()) {
             return "Benutzername ist schon vorhanden!";
         }
         Pattern special = Pattern.compile("[!#$%&*()_+=|<>?{}\\[\\]~ ]");
@@ -62,8 +66,8 @@ public class ApplicationController {
         if (hasSpecial.find() || password.contains(" ")) {
             return "Benutzername oder Passwort enthalten ungültige Zeichen!";
         }
-        userSqlRepository.saveUser(login, password);
-        Optional<User> optionalUser = userSqlRepository.get(login);
+        userRepository.saveUser(login, password);
+        Optional<User> optionalUser = userRepository.get(login);
         if (optionalUser.isPresent() && optionalUser.get().isActive()) {
             return Token.get(optionalUser.get().getId());
         }
@@ -72,7 +76,7 @@ public class ApplicationController {
 
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
     public String token(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
-        final Optional<User> optionalUser = userSqlRepository.get(login);
+        final Optional<User> optionalUser = userRepository.get(login);
         if (optionalUser.isPresent() && Toolbox.isPassword(password, optionalUser.get().getPassword())) {
             LOGGER.info("login");
             return Token.get(optionalUser.get().getId());
@@ -86,7 +90,7 @@ public class ApplicationController {
         if (!isAccess(Token.getAuthentication(token))) {
             return "-1";
         }
-        return Long.toString(radiationSqlRepository.count());
+        return Long.toString(radiationRepository.count());
     }
 
     @GetMapping("/export")
@@ -99,7 +103,7 @@ public class ApplicationController {
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     exportRep.getHeaders(),
-                    exportRep.getAll(radiationSqlRepository.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
+                    exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
                     exportRep.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -113,7 +117,7 @@ public class ApplicationController {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return exportRep.getAll(radiationSqlRepository.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
+        return exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
@@ -131,7 +135,7 @@ public class ApplicationController {
         Optional<String> optionalToken = auth.getToken();
         OptionalInt optionalUserId = auth.getUserId();
         if (optionalToken.isPresent() && optionalUserId.isPresent()) {
-            Optional<User> optionalUser = userSqlRepository.get(optionalUserId.getAsInt());
+            Optional<User> optionalUser = userRepository.get(optionalUserId.getAsInt());
             return Token.check(optionalToken.get()) && optionalUser.isPresent();
         }
         return false;

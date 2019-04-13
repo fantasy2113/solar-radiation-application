@@ -10,15 +10,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class SqlRepository<E> {
-    protected static final Logger LOGGER = LoggerFactory.getLogger(SqlRepository.class.getName());
+public abstract class Repository<E> {
+    protected static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getName());
     private final String databaseUrl;
 
-    public SqlRepository(final String databaseUrl) {
+    public Repository(final String databaseUrl) {
         this.databaseUrl = databaseUrl;
     }
 
-    public SqlRepository() {
+    public Repository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
     }
 

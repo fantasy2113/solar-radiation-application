@@ -2,7 +2,7 @@ package de.josmer.app.repositories;
 
 import de.josmer.app.entities.Radiation;
 import de.josmer.app.lib.interfaces.IGaussKrueger;
-import de.josmer.app.lib.interfaces.IRadiationSqlRepository;
+import de.josmer.app.lib.interfaces.IRadiationRepository;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
@@ -11,13 +11,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public final class RadiationSqlSqlRepository extends SqlRepository<Radiation> implements IRadiationSqlRepository {
+public final class RadiationRepository extends Repository<Radiation> implements IRadiationRepository {
 
-    public RadiationSqlSqlRepository(final String databaseUrl) {
+    public RadiationRepository(final String databaseUrl) {
         super(databaseUrl);
     }
 
-    public RadiationSqlSqlRepository() {
+    public RadiationRepository() {
         super();
     }
 

@@ -2,8 +2,8 @@ package de.josmer.app.lib.utils;
 
 import de.josmer.app.lib.crawler.RadiationCrawler;
 import de.josmer.app.lib.enums.RadiationTypes;
-import de.josmer.app.repositories.RadiationSqlSqlRepository;
-import de.josmer.app.repositories.UserSqlSqlRepository;
+import de.josmer.app.repositories.RadiationRepository;
+import de.josmer.app.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class InsertMain {
         //insertData(RadiationTypes.GLOBAL);
         //insertData(RadiationTypes.DIRECT);
         //insertData(RadiationTypes.DIFFUSE);
-        new UserSqlSqlRepository().saveUser("user", "abc123");
+        new UserRepository().saveUser("user", "abc123");
     }
 
     public static void insertData(RadiationTypes type) {
@@ -25,7 +25,7 @@ public class InsertMain {
                 RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, type);
                 radiationCrawler.download();
                 radiationCrawler.unzip();
-                radiationCrawler.insert(new RadiationSqlSqlRepository("postgres://u9q7kd79d0eodj:pcea69f8d94f3a7af2e3fb3e415a6b4bba5e972ba89efa5db298adf6854d778f3@ec2-52-208-123-217.eu-west-1.compute.amazonaws.com:5432/d2jiiehmaovnt3"));
+                radiationCrawler.insert(new RadiationRepository("postgres://u9q7kd79d0eodj:pcea69f8d94f3a7af2e3fb3e415a6b4bba5e972ba89efa5db298adf6854d778f3@ec2-52-208-123-217.eu-west-1.compute.amazonaws.com:5432/d2jiiehmaovnt3"));
                 radiationCrawler.delete();
             }
         }
