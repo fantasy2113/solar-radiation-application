@@ -1,19 +1,20 @@
 package de.josmer.app.lib.geo;
 
-public final class GaussKrueger {
+import de.josmer.app.lib.interfaces.IGaussKrueger;
+import org.springframework.stereotype.Component;
+
+@Component
+public final class GaussKrueger implements IGaussKrueger {
 
     private double lon;
     private double lat;
     private double rechtswert;
     private double hochwert;
 
-    public GaussKrueger(final double lon, final double lat) {
+    @Override
+    public void calulate(final double lon, final double lat) {
         this.lon = lon;
         this.lat = lat;
-
-    }
-
-    public void calulate() {
         wgs84ToPot();
         geoToGk();
     }
@@ -97,10 +98,12 @@ public final class GaussKrueger {
         this.lat = b2;
     }
 
+    @Override
     public double getRechtswert() {
         return rechtswert;
     }
 
+    @Override
     public double getHochwert() {
         return hochwert;
     }

@@ -3,6 +3,7 @@ package de.josmer.app.controller;
 import de.josmer.app.controller.requests.SearchRequest;
 import de.josmer.app.entities.Export;
 import de.josmer.app.entities.User;
+import de.josmer.app.lib.geo.GaussKrueger;
 import de.josmer.app.lib.interfaces.IExportRepository;
 import de.josmer.app.lib.interfaces.IRadiationRepository;
 import de.josmer.app.lib.interfaces.IUserRepository;
@@ -103,7 +104,7 @@ public class ApplicationController {
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     exportRep.getHeaders(),
-                    exportRep.getAll(radiationRep.find(getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
+                    exportRep.getAll(radiationRep.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
                     exportRep.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -117,7 +118,7 @@ public class ApplicationController {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return exportRep.getAll(radiationRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()),
+        return exportRep.getAll(radiationRep.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 

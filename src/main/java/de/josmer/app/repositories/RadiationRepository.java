@@ -1,7 +1,7 @@
 package de.josmer.app.repositories;
 
 import de.josmer.app.entities.Radiation;
-import de.josmer.app.lib.geo.GaussKrueger;
+import de.josmer.app.lib.interfaces.IGaussKrueger;
 import de.josmer.app.lib.interfaces.IRadiationRepository;
 import org.springframework.stereotype.Component;
 
@@ -22,11 +22,10 @@ public final class RadiationRepository extends Repository<Radiation> implements 
     }
 
     @Override
-    public List<Radiation> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+    public List<Radiation> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
 
-        GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
-        gaussKrueger.calulate();
+        gaussKrueger.calulate(lon, lat);
 
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
 

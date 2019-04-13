@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IRadiationRepository {
 
-    List<Radiation> find(int startDate, int endDate, String type, double lon, double lat);
+    List<Radiation> find(IGaussKrueger gaussKrueger, int startDate, int endDate, String type, double lon, double lat);
 
     void save(List<Radiation> radiations);
 
