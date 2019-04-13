@@ -138,24 +138,12 @@ public final class RadiationRepository extends Repository<Radiation> implements 
         return radiation;
     }
 
-
     private int getGkValues(final double value) {
-
-        Integer decreasedValue = (int) value;
-        int decreaseCounter = 0;
-        while (!decreasedValue.toString().endsWith("500")) {
-            decreasedValue--;
-            decreaseCounter++;
+        Integer gkMin = (int) value;
+        while (!gkMin.toString().endsWith("500")) {
+            gkMin--;
         }
-
-        /*Integer increasedValue = (int) value;
-        int increaseCounter = 0;
-        while (!increasedValue.toString().endsWith("500")) {
-            increasedValue++;
-            increaseCounter++;
-        }*/
-
-        return /*increaseCounter >= decreaseCounter ? */decreasedValue /*: increasedValue*/;
+        return gkMin;
     }
 
     private String getInDates(final int startDate, final int endDate) {

@@ -79,7 +79,7 @@ public class ApplicationController {
             LOGGER.info("login");
             return Token.get(optionalUser.get().getId());
         }
-        LOGGER.info("login failes");
+        LOGGER.info("login failed");
         return "";
     }
 
