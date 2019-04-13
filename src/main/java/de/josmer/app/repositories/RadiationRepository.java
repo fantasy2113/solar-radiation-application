@@ -26,6 +26,7 @@ public final class RadiationRepository extends Repository<Radiation> implements 
         List<Radiation> radiations = new LinkedList<>();
 
         GaussKrueger gaussKrueger = new GaussKrueger(lon, lat);
+        gaussKrueger.calulate();
 
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
 

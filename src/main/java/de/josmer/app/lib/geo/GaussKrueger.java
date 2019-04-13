@@ -10,6 +10,10 @@ public final class GaussKrueger {
     public GaussKrueger(final double lon, final double lat) {
         this.lon = lon;
         this.lat = lat;
+
+    }
+
+    public void calulate() {
         wgs84ToPot();
         geoToGk();
     }
