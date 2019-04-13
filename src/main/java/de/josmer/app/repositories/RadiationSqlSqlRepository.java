@@ -62,39 +62,23 @@ public final class RadiationSqlSqlRepository extends SqlRepository<Radiation> im
 
     @Override
     public void save(final List<Radiation> radiations) {
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            try {
-                connection = getConnection();
-                connection.setAutoCommit(false);
-                for (Radiation radiation : radiations) {
-                    preparedStatement = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)");
-                    preparedStatement.setString(1, radiation.getRadiationType());
-                    preparedStatement.setInt(2, radiation.getRadiationDate());
-                    preparedStatement.setInt(3, radiation.getGkrMin());
-                    preparedStatement.setInt(4, radiation.getGkrMax());
-                    preparedStatement.setInt(5, radiation.getGkhMin());
-                    preparedStatement.setInt(6, radiation.getGkhMax());
-                    preparedStatement.setFloat(7, radiation.getRadiationValue());
-                    preparedStatement.executeUpdate();
-                }
-                connection.commit();
-                LOGGER.info("insert month");
-            } catch (SQLException | URISyntaxException e) {
-                LOGGER.info(e.getMessage());
-                if (connection != null) {
-                    connection.rollback();
-                }
-            } finally {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement
+                     = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
+            connection.setAutoCommit(false);
+            for (Radiation radiation : radiations) {
+                preparedStatement.setString(1, radiation.getRadiationType());
+                preparedStatement.setInt(2, radiation.getRadiationDate());
+                preparedStatement.setInt(3, radiation.getGkrMin());
+                preparedStatement.setInt(4, radiation.getGkrMax());
+                preparedStatement.setInt(5, radiation.getGkhMin());
+                preparedStatement.setInt(6, radiation.getGkhMax());
+                preparedStatement.setFloat(7, radiation.getRadiationValue());
+                preparedStatement.executeUpdate();
             }
-        } catch (SQLException e) {
+            connection.commit();
+            LOGGER.info("insert month");
+        } catch (SQLException | URISyntaxException e) {
             LOGGER.info(e.getMessage());
         }
     }
