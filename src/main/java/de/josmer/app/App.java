@@ -59,7 +59,6 @@ public class App {
             for (String beanName : beanNames) {
                 LOGGER.info(beanName);
             }
-
         };
     }
 }
