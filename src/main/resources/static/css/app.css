@@ -6,14 +6,15 @@
 input {
     margin: 3px 0;
     width: 155px;
-    height: 25px;
+    height: 35px;
     background-color: whitesmoke;
     border: none;
+    display: inline;
 }
 
 button {
     margin: 3px 0;
-    height: 25px;
+    height: 35px;
     width: 91px;
     background-color: gold;
     border: none;
@@ -21,7 +22,7 @@ button {
 
 select {
     margin: 3px 0;
-    height: 25px;
+    height: 35px;
     width: 155px;
     background-color: whitesmoke;
     border: none;
