@@ -66,6 +66,8 @@ jQuery(document).ready(function () {
                     width: "620",
                     height: "700",
 
+                    sorting: true,
+
                     data: json,
 
                     fields: [

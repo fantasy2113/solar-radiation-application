@@ -52,22 +52,22 @@ public class ApplicationController {
     @GetMapping(value = "/save_user", produces = MediaType.TEXT_HTML_VALUE)
     public String saveUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         if (login == null || password == null || login.equals("") || password.equals("")) {
-            return "Fehler: Benutzername oder Passwort sind nicht lang genug!";
+            return "Benutzername oder Passwort sind nicht lang genug!";
         }
         if (userSqlRepository.get(login).isPresent()) {
-            return "Fehler: Benutzername ist schon vorhanden!";
+            return "Benutzername ist schon vorhanden!";
         }
         Pattern special = Pattern.compile("[!#$%&*()_+=|<>?{}\\[\\]~ ]");
         Matcher hasSpecial = special.matcher(login);
         if (hasSpecial.find() || password.contains(" ")) {
-            return "Fehler: Benutzername oder Passwort enthalten ungültige Zeichen!";
+            return "Benutzername oder Passwort enthalten ungültige Zeichen!";
         }
         userSqlRepository.saveUser(login, password);
         Optional<User> optionalUser = userSqlRepository.get(login);
         if (optionalUser.isPresent() && optionalUser.get().isActive()) {
             return Token.get(optionalUser.get().getId());
         }
-        return "Fehler: Etwas ist schief gelaufen!";
+        return "Etwas ist schief gelaufen!";
     }
 
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
