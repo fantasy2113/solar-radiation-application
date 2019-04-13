@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,7 +87,7 @@ public final class RadiationCrawler {
         inserting(radiationRepository);
     }
 
-    public void insert(final String databaseUrl, final IRadiationSqlRepository radiationRepository) {
+    public void insert(final String databaseUrl, final IRadiationSqlRepository radiationRepository) { // NOSONAR
         inserting(radiationRepository);
     }
 
@@ -98,11 +100,11 @@ public final class RadiationCrawler {
 
     public void delete() {
         LOGGER.info("deleting....");
-        if (!new File(getPathnameZip()).delete()) {
-            LOGGER.info(getPathnameZip() + " fail");
-        }
-        if (!new File(getPathnameAsc()).delete()) {
-            LOGGER.info(getPathnameAsc() + " fail");
+        try {
+            Path path = Path.of(getPathnameZip(), getPathnameAsc());
+            Files.delete(path);
+        } catch (IOException e) {
+            LOGGER.info(e.getMessage());
         }
     }
 

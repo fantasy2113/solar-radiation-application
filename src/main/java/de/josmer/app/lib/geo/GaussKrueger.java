@@ -56,13 +56,13 @@ public final class GaussKrueger implements IGaussKrueger {
         if (nk < 0.5) {
             this.hochwert = (int) this.hochwert;
         } else {
-            this.hochwert = (int) (this.hochwert) + 1;
+            this.hochwert = (int) (this.hochwert) + 1.0;
         }
         nk = this.rechtswert - (int) this.rechtswert;
         if (nk < 0.5) {
             this.rechtswert = (int) this.rechtswert;
         } else {
-            this.rechtswert = (int) this.rechtswert + 1;
+            this.rechtswert = (int) this.rechtswert + 1.0;
         }
     }
 

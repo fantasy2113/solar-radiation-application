@@ -7,6 +7,7 @@ import de.josmer.app.repositories.RadiationSqlSqlRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.MessageFormat;
 import java.time.LocalDate;
 
 public final class InsertHandler extends Handler {
@@ -26,7 +27,7 @@ public final class InsertHandler extends Handler {
         } else {
             localDate = localDate.minusMonths(1);
         }
-        LOGGER.info("try to insert: month: " + localDate.getMonth().getValue() + ", Year: " + localDate.getYear() + " -> " + radiationTypes);
+        LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), radiationTypes)); // NOSONAR
         RadiationCrawler radiationCrawler = new RadiationCrawler(localDate.getMonth().getValue(), localDate.getYear(), radiationTypes);
         radiationCrawler.download();
         radiationCrawler.unzip();
