@@ -8,6 +8,9 @@ import java.nio.file.Paths;
 
 public class Toolbox {
 
+    private Toolbox() {
+    }
+
     public static String readFile(final String file) {
         try {
             return new String(Files.readAllBytes(Paths.get(file)));

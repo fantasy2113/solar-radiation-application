@@ -27,6 +27,7 @@ public final class Token {
         setDelimiter();
         crypt = new Crypt();
         theToken = RandomStringUtils.random(12, true, true);
+        LOGGER.info("init token");
     }
 
     public static String get(final int userId) {

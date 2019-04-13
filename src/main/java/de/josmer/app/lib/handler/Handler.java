@@ -7,7 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public abstract class Handler implements Runnable {
+public abstract class Handler implements IHandler {
+    @Override
     public void start() {
         ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
         long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
