@@ -3,9 +3,9 @@ package de.josmer.app;
 import de.josmer.app.lib.enums.RadiationTypes;
 import de.josmer.app.lib.handler.InsertHandler;
 import de.josmer.app.lib.handler.TokenHandler;
-import de.josmer.app.lib.interfaces.IUserRepository;
+import de.josmer.app.lib.interfaces.IUserSqlRepository;
 import de.josmer.app.lib.security.Token;
-import de.josmer.app.repositories.UserRepository;
+import de.josmer.app.repositories.UserSqlSqlRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -28,7 +28,7 @@ public class App {
         openBrowser();
         Token.init();
 
-        IUserRepository userRepository = new UserRepository();
+        IUserSqlRepository userRepository = new UserSqlSqlRepository();
         if (userRepository.get("admin").isEmpty()) {
             userRepository.saveUser("admin", "Super71212!");
         }

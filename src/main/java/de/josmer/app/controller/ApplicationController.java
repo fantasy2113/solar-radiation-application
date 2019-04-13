@@ -5,8 +5,8 @@ import de.josmer.app.entities.Export;
 import de.josmer.app.entities.User;
 import de.josmer.app.lib.geo.GaussKrueger;
 import de.josmer.app.lib.interfaces.IExportRepository;
-import de.josmer.app.lib.interfaces.IRadiationRepository;
-import de.josmer.app.lib.interfaces.IUserRepository;
+import de.josmer.app.lib.interfaces.IRadiationSqlRepository;
+import de.josmer.app.lib.interfaces.IUserSqlRepository;
 import de.josmer.app.lib.security.Authentication;
 import de.josmer.app.lib.security.Token;
 import de.josmer.app.lib.utils.Toolbox;
@@ -32,9 +32,9 @@ public class ApplicationController {
     @Autowired
     private IExportRepository exportRep;
     @Autowired
-    private IRadiationRepository radiationRep;
+    private IRadiationSqlRepository radiationSqlRepository;
     @Autowired
-    private IUserRepository userRepository;
+    private IUserSqlRepository userSqlRepository;
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
     public String login() {
@@ -55,7 +55,7 @@ public class ApplicationController {
             return "Fehler: Benutzername oder Passwort sind nicht lang genug!";
         }
 
-        if (userRepository.get(login).isPresent()) {
+        if (userSqlRepository.get(login).isPresent()) {
             return "Fehler: Benutzername ist schon vorhanden!";
         }
 
@@ -65,9 +65,9 @@ public class ApplicationController {
             return "Fehler: Benutzername oder Passwort enthalten ungültige Zeichen!";
         }
 
-        userRepository.saveUser(login, password);
+        userSqlRepository.saveUser(login, password);
 
-        Optional<User> optionalUser = userRepository.get(login);
+        Optional<User> optionalUser = userSqlRepository.get(login);
         if (optionalUser.isPresent() && optionalUser.get().isActive()) {
             return Token.get(optionalUser.get().getId());
         }
@@ -77,7 +77,7 @@ public class ApplicationController {
 
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
     public String token(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
-        final Optional<User> optionalUser = userRepository.get(login);
+        final Optional<User> optionalUser = userSqlRepository.get(login);
         if (optionalUser.isPresent() && Toolbox.isPassword(password, optionalUser.get().getPassword())) {
             LOGGER.info("login");
             return Token.get(optionalUser.get().getId());
@@ -91,7 +91,7 @@ public class ApplicationController {
         if (!isAccess(Token.getAuthentication(token))) {
             return "-1";
         }
-        return Long.toString(radiationRep.count());
+        return Long.toString(radiationSqlRepository.count());
     }
 
     @GetMapping("/export")
@@ -104,7 +104,7 @@ public class ApplicationController {
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     exportRep.getHeaders(),
-                    exportRep.getAll(radiationRep.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
+                    exportRep.getAll(radiationSqlRepository.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
                     exportRep.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -118,7 +118,7 @@ public class ApplicationController {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return exportRep.getAll(radiationRep.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
+        return exportRep.getAll(radiationSqlRepository.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
@@ -136,7 +136,7 @@ public class ApplicationController {
         Optional<String> optionalToken = auth.getToken();
         OptionalInt optionalUserId = auth.getUserId();
         if (optionalToken.isPresent() && optionalUserId.isPresent()) {
-            Optional<User> optionalUser = userRepository.get(optionalUserId.getAsInt());
+            Optional<User> optionalUser = userSqlRepository.get(optionalUserId.getAsInt());
             return Token.check(optionalToken.get()) && optionalUser.isPresent();
         }
         return false;

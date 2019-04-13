@@ -4,7 +4,7 @@ import de.josmer.app.entities.Radiation;
 
 import java.util.List;
 
-public interface IRadiationRepository {
+public interface IRadiationSqlRepository {
 
     List<Radiation> find(IGaussKrueger gaussKrueger, int startDate, int endDate, String type, double lon, double lat);
 

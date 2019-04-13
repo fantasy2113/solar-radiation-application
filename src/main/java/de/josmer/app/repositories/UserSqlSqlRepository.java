@@ -1,7 +1,7 @@
 package de.josmer.app.repositories;
 
 import de.josmer.app.entities.User;
-import de.josmer.app.lib.interfaces.IUserRepository;
+import de.josmer.app.lib.interfaces.IUserSqlRepository;
 import de.josmer.app.lib.utils.Toolbox;
 import org.springframework.stereotype.Component;
 
@@ -13,12 +13,12 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Component
-public class UserRepository extends Repository<User> implements IUserRepository {
-    public UserRepository(final String databaseUrl) {
+public class UserSqlSqlRepository extends SqlRepository<User> implements IUserSqlRepository {
+    public UserSqlSqlRepository(final String databaseUrl) {
         super(databaseUrl);
     }
 
-    public UserRepository() {
+    public UserSqlSqlRepository() {
         super();
     }
 

@@ -3,7 +3,7 @@ package de.josmer.app.lib.handler;
 
 import de.josmer.app.lib.crawler.RadiationCrawler;
 import de.josmer.app.lib.enums.RadiationTypes;
-import de.josmer.app.repositories.RadiationRepository;
+import de.josmer.app.repositories.RadiationSqlSqlRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +30,7 @@ public final class InsertHandler extends Handler {
         RadiationCrawler radiationCrawler = new RadiationCrawler(localDate.getMonth().getValue(), localDate.getYear(), radiationTypes);
         radiationCrawler.download();
         radiationCrawler.unzip();
-        radiationCrawler.insert(new RadiationRepository());
+        radiationCrawler.insert(new RadiationSqlSqlRepository());
         radiationCrawler.delete();
     }
 }

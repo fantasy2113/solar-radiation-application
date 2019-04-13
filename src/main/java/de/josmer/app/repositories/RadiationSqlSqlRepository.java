@@ -2,7 +2,7 @@ package de.josmer.app.repositories;
 
 import de.josmer.app.entities.Radiation;
 import de.josmer.app.lib.interfaces.IGaussKrueger;
-import de.josmer.app.lib.interfaces.IRadiationRepository;
+import de.josmer.app.lib.interfaces.IRadiationSqlRepository;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
@@ -11,66 +11,53 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public final class RadiationRepository extends Repository<Radiation> implements IRadiationRepository {
+public final class RadiationSqlSqlRepository extends SqlRepository<Radiation> implements IRadiationSqlRepository {
 
-    public RadiationRepository(final String databaseUrl) {
+    public RadiationSqlSqlRepository(final String databaseUrl) {
         super(databaseUrl);
     }
 
-    public RadiationRepository() {
+    public RadiationSqlSqlRepository() {
         super();
     }
+
 
     @Override
     public List<Radiation> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
-
         gaussKrueger.calulate(lon, lat);
-
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
-
-        int rechtswert;
-        if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("5")) {
-            rechtswert = getGkValues(gaussKrueger.getRechtswert() - 1600000);
-        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("4")) {
-            rechtswert = getGkValues(gaussKrueger.getRechtswert() - 800000);
-        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("3")) {
-            rechtswert = getGkValues(gaussKrueger.getRechtswert());
-        } else {
-            return radiations;
-        }
-
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try {
-            try {
-                connection = getConnection();
-                preparedStatement = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
-                        + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? ORDER BY radiation_date ASC LIMIT ?;");
-                preparedStatement.setInt(1, hochwert);
-                preparedStatement.setInt(2, hochwert + 1000);
-                preparedStatement.setInt(3, rechtswert);
-                preparedStatement.setInt(4, rechtswert + 1000);
-                preparedStatement.setString(5, radiationType);
-                preparedStatement.setInt(6, endDate - startDate + 1);
-                ResultSet rs = preparedStatement.executeQuery();
+        final int rechtswert = getRechtswert(gaussKrueger);
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement
+                     = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
+                     + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? ORDER BY radiation_date ASC LIMIT ?;")) {
+            preparedStatement.setInt(1, hochwert);
+            preparedStatement.setInt(2, hochwert + 1000);
+            preparedStatement.setInt(3, rechtswert);
+            preparedStatement.setInt(4, rechtswert + 1000);
+            preparedStatement.setString(5, radiationType);
+            preparedStatement.setInt(6, endDate - startDate + 1);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     radiations.add(mapToEntity(rs));
                 }
-            } catch (SQLException | URISyntaxException e) {
-                LOGGER.info(e.getMessage());
-            } finally {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-                if (connection != null) {
-                    connection.close();
-                }
             }
-        } catch (SQLException e) {
+        } catch (SQLException | URISyntaxException e) {
             LOGGER.info(e.getMessage());
         }
         return radiations;
+    }
+
+    private int getRechtswert(IGaussKrueger gaussKrueger) {
+        if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("5")) {
+            return getGkValues(gaussKrueger.getRechtswert() - 1600000);
+        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("4")) {
+            return getGkValues(gaussKrueger.getRechtswert() - 800000);
+        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("3")) {
+            return getGkValues(gaussKrueger.getRechtswert());
+        }
+        return 0;
     }
 
     @Override

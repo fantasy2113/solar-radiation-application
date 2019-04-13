@@ -4,7 +4,7 @@ import de.josmer.app.entities.User;
 
 import java.util.Optional;
 
-public interface IUserRepository {
+public interface IUserSqlRepository {
 
     Optional<User> get(int id);
 
