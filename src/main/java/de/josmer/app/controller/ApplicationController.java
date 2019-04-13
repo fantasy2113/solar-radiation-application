@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -113,7 +115,7 @@ public class ApplicationController {
     @GetMapping("/find")
     public List<Export> find(@CookieValue("token") final String token, final SearchRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
-            return null;
+            return new ArrayList<>();
         }
         return exportRep.getAll(radiationRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()),
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
@@ -130,9 +132,12 @@ public class ApplicationController {
     }
 
     private boolean isAccess(final Authentication auth) {
-        return auth.getToken().isPresent() && auth.getUserId().isPresent()
-                && userRepository.get(auth.getUserId().getAsInt()).isPresent()
-                && userRepository.get(auth.getUserId().getAsInt()).get().isActive()
-                && Token.check(auth.getToken().get());
+        Optional<String> optionalToken = auth.getToken();
+        OptionalInt optionalUserId = auth.getUserId();
+        if (optionalToken.isPresent() && optionalUserId.isPresent()) {
+            Optional<User> optionalUser = userRepository.get(optionalUserId.getAsInt());
+            return Token.check(optionalToken.get()) && optionalUser.isPresent();
+        }
+        return false;
     }
 }

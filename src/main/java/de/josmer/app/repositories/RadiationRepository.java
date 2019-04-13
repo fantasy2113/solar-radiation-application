@@ -126,6 +126,7 @@ public final class RadiationRepository extends Repository<Radiation> implements 
         return -1;
     }
 
+    @Override
     protected Radiation mapToEntity(ResultSet rs) throws SQLException {
         Radiation radiation = new Radiation();
         radiation.setRadiationType(rs.getString("radiation_type"));
