@@ -14,14 +14,14 @@ public class MainTest {
         double lon = 13.5;
         double albedo = 0.2;
         int diffMdel = 1;
-        Console.WriteLine("### Solar Irradiation Test ###");
-        Console.WriteLine("<== Input");
-        Console.WriteLine("Azimuth Ae = " + Ae);
-        Console.WriteLine("Tilt Ye = " + Ye);
-        Console.WriteLine("Lat = " + lat);
-        Console.WriteLine("Lon = " + lon);
-        Console.WriteLine("Albedo = " + albedo);
-        Console.WriteLine("Diff-Model = " + diffMdel + " # Perez=1, Hay and Davies=2");
+        System.out.println("### Solar Irradiation Test ###");
+        System.out.println("<== Input");
+        System.out.println("Azimuth Ae = " + Ae);
+        System.out.println("Tilt Ye = " + Ye);
+        System.out.println("Lat = " + lat);
+        System.out.println("Lon = " + lon);
+        System.out.println("Albedo = " + albedo);
+        System.out.println("Diff-Model = " + diffMdel + " # Perez=1, Hay and Davies=2");
         double yearTAGModelHorSum = 0;
         double yearSumGenEffective = 0;
         double yearSumGenGEN = 0;
@@ -30,19 +30,19 @@ public class MainTest {
         for (int i = 0; i < 12; i++) {
             dirArr[i] = dirArr[i] * 1000;
             diffArr[i] = diffArr[i] * 1000;
-            Console.WriteLine("Month: [" + (i + 1) + "] ==> [EDiffHor: " + diffArr[i] + "] & [EDirHor: " + dirArr[i] + "]");
+            System.out.println("Month: [" + (i + 1) + "] ==> [EDiffHor: " + diffArr[i] + "] & [EDirHor: " + dirArr[i] + "]");
         }
-        Console.WriteLine("==> Output");
+        System.out.println("==> Output");
         for (int month = 0; month < 12; month++) {
             int daysInMonth = SunToolBox.GetDaysInMonth(Dt.getYear(), Dt.getMonthValue());
-            //Console.WriteLine("\n####### ####### ####### ####### #######");
-            //Console.WriteLine("\nDate = " + Dt.ToString("yyyy-MM"));
+            //System.out.println("\n####### ####### ####### ####### #######");
+            //System.out.println("\nDate = " + Dt.ToString("yyyy-MM"));
             double eDiffHor = diffArr[month];
             double eDirHor = dirArr[month];
             double eGlobalHor = eDiffHor + eDirHor;
             double diffAmount = eDiffHor / eGlobalHor;
             double dirAmount = eDirHor / eGlobalHor;
-            double dayVal = eGlobalHor / SunToolBox.GetDaysInMonth(Dt.Year, Dt.Month);
+            double dayVal = eGlobalHor / SunToolBox.GetDaysInMonth(Dt.getYear(), Dt.getMonthValue());
             List<double[]> dayEList = new ArrayList<>();
             for (int day = 0; day < daysInMonth; day++) {
                 TAGModel tagModell = new TAGModel();
@@ -50,25 +50,22 @@ public class MainTest {
                 dayEList.add(eGlobalHorArr);
             }
             for (int day = 0; day < daysInMonth; day++) {
-                double[] eGlobalHorArr = dayEList[day];
+                double[] eGlobalHorArr = dayEList.get(day);
                 for (int hour = 0; hour < 24; hour++) {
                     Irradiation globalGen = new Irradiation(Ye, Ae, lat, lon, albedo);
-                    globalGen.CalculateHour(eGlobalHorArr[hour] * diffAmount, eGlobalHorArr[hour] * dirAmount, eGlobalHorArr[hour], Dt, diffMdel, shading);
-                    if (globalGen.MSunPos.MYsAtmosphericRefractionCorrection() > 0) {
+                    globalGen.CalculateHour(eGlobalHorArr[hour] * diffAmount, eGlobalHorArr[hour] * dirAmount, eGlobalHorArr[hour], Dt, diffMdel);
+                    if (globalGen.getMSunPos().MYsAtmosphericRefractionCorrection() > 0) {
                         yearTAGModelHorSum += eGlobalHorArr[hour];
-                        yearSumGenEffective += globalGen.MEGlobalGenEffective;
-                        yearSumGenGEN += globalGen.MEGlobalGen;
+                        yearSumGenGEN += globalGen.getMEGlobalGen();
                     }
-                    Dt = Dt.AddHours(1);
+                    Dt = Dt.minusHours(1);
                 }
             }
         }
-        yearTAGModelHorSum = Math.Round(yearTAGModelHorSum / 1000, 1);
-        yearSumGenGEN = Math.Round(yearSumGenGEN / 1000, 1);
-        yearSumGenEffective = Math.Round(yearSumGenEffective / 1000, 1);
-        Console.WriteLine("Year EGlobalHor (TAGModel) = " + yearTAGModelHorSum);
-        Console.WriteLine("Year EGlobalInc = " + yearSumGenGEN);
-        Console.WriteLine("Year EGlobalIncEff = " + yearSumGenEffective);
-        Console.WriteLine("Press key to exit");
-        Console.ReadLine();
+
+        System.out.println("Year EGlobalHor (TAGModel) = " + yearTAGModelHorSum);
+        System.out.println("Year EGlobalInc = " + yearSumGenGEN);
+        System.out.println("Year EGlobalIncEff = " + yearSumGenEffective);
+        System.out.println("Press key to exit");
     }
+}

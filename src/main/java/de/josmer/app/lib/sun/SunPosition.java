@@ -1,6 +1,7 @@
 package de.josmer.app.lib.sun;
 
 import java.time.LocalDateTime;
+import java.time.Year;
 
 public class SunPosition {
 
@@ -64,9 +65,7 @@ public class SunPosition {
     /// <param name="year"></param>
     /// <returns></returns>
     private double GetDaysInYear(int year) {
-        LocalDateTime thisYear = new LocalDateTime(year, 1, 1);
-        LocalDateTime nextYear = new LocalDateTime(year + 1, 1, 1);
-        return (nextYear - thisYear).Days;
+        return Year.of(year).length();
     }
 
     private double rad(double grad) {
@@ -78,8 +77,8 @@ public class SunPosition {
     }
 
     private double GetAtmosphericRefractionCorrection(double localPressure, double localTemp, double atmosRefract) {
-        boolean isSwitch = MYs >= -1.0 * (0.26667 + atmosRefract);
-        double deltaYs = ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * SunToolBox.Tan((MYs + 10.3 / (MYs + 5.11))))) * Convert.ToInt32(isSwitch);
+        int isSwitch = MYs >= -1.0 * (0.26667 + atmosRefract) ? 1 : 0;
+        double deltaYs = ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * SunToolBox.Tan((MYs + 10.3 / (MYs + 5.11))))) * isSwitch;
         return deltaYs;
     }
 
@@ -90,12 +89,12 @@ public class SunPosition {
         double hpa;
         double celsius;
         try {
-            index = Time.Month - 1;
+            index = Time.minusMonths(1).getMonthValue();
             hpa = MonthYearHpaArr[index];
             celsius = MonthYearCelsiusArr[index];
             ys = MYs + GetAtmosphericRefractionCorrection(hpa, celsius, 0.5667);
-        } catch (Exception) {
-            throw
+        } catch (Exception e) {
+
         }
         return ys;
     }

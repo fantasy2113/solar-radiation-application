@@ -90,7 +90,7 @@ public class SunToolBox {
     /// <param name="month">month number</param>
     /// <returns>days</returns>
     public static int GetDaysInMonth(int year, int month) {
-        return 30;
+        return LocalDateTime.of(year, month, 1, 0, 0, 0, 0).getMonth().getValue();
     }
 
     /// <summary>generate a double value</summary>

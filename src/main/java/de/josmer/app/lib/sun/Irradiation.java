@@ -215,7 +215,7 @@ public class Irradiation {
         EDirHorExtra = SunToolBox.Eo * RoverR0sqrd;
     }
 
-    public void CalculateHour(double EDiffHor, double EDirHor, double EGlobalHor, LocalDateTime Dt, int DiffModel, double shading) {
+    public void CalculateHour(double EDiffHor, double EDirHor, double EGlobalHor, LocalDateTime Dt, int DiffModel) {
         LocalDateTime dateTime = LocalDateTime.of(Dt.getYear(), Dt.getMonthValue(), Dt.getDayOfMonth(), Dt.getHour(), Dt.getMinute(), 0, 0);
         MSunPos.SunPositionDIN(dateTime, Latitude, Longitude, 1);
         if (MSunPos.MYsAtmosphericRefractionCorrection() > 0 && EDiffHor > 0 && EDirHor > 0 && EGlobalHor > 0) {

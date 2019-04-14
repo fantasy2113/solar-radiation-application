@@ -16,15 +16,15 @@ public class MainTest {
         double albedo = 0.2;
         int diffMdel = 1;
         double shading = 3;
-        Console.WriteLine("### Solar Irradiation Test ###");
-        Console.WriteLine("<== Input");
-        Console.WriteLine("Azimuth Ae = " + Ae);
-        Console.WriteLine("Tilt Ye = " + Ye);
-        Console.WriteLine("Lat = " + lat);
-        Console.WriteLine("Lon = " + lon);
-        Console.WriteLine("Albedo = " + albedo);
-        Console.WriteLine("Shading Loss % = " + shading);
-        Console.WriteLine("Diff-Model = " + diffMdel + " # Perez=1, Hay and Davies=2");
+        System.out.println("### Solar Irradiation Test ###");
+        System.out.println("<== Input");
+        System.out.println("Azimuth Ae = " + Ae);
+        System.out.println("Tilt Ye = " + Ye);
+        System.out.println("Lat = " + lat);
+        System.out.println("Lon = " + lon);
+        System.out.println("Albedo = " + albedo);
+        System.out.println("Shading Loss % = " + shading);
+        System.out.println("Diff-Model = " + diffMdel + " # Perez=1, Hay and Davies=2");
         double yearTAGModelHorSum = 0;
         double yearSumGenEffective = 0;
         double yearSumGenGEN = 0;
@@ -33,13 +33,13 @@ public class MainTest {
         for (int i = 0; i < 12; i++) {
             dirArr[i] = dirArr[i] * 1000;
             diffArr[i] = diffArr[i] * 1000;
-            Console.WriteLine("Month: [" + (i + 1) + "] ==> [EDiffHor: " + diffArr[i] + "] & [EDirHor: " + dirArr[i] +"]");
+            System.out.println("Month: [" + (i + 1) + "] ==> [EDiffHor: " + diffArr[i] + "] & [EDirHor: " + dirArr[i] +"]");
         }
-        Console.WriteLine("==> Output");
+        System.out.println("==> Output");
         for (int month = 0; month < 12; month++) {
             int daysInMonth = SunToolBox.GetDaysInMonth(Dt.Year, Dt.Month);
-            //Console.WriteLine("\n####### ####### ####### ####### #######");
-            //Console.WriteLine("\nDate = " + Dt.ToString("yyyy-MM"));
+            //System.out.println("\n####### ####### ####### ####### #######");
+            //System.out.println("\nDate = " + Dt.ToString("yyyy-MM"));
             double eDiffHor = diffArr[month];
             double eDirHor = dirArr[month]; ;
             double eGlobalHor = eDiffHor + eDirHor;
@@ -69,9 +69,9 @@ public class MainTest {
         yearTAGModelHorSum = Math.Round(yearTAGModelHorSum / 1000, 1);
         yearSumGenGEN = Math.Round(yearSumGenGEN / 1000, 1);
         yearSumGenEffective = Math.Round(yearSumGenEffective / 1000, 1);
-        Console.WriteLine("Year EGlobalHor (TAGModel) = " + yearTAGModelHorSum);
-        Console.WriteLine("Year EGlobalInc = " + yearSumGenGEN);
-        Console.WriteLine("Year EGlobalIncEff = " + yearSumGenEffective);
-        Console.WriteLine("Press key to exit");
+        System.out.println("Year EGlobalHor (TAGModel) = " + yearTAGModelHorSum);
+        System.out.println("Year EGlobalInc = " + yearSumGenGEN);
+        System.out.println("Year EGlobalIncEff = " + yearSumGenEffective);
+        System.out.println("Press key to exit");
         Console.ReadLine();
 }

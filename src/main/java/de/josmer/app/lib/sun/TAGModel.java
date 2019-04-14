@@ -58,7 +58,7 @@ public class TAGModel {
         double HSynHor = 0.0;   // for check: daily syntetic energy should be similar to hGlob
 
         do {
-            //Console.WriteLine(string.Format("Calucatate try number {0} ...", ++cnt));
+            //System.out.println(string.Format("Calucatate try number {0} ...", ++cnt));
             ++cnt;
             // do the main calculation
             KtOfh = CalcKtOfh(lat, lon, Kt, phi1, sunYOfh);
@@ -97,7 +97,7 @@ public class TAGModel {
                 // check difference with cleaness index of daily irradiation is greater 3%
                 double diff = Math.abs(KtSyn - Kt) / Kt * 100.0;
                 if (diff > 3.0) {
-                    //Console.WriteLine(string.Format("   -> Diff KtSyn={0:N2} from Kt={1:N2} : {2:N2}%", KtSyn, Kt, diff));
+                    //System.out.println(string.Format("   -> Diff KtSyn={0:N2} from Kt={1:N2} : {2:N2}%", KtSyn, Kt, diff));
                     recalc = true;
                 }
             }
@@ -105,17 +105,17 @@ public class TAGModel {
         } while (recalc && (cnt <= 1000));
 
         // write result
-        //Console.WriteLine("RESULT:");
-        //Console.WriteLine(string.Format("Hglob      = {0:N1} Wh/m2", hGlob));
-        //Console.WriteLine(string.Format("Hhor       = {0:N1} Wh/m2", HSynHor));
-        //Console.WriteLine(string.Format("Kt         = {0:N3}", Kt));
-        //Console.WriteLine(string.Format("Kt (syn)   = {0:N3}", KtSyn));
-        //Console.WriteLine(string.Format("Loop count = {0}", cnt));
+        //System.out.println("RESULT:");
+        //System.out.println(string.Format("Hglob      = {0:N1} Wh/m2", hGlob));
+        //System.out.println(string.Format("Hhor       = {0:N1} Wh/m2", HSynHor));
+        //System.out.println(string.Format("Kt         = {0:N3}", Kt));
+        //System.out.println(string.Format("Kt (syn)   = {0:N3}", KtSyn));
+        //System.out.println(string.Format("Loop count = {0}", cnt));
         //double sum = 0;
         //if (EgHorOfh != null)
         //{
         //    for (int h = 0; h < 24; h++) {
-        //        //Console.WriteLine(string.Format("EgHor[{0:00}] = {1:N1} W/m2", h, EgHorOfh[h]));
+        //        //System.out.println(string.Format("EgHor[{0:00}] = {1:N1} W/m2", h, EgHorOfh[h]));
         //        sum+=EgHorOfh[h];
         //    }
         //}
