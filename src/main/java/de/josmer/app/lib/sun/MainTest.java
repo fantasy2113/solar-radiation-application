@@ -1,21 +1,19 @@
 package de.josmer.app.lib.sun;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainTest {
-    public static void Main(string[] args) {
-        Dictionary<string, double> PRDict = new Dictionary<string, double>();
-        PRDict.Add("Optimal, no shading (PR=0.8)", 0.8);
-        PRDict.Add("Good, no shading (PR=0.75)", 0.75);
-        PRDict.Add("Good, slightly shading (PR=0.70)", 0.7);
-        PRDict.Add("Moderate, shading (PR=0.60)", 0.6);
-        PRDict.Add("Bad, shading (PR=0.50)", 0.5);
-        LocalDateTime Dt = new LocalDateTime(2010, 1, 1, 0, 30, 0, 0);
+    public static void Main(String[] args) {
+
+        LocalDateTime Dt = LocalDateTime.of(2010, 1, 1, 0, 30, 0, 0);
         double Ye = 32; // tilt
         double Ae = 160; // 180=south, 0=nord, 90=east, 270=west
         double lat = 52.5;
         double lon = 13.5;
         double albedo = 0.2;
         int diffMdel = 1;
-        double shading = 3;
         Console.WriteLine("### Solar Irradiation Test ###");
         Console.WriteLine("<== Input");
         Console.WriteLine("Azimuth Ae = " + Ae);
@@ -23,7 +21,6 @@ public class MainTest {
         Console.WriteLine("Lat = " + lat);
         Console.WriteLine("Lon = " + lon);
         Console.WriteLine("Albedo = " + albedo);
-        Console.WriteLine("Shading Loss % = " + shading);
         Console.WriteLine("Diff-Model = " + diffMdel + " # Perez=1, Hay and Davies=2");
         double yearTAGModelHorSum = 0;
         double yearSumGenEffective = 0;
@@ -37,7 +34,7 @@ public class MainTest {
         }
         Console.WriteLine("==> Output");
         for (int month = 0; month < 12; month++) {
-            int daysInMonth = SunToolBox.GetDaysInMonth(Dt.Year, Dt.Month);
+            int daysInMonth = SunToolBox.GetDaysInMonth(Dt.getYear(), Dt.getMonthValue());
             //Console.WriteLine("\n####### ####### ####### ####### #######");
             //Console.WriteLine("\nDate = " + Dt.ToString("yyyy-MM"));
             double eDiffHor = diffArr[month];
@@ -46,11 +43,11 @@ public class MainTest {
             double diffAmount = eDiffHor / eGlobalHor;
             double dirAmount = eDirHor / eGlobalHor;
             double dayVal = eGlobalHor / SunToolBox.GetDaysInMonth(Dt.Year, Dt.Month);
-            List<double[]> dayEList = new List<double[]>();
+            List<double[]> dayEList = new ArrayList<>();
             for (int day = 0; day < daysInMonth; day++) {
                 TAGModel tagModell = new TAGModel();
                 double[] eGlobalHorArr = tagModell.CalculateDay(Dt, dayVal, lat, lon);
-                dayEList.Add(eGlobalHorArr);
+                dayEList.add(eGlobalHorArr);
             }
             for (int day = 0; day < daysInMonth; day++) {
                 double[] eGlobalHorArr = dayEList[day];

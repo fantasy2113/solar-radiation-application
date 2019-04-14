@@ -3,32 +3,14 @@ package de.josmer.app.lib.sun;
 import java.time.LocalDateTime;
 
 public class SunPosition {
-    /// <summary>see Regenerative Energiesysteme [Quaschning] 2.5 ==> Picture 2.16</summary>
-    public double MYs /// <summary>see Regenerative Energiesysteme [Quaschning] 2.5 ==> Picture 2.16</summary>
-    public double MAs
-    public double MZenith
+
+    public double MYs;
+    public double MAs;
+    public double MZenith;
     double[] MonthYearCelsiusArr = new double[]{0.4, 1.1, 4.6, 8.6, 13.8, 16.4, 18.3, 17.9, 13.7, 9.1, 4.3, 1.7};
     double[] MonthYearHpaArr = new double[]{1017, 1017.1, 1015.1, 1013.8, 1015.5, 1015.1, 1015.4, 1016.0, 1016.2, 1016.6, 1015.6, 1015.5};
     private LocalDateTime Time;
 
-    {
-        get;
-        private set
-    }
-
-    private static readonly
-
-    {
-        get;
-        private set
-    }
-
-    private static readonly
-
-    {
-        get;
-        private set
-    }
 
     /// <summary>
     ///
@@ -38,13 +20,13 @@ public class SunPosition {
     /// <param name="lon"></param>
     /// <param name="timezone"></param>
     public void SunPositionDIN(LocalDateTime dt, double lat, double lon, double timezone) {
-        Time = new LocalDateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, 0, 0);
-        double hour = Time.Hour;
-        double year = Time.Year;
-        double min = Time.Minute;
-        double sec = Time.Second;
+        Time = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
+        double hour = Time.getHour();
+        double year = Time.getYear();
+        double min = Time.getMinute();
+        double sec = Time.getSecond();
         double J2 = GetDaysInYear((int) year);
-        double J = Time.DayOfYear;
+        double J = Time.getDayOfYear();
         double MOZ = hour + 1.0 / 60 * min + 1.0 / 3600 * sec - timezone + 1;
         MOZ = MOZ - 4 * (15 - lon) / 60;
         J = J * 360 / J2 + MOZ / 24;
@@ -96,7 +78,7 @@ public class SunPosition {
     }
 
     private double GetAtmosphericRefractionCorrection(double localPressure, double localTemp, double atmosRefract) {
-        bool isSwitch = MYs >= -1.0 * (0.26667 + atmosRefract);
+        boolean isSwitch = MYs >= -1.0 * (0.26667 + atmosRefract);
         double deltaYs = ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * SunToolBox.Tan((MYs + 10.3 / (MYs + 5.11))))) * Convert.ToInt32(isSwitch);
         return deltaYs;
     }
@@ -131,5 +113,53 @@ public class SunPosition {
     /// <returns></returns>
     public double CalculateSimpleDayAngle(int dayofyear, int year) {
         return (2.0 * Math.PI / GetDaysInYear(year)) * (dayofyear - 1);
+    }
+
+    public double getMYs() {
+        return MYs;
+    }
+
+    public void setMYs(double MYs) {
+        this.MYs = MYs;
+    }
+
+    public double getMAs() {
+        return MAs;
+    }
+
+    public void setMAs(double MAs) {
+        this.MAs = MAs;
+    }
+
+    public double getMZenith() {
+        return MZenith;
+    }
+
+    public void setMZenith(double MZenith) {
+        this.MZenith = MZenith;
+    }
+
+    public double[] getMonthYearCelsiusArr() {
+        return MonthYearCelsiusArr;
+    }
+
+    public void setMonthYearCelsiusArr(double[] monthYearCelsiusArr) {
+        MonthYearCelsiusArr = monthYearCelsiusArr;
+    }
+
+    public double[] getMonthYearHpaArr() {
+        return MonthYearHpaArr;
+    }
+
+    public void setMonthYearHpaArr(double[] monthYearHpaArr) {
+        MonthYearHpaArr = monthYearHpaArr;
+    }
+
+    public LocalDateTime getTime() {
+        return Time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        Time = time;
     }
 }

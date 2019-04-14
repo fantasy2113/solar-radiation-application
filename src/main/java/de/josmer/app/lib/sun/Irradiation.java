@@ -102,15 +102,8 @@ public class Irradiation {
         AnisotropyIndex = EDirHor / EDirHorExtra;
     }
 
-    /// <summary>
-    /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/solarposition.py#L847
-    /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/irradiance.py#L125
-    /// </summary>
-    /// <param name="Dt"></param>
-    private void SetEDirHorExtra(LocalDateTime Dt) {
-        double b = MSunPos.CalculateSimpleDayAngle(Dt.DayOfYear, Dt.Year);
-        double RoverR0sqrd = (1.00011 + 0.034221 * Math.cos(b) + 0.00128 * Math.sin(b) + 0.000719 * Math.cos(2 * b) + 7.7e-05 * Math.sin(2 * b));
-        EDirHorExtra = SunToolBox.Eo * RoverR0sqrd;
+    public static Map<String, double[]> getFTabelle() {
+        return FTabelle;
     }
 
     /// <summary>
@@ -207,8 +200,23 @@ public class Irradiation {
         MEDiffGen = Math.max(MEDiffGen, 0);
     }
 
+    public static void setFTabelle(Map<String, double[]> FTabelle) {
+        Irradiation.FTabelle = FTabelle;
+    }
+
+    /// <summary>
+    /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/solarposition.py#L847
+    /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/irradiance.py#L125
+    /// </summary>
+    /// <param name="Dt"></param>
+    private void SetEDirHorExtra(LocalDateTime Dt) {
+        double b = MSunPos.CalculateSimpleDayAngle(Dt.getDayOfYear(), Dt.getYear());
+        double RoverR0sqrd = (1.00011 + 0.034221 * Math.cos(b) + 0.00128 * Math.sin(b) + 0.000719 * Math.cos(2 * b) + 7.7e-05 * Math.sin(2 * b));
+        EDirHorExtra = SunToolBox.Eo * RoverR0sqrd;
+    }
+
     public void CalculateHour(double EDiffHor, double EDirHor, double EGlobalHor, LocalDateTime Dt, int DiffModel, double shading) {
-        LocalDateTime dateTime = new LocalDateTime(Dt.Year, Dt.Month, Dt.Day, Dt.Hour, Dt.Minute, 0);
+        LocalDateTime dateTime = LocalDateTime.of(Dt.getYear(), Dt.getMonthValue(), Dt.getDayOfMonth(), Dt.getHour(), Dt.getMinute(), 0, 0);
         MSunPos.SunPositionDIN(dateTime, Latitude, Longitude, 1);
         if (MSunPos.MYsAtmosphericRefractionCorrection() > 0 && EDiffHor > 0 && EDirHor > 0 && EGlobalHor > 0) {
             SetAoi();
@@ -238,4 +246,259 @@ public class Irradiation {
         }
     }
 
+    public String getF_11() {
+        return F_11;
+    }
+
+    public String getF_12() {
+        return F_12;
+    }
+
+    public String getF_13() {
+        return F_13;
+    }
+
+    public String getF_21() {
+        return F_21;
+    }
+
+    public String getF_22() {
+        return F_22;
+    }
+
+    public String getF_23() {
+        return F_23;
+    }
+
+    public SunPosition getMSunPos() {
+        return MSunPos;
+    }
+
+    public void setMSunPos(SunPosition MSunPos) {
+        this.MSunPos = MSunPos;
+    }
+
+    public double getMEDiffGen() {
+        return MEDiffGen;
+    }
+
+    public void setMEDiffGen(double MEDiffGen) {
+        this.MEDiffGen = MEDiffGen;
+    }
+
+    public double getMEDirGen() {
+        return MEDirGen;
+    }
+
+    public void setMEDirGen(double MEDirGen) {
+        this.MEDirGen = MEDirGen;
+    }
+
+    public double getMEReflGen() {
+        return MEReflGen;
+    }
+
+    public void setMEReflGen(double MEReflGen) {
+        this.MEReflGen = MEReflGen;
+    }
+
+    public double getMEGlobalGenEffective() {
+        return MEGlobalGenEffective;
+    }
+
+    public void setMEGlobalGenEffective(double MEGlobalGenEffective) {
+        this.MEGlobalGenEffective = MEGlobalGenEffective;
+    }
+
+    public double getMEGlobalGen() {
+        return MEGlobalGen;
+    }
+
+    public void setMEGlobalGen(double MEGlobalGen) {
+        this.MEGlobalGen = MEGlobalGen;
+    }
+
+    public double getAlbedo() {
+        return Albedo;
+    }
+
+    public void setAlbedo(double albedo) {
+        Albedo = albedo;
+    }
+
+    public double getAe() {
+        return Ae;
+    }
+
+    public void setAe(double ae) {
+        Ae = ae;
+    }
+
+    public double getYe() {
+        return Ye;
+    }
+
+    public void setYe(double ye) {
+        Ye = ye;
+    }
+
+    public double getHimmelsklarheitsindex() {
+        return Himmelsklarheitsindex;
+    }
+
+    public void setHimmelsklarheitsindex(double himmelsklarheitsindex) {
+        Himmelsklarheitsindex = himmelsklarheitsindex;
+    }
+
+    public double getDelta() {
+        return Delta;
+    }
+
+    public void setDelta(double delta) {
+        Delta = delta;
+    }
+
+    public double getAirMass() {
+        return AirMass;
+    }
+
+    public void setAirMass(double airMass) {
+        AirMass = airMass;
+    }
+
+    public double getAoiProjection() {
+        return AoiProjection;
+    }
+
+    public void setAoiProjection(double aoiProjection) {
+        AoiProjection = aoiProjection;
+    }
+
+    public double getF1() {
+        return F1;
+    }
+
+    public void setF1(double f1) {
+        F1 = f1;
+    }
+
+    public double getF2() {
+        return F2;
+    }
+
+    public void setF2(double f2) {
+        F2 = f2;
+    }
+
+    public double getF11() {
+        return F11;
+    }
+
+    public void setF11(double f11) {
+        F11 = f11;
+    }
+
+    public double getF12() {
+        return F12;
+    }
+
+    public void setF12(double f12) {
+        F12 = f12;
+    }
+
+    public double getF13() {
+        return F13;
+    }
+
+    public void setF13(double f13) {
+        F13 = f13;
+    }
+
+    public double getF21() {
+        return F21;
+    }
+
+    public void setF21(double f21) {
+        F21 = f21;
+    }
+
+    public double getF22() {
+        return F22;
+    }
+
+    public void setF22(double f22) {
+        F22 = f22;
+    }
+
+    public double getF23() {
+        return F23;
+    }
+
+    public void setF23(double f23) {
+        F23 = f23;
+    }
+
+    public double getA() {
+        return A;
+    }
+
+    public void setA(double a) {
+        A = a;
+    }
+
+    public double getB() {
+        return B;
+    }
+
+    public void setB(double b) {
+        B = b;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public double getAoi() {
+        return Aoi;
+    }
+
+    public void setAoi(double aoi) {
+        Aoi = aoi;
+    }
+
+    public double getProjectionRatio() {
+        return ProjectionRatio;
+    }
+
+    public void setProjectionRatio(double projectionRatio) {
+        ProjectionRatio = projectionRatio;
+    }
+
+    public double getEDirHorExtra() {
+        return EDirHorExtra;
+    }
+
+    public void setEDirHorExtra(double EDirHorExtra) {
+        this.EDirHorExtra = EDirHorExtra;
+    }
+
+    public double getAnisotropyIndex() {
+        return AnisotropyIndex;
+    }
+
+    public void setAnisotropyIndex(double anisotropyIndex) {
+        AnisotropyIndex = anisotropyIndex;
+    }
 }
