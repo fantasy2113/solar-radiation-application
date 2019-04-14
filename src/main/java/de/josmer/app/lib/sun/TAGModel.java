@@ -1,6 +1,9 @@
 package de.josmer.app.lib.sun;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class TAGModel {
@@ -36,7 +39,7 @@ public class TAGModel {
         // init sun angle in degree
         double sumSinGammaS = 0.0;
         for (int h = 0; h < 24; h++) {
-            LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), day.getHour(), day.getMinute(), 0, 0);
+            LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), h, day.getMinute(), 0, 0);
             sunPos.SunPositionDIN(dt, lat, lon, 1);
             sunYOfh[h] = sunPos.MYsAtmosphericRefractionCorrection();
             if (sunPos.MYsAtmosphericRefractionCorrection() > 0) {
@@ -56,7 +59,7 @@ public class TAGModel {
         double[] EgHorOfh = null;
         double KtSyn = 0.0; // for check: syntetic daily clearness index calculated back from hour values
         double HSynHor = 0.0;   // for check: daily syntetic energy should be similar to hGlob
-
+        Map<Double, double[]> map = new HashMap<>();
         do {
             //System.out.println(string.Format("Calucatate try number {0} ...", ++cnt));
             ++cnt;
@@ -68,6 +71,7 @@ public class TAGModel {
             EgHorOfh = new double[24];
             HSynHor = 0.0;
             KtSyn = 0.0;
+
             for (int h = 0; h < KtOfh.length; h++) {
                 double kt = KtOfh[h];
                 if (kt == 0.0) {
@@ -96,13 +100,14 @@ public class TAGModel {
                 KtSyn = HSynHor / HE0Hor;
                 // check difference with cleaness index of daily irradiation is greater 3%
                 double diff = Math.abs(KtSyn - Kt) / Kt * 100.0;
-                if (diff > 3.0) {
-                    //System.out.println(string.Format("   -> Diff KtSyn={0:N2} from Kt={1:N2} : {2:N2}%", KtSyn, Kt, diff));
+                map.put(diff, EgHorOfh);
+                if (diff > 3) {
+                    //System.out.println(String.format("   -> Diff KtSyn={0} from Kt={1} : {2}", KtSyn, Kt, diff));
                     recalc = true;
                 }
             }
 
-        } while (recalc && (cnt <= 1000));
+        } while (recalc && (cnt <= 10000));
 
         // write result
         //System.out.println("RESULT:");
@@ -120,8 +125,15 @@ public class TAGModel {
         //    }
         //}
         //Console.ReadLine();
+        try {
+            Double min2 = Collections.min(map.keySet());
+            double[] doubles = map.get(min2);
+        } catch (Exception e) {
+            System.out.println();
+        }
 
-        return EgHorOfh;
+        Double min = Collections.min(map.keySet());
+        return map.get(min);
     }
 
     /// <summary>

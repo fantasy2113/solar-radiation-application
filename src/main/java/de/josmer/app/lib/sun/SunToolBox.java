@@ -1,6 +1,7 @@
 package de.josmer.app.lib.sun;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.Random;
 
 public class SunToolBox {
@@ -90,7 +91,7 @@ public class SunToolBox {
     /// <param name="month">month number</param>
     /// <returns>days</returns>
     public static int GetDaysInMonth(int year, int month) {
-        return LocalDateTime.of(year, month, 1, 0, 0, 0, 0).getMonth().getValue();
+        return YearMonth.of(year, month).lengthOfMonth();
     }
 
     /// <summary>generate a double value</summary>

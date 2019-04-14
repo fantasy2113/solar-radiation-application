@@ -89,12 +89,12 @@ public class SunPosition {
         double hpa;
         double celsius;
         try {
-            index = Time.minusMonths(1).getMonthValue();
+            index = Time.getMonthValue() - 1;
             hpa = MonthYearHpaArr[index];
             celsius = MonthYearCelsiusArr[index];
             ys = MYs + GetAtmosphericRefractionCorrection(hpa, celsius, 0.5667);
         } catch (Exception e) {
-
+            System.out.println(e);
         }
         return ys;
     }
