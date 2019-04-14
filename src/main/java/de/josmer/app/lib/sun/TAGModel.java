@@ -36,7 +36,7 @@ public class TAGModel {
         // init sun angle in degree
         double sumSinGammaS = 0.0;
         for (int h = 0; h < 24; h++) {
-            LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), day.getHour(), day.getMinute());
+            LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), day.getHour(), day.getMinute(), 0, 0);
             sunPos.SunPositionDIN(dt, lat, lon, 1);
             sunYOfh[h] = sunPos.MYsAtmosphericRefractionCorrection();
             if (sunPos.MYsAtmosphericRefractionCorrection() > 0) {
