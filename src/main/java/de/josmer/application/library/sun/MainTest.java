@@ -49,7 +49,7 @@ class MainTest {
             for (int day = 0; day < daysInMonth; day++) {
                 TagModel tagModell = new TagModel();
                 LocalDateTime dtTag = LocalDateTime.of(Dt.getYear(), month + 1, day + 1, 0, 30);
-                double[] eGlobalHorArr = tagModell.CalculateDay(dtTag, dayVal, lat, lon);
+                double[] eGlobalHorArr = tagModell.calculateDay(dtTag, dayVal, lat, lon);
                 dayEList.add(eGlobalHorArr);
             }
             for (int day = 0; day < daysInMonth; day++) {
@@ -57,7 +57,7 @@ class MainTest {
                 for (int hour = 0; hour < 24; hour++) {
                     Radiation globalGen = new Radiation(Ye, Ae, lat, lon, albedo);
                     globalGen.CalculateHour(eGlobalHorArr[hour] * diffAmount, eGlobalHorArr[hour] * dirAmount, eGlobalHorArr[hour], Dt, diffMdel);
-                    if (globalGen.getMSunPos().MYsAtmosphericRefractionCorrection() > 0) {
+                    if (globalGen.getMSunPos().getYsAtmosphericRefractionCorrection() > 0) {
                         yearTAGModelHorSum += eGlobalHorArr[hour];
                         yearSumGenGEN += globalGen.getMEGlobalGen();
                     }

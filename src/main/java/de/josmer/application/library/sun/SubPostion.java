@@ -5,36 +5,28 @@ import java.time.Year;
 
 class SubPostion {
 
-    public double MYs;
-    public double MAs;
-    public double MZenith;
-    double[] MonthYearCelsiusArr = new double[]{0.4, 1.1, 4.6, 8.6, 13.8, 16.4, 18.3, 17.9, 13.7, 9.1, 4.3, 1.7};
-    double[] MonthYearHpaArr = new double[]{1017, 1017.1, 1015.1, 1013.8, 1015.5, 1015.1, 1015.4, 1016.0, 1016.2, 1016.6, 1015.6, 1015.5};
-    private LocalDateTime Time;
+    private double ys;
+    private double as;
+    private double zenith;
+    private double[] MonthYearCelsiusArr = new double[]{0.4, 1.1, 4.6, 8.6, 13.8, 16.4, 18.3, 17.9, 13.7, 9.1, 4.3, 1.7};
+    private double[] MonthYearHpaArr = new double[]{1017, 1017.1, 1015.1, 1013.8, 1015.5, 1015.1, 1015.4, 1016.0, 1016.2, 1016.6, 1015.6, 1015.5};
+    private LocalDateTime time;
 
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="dt"></param>
-    /// <param name="lat"></param>
-    /// <param name="lon"></param>
-    /// <param name="timezone"></param>
-    public void SunPositionDIN(LocalDateTime dt, double lat, double lon, double timezone) {
-        Time = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
-        double hour = Time.getHour();
-        double year = Time.getYear();
-        double min = Time.getMinute();
-        double sec = Time.getSecond();
-        double J2 = GetDaysInYear((int) year);
-        double J = Time.getDayOfYear();
-        double MOZ = hour + 1.0 / 60 * min + 1.0 / 3600 * sec - timezone + 1;
-        MOZ = MOZ - 4 * (15 - lon) / 60;
-        J = J * 360 / J2 + MOZ / 24;
-        double decl = 0.3948 - 23.2559 * Math.cos(rad(J + 9.1)) - 0.3915 * Math.cos(rad(2 * J + 5.4)) - 0.1764 * Math.cos(rad(3 * J + 26.0));
-        double Zgl = 0.0066 + 7.3525 * Math.cos(rad(J + 85.9)) + 9.9359 * Math.cos(rad(2 * J + 108.9)) + 0.3387 * Math.cos(rad(3 * J + 105.2));
-        double WOZ = MOZ + Zgl / 60;
-        double w = (12 - WOZ) * 15;
+    public void calculate(LocalDateTime dt, double lat, double lon, double timezone) {
+        time = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
+        double hour = time.getHour();
+        double year = time.getYear();
+        double min = time.getMinute();
+        double sec = time.getSecond();
+        double j2 = getDaysInYear((int) year);
+        double j = time.getDayOfYear();
+        double moz = hour + 1.0 / 60 * min + 1.0 / 3600 * sec - timezone + 1;
+        moz = moz - 4 * (15 - lon) / 60;
+        j = j * 360 / j2 + moz / 24;
+        double decl = 0.3948 - 23.2559 * Math.cos(rad(j + 9.1)) - 0.3915 * Math.cos(rad(2 * j + 5.4)) - 0.1764 * Math.cos(rad(3 * j + 26.0));
+        double zgl = 0.0066 + 7.3525 * Math.cos(rad(j + 85.9)) + 9.9359 * Math.cos(rad(2 * j + 108.9)) + 0.3387 * Math.cos(rad(3 * j + 105.2));
+        double woz = moz + zgl / 60;
+        double w = (12 - woz) * 15;
         double asinGs = Math.cos(rad(w)) * Math.cos(rad(lat)) * Math.cos(rad(decl)) + Math.sin(rad(lat)) * Math.sin(rad(decl));
         if (asinGs > 1) {
             asinGs = 1;
@@ -51,20 +43,17 @@ class SubPostion {
             acosAs = -1;
         }
         double sunaz = grad(Math.acos(acosAs));
-        if ((WOZ > 12) || (WOZ < 0)) {
+        if ((woz > 12) || (woz < 0)) {
             sunaz = 180 + sunaz;
         } else {
             sunaz = 180 - sunaz;
         }
-        MAs = sunaz;
-        MYs = sunhi;
-        MZenith = 90.0 - MYs;
+        as = sunaz;
+        ys = sunhi;
+        zenith = 90.0 - ys;
     }
 
-    /// <summary></summary>
-    /// <param name="year"></param>
-    /// <returns></returns>
-    private double GetDaysInYear(int year) {
+    private double getDaysInYear(int year) {
         return Year.of(year).length();
     }
 
@@ -76,54 +65,30 @@ class SubPostion {
         return (rad * 180 / Math.PI);
     }
 
-    private double GetAtmosphericRefractionCorrection(double localPressure, double localTemp, double atmosRefract) {
-        int isSwitch = MYs >= -1.0 * (0.26667 + atmosRefract) ? 1 : 0;
-        double deltaYs = ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * Calc.tan((MYs + 10.3 / (MYs + 5.11))))) * isSwitch;
-        return deltaYs;
+    private double getAtmosphericRefractionCorrection(double localPressure, double localTemp, double atmosRefract) {
+        int isSwitch = ys >= -1.0 * (0.26667 + atmosRefract) ? 1 : 0;
+        return ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * Calc.tan((ys + 10.3 / (ys + 5.11))))) * isSwitch;
     }
 
-    public double MYsAtmosphericRefractionCorrection() {
+    public double getYsAtmosphericRefractionCorrection() {
         // https://github.com/pvlib/pvlib-python/blob/master/pvlib/test/test_spa.py#L40 0.5667
-        double ys = 0;
-        int index;
-        double hpa;
-        double celsius;
         try {
-            index = Time.getMonthValue() - 1;
-            hpa = MonthYearHpaArr[index];
-            celsius = MonthYearCelsiusArr[index];
-            ys = MYs + GetAtmosphericRefractionCorrection(hpa, celsius, 0.5667);
+            int index = time.getMonthValue() - 1;
+            double hpa = MonthYearHpaArr[index];
+            double celsius = MonthYearCelsiusArr[index];
+            return this.ys + getAtmosphericRefractionCorrection(hpa, celsius, 0.5667);
         } catch (Exception e) {
             System.out.println(e);
         }
-        return ys;
+        return 0;
     }
 
-    public double MZenithAtmosphericRefractionCorrection() {
-        double zenith = 90 - MYsAtmosphericRefractionCorrection();
+    public double GetZenithAtmosphericRefractionCorrection() {
+        double zenith = 90 - getYsAtmosphericRefractionCorrection();
         return zenith;
     }
 
-    /// <summary>
-    /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/solarposition.py#L847
-    /// </summary>
-    /// <param name="dayofyear"></param>
-    /// <param name="year"></param>
-    /// <returns></returns>
-    public double CalculateSimpleDayAngle(int dayofyear, int year) {
-        return (2.0 * Math.PI / GetDaysInYear(year)) * (dayofyear - 1);
-    }
-
-    public double getMYs() {
-        return MYs;
-    }
-
-
-    public LocalDateTime getTime() {
-        return Time;
-    }
-
-    public void setTime(LocalDateTime time) {
-        Time = time;
+    public double getSimpleDayAngle(int dayofyear, int year) {
+        return (2.0 * Math.PI / getDaysInYear(year)) * (dayofyear - 1);
     }
 }

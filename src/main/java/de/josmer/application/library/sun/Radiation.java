@@ -102,7 +102,7 @@ class Radiation {
 
     private void SetProjectionRatio() {
         double cosTT = AoiProjection;
-        double cosSolarZenith = Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection());
+        double cosSolarZenith = Calc.cos(MSunPos.GetZenithAtmosphericRefractionCorrection());
         ProjectionRatio = cosTT / cosSolarZenith;
     }
 
@@ -110,7 +110,7 @@ class Radiation {
     /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/irradiance.py#L1024
     /// </summary>
     private void SetF1AndF2() {
-        double z = Calc.getRad(MSunPos.MZenithAtmosphericRefractionCorrection());
+        double z = Calc.getRad(MSunPos.GetZenithAtmosphericRefractionCorrection());
         F1 = (F11 + F12 * Delta + F13 * z);
         F1 = Math.max(F1, 0);
         F2 = (F21 + F22 * Delta + F23 * z);
@@ -122,7 +122,7 @@ class Radiation {
     /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/irradiance.py#L182
     /// </summary>
     private void SetAoi() {
-        AoiProjection = Calc.cos(Ye) * Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + Calc.sin(Ye) * Calc.sin(MSunPos.MZenithAtmosphericRefractionCorrection()) * Calc.cos(MSunPos.MAs - Ae);
+        AoiProjection = Calc.cos(Ye) * Calc.cos(MSunPos.GetZenithAtmosphericRefractionCorrection()) + Calc.sin(Ye) * Calc.sin(MSunPos.GetZenithAtmosphericRefractionCorrection()) * Calc.cos(MSunPos.as - Ae);
         Aoi = Calc.getDeg(Math.acos(AoiProjection));
     }
 
@@ -139,8 +139,8 @@ class Radiation {
     /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/atmosphere.py#L213
     /// </summary>
     private void SetAirMass() {
-        //AirMass = 1.0 / Calc.cos(MSunPos.MZenith);
-        AirMass = (1.0 / (Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + 0.50572 * ((Math.pow((6.07995 + (90 - MSunPos.MZenithAtmosphericRefractionCorrection())), -1.6364)))));
+        //AirMass = 1.0 / Calc.cos(MSunPos.zenith);
+        AirMass = (1.0 / (Calc.cos(MSunPos.GetZenithAtmosphericRefractionCorrection()) + 0.50572 * ((Math.pow((6.07995 + (90 - MSunPos.GetZenithAtmosphericRefractionCorrection())), -1.6364)))));
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ class Radiation {
     private void SetAandB() {
         A = AoiProjection;
         A = Math.max(A, 0);
-        B = Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection());
+        B = Calc.cos(MSunPos.GetZenithAtmosphericRefractionCorrection());
         B = Math.max(B, Calc.cos(85));
     }
 
@@ -166,7 +166,7 @@ class Radiation {
     /// </summary>
     /// <param name="EDirHor"></param>
     private void SetMEDirGen(double EDiffHor, double EDirHor, double EGlobalHor) {
-        double cosSolarZenith = Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection());
+        double cosSolarZenith = Calc.cos(MSunPos.GetZenithAtmosphericRefractionCorrection());
         double ratio = AoiProjection / cosSolarZenith;
         MEDirGen = EDirHor * ratio;
         MEDirGen = Math.max(MEDirGen, 0);
@@ -178,7 +178,7 @@ class Radiation {
     /// <param name="EDiffHor"></param>
     /// <param name="EDirHor"></param>
     private void SetHimmelsklarheitsindex(double EDiffHor, double EDirHor, double EGlobalHor) {
-        double z = Calc.getRad(MSunPos.MZenithAtmosphericRefractionCorrection());
+        double z = Calc.getRad(MSunPos.GetZenithAtmosphericRefractionCorrection());
         Himmelsklarheitsindex = ((EDiffHor + EDirHor) / EDiffHor + Calc.K * Math.pow(z, 3)) / (1 + Calc.K * Math.pow(z, 3));
     }
 
@@ -206,13 +206,13 @@ class Radiation {
     /// </summary>
     /// <param name="Dt"></param>
     private void SetEDirHorExtra(LocalDateTime Dt) {
-        double b = MSunPos.CalculateSimpleDayAngle(Dt.getDayOfYear(), Dt.getYear());
+        double b = MSunPos.getSimpleDayAngle(Dt.getDayOfYear(), Dt.getYear());
         double RoverR0sqrd = (1.00011 + 0.034221 * Math.cos(b) + 0.00128 * Math.sin(b) + 0.000719 * Math.cos(2 * b) + 7.7e-05 * Math.sin(2 * b));
         EDirHorExtra = Calc.EO * RoverR0sqrd;
     }
 
     private double getDiffGlobHor(double val) {
-        final double kt = val / Calc.EO * Calc.sin(MSunPos.MYsAtmosphericRefractionCorrection());
+        final double kt = val / Calc.EO * Calc.sin(MSunPos.getYsAtmosphericRefractionCorrection());
         if (kt <= 3.0) {
 
         } else if (kt < 0.78) {
@@ -223,8 +223,8 @@ class Radiation {
 
     public void CalculateHour(double EDiffHor, double EDirHor, double EGlobalHor, LocalDateTime Dt, int DiffModel) {
         LocalDateTime dateTime = LocalDateTime.of(Dt.getYear(), Dt.getMonthValue(), Dt.getDayOfMonth(), Dt.getHour(), Dt.getMinute(), 0, 0);
-        MSunPos.SunPositionDIN(dateTime, Latitude, Longitude, 1);
-        if (MSunPos.MYsAtmosphericRefractionCorrection() > 0 && EDiffHor > 0 && EDirHor > 0 && EGlobalHor > 0) {
+        MSunPos.calculate(dateTime, Latitude, Longitude, 1);
+        if (MSunPos.getYsAtmosphericRefractionCorrection() > 0 && EDiffHor > 0 && EDirHor > 0 && EGlobalHor > 0) {
             SetAoi();
             SetEDirHorExtra(Dt);
             SetMEDirGen(EDiffHor, EDirHor, EGlobalHor);
