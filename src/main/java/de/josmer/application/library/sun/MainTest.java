@@ -8,8 +8,8 @@ class MainTest {
     public static void main(String[] args) {
 
         LocalDateTime dt = LocalDateTime.of(2010, 1, 1, 0, 30, 0, 0);
-        double ye = 35; // tilt
-        double ae = 180; // 180=south, 0=nord, 90=east, 270=west
+        double ye = 90; // tilt
+        double ae = 0; // 180=south, 0=nord, 90=east, 270=west
         double lat = 52.5;
         double lon = 13.5;
 

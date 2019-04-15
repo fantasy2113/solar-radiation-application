@@ -3,16 +3,20 @@ package de.josmer.application.library.sun;
 import java.time.LocalDateTime;
 import java.time.Year;
 
-class SubPostion {
-
+class SunPostion {
     private double ys;
     private double as;
     private double zenith;
-    private double[] MonthYearCelsiusArr = new double[]{0.4, 1.1, 4.6, 8.6, 13.8, 16.4, 18.3, 17.9, 13.7, 9.1, 4.3, 1.7};
-    private double[] MonthYearHpaArr = new double[]{1017, 1017.1, 1015.1, 1013.8, 1015.5, 1015.1, 1015.4, 1016.0, 1016.2, 1016.6, 1015.6, 1015.5};
+    private double[] monthYearCelsiusArr;
+    private double[] monthYearHpaArr;
     private LocalDateTime time;
 
-    public void calculate(LocalDateTime dt, double lat, double lon, double timezone) {
+    SunPostion() {
+        this.monthYearCelsiusArr = new double[]{0.4, 1.1, 4.6, 8.6, 13.8, 16.4, 18.3, 17.9, 13.7, 9.1, 4.3, 1.7};
+        this.monthYearHpaArr = new double[]{1017, 1017.1, 1015.1, 1013.8, 1015.5, 1015.1, 1015.4, 1016.0, 1016.2, 1016.6, 1015.6, 1015.5};
+    }
+
+    void calculate(LocalDateTime dt, double lat, double lon, double timezone) {
         time = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
         double hour = time.getHour();
         double year = time.getYear();
@@ -74,8 +78,8 @@ class SubPostion {
         // https://github.com/pvlib/pvlib-python/blob/master/pvlib/test/test_spa.py#L40 0.5667
         try {
             int index = time.getMonthValue() - 1;
-            double hpa = MonthYearHpaArr[index];
-            double celsius = MonthYearCelsiusArr[index];
+            double hpa = monthYearHpaArr[index];
+            double celsius = monthYearCelsiusArr[index];
             return this.ys + getAtmosphericRefractionCorrection(hpa, celsius, 0.5667);
         } catch (Exception e) {
             System.out.println(e);
@@ -98,5 +102,9 @@ class SubPostion {
 
     public double getYs() {
         return ys;
+    }
+
+    public double getZenith() {
+        return zenith;
     }
 }

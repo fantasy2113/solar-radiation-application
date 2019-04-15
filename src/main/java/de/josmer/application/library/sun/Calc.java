@@ -7,13 +7,17 @@ class Calc {
     static final double EO = 1360.8;
     static final double EO_TAG = 1367;
     static final double RAD = Math.PI / 180.0;
+    static final double DEG = 180.0 / Math.PI;
+
+    private Calc() {
+    }
 
     static double getRad(double deg) {
-        return deg * Math.PI / 180.0;
+        return deg * RAD;
     }
 
     static double getDeg(double rad) {
-        return rad * 180.0 / Math.PI;
+        return rad * DEG;
     }
 
     static double tan(double val) {

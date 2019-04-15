@@ -15,7 +15,7 @@ class Radiation {
     private final double lon;
     private final double lat;
     private Map<String, double[]> fTabelle;
-    private SubPostion sunPos;
+    private SunPostion sunPos;
     private double eDiffGen;
     private double eDirGen;
     private double eReflGen;
@@ -45,7 +45,7 @@ class Radiation {
         this.lat = lat;
         this.lon = lon;
         this.albedo = albedo;
-        this.sunPos = new SubPostion();
+        this.sunPos = new SunPostion();
         initFTabelle();
     }
 

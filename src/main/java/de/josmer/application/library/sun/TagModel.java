@@ -19,7 +19,7 @@ class TagModel {
     }
 
     double[] calculateDay(LocalDateTime day, double hGlob, double lat, double lon) {
-        SubPostion sunPos = new SubPostion();
+        SunPostion sunPos = new SunPostion();
         double[] sunYOfh = new double[24];
         double sumSinGammaS = 0.0;
         for (int h = 0; h < 24; h++) {
