@@ -113,8 +113,8 @@ function initDateInputs(startYear) {
             if (date.getDay() < 15) {
                 date.setMonth(date.getMonth() - 1);
             }
-
-            var end = date.getMonth();
+            var end = date.getMonth() + 1;
+            console.log(end);
             for (var currentMonth = 1; currentMonth <= end; currentMonth++) {
                 pushToDates(dates, year, currentMonth);
             }
