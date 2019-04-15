@@ -8,8 +8,8 @@ class MainTest {
     public static void main(String[] args) {
 
         LocalDateTime dt = LocalDateTime.of(2010, 1, 1, 0, 30, 0, 0);
-        double ye = 90; // tilt
-        double ae = 0; // 180=south, 0=nord, 90=east, 270=west
+        double ye = 25; // tilt
+        double ae = 180; // 180=south, 0=nord, 90=east, 270=west
         double lat = 52.5;
         double lon = 13.5;
 
@@ -39,11 +39,15 @@ class MainTest {
             double eDirHor = dirArr[month];
             double eGlobalHor = eDiffHor + eDirHor;
             double dayVal = eGlobalHor / Calc.getDaysInMonth(dt.getYear(), dt.getMonthValue());
+
+            TagModel tagModel = new TagModel();
+            double[] days = tagModel.getDays(LocalDateTime.of(dt.getYear(), month + 1, 1, dt.getHour(), dt.getMinute()), eGlobalHor, lat, lon);
+
             List<double[]> dayEList = new LinkedList<>();
             for (int day = 0; day < daysInMonth; day++) {
                 TagModel tagModell = new TagModel();
                 LocalDateTime dtTag = LocalDateTime.of(dt.getYear(), month + 1, day + 1, 0, 30);
-                double[] eGlobalHorArr = tagModell.calculateDay(dtTag, dayVal, lat, lon);
+                double[] eGlobalHorArr = tagModell.getHours(dtTag, days[day], lat, lon);
                 dayEList.add(eGlobalHorArr);
             }
             for (int day = 0; day < daysInMonth; day++) {
