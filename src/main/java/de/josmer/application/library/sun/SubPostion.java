@@ -3,7 +3,7 @@ package de.josmer.application.library.sun;
 import java.time.LocalDateTime;
 import java.time.Year;
 
-class SunPosition {
+class SubPostion {
 
     public double MYs;
     public double MAs;
@@ -78,7 +78,7 @@ class SunPosition {
 
     private double GetAtmosphericRefractionCorrection(double localPressure, double localTemp, double atmosRefract) {
         int isSwitch = MYs >= -1.0 * (0.26667 + atmosRefract) ? 1 : 0;
-        double deltaYs = ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * SunToolBox.Tan((MYs + 10.3 / (MYs + 5.11))))) * isSwitch;
+        double deltaYs = ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * Calc.tan((MYs + 10.3 / (MYs + 5.11))))) * isSwitch;
         return deltaYs;
     }
 
@@ -118,41 +118,6 @@ class SunPosition {
         return MYs;
     }
 
-    public void setMYs(double MYs) {
-        this.MYs = MYs;
-    }
-
-    public double getMAs() {
-        return MAs;
-    }
-
-    public void setMAs(double MAs) {
-        this.MAs = MAs;
-    }
-
-    public double getMZenith() {
-        return MZenith;
-    }
-
-    public void setMZenith(double MZenith) {
-        this.MZenith = MZenith;
-    }
-
-    public double[] getMonthYearCelsiusArr() {
-        return MonthYearCelsiusArr;
-    }
-
-    public void setMonthYearCelsiusArr(double[] monthYearCelsiusArr) {
-        MonthYearCelsiusArr = monthYearCelsiusArr;
-    }
-
-    public double[] getMonthYearHpaArr() {
-        return MonthYearHpaArr;
-    }
-
-    public void setMonthYearHpaArr(double[] monthYearHpaArr) {
-        MonthYearHpaArr = monthYearHpaArr;
-    }
 
     public LocalDateTime getTime() {
         return Time;

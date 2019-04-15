@@ -77,14 +77,14 @@ public class SunToolBox {
 
     /// <summary>acos with degree to radian convert</summary>
     /// <param name="val"></param>
-    /// <returns>Acos(degree to radian)=x</returns>
+    /// <returns>acos(degree to radian)=x</returns>
     public static double Acos(double val) {
         return Math.Acos(GetRad(val));
     }
 
-    /// <summary>Asin with degree to radian convert</summary>
+    /// <summary>asin with degree to radian convert</summary>
     /// <param name="val"></param>
-    /// <returns>Asin(degree to radian)=x</returns>
+    /// <returns>asin(degree to radian)=x</returns>
     public static double Asin(double val) {
         return Math.Asin(GetRad(val));
     }

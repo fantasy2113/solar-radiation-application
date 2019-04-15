@@ -165,7 +165,7 @@ public class Irradiation {
     /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/atmosphere.py#L213
     /// </summary>
     private void SetAirMass() {
-        //AirMass = 1.0 / SunToolBox.Cos(MSunPos.MZenith);
+        //AirMass = 1.0 / SunToolBox.cos(MSunPos.MZenith);
         AirMass = (1.0 / (SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + 0.50572 * ((Math.Pow((6.07995 + (90 - MSunPos.MZenithAtmosphericRefractionCorrection())), -1.6364)))));
     }
 

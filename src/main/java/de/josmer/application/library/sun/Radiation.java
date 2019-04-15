@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-class Irradiation {
+class Radiation {
 
     private static Map<String, double[]> FTabelle;
     private final String F_11 = "F11";
@@ -13,7 +13,7 @@ class Irradiation {
     private final String F_21 = "F21";
     private final String F_22 = "F22";
     private final String F_23 = "F23";
-    private SunPosition MSunPos;
+    private SubPostion MSunPos;
     private double MEDiffGen;
     private double MEDirGen;
     private double MEReflGen;
@@ -43,13 +43,13 @@ class Irradiation {
     private double EDirHorExtra = 0;
     private double AnisotropyIndex = 0;
 
-    public Irradiation(double Ye, double Ae, double Latitude, double Longitude, double Albedo) {
+    public Radiation(double Ye, double Ae, double Latitude, double Longitude, double Albedo) {
         this.Ye = Ye;
         this.Ae = Ae;
         this.Latitude = Latitude;
         this.Longitude = Longitude;
         this.Albedo = Albedo;
-        MSunPos = new SunPosition();
+        MSunPos = new SubPostion();
         InitFTabelle();
     }
 
@@ -92,25 +92,25 @@ class Irradiation {
         F23 = FTabelle.get(F_23)[index];
     }
 
-    private void SetProjectionRatio() {
-        double cosTT = AoiProjection;
-        double cosSolarZenith = SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection());
-        ProjectionRatio = cosTT / cosSolarZenith;
+    public static void setFTabelle(Map<String, double[]> FTabelle) {
+        Radiation.FTabelle = FTabelle;
     }
 
     private void SetAnisotropyIndex(double EDiffHor, double EDirHor, double EGlobalHor) {
         AnisotropyIndex = EDirHor / EDirHorExtra;
     }
 
-    public static Map<String, double[]> getFTabelle() {
-        return FTabelle;
+    private void SetProjectionRatio() {
+        double cosTT = AoiProjection;
+        double cosSolarZenith = Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection());
+        ProjectionRatio = cosTT / cosSolarZenith;
     }
 
     /// <summary>
     /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/irradiance.py#L1024
     /// </summary>
     private void SetF1AndF2() {
-        double z = SunToolBox.GetRad(MSunPos.MZenithAtmosphericRefractionCorrection());
+        double z = Calc.getRad(MSunPos.MZenithAtmosphericRefractionCorrection());
         F1 = (F11 + F12 * Delta + F13 * z);
         F1 = Math.max(F1, 0);
         F2 = (F21 + F22 * Delta + F23 * z);
@@ -122,16 +122,8 @@ class Irradiation {
     /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/irradiance.py#L182
     /// </summary>
     private void SetAoi() {
-        AoiProjection = SunToolBox.Cos(Ye) * SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + SunToolBox.Sin(Ye) * SunToolBox.Sin(MSunPos.MZenithAtmosphericRefractionCorrection()) * SunToolBox.Cos(MSunPos.MAs - Ae);
-        Aoi = SunToolBox.GetDeg(Math.acos(AoiProjection));
-    }
-
-    /// <summary>
-    /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/atmosphere.py#L213
-    /// </summary>
-    private void SetAirMass() {
-        //AirMass = 1.0 / SunToolBox.Cos(MSunPos.MZenith);
-        AirMass = (1.0 / (SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + 0.50572 * ((Math.pow((6.07995 + (90 - MSunPos.MZenithAtmosphericRefractionCorrection())), -1.6364)))));
+        AoiProjection = Calc.cos(Ye) * Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + Calc.sin(Ye) * Calc.sin(MSunPos.MZenithAtmosphericRefractionCorrection()) * Calc.cos(MSunPos.MAs - Ae);
+        Aoi = Calc.getDeg(Math.acos(AoiProjection));
     }
 
     /// <summary>
@@ -144,13 +136,21 @@ class Irradiation {
     }
 
     /// <summary>
+    /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/atmosphere.py#L213
+    /// </summary>
+    private void SetAirMass() {
+        //AirMass = 1.0 / Calc.cos(MSunPos.MZenith);
+        AirMass = (1.0 / (Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection()) + 0.50572 * ((Math.pow((6.07995 + (90 - MSunPos.MZenithAtmosphericRefractionCorrection())), -1.6364)))));
+    }
+
+    /// <summary>
     /// https://github.com/pvlib/pvlib-python/blob/master/pvlib/irradiance.py#L1030
     /// </summary>
     private void SetAandB() {
         A = AoiProjection;
         A = Math.max(A, 0);
-        B = SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection());
-        B = Math.max(B, SunToolBox.Cos(85));
+        B = Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection());
+        B = Math.max(B, Calc.cos(85));
     }
 
     /// <summary>
@@ -158,7 +158,7 @@ class Irradiation {
     /// </summary>
     /// <param name="EGlobalHor"></param>
     private void SetMEReflGen(double EDiffHor, double EDirHor, double EGlobalHor) {
-        MEReflGen = EGlobalHor * Albedo * (1.0 - SunToolBox.Cos(Ye)) * 0.5;
+        MEReflGen = EGlobalHor * Albedo * (1.0 - Calc.cos(Ye)) * 0.5;
     }
 
     /// <summary>
@@ -166,7 +166,7 @@ class Irradiation {
     /// </summary>
     /// <param name="EDirHor"></param>
     private void SetMEDirGen(double EDiffHor, double EDirHor, double EGlobalHor) {
-        double cosSolarZenith = SunToolBox.Cos(MSunPos.MZenithAtmosphericRefractionCorrection());
+        double cosSolarZenith = Calc.cos(MSunPos.MZenithAtmosphericRefractionCorrection());
         double ratio = AoiProjection / cosSolarZenith;
         MEDirGen = EDirHor * ratio;
         MEDirGen = Math.max(MEDirGen, 0);
@@ -178,8 +178,8 @@ class Irradiation {
     /// <param name="EDiffHor"></param>
     /// <param name="EDirHor"></param>
     private void SetHimmelsklarheitsindex(double EDiffHor, double EDirHor, double EGlobalHor) {
-        double z = SunToolBox.GetRad(MSunPos.MZenithAtmosphericRefractionCorrection());
-        Himmelsklarheitsindex = ((EDiffHor + EDirHor) / EDiffHor + SunToolBox.K * Math.pow(z, 3)) / (1 + SunToolBox.K * Math.pow(z, 3));
+        double z = Calc.getRad(MSunPos.MZenithAtmosphericRefractionCorrection());
+        Himmelsklarheitsindex = ((EDiffHor + EDirHor) / EDiffHor + Calc.K * Math.pow(z, 3)) / (1 + Calc.K * Math.pow(z, 3));
     }
 
     /// <summary>
@@ -187,21 +187,17 @@ class Irradiation {
     /// </summary>
     /// <param name="EDiffHor"></param>
     private void SetMEDiffGenPerez(double EDiffHor, double EDirHor, double EGlobalHor) {
-        double term1 = 0.5 * (1 - F1) * (1 + SunToolBox.Cos(Ye));
+        double term1 = 0.5 * (1 - F1) * (1 + Calc.cos(Ye));
         double term2 = F1 * A / B;
-        double term3 = F2 * SunToolBox.Sin(Ye);
+        double term3 = F2 * Calc.sin(Ye);
         MEDiffGen = Math.max(0, EDiffHor * (term1 + term2 + term3));
     }
 
     public void SetMEDiffGenHayDavies(double EDiffHor, double EDirHor, double EGlobalHor) {
         double term1 = 1 - AnisotropyIndex;
-        double term2 = 0.5 * (1 + SunToolBox.Cos(Ye));
+        double term2 = 0.5 * (1 + Calc.cos(Ye));
         MEDiffGen = EDiffHor * (AnisotropyIndex * ProjectionRatio + term1 * term2);
         MEDiffGen = Math.max(MEDiffGen, 0);
-    }
-
-    public static void setFTabelle(Map<String, double[]> FTabelle) {
-        Irradiation.FTabelle = FTabelle;
     }
 
     /// <summary>
@@ -212,7 +208,17 @@ class Irradiation {
     private void SetEDirHorExtra(LocalDateTime Dt) {
         double b = MSunPos.CalculateSimpleDayAngle(Dt.getDayOfYear(), Dt.getYear());
         double RoverR0sqrd = (1.00011 + 0.034221 * Math.cos(b) + 0.00128 * Math.sin(b) + 0.000719 * Math.cos(2 * b) + 7.7e-05 * Math.sin(2 * b));
-        EDirHorExtra = SunToolBox.Eo * RoverR0sqrd;
+        EDirHorExtra = Calc.EO * RoverR0sqrd;
+    }
+
+    private double getDiffGlobHor(double val) {
+        final double kt = val / Calc.EO * Calc.sin(MSunPos.MYsAtmosphericRefractionCorrection());
+        if (kt <= 3.0) {
+
+        } else if (kt < 0.78) {
+
+        }
+        return 0;
     }
 
     public void CalculateHour(double EDiffHor, double EDirHor, double EGlobalHor, LocalDateTime Dt, int DiffModel) {
@@ -270,11 +276,11 @@ class Irradiation {
         return F_23;
     }
 
-    public SunPosition getMSunPos() {
+    public SubPostion getMSunPos() {
         return MSunPos;
     }
 
-    public void setMSunPos(SunPosition MSunPos) {
+    public void setMSunPos(SubPostion MSunPos) {
         this.MSunPos = MSunPos;
     }
 
