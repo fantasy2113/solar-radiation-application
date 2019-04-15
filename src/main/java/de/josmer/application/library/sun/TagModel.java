@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Random;
 
 class TagModel {
-    private static final double E0 = 1367.0;
+    //private static final double E0 = 1367.0;
     private Random random;
 
     TagModel() {
@@ -25,9 +25,9 @@ class TagModel {
         for (int h = 0; h < 24; h++) {
             LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), h, day.getMinute(), 0, 0);
             sunPos.calculate(dt, lat, lon, 1);
-            sunYOfh[h] = sunPos.getYsAtmosphericRefractionCorrection();
-            if (sunPos.getYsAtmosphericRefractionCorrection() > 0) {
-                sumSinGammaS += Math.sin(degreeToRad(sunPos.getYsAtmosphericRefractionCorrection()));
+            sunYOfh[h] = sunPos.getYsCorr();
+            if (sunPos.getYsCorr() > 0) {
+                sumSinGammaS += Math.sin(degreeToRad(sunPos.getYsCorr()));
             }
         }
         double he0Hor = e0OfDay(day) * sumSinGammaS;
@@ -49,12 +49,12 @@ class TagModel {
                 if (kth == 0.0) {
                     continue;
                 }
-                double ktMax = 0.88 * Math.cos((Math.PI * (h + 1 - 12.5)) / 30.0);
+                double ktMax = 0.88 * Math.cos((Math.PI * (h + 1.0 - 12.5)) / 30.0);
                 if (kth < 0.0 || kth > ktMax) {
                     isAdd = false;
                     break;
                 }
-                EgHorOfh[h] = KtOfh[h] * E0 * Math.sin(degreeToRad(sunYOfh[h]));
+                EgHorOfh[h] = KtOfh[h] * Calc.EO_TAG * Math.sin(degreeToRad(sunYOfh[h]));
                 HSynHor += EgHorOfh[h];
             }
             if (isAdd) {
@@ -92,6 +92,6 @@ class TagModel {
     }
 
     private double e0OfDay(LocalDateTime day) {
-        return E0 * (1 - 0.0334 * Math.cos(0.0172 * (double) day.getDayOfYear() - 0.04747));
+        return Calc.EO_TAG * (1.0 - 0.0334 * Math.cos(0.0172 * (double) day.getDayOfYear() - 0.04747));
     }
 }

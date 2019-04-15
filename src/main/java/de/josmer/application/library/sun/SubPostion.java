@@ -70,7 +70,7 @@ class SubPostion {
         return ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * Calc.tan((ys + 10.3 / (ys + 5.11))))) * isSwitch;
     }
 
-    public double getYsAtmosphericRefractionCorrection() {
+    public double getYsCorr() {
         // https://github.com/pvlib/pvlib-python/blob/master/pvlib/test/test_spa.py#L40 0.5667
         try {
             int index = time.getMonthValue() - 1;
@@ -83,12 +83,20 @@ class SubPostion {
         return 0;
     }
 
-    public double GetZenithAtmosphericRefractionCorrection() {
-        double zenith = 90 - getYsAtmosphericRefractionCorrection();
+    public double getZenithCorr() {
+        double zenith = 90 - getYsCorr();
         return zenith;
     }
 
     public double getSimpleDayAngle(int dayofyear, int year) {
         return (2.0 * Math.PI / getDaysInYear(year)) * (dayofyear - 1);
+    }
+
+    public double getAs() {
+        return as;
+    }
+
+    public double getYs() {
+        return ys;
     }
 }
