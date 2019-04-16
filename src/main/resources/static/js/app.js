@@ -1,4 +1,5 @@
 jQuery(document).ready(function () {
+    $('#calc_button').css("background-color", "whitesmoke");
     initDateInputs(1991);
 
     $('#src').empty();
@@ -81,12 +82,6 @@ jQuery(document).ready(function () {
                 });
             }
         });
-    });
-
-    var logout_button = jQuery('#logout_button');
-    logout_button.bind('click', function () {
-        document.cookie = 'token=;';
-        $(location).attr('href', getPath());
     });
 
     var export_button = jQuery('#export_button');

@@ -28,10 +28,12 @@ import java.util.regex.Pattern;
 
 @RestController
 public class ApplicationController {
+    private static final String LOGIN_HTML = "src/main/resources/static/html/login.html";
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class.getName());
     private final IExportRepository exportRep;
     private final IRadiationRepository radiationRepository;
     private final IUserRepository userRepository;
+
 
     @Autowired
     public ApplicationController(IExportRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository) {
@@ -42,7 +44,7 @@ public class ApplicationController {
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
     public String login() {
-        return Toolbox.readFile("src/main/resources/static/html/login.html");
+        return Toolbox.readFile(LOGIN_HTML);
     }
 
     @GetMapping(value = "/app", produces = MediaType.TEXT_HTML_VALUE)
@@ -50,7 +52,15 @@ public class ApplicationController {
         if (isAccess(Token.getAuthentication(token))) {
             return Toolbox.readFile("src/main/resources/static/html/app.html");
         }
-        return Toolbox.readFile("src/main/resources/static/html/login.html");
+        return Toolbox.readFile(LOGIN_HTML);
+    }
+
+    @GetMapping(value = "/calc", produces = MediaType.TEXT_HTML_VALUE)
+    public String calc(@CookieValue("token") final String token) {
+        if (isAccess(Token.getAuthentication(token))) {
+            return Toolbox.readFile("src/main/resources/static/html/calc.html");
+        }
+        return Toolbox.readFile(LOGIN_HTML);
     }
 
     @GetMapping(value = "/save_user", produces = MediaType.TEXT_HTML_VALUE)
