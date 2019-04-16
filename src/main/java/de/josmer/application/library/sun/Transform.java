@@ -21,10 +21,10 @@ public class Transform {
     }
 
     public double[] getEGlobGen() {
+        final TagModel tagModel = new TagModel();
         double[] eGlobGenMonths = new double[12];
         for (int month = getMonthVal(); month < 12; month++) {
             double eGlobGenMonthly = 0.0;
-            final TagModel tagModel = new TagModel();
             final double[] days = tagModel.getDays(getDtDays(month), months[month], lat, lon);
             for (int day = 0; day < getDaysInMonth(month); day++) {
                 final LocalDateTime dtDay = getDtDay(month, day);
@@ -41,26 +41,23 @@ public class Transform {
     }
 
     private int getDaysInMonth(int month) {
-        return Calc.getDaysInMonth(startDate.getYear(), month);
+        return Calc.getDaysInMonth(startDate.getYear(), month + 1);
     }
 
     private LocalDateTime getDtDays(int month) {
-        return LocalDateTime.of(startDate.getYear(), parseDate(month), 1, 0, 30);
+        return LocalDateTime.of(startDate.getYear(), month + 1, 1, 0, 30);
     }
 
     private LocalDateTime getDtHour(int month, int day, int hour) {
-        return LocalDateTime.of(startDate.getYear(), parseDate(month), parseDate(day), parseDate(hour), 30);
+        return LocalDateTime.of(startDate.getYear(), month + 1, day + 1, hour, 30);
     }
 
     private LocalDateTime getDtDay(int month, int day) {
-        return LocalDateTime.of(startDate.getYear(), parseDate(month), parseDate(day), 0, 30);
+        return LocalDateTime.of(startDate.getYear(), month + 1, day + 1, 0, 30);
     }
 
     private int getMonthVal() {
         return startDate.getMonthValue() - 1;
     }
 
-    private int parseDate(int value) {
-        return value + 1;
-    }
 }

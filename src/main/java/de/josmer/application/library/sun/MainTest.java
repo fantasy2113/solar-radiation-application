@@ -8,8 +8,8 @@ class MainTest {
     public static void main(String[] args) {
 
         LocalDateTime dt = LocalDateTime.of(2010, 1, 1, 0, 30, 0, 0);
-        double ye = 25; // tilt
-        double ae = 180; // 180=south, 0=nord, 90=east, 270=west
+        double ye = 0; // tilt
+        double ae = 0; // 180=south, 0=nord, 90=east, 270=west
         double lat = 52.5;
         double lon = 13.5;
 
@@ -24,6 +24,8 @@ class MainTest {
         double yearSumGenGEN = 0;
         double[] dirArr = new double[]{5, 12, 31, 69, 81, 81, 71, 67, 41, 19, 10, 4}; // Berlin
         double[] diffArr = new double[]{14, 22, 44, 59, 78, 85, 87, 67, 53, 32, 17, 11}; // Berlin
+
+        double[] months = new double[]{19 * 1000, 34 * 1000, 75 * 1000, 128 * 1000, 159 * 1000, 166 * 1000, 158 * 1000, 134 * 1000, 94 * 1000, 51 * 1000, 27 * 1000, 15 * 1000}; // Berlin
         double gesamt = 0;
         for (int i = 0; i < 12; i++) {
             dirArr[i] = dirArr[i] * 1000;
@@ -64,8 +66,18 @@ class MainTest {
 
         System.out.println("Year EGlobalHor (TagModel) = " + yearTAGModelHorSum / 1000);
         System.out.println("Year EGlobalInc = " + yearSumGenGEN / 1000);
-        Transform transform = new Transform(lat, lon, null, null, ye, ae);
+        Transform transform = new Transform(lat, lon, months, LocalDateTime.of(2010, 1, 1, 0, 30, 0, 0), ye, ae);
         double[] eGlobGen = transform.getEGlobGen();
+        System.out.println("Year EGlobalInc = " + sum(eGlobGen) / 1000);
+
+
+    }
+
+    public static double sum(double... values) {
+        double result = 0;
+        for (double value : values)
+            result += value;
+        return result;
     }
 
 
