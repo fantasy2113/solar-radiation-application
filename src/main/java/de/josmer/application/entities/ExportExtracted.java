@@ -7,8 +7,6 @@ public class ExportExtracted extends Export {
     private String month;
     private double as;
     private double ys;
-    private double lat;
-    private double lon;
     private double eGlobHor;
     private double eGlobGen;
 
@@ -42,24 +40,6 @@ public class ExportExtracted extends Export {
 
     public void setYs(double ys) {
         this.ys = ys;
-    }
-
-    @Override
-    public double getLat() {
-        return lat;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    @Override
-    public double getLon() {
-        return lon;
-    }
-
-    public void setLon(double lon) {
-        this.lon = lon;
     }
 
     public double geteGlobHor() {
