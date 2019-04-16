@@ -74,8 +74,8 @@ class SunPostion {
         return (rad * 180 / Math.PI);
     }
 
-    private double getAtmosphericRefractionCorrection(double localPressure, double localTemp, double atmosRefract) {
-        int isSwitch = ys >= -1.0 * (0.26667 + atmosRefract) ? 1 : 0;
+    private double getAtmosphericRefractionCorrection(double localPressure, double localTemp) {
+        int isSwitch = ys >= -1.0 * (0.26667 + 0.5667) ? 1 : 0;
         return ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * Calc.tan((ys + 10.3 / (ys + 5.11))))) * isSwitch;
     }
 
@@ -85,7 +85,7 @@ class SunPostion {
             int index = time.getMonthValue() - 1;
             double hpa = monthYearHpaArr[index];
             double celsius = monthYearCelsiusArr[index];
-            return this.ys + getAtmosphericRefractionCorrection(hpa, celsius, 0.5667);
+            return this.ys + getAtmosphericRefractionCorrection(hpa, celsius);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
