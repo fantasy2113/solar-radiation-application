@@ -1,4 +1,4 @@
 jQuery(document).ready(function () {
-    $('#app_button').css("background-color", "whitesmoke");
+    $('#radi_button').css("background-color", "whitesmoke");
 
 });

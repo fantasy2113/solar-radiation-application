@@ -1,6 +1,6 @@
 package de.josmer.application.controller;
 
-import de.josmer.application.controller.requests.SearchRequest;
+import de.josmer.application.controller.requests.RadiationRequest;
 import de.josmer.application.entities.Export;
 import de.josmer.application.entities.User;
 import de.josmer.application.library.geo.GaussKrueger;
@@ -34,7 +34,6 @@ public class ApplicationController {
     private final IRadiationRepository radiationRepository;
     private final IUserRepository userRepository;
 
-
     @Autowired
     public ApplicationController(IExportRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository) {
         this.exportRep = exportRep;
@@ -47,10 +46,10 @@ public class ApplicationController {
         return Toolbox.readFile(LOGIN_HTML);
     }
 
-    @GetMapping(value = "/app", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/radi", produces = MediaType.TEXT_HTML_VALUE)
     public String app(@CookieValue("token") final String token) {
         if (isAccess(Token.getAuthentication(token))) {
-            return Toolbox.readFile("src/main/resources/static/html/app.html");
+            return Toolbox.readFile("src/main/resources/static/html/radi.html");
         }
         return Toolbox.readFile(LOGIN_HTML);
     }
@@ -81,16 +80,6 @@ public class ApplicationController {
         }
         return "Etwas ist schief gelaufen!";
     }
-
-    private Optional<User> createUser(String login, String password) {
-        userRepository.saveUser(login, password);
-        return userRepository.get(login);
-    }
-
-    private boolean isParameter(String login, String password) {
-        return login == null || password == null || login.equals("") || password.equals("");
-    }
-
 
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
     public String token(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
@@ -131,12 +120,16 @@ public class ApplicationController {
     }
 
     @GetMapping("/find")
-    public List<Export> find(@CookieValue("token") final String token, final SearchRequest req) {
+    public List<Export> find(@CookieValue("token") final String token, final RadiationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
         return exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
+    }
+
+    private boolean isParameter(String login, String password) {
+        return login == null || password == null || login.equals("") || password.equals("");
     }
 
     private boolean isLogin(final String login) {
@@ -152,6 +145,11 @@ public class ApplicationController {
             LOGGER.info(e.getMessage());
             return 0;
         }
+    }
+
+    private Optional<User> createUser(String login, String password) {
+        userRepository.saveUser(login, password);
+        return userRepository.get(login);
     }
 
     private boolean isAccess(final Authentication auth) {

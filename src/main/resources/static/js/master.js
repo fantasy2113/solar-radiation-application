@@ -12,9 +12,9 @@ jQuery(document).ready(function () {
     });
 
     jQuery(document).ready(function () {
-        var app_button = jQuery('#app_button');
-        app_button.bind('click', function () {
-            $(location).attr('href', getPath() + 'app');
+        var radi_button = jQuery('#radi_button');
+        radi_button.bind('click', function () {
+            $(location).attr('href', getPath() + 'radi');
         });
     });
 });
