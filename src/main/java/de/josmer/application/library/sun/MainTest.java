@@ -64,5 +64,9 @@ class MainTest {
 
         System.out.println("Year EGlobalHor (TagModel) = " + yearTAGModelHorSum / 1000);
         System.out.println("Year EGlobalInc = " + yearSumGenGEN / 1000);
+        Transform transform = new Transform(lat, lon, null, null, ye, ae);
+        double[] eGlobGen = transform.getEGlobGen();
     }
+
+
 }
