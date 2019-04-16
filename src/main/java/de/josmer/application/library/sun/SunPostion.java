@@ -1,9 +1,13 @@
 package de.josmer.application.library.sun;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDateTime;
 import java.time.Year;
 
 class SunPostion {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SunPostion.class.getName());
     private static final double TIMEZONE = 1;
     private double ys;
     private double as;
@@ -83,7 +87,7 @@ class SunPostion {
             double celsius = monthYearCelsiusArr[index];
             return this.ys + getAtmosphericRefractionCorrection(hpa, celsius, 0.5667);
         } catch (Exception e) {
-            System.out.println(e);
+            LOGGER.info(e.getMessage());
         }
         return 0;
     }
