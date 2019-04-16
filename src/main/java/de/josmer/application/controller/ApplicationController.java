@@ -2,10 +2,10 @@ package de.josmer.application.controller;
 
 import de.josmer.application.controller.requests.ExtractorRequest;
 import de.josmer.application.controller.requests.RadiationRequest;
-import de.josmer.application.entities.Export;
+import de.josmer.application.entities.ExportRadiation;
 import de.josmer.application.entities.User;
 import de.josmer.application.library.geo.GaussKrueger;
-import de.josmer.application.library.interfaces.IExportRepository;
+import de.josmer.application.library.interfaces.IExportRadiationRepository;
 import de.josmer.application.library.interfaces.IRadiationRepository;
 import de.josmer.application.library.interfaces.IUserRepository;
 import de.josmer.application.library.security.Authentication;
@@ -28,12 +28,12 @@ import java.util.regex.Pattern;
 public class ApplicationController {
     private static final String LOGIN_HTML = "src/main/resources/static/html/login.html";
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class.getName());
-    private final IExportRepository exportRep;
+    private final IExportRadiationRepository exportRep;
     private final IRadiationRepository radiationRepository;
     private final IUserRepository userRepository;
 
     @Autowired
-    public ApplicationController(IExportRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository) {
+    public ApplicationController(IExportRadiationRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository) {
         this.exportRep = exportRep;
         this.radiationRepository = radiationRepository;
         this.userRepository = userRepository;
@@ -83,7 +83,7 @@ public class ApplicationController {
     public String token(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         final Optional<User> optionalUser = userRepository.get(login);
         if (optionalUser.isPresent() && Toolbox.isPassword(password, optionalUser.get().getPassword())) {
-            LOGGER.info("login");
+            LOGGER.info("login successful");
             return Token.get(optionalUser.get().getId());
         }
         LOGGER.info("login failed");
@@ -118,7 +118,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/find")
-    public List<Export> find(@CookieValue("token") final String token, final RadiationRequest req) {
+    public List<ExportRadiation> find(@CookieValue("token") final String token, final RadiationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
@@ -127,7 +127,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/extractor")
-    public List<Export> extractor(@CookieValue("token") final String token, final ExtractorRequest req) {
+    public List<ExportRadiation> extractor(@CookieValue("token") final String token, final ExtractorRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }

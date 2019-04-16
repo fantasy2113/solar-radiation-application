@@ -1,13 +1,10 @@
 package de.josmer.application.library.interfaces;
 
-import de.josmer.application.entities.Export;
-import de.josmer.application.entities.Radiation;
-
 import java.util.List;
 
-public interface IExportRepository {
+public interface IExportRepository<R, I> {
 
-    List<Export> getAll(List<Radiation> radiations, double lon, double lat);
+    List<R> getAll(List<I> items, double lon, double lat);
 
     List<String> getHeaders();
 

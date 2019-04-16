@@ -1,4 +1,4 @@
-package de.josmer.application.repositories;
+package de.josmer.application.library.abstractclasses;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,8 +1,8 @@
 package de.josmer.application.repositories;
 
-import de.josmer.application.entities.Export;
+import de.josmer.application.entities.ExportRadiation;
 import de.josmer.application.entities.Radiation;
-import de.josmer.application.library.interfaces.IExportRepository;
+import de.josmer.application.library.interfaces.IExportRadiationRepository;
 import org.apache.commons.math3.util.Precision;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Locale;
 
 @Component
-public class ExportRepository implements IExportRepository {
+public class ExportRadiationRepository implements IExportRadiationRepository {
 
     @Override
-    public List<Export> getAll(final List<Radiation> radiations, final double lon, final double lat) {
-        List<Export> exports = new LinkedList<>();
+    public List<ExportRadiation> getAll(final List<Radiation> radiations, final double lon, final double lat) {
+        List<ExportRadiation> exports = new LinkedList<>();
         for (Radiation radiation : radiations) {
             exports.add(mapToExport(lon, lat, radiation));
         }
@@ -32,8 +32,8 @@ public class ExportRepository implements IExportRepository {
         return "date, lat, lon, type, value, unit, dim, source, ";
     }
 
-    private Export mapToExport(double lon, double lat, Radiation radiation) {
-        Export export = new Export();
+    private ExportRadiation mapToExport(double lon, double lat, Radiation radiation) {
+        ExportRadiation export = new ExportRadiation();
         export.setDate(parseDate(radiation.getRadiationDate()));
         export.setLat(round(lat));
         export.setLon(round(lon));

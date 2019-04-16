@@ -1,6 +1,7 @@
 package de.josmer.application.repositories;
 
 import de.josmer.application.entities.User;
+import de.josmer.application.library.abstractclasses.Repository;
 import de.josmer.application.library.interfaces.IUserRepository;
 import de.josmer.application.library.utils.Toolbox;
 import org.springframework.stereotype.Component;

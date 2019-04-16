@@ -14,17 +14,17 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
-public final class Crypt {
+final class Crypt {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Crypt.class.getName());
     private Cipher deCryptCipher = null;
     private Cipher enCryptCipher = null;
 
-    public Crypt() {
+    Crypt() {
         init();
     }
 
-    public String decrypt(final String code) {
+    String decrypt(final String code) {
 
         try {
             byte[] encrypted = deCryptCipher.doFinal(code.getBytes(StandardCharsets.UTF_8));
@@ -35,7 +35,7 @@ public final class Crypt {
         }
     }
 
-    public String encrypt(final String code) {
+    String encrypt(final String code) {
         try {
             byte[] clearText = enCryptCipher.doFinal(Hex.decodeHex(code.toCharArray()));
             return new String(clearText, StandardCharsets.UTF_8);

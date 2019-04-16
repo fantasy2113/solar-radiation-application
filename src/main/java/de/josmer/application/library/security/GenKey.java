@@ -8,14 +8,14 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
 
-public class GenKey {
+class GenKey {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenKey.class.getName());
 
     private GenKey() {
     }
 
-    public static String get() {
+    static String get() {
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
             keyGenerator.init(128);
