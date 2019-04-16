@@ -2,7 +2,7 @@ package de.josmer.application.library.sun;
 
 import java.time.LocalDateTime;
 
-public class Transform {
+public class Extractor {
 
     private final double lat;
     private final double lon;
@@ -11,7 +11,7 @@ public class Transform {
     private final double ye;
     private final double ae;
 
-    public Transform(double lat, double lon, double[] months, LocalDateTime startDate, double ye, double ae) {
+    public Extractor(double lat, double lon, double[] months, LocalDateTime startDate, double ye, double ae) {
         this.lat = lat;
         this.lon = lon;
         this.months = months;
@@ -21,8 +21,8 @@ public class Transform {
     }
 
     public double[] getEGlobGen() {
-        final TagModel tagModel = new TagModel();
         double[] eGlobGenMonths = new double[12];
+        TagModel tagModel = new TagModel();
         for (int month = getMonthVal(); month < 12; month++) {
             double eGlobGenMonthly = 0.0;
             final double[] days = tagModel.getDays(getDtDays(month), months[month], lat, lon);

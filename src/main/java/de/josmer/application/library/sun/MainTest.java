@@ -1,15 +1,13 @@
 package de.josmer.application.library.sun;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
 
 class MainTest {
     public static void main(String[] args) {
 
         LocalDateTime dt = LocalDateTime.of(2010, 1, 1, 0, 30, 0, 0);
-        double ye = 0; // tilt
-        double ae = 0; // 180=south, 0=nord, 90=east, 270=west
+        double ye = 30; // tilt
+        double ae = 180; // 180=south, 0=nord, 90=east, 270=west
         double lat = 52.5;
         double lon = 13.5;
 
@@ -35,7 +33,7 @@ class MainTest {
         }
         System.out.println(gesamt / 1000);
         System.out.println("==> Output");
-        for (int month = 0; month < 12; month++) {
+        /*for (int month = 0; month < 12; month++) {
             int daysInMonth = Calc.getDaysInMonth(dt.getYear(), dt.getMonthValue());
             double eDiffHor = diffArr[month];
             double eDirHor = dirArr[month];
@@ -53,7 +51,7 @@ class MainTest {
                 dayEList.add(eGlobalHorArr);
             }
             for (int day = 0; day < daysInMonth; day++) {
-                double[] eGlobalHorArr = dayEList.get(day);
+                double[] eGlobalHorArr = dayEList.getEGlobGen(day);
                 for (int hour = 0; hour < 24; hour++) {
                     Radiation radiation = new Radiation(ye, ae, lat, lon, 0.2);
                     radiation.calculateHour(eGlobalHorArr[hour], dt);
@@ -62,12 +60,12 @@ class MainTest {
                     dt = dt.plusHours(1);
                 }
             }
-        }
+        }*/
 
-        System.out.println("Year EGlobalHor (TagModel) = " + yearTAGModelHorSum / 1000);
-        System.out.println("Year EGlobalInc = " + yearSumGenGEN / 1000);
-        Transform transform = new Transform(lat, lon, months, LocalDateTime.of(2010, 1, 1, 0, 30, 0, 0), ye, ae);
-        double[] eGlobGen = transform.getEGlobGen();
+        //System.out.println("Year EGlobalHor (TagModel) = " + yearTAGModelHorSum / 1000);
+        //System.out.println("Year EGlobalInc = " + yearSumGenGEN / 1000);
+        Extractor extractor = new Extractor(lat, lon, months, LocalDateTime.of(2010, 1, 1, 0, 30, 0, 0), ye, ae);
+        double[] eGlobGen = extractor.getEGlobGen();
         System.out.println("Year EGlobalInc = " + sum(eGlobGen) / 1000);
 
 

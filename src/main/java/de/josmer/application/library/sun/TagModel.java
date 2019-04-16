@@ -4,14 +4,13 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
+import java.util.SplittableRandom;
 
 class TagModel {
-    //private static final double E0 = 1367.0;
-    private Random random;
+    private final SplittableRandom random;
 
     TagModel() {
-        random = new Random(LocalDateTime.now().getNano());
+        random = new SplittableRandom(System.currentTimeMillis());
     }
 
     private static double degreeToRad(double deg) {
