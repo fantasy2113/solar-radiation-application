@@ -56,7 +56,7 @@ class MainTest {
                     Radiation radiation = new Radiation(ye, ae, lat, lon, 0.2);
                     radiation.calculateHour(eGlobalHorArr[hour], dt);
                     yearTAGModelHorSum += eGlobalHorArr[hour];
-                    yearSumGenGEN += radiation.geteGlobalGen();
+                    yearSumGenGEN += radiation.getEGlobalGen();
                     dt = dt.plusHours(1);
                 }
             }

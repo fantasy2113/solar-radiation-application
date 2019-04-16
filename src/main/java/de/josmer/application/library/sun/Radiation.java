@@ -180,7 +180,7 @@ class Radiation {
         }
     }
 
-    double geteGlobalGen() {
+    double getEGlobalGen() {
         return eGlobalGen;
     }
 
