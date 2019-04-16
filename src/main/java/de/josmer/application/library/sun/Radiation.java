@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Radiation {
-
+    private static Map<String, double[]> fTabelle;
     private static final String F_11 = "F11";
     private static final String F_12 = "F12";
     private static final String F_13 = "F13";
@@ -14,8 +14,7 @@ class Radiation {
     private static final String F_23 = "F23";
     private final double lon;
     private final double lat;
-    private Map<String, double[]> fTabelle;
-    private SunPostion sunPos;
+    private final SunPostion sunPos;
     private double eDiffGen;
     private double eDirGen;
     private double eReflGen;
@@ -46,10 +45,9 @@ class Radiation {
         this.lon = lon;
         this.albedo = albedo;
         this.sunPos = new SunPostion();
-        initFTabelle();
     }
 
-    private void initFTabelle() {
+    public static void initFTabelle() {
         fTabelle = new HashMap<>();
         fTabelle.put(F_11, new double[]{-0.008, 0.130, 0.330, 0.568, 0.873, 1.132, 1.060, 0.678});
         fTabelle.put(F_12, new double[]{0.588, 0.683, 0.487, 0.187, -0.392, -1.237, -1.600, -0.327});

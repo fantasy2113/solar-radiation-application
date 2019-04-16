@@ -13,8 +13,10 @@ class TagModel {
         random = new SplittableRandom(LocalDateTime.now().getNano());
     }
 
-    private static double degreeToRad(double deg) {
-        return deg * Math.PI / 180;
+    private void zeroGuard(double val) {
+        if (val == 0) {
+            throw new IllegalArgumentException("zero");
+        }
     }
 
     double[] getDays(LocalDateTime month, double hGlob, double lat, double lon) {
@@ -23,20 +25,19 @@ class TagModel {
         double he0HorSum = 0.0;
         for (int d = 0; d < daysInMonth; d++) {
             SunPostion sunPos = new SunPostion();
-            double[] sunYOfh = new double[24];
             double sumSinGammaS = 0.0;
             for (int h = 0; h < 24; h++) {
                 LocalDateTime dt = LocalDateTime.of(month.getYear(), month.getMonthValue(), d + 1, h, month.getMinute(), 0, 0);
                 sunPos.calculate(dt, lat, lon, 1);
-                sunYOfh[h] = sunPos.getYsCorr();
                 if (sunPos.getYsCorr() > 0) {
-                    sumSinGammaS += Math.sin(degreeToRad(sunPos.getYsCorr()));
+                    sumSinGammaS += Calc.sin(sunPos.getYsCorr());
                 }
             }
             final double he0Hor = e0OfDay(month) * sumSinGammaS;
             dailyhe0Hor[d] = he0Hor;
             he0HorSum += he0Hor;
         }
+        zeroGuard(he0HorSum);
         double[] days = new double[daysInMonth];
         for (int d = 0; d < daysInMonth; d++) {
             days[d] = hGlob * (dailyhe0Hor[d] / he0HorSum);
@@ -53,55 +54,61 @@ class TagModel {
             sunPos.calculate(dt, lat, lon, 1);
             sunYOfh[h] = sunPos.getYsCorr();
             if (sunPos.getYsCorr() > 0) {
-                sumSinGammaS += Math.sin(degreeToRad(sunPos.getYsCorr()));
+                sumSinGammaS += Calc.sin(sunPos.getYsCorr());
             }
         }
         double he0Hor = e0OfDay(day) * sumSinGammaS;
+        zeroGuard(he0Hor);
         double kt = hGlob / he0Hor;
         double phi1 = 0.38 + 0.06 * Math.cos(7.4 * kt - 2.5);
+        Map<Double, double[]> map = getMap(sunYOfh, he0Hor, kt, phi1);
+        final Double minDiff = Collections.min(map.keySet());
+        return map.get(minDiff);
+    }
+
+    private Map<Double, double[]> getMap(double[] sunYOfh, double he0Hor, double kt, double phi1) {
         int cnt = 0;
-        double[] KtOfh;
-        double[] EgHorOfh;
-        double HSynHor;
+        double[] ktOfh;
+        double[] egHorOfh;
+        double hSynHor;
         Map<Double, double[]> map = new HashMap<>();
         do {
             boolean isAdd = true;
             ++cnt;
-            KtOfh = calcKtOfh(kt, phi1, sunYOfh);
-            EgHorOfh = new double[24];
-            HSynHor = 0.0;
-            for (int h = 0; h < KtOfh.length; h++) {
-                double kth = KtOfh[h];
+            ktOfh = calcKtOfh(kt, phi1, sunYOfh);
+            egHorOfh = new double[24];
+            hSynHor = 0.0;
+            for (int h = 0; h < ktOfh.length; h++) {
+                double kth = ktOfh[h];
                 if (kth == 0.0) {
                     continue;
                 }
                 double ktMax = 0.88 * Math.cos((Math.PI * (h + 1.0 - 12.5)) / 30.0);
                 if (kth < 0.0 || kth > ktMax) {
                     isAdd = false;
-                    break;
+                } else {
+                    egHorOfh[h] = ktOfh[h] * Calc.EO_TAG * Calc.sin(sunYOfh[h]);
+                    hSynHor += egHorOfh[h];
                 }
-                EgHorOfh[h] = KtOfh[h] * Calc.EO_TAG * Math.sin(degreeToRad(sunYOfh[h]));
-                HSynHor += EgHorOfh[h];
             }
             if (isAdd) {
-                double diff = Math.abs((HSynHor / he0Hor) - kt) / kt * 100.0;
-                map.put(diff, EgHorOfh);
+                double diff = Math.abs((hSynHor / he0Hor) - kt) / kt * 100.0;
+                map.put(diff, egHorOfh);
             }
         } while (cnt < 10000);
-        final Double minDiff = Collections.min(map.keySet());
-        return map.get(minDiff);
+        return map;
     }
 
-    private double[] calcKtOfh(double Kt, double phi1, double[] sunYOfh) {
+    private double[] calcKtOfh(double kt, double phi1, double[] sunYOfh) {
         double[] yOfh = new double[24];
-        double[] KtOfh = new double[24];
+        double[] ktOfh = new double[24];
         for (int h = 0; h < 24; h++) {
             if (sunYOfh[h] > 0.0) {
-                double YsDeg = degreeToRad(sunYOfh[h]);
-                double Ktm = -0.19 + 1.12 * Kt + 0.24 * Math.exp(-8 * Kt)
-                        + (0.32 - 1.6 * Math.pow(Kt - 0.5, 2))
-                        * Math.exp((-0.19 - 2.27 * Math.pow(Kt, 2) + 2.51 * Math.pow(Kt, 3)) / Math.sin(YsDeg));
-                double sigma = 0.14 * Math.exp(-20 * Math.pow(Kt - 0.35, 2)) * Math.exp(3 * (Math.pow(Kt - 0.45, 2) + 16 * Math.pow(Kt, 5)) * (1 - Math.sin(YsDeg)));
+                double ysDeg = Calc.getRad(sunYOfh[h]);
+                double ktm = -0.19 + 1.12 * kt + 0.24 * Math.exp(-8 * kt)
+                        + (0.32 - 1.6 * Math.pow(kt - 0.5, 2))
+                        * Math.exp((-0.19 - 2.27 * Math.pow(kt, 2) + 2.51 * Math.pow(kt, 3)) / Math.sin(ysDeg));
+                double sigma = 0.14 * Math.exp(-20 * Math.pow(kt - 0.35, 2)) * Math.exp(3 * (Math.pow(kt - 0.45, 2) + 16 * Math.pow(kt, 5)) * (1 - Math.sin(ysDeg)));
                 double z = random.nextDouble();
                 double r = sigma * Math.sqrt(1 - Math.pow(phi1, 2)) * ((Math.pow(z, 0.135) - Math.pow(1 - z, 0.135)) / 0.1975);
                 if (h > 0) {
@@ -109,12 +116,12 @@ class TagModel {
                 } else {
                     yOfh[h] = r;
                 }
-                KtOfh[h] = Ktm + sigma * yOfh[h];
+                ktOfh[h] = ktm + sigma * yOfh[h];
             } else {
-                KtOfh[h] = 0.0;
+                ktOfh[h] = 0.0;
             }
         }
-        return KtOfh;
+        return ktOfh;
     }
 
     private double e0OfDay(LocalDateTime day) {

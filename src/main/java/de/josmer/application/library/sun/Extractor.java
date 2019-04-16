@@ -3,7 +3,6 @@ package de.josmer.application.library.sun;
 import java.time.LocalDateTime;
 
 public class Extractor {
-
     private final double lat;
     private final double lon;
     private final double[] months;
@@ -21,6 +20,7 @@ public class Extractor {
     }
 
     public double[] getEGlobGen() {
+        Radiation.initFTabelle();
         double[] eGlobGenMonths = new double[12];
         TagModel tagModel = new TagModel();
         for (int month = getMonthVal(); month < 12; month++) {

@@ -88,8 +88,7 @@ class SunPostion {
     }
 
     double getZenithCorr() {
-        double zenith = 90 - getYsCorr();
-        return zenith;
+        return 90 - getYsCorr();
     }
 
     double getSimpleDayAngle(int dayofyear, int year) {
