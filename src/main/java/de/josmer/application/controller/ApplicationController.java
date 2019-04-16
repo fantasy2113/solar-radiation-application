@@ -55,24 +55,32 @@ public class ApplicationController {
 
     @GetMapping(value = "/save_user", produces = MediaType.TEXT_HTML_VALUE)
     public String saveUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
-        if (login == null || password == null || login.equals("") || password.equals("")) {
+        if (isParameter(login, password)) {
             return "Benutzername oder Passwort sind nicht lang genug!";
         }
         if (userRepository.get(login).isPresent()) {
             return "Benutzername ist schon vorhanden!";
         }
-        Pattern special = Pattern.compile("[!#$%&*()_+=|<>?{}\\[\\]~ ]");
-        Matcher hasSpecial = special.matcher(login);
-        if (hasSpecial.find() || password.contains(" ")) {
+
+        if (isLogin(login) || password.contains(" ")) {
             return "Benutzername oder Passwort enthalten ungültige Zeichen!";
         }
-        userRepository.saveUser(login, password);
-        Optional<User> optionalUser = userRepository.get(login);
+        Optional<User> optionalUser = createUser(login, password);
         if (optionalUser.isPresent() && optionalUser.get().isActive()) {
             return Token.get(optionalUser.get().getId());
         }
         return "Etwas ist schief gelaufen!";
     }
+
+    private Optional<User> createUser(String login, String password) {
+        userRepository.saveUser(login, password);
+        return userRepository.get(login);
+    }
+
+    private boolean isParameter(String login, String password) {
+        return login == null || password == null || login.equals("") || password.equals("");
+    }
+
 
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
     public String token(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
@@ -121,6 +129,11 @@ public class ApplicationController {
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
+    private boolean isLogin(final String login) {
+        Pattern special = Pattern.compile("[!#$%&*()_+=|<>?{}\\[\\]~ ]");
+        Matcher hasSpecial = special.matcher(login);
+        return hasSpecial.find();
+    }
 
     private int getDate(final String date) {
         try {
