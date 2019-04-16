@@ -10,7 +10,7 @@ class TagModel {
     private final SplittableRandom random;
 
     TagModel() {
-        random = new SplittableRandom(System.currentTimeMillis());
+        random = new SplittableRandom(LocalDateTime.now().getNano());
     }
 
     private static double degreeToRad(double deg) {
@@ -67,7 +67,7 @@ class TagModel {
         do {
             boolean isAdd = true;
             ++cnt;
-            KtOfh = calcKtOfh(lat, lon, kt, phi1, sunYOfh);
+            KtOfh = calcKtOfh(kt, phi1, sunYOfh);
             EgHorOfh = new double[24];
             HSynHor = 0.0;
             for (int h = 0; h < KtOfh.length; h++) {
@@ -92,7 +92,7 @@ class TagModel {
         return map.get(minDiff);
     }
 
-    private double[] calcKtOfh(double lat, double lon, double Kt, double phi1, double[] sunYOfh) {
+    private double[] calcKtOfh(double Kt, double phi1, double[] sunYOfh) {
         double[] yOfh = new double[24];
         double[] KtOfh = new double[24];
         for (int h = 0; h < 24; h++) {
