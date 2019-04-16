@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.Year;
 
 class SunPostion {
+    private static final double TIMEZONE = 1;
     private double ys;
     private double as;
     private double zenith;
@@ -16,7 +17,7 @@ class SunPostion {
         this.monthYearHpaArr = new double[]{1017, 1017.1, 1015.1, 1013.8, 1015.5, 1015.1, 1015.4, 1016.0, 1016.2, 1016.6, 1015.6, 1015.5};
     }
 
-    void calculate(LocalDateTime dt, double lat, double lon, double timezone) {
+    void calculate(LocalDateTime dt, double lat, double lon) {
         time = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
         double hour = time.getHour();
         double year = time.getYear();
@@ -24,7 +25,7 @@ class SunPostion {
         double sec = time.getSecond();
         double j2 = getDaysInYear((int) year);
         double j = time.getDayOfYear();
-        double moz = hour + 1.0 / 60 * min + 1.0 / 3600 * sec - timezone + 1;
+        double moz = hour + 1.0 / 60 * min + 1.0 / 3600 * sec - TIMEZONE + 1;
         moz = moz - 4 * (15 - lon) / 60;
         j = j * 360 / j2 + moz / 24;
         double decl = 0.3948 - 23.2559 * Math.cos(rad(j + 9.1)) - 0.3915 * Math.cos(rad(2 * j + 5.4)) - 0.1764 * Math.cos(rad(3 * j + 26.0));
