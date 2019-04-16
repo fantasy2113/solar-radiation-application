@@ -1,5 +1,6 @@
 package de.josmer.application.controller;
 
+import de.josmer.application.controller.requests.ExtractorRequest;
 import de.josmer.application.controller.requests.RadiationRequest;
 import de.josmer.application.entities.Export;
 import de.josmer.application.entities.User;
@@ -19,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,7 +45,7 @@ public class ApplicationController {
     }
 
     @GetMapping(value = "/radi", produces = MediaType.TEXT_HTML_VALUE)
-    public String app(@CookieValue("token") final String token) {
+    public String radiation(@CookieValue("token") final String token) {
         if (isAccess(Token.getAuthentication(token))) {
             return Toolbox.readFile("src/main/resources/static/html/radi.html");
         }
@@ -55,7 +53,7 @@ public class ApplicationController {
     }
 
     @GetMapping(value = "/calc", produces = MediaType.TEXT_HTML_VALUE)
-    public String calc(@CookieValue("token") final String token) {
+    public String calculation(@CookieValue("token") final String token) {
         if (isAccess(Token.getAuthentication(token))) {
             return Toolbox.readFile("src/main/resources/static/html/calc.html");
         }
@@ -126,6 +124,14 @@ public class ApplicationController {
         }
         return exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
+    }
+
+    @GetMapping("/extractor")
+    public List<Export> extractor(@CookieValue("token") final String token, final ExtractorRequest req) {
+        if (!isAccess(Token.getAuthentication(token))) {
+            return new ArrayList<>();
+        }
+        return new LinkedList<>();
     }
 
     private boolean isParameter(String login, String password) {
