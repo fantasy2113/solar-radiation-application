@@ -5,6 +5,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 public class Toolbox {
 
@@ -28,5 +29,9 @@ public class Toolbox {
             return false;
         }
         return BCrypt.checkpw(plainPassword, hashedPassword);
+    }
+
+    public static double getRound(double val) {
+        return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", val));
     }
 }
