@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.OptionalInt;
 
 @Component
 public final class RadiationRepository extends Repository<Radiation> implements IRadiationRepository {
@@ -38,15 +39,20 @@ public final class RadiationRepository extends Repository<Radiation> implements 
         List<Radiation> radiations = new LinkedList<>();
         gaussKrueger.convertFrom(lon, lat);
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
-        final int rechtswert = getRechtswert(gaussKrueger);
+        final OptionalInt optionalRechtswert = getRechtswert(gaussKrueger);
+
+        if (optionalRechtswert.isEmpty()) {
+            return radiations;
+        }
+
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement
                      = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
                      + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? ORDER BY radiation_date ASC LIMIT ?;")) {
             preparedStatement.setInt(1, hochwert);
             preparedStatement.setInt(2, hochwert + 1000);
-            preparedStatement.setInt(3, rechtswert);
-            preparedStatement.setInt(4, rechtswert + 1000);
+            preparedStatement.setInt(3, optionalRechtswert.getAsInt());
+            preparedStatement.setInt(4, optionalRechtswert.getAsInt() + 1000);
             preparedStatement.setString(5, radiationType);
             preparedStatement.setInt(6, endDate - startDate + 1);
             try (ResultSet rs = preparedStatement.executeQuery()) {
@@ -60,15 +66,15 @@ public final class RadiationRepository extends Repository<Radiation> implements 
         return radiations;
     }
 
-    private int getRechtswert(IGaussKrueger gaussKrueger) {
+    private OptionalInt getRechtswert(IGaussKrueger gaussKrueger) {
         if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("5")) {
-            return getGkValues(gaussKrueger.getRechtswert() - 1600000);
+            return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert() - 1600000));
         } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("4")) {
-            return getGkValues(gaussKrueger.getRechtswert() - 800000);
+            return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert() - 800000));
         } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("3")) {
-            return getGkValues(gaussKrueger.getRechtswert());
+            return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert()));
         }
-        return 0;
+        return OptionalInt.empty();
     }
 
     @Override
