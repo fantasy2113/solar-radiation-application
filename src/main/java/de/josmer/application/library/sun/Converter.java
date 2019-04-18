@@ -160,7 +160,7 @@ class Converter {
     void calculateHour(double eGlobalHor, LocalDateTime dt) {
         LocalDateTime dateTime = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
         sunPos.calculate(dateTime, lat, lon);
-        if (eGlobalHor > 0) {
+        if (eGlobalHor > 0 && sunPos.getYs() > 0) {
             setAoi();
             final double eDiffHor = getEDiffHor(eGlobalHor);
             final double eDirHor = eGlobalHor - eDiffHor;

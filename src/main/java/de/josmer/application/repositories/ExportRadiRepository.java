@@ -34,8 +34,8 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
     protected ExportRadi mapToExport(double lon, double lat, Radiation item) {
         ExportRadi export = new ExportRadi();
         export.setDate(parseDate(item.getRadiationDate()));
-        export.setLat(round(lat));
-        export.setLon(round(lon));
+        export.setLat(round(lat, 3));
+        export.setLon(round(lon, 3));
         export.setType(item.getRadiationType());
         export.setValue(getValue(item.getRadiationValue()));
         export.setUnit("kWh/m2");

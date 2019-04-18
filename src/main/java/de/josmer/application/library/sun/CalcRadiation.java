@@ -1,9 +1,13 @@
 package de.josmer.application.library.sun;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDateTime;
 import java.util.stream.DoubleStream;
 
 public class CalcRadiation {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CalcRadiation.class.getName());
     private final double lat;
     private final double lon;
     private final double[] eGlobHorMonthly;
@@ -25,23 +29,27 @@ public class CalcRadiation {
     public double[] getEGlobGenMonthly() {
         Converter.initFTabelle();
         double[] eGlobGenMonths = new double[12];
-        TagModel tagModel = new TagModel();
-        for (int month = getMonthVal(); month < 12; month++) {
-            double eGlobHorSumSynth = 0;
-            double eGlobGenMonthly = 0.0;
-            final double[] days = tagModel.getDays(getDtDays(month), eGlobHorMonthly[month], lat, lon);
-            for (int day = 0; day < getDaysInMonth(month); day++) {
-                final LocalDateTime dtDay = getDtDay(month, day);
-                final double[] eGlobalHorArr = tagModel.getHours(dtDay, days[day], lat, lon);
-                eGlobHorSumSynth += DoubleStream.of(eGlobalHorArr).sum();
-                for (int hour = 0; hour < 24; hour++) {
-                    final Converter radiation = new Converter(ye, ae, lat, lon, 0.2);
-                    radiation.calculateHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
-                    eGlobGenMonthly += radiation.getEGlobalGen();
+        try {
+            TagModel tagModel = new TagModel();
+            for (int month = getMonthVal(); month < 12; month++) {
+                double eGlobHorSumSynth = 0;
+                double eGlobGenMonthly = 0.0;
+                final double[] days = tagModel.getDays(getDtDays(month), eGlobHorMonthly[month], lat, lon);
+                for (int day = 0; day < getDaysInMonth(month); day++) {
+                    final LocalDateTime dtDay = getDtDay(month, day);
+                    final double[] eGlobalHorArr = tagModel.getHours(dtDay, days[day], lat, lon);
+                    eGlobHorSumSynth += DoubleStream.of(eGlobalHorArr).sum();
+                    for (int hour = 0; hour < 24; hour++) {
+                        final Converter radiation = new Converter(ye, ae, lat, lon, 0.2);
+                        radiation.calculateHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
+                        eGlobGenMonthly += radiation.getEGlobalGen();
+                    }
                 }
+                eGlobHorMonthlySynth[month] = eGlobHorSumSynth;
+                eGlobGenMonths[month] = eGlobGenMonthly;
             }
-            eGlobHorMonthlySynth[month] = eGlobHorSumSynth;
-            eGlobGenMonths[month] = eGlobGenMonthly;
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
         }
         return eGlobGenMonths;
     }

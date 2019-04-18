@@ -9,8 +9,8 @@ import java.util.Locale;
 abstract class AExportRepository<R, I> {
     static final Logger LOGGER = LoggerFactory.getLogger(AExportRepository.class.getName());
 
-    String round(double geo) {
-        return String.format(Locale.ENGLISH, "%.3f", Precision.round(geo, 3));
+    String round(double value, int scale) {
+        return String.format(Locale.ENGLISH, "%." + scale + "f", Precision.round(value, scale));
     }
 
     double getValue(double val) {

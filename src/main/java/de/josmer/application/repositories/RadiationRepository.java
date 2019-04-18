@@ -3,6 +3,8 @@ package de.josmer.application.repositories;
 import de.josmer.application.entities.Radiation;
 import de.josmer.application.library.interfaces.IGaussKrueger;
 import de.josmer.application.library.interfaces.IRadiationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
@@ -14,6 +16,7 @@ import java.util.OptionalInt;
 
 @Component
 public final class RadiationRepository extends ARepository<Radiation> implements IRadiationRepository {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RadiationRepository.class.getName());
 
     public RadiationRepository(final String databaseUrl) {
         super(databaseUrl);
@@ -27,8 +30,12 @@ public final class RadiationRepository extends ARepository<Radiation> implements
     public double[] findGlobal(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
         List<Radiation> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
-        for (int i = 0; i < retArr.length; i++) {
-            retArr[i] = Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", globalRadiation.get(i).getRadiationValue())) * 1000;
+        try {
+            for (int i = 0; i < retArr.length; i++) {
+                retArr[i] = Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", globalRadiation.get(i).getRadiationValue())) * 1000;
+            }
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
         }
         return retArr;
     }
