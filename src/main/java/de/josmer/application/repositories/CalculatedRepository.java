@@ -29,10 +29,16 @@ public class CalculatedRepository implements ICalculatedRepository {
                 calculated.setEGlobGen(Toolbox.getRound(eGlobGenMonthly[i] / 1000));
                 calculated.setAe(ae);
                 calculated.setYe(ye);
+                calculated.setCalculatedDate(getDate(dt.getYear(), (i + 1)));
                 calculateds.add(calculated);
             }
         }
 
         return calculateds;
+    }
+
+    private String getDate(int year, int month) {
+        String parsedMonth = (month < 10) ? "0" + month : String.valueOf(month);
+        return year + "-" + parsedMonth;
     }
 }
