@@ -30,7 +30,8 @@ jQuery(document).ready(function () {
                         {name: "date", title: "Datum", type: "text"},
                         {name: "lat", title: "Lat", type: "number"},
                         {name: "lon", title: "Lon", type: "number"},
-                        {name: "value", title: "Wert", type: "number"},
+                        {name: "eGlobHor", title: "EGlobHor", type: "number"},
+                        {name: "eGlobGen", title: "EGlobGen", type: "number"},
                         {name: "unit", title: "Einheit", type: "text"},
                         {name: "dim", title: "Dim", type: "text"}
                     ]
