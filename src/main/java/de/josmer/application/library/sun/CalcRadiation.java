@@ -22,7 +22,7 @@ public class CalcRadiation {
         this.eGlobHorMonthlySynth = new double[12];
     }
 
-    public double[] getEGlobGen() {
+    public double[] getEGlobGenMonthly() {
         Converter.initFTabelle();
         double[] eGlobGenMonths = new double[12];
         TagModel tagModel = new TagModel();

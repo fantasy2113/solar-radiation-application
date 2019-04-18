@@ -138,7 +138,7 @@ public class ApplicationController {
         LocalDateTime dt = LocalDateTime.of(req.getYear(), 1, 1, 0, 30, 0, 0);
         double[] eGlobHor = radiationRepository.findGlobal(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
         CalcRadiation calcRadiation = new CalcRadiation(req.getLat(), req.getLon(), eGlobHor, dt, req.getYe(), req.getAe());
-        double[] eGlobGen = calcRadiation.getEGlobGen();
+        double[] eGlobGen = calcRadiation.getEGlobGenMonthly();
         double[] synthMonths = calcRadiation.geteGlobHorMonthlySynth();
 
 
