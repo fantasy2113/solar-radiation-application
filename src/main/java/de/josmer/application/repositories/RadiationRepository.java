@@ -22,8 +22,9 @@ public final class RadiationRepository extends Repository<Radiation> implements 
         super();
     }
 
-    public double[] find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
-        List<Radiation> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
+    @Override
+    public double[] findGlobal(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
+        List<Radiation> globalRadiation = findGlobal(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         for (int i = 0; i < retArr.length; i++) {
             retArr[i] = Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", globalRadiation.get(i).getRadiationValue())) * 1000;
@@ -33,7 +34,7 @@ public final class RadiationRepository extends Repository<Radiation> implements 
 
 
     @Override
-    public List<Radiation> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+    public List<Radiation> findGlobal(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
         gaussKrueger.calulate(lon, lat);
         final int hochwert = getGkValues(gaussKrueger.getHochwert());

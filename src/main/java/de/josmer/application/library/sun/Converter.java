@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-class Radiation {
+class Converter {
     private static Map<String, double[]> fTabelle;
     private static final String F_11 = "F11";
     private static final String F_12 = "F12";
@@ -38,7 +38,7 @@ class Radiation {
     private double b;
     private double eDirHorExtra;
 
-    Radiation(double ye, double ae, double lat, double lon, double albedo) {
+    Converter(double ye, double ae, double lat, double lon, double albedo) {
         this.ye = ye;
         this.ae = ae;
         this.lat = lat;

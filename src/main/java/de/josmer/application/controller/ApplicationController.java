@@ -110,7 +110,7 @@ public class ApplicationController {
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     exportRep.getHeaders(),
-                    exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
+                    exportRep.getAll(radiationRepository.findGlobal(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
                     exportRep.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -124,7 +124,7 @@ public class ApplicationController {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
+        return exportRep.getAll(radiationRepository.findGlobal(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
@@ -136,7 +136,7 @@ public class ApplicationController {
         final int startDate = Integer.valueOf(req.getYear() + "01");
         final int endDate = Integer.valueOf(req.getYear() + "12");
         LocalDateTime dt = LocalDateTime.of(req.getYear(), 1, 1, 0, 30, 0, 0);
-        double[] eGlobHor = radiationRepository.find(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
+        double[] eGlobHor = radiationRepository.findGlobal(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
         Calculation calculation = new Calculation(req.getLat(), req.getLon(), eGlobHor, dt, req.getYe(), req.getAe());
         double[] eGlobGen = calculation.getEGlobGen();
         return new LinkedList<>();

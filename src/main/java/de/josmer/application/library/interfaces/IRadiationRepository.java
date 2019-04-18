@@ -5,9 +5,9 @@ import de.josmer.application.entities.Radiation;
 import java.util.List;
 
 public interface IRadiationRepository {
-    double[] find(final IGaussKrueger gaussKrueger, int startDate, int endDate, double lon, double lat);
+    double[] findGlobal(final IGaussKrueger gaussKrueger, int startDate, int endDate, double lon, double lat);
 
-    List<Radiation> find(IGaussKrueger gaussKrueger, int startDate, int endDate, String type, double lon, double lat);
+    List<Radiation> findGlobal(IGaussKrueger gaussKrueger, int startDate, int endDate, String type, double lon, double lat);
 
     void save(List<Radiation> radiations);
 

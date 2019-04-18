@@ -20,7 +20,7 @@ public class Calculation {
     }
 
     public double[] getEGlobGen() {
-        Radiation.initFTabelle();
+        Converter.initFTabelle();
         double[] eGlobGenMonths = new double[12];
         TagModel tagModel = new TagModel();
         for (int month = getMonthVal(); month < 12; month++) {
@@ -30,7 +30,7 @@ public class Calculation {
                 final LocalDateTime dtDay = getDtDay(month, day);
                 final double[] eGlobalHorArr = tagModel.getHours(dtDay, days[day], lat, lon);
                 for (int hour = 0; hour < 24; hour++) {
-                    final Radiation radiation = new Radiation(ye, ae, lat, lon, 0.2);
+                    final Converter radiation = new Converter(ye, ae, lat, lon, 0.2);
                     radiation.calculateHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
                     eGlobGenMonthly += radiation.getEGlobalGen();
                 }
