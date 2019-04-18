@@ -76,7 +76,7 @@ class SunPostion {
 
     private double getAtmosphericRefractionCorrection(double localPressure, double localTemp) {
         int isSwitch = ys >= -1.0 * (0.26667 + 0.5667) ? 1 : 0;
-        return ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * Calc.tan((ys + 10.3 / (ys + 5.11))))) * isSwitch;
+        return ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * CalcUtils.tan((ys + 10.3 / (ys + 5.11))))) * isSwitch;
     }
 
     double getYsCorr() {

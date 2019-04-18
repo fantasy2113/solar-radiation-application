@@ -2,19 +2,19 @@ package de.josmer.application.library.sun;
 
 import java.time.LocalDateTime;
 
-public class Extractor {
+public class Calculation {
     private final double lat;
     private final double lon;
     private final double[] months;
-    private final LocalDateTime startDate;
+    private final LocalDateTime dt;
     private final double ye;
     private final double ae;
 
-    public Extractor(double lat, double lon, double[] months, LocalDateTime startDate, double ye, double ae) {
+    public Calculation(double lat, double lon, double[] months, LocalDateTime dt, double ye, double ae) {
         this.lat = lat;
         this.lon = lon;
         this.months = months;
-        this.startDate = startDate;
+        this.dt = dt;
         this.ye = ye;
         this.ae = ae;
     }
@@ -41,23 +41,23 @@ public class Extractor {
     }
 
     private int getDaysInMonth(int month) {
-        return Calc.getDaysInMonth(startDate.getYear(), month + 1);
+        return CalcUtils.getDaysInMonth(dt.getYear(), month + 1);
     }
 
     private LocalDateTime getDtDays(int month) {
-        return LocalDateTime.of(startDate.getYear(), month + 1, 1, 0, 30);
+        return LocalDateTime.of(dt.getYear(), month + 1, 1, 0, 30);
     }
 
     private LocalDateTime getDtHour(int month, int day, int hour) {
-        return LocalDateTime.of(startDate.getYear(), month + 1, day + 1, hour, 30);
+        return LocalDateTime.of(dt.getYear(), month + 1, day + 1, hour, 30);
     }
 
     private LocalDateTime getDtDay(int month, int day) {
-        return LocalDateTime.of(startDate.getYear(), month + 1, day + 1, 0, 30);
+        return LocalDateTime.of(dt.getYear(), month + 1, day + 1, 0, 30);
     }
 
     private int getMonthVal() {
-        return startDate.getMonthValue() - 1;
+        return dt.getMonthValue() - 1;
     }
 
 }

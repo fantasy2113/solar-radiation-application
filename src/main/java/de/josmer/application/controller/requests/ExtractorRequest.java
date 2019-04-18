@@ -2,8 +2,8 @@ package de.josmer.application.controller.requests;
 
 public final class ExtractorRequest extends Request {
     private int year;
-    private int as;
-    private int ys;
+    private int ae;
+    private int ye;
 
     public int getYear() {
         return year;
@@ -13,19 +13,19 @@ public final class ExtractorRequest extends Request {
         this.year = year;
     }
 
-    public int getAs() {
-        return as;
+    public int getAe() {
+        return ae;
     }
 
-    public void setAs(int as) {
-        this.as = as;
+    public void setAe(int ae) {
+        this.ae = ae;
     }
 
-    public int getYs() {
-        return ys;
+    public int getYe() {
+        return ye;
     }
 
-    public void setYs(int ys) {
-        this.ys = ys;
+    public void setYe(int ye) {
+        this.ye = ye;
     }
 }

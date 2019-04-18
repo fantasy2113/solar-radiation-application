@@ -20,7 +20,7 @@ class TagModel {
     }
 
     double[] getDays(LocalDateTime month, double hGlob, double lat, double lon) {
-        final int daysInMonth = Calc.getDaysInMonth(month.getYear(), month.getMonthValue());
+        final int daysInMonth = CalcUtils.getDaysInMonth(month.getYear(), month.getMonthValue());
         double[] dailyhe0Hor = new double[daysInMonth];
         double he0HorSum = 0.0;
         for (int d = 0; d < daysInMonth; d++) {
@@ -30,7 +30,7 @@ class TagModel {
                 LocalDateTime dt = LocalDateTime.of(month.getYear(), month.getMonthValue(), d + 1, h, month.getMinute(), 0, 0);
                 sunPos.calculate(dt, lat, lon);
                 if (sunPos.getYsCorr() > 0) {
-                    sumSinGammaS += Calc.sin(sunPos.getYsCorr());
+                    sumSinGammaS += CalcUtils.sin(sunPos.getYsCorr());
                 }
             }
             final double he0Hor = e0OfDay(month) * sumSinGammaS;
@@ -54,7 +54,7 @@ class TagModel {
             sunPos.calculate(dt, lat, lon);
             sunYOfh[h] = sunPos.getYsCorr();
             if (sunPos.getYsCorr() > 0) {
-                sumSinGammaS += Calc.sin(sunPos.getYsCorr());
+                sumSinGammaS += CalcUtils.sin(sunPos.getYsCorr());
             }
         }
         double he0Hor = e0OfDay(day) * sumSinGammaS;
@@ -87,7 +87,7 @@ class TagModel {
                 if (kth < 0.0 || kth > ktMax) {
                     isAdd = false;
                 } else {
-                    egHorOfh[h] = ktOfh[h] * Calc.EO_TAG * Calc.sin(sunYOfh[h]);
+                    egHorOfh[h] = ktOfh[h] * CalcUtils.EO_TAG * CalcUtils.sin(sunYOfh[h]);
                     hSynHor += egHorOfh[h];
                 }
             }
@@ -104,7 +104,7 @@ class TagModel {
         double[] ktOfh = new double[24];
         for (int h = 0; h < 24; h++) {
             if (sunYOfh[h] > 0.0) {
-                double ysDeg = Calc.getRad(sunYOfh[h]);
+                double ysDeg = CalcUtils.getRad(sunYOfh[h]);
                 double ktm = -0.19 + 1.12 * kt + 0.24 * Math.exp(-8 * kt)
                         + (0.32 - 1.6 * Math.pow(kt - 0.5, 2))
                         * Math.exp((-0.19 - 2.27 * Math.pow(kt, 2) + 2.51 * Math.pow(kt, 3)) / Math.sin(ysDeg));
@@ -125,6 +125,6 @@ class TagModel {
     }
 
     private double e0OfDay(LocalDateTime day) {
-        return Calc.EO_TAG * (1.0 - 0.0334 * Math.cos(0.0172 * (double) day.getDayOfYear() - 0.04747));
+        return CalcUtils.EO_TAG * (1.0 - 0.0334 * Math.cos(0.0172 * (double) day.getDayOfYear() - 0.04747));
     }
 }

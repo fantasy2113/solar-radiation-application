@@ -10,6 +10,7 @@ import de.josmer.application.library.interfaces.IRadiationRepository;
 import de.josmer.application.library.interfaces.IUserRepository;
 import de.josmer.application.library.security.Authentication;
 import de.josmer.application.library.security.Token;
+import de.josmer.application.library.sun.Calculation;
 import de.josmer.application.library.utils.Toolbox;
 import org.jxls.template.SimpleExporter;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -131,6 +133,12 @@ public class ApplicationController {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
+        final int startDate = Integer.valueOf(req.getYear() + "01");
+        final int endDate = Integer.valueOf(req.getYear() + "12");
+        LocalDateTime dt = LocalDateTime.of(req.getYear(), 1, 1, 0, 30, 0, 0);
+        double[] months = radiationRepository.find(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
+        Calculation calculation = new Calculation(req.getLat(), req.getLon(), months, dt, req.getYe(), req.getAe());
+        double[] eGlobGen = calculation.getEGlobGen();
         return new LinkedList<>();
     }
 

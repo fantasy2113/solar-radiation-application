@@ -22,6 +22,15 @@ public final class RadiationRepository extends Repository<Radiation> implements 
         super();
     }
 
+    public double[] find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
+        List<Radiation> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
+        double[] retArr = new double[12];
+        for (int i = 0; i < retArr.length; i++) {
+            retArr[i] = globalRadiation.get(i).getRadiationValue();
+        }
+        return retArr;
+    }
+
 
     @Override
     public List<Radiation> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {

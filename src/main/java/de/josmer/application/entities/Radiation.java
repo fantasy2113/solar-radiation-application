@@ -10,6 +10,10 @@ public class Radiation {
     private float radiationValue;
     private String radiationType;
 
+    public Radiation() {
+        this.radiationValue = (float) 0.0;
+    }
+
     public int getRadiationDate() {
         return radiationDate;
     }

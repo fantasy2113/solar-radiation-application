@@ -2,14 +2,14 @@ package de.josmer.application.library.sun;
 
 import java.time.YearMonth;
 
-class Calc {
+class CalcUtils {
     static final double K = 1.041;
     static final double EO = 1360.8;
     static final double EO_TAG = 1367;
     static final double RAD = Math.PI / 180.0;
     static final double DEG = 180.0 / Math.PI;
 
-    private Calc() {
+    private CalcUtils() {
     }
 
     static double getRad(double deg) {
