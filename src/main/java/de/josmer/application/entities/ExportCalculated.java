@@ -1,10 +1,10 @@
 package de.josmer.application.entities;
 
-public class ExportExtracted extends Export {
+public class ExportCalculated extends Export {
     private String year;
     private String month;
-    private double as;
-    private double ys;
+    private double ae;
+    private double ye;
     private double eGlobHor;
     private double eGlobGen;
 
@@ -24,20 +24,20 @@ public class ExportExtracted extends Export {
         this.month = month;
     }
 
-    public double getAs() {
-        return as;
+    public double getAe() {
+        return ae;
     }
 
-    public void setAs(double as) {
-        this.as = as;
+    public void setAe(double ae) {
+        this.ae = ae;
     }
 
-    public double getYs() {
-        return ys;
+    public double getYe() {
+        return ye;
     }
 
-    public void setYs(double ys) {
-        this.ys = ys;
+    public void setYe(double ye) {
+        this.ye = ye;
     }
 
     public double geteGlobHor() {

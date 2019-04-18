@@ -5,7 +5,7 @@ import de.josmer.application.controller.requests.RadiationRequest;
 import de.josmer.application.entities.ExportRadiation;
 import de.josmer.application.entities.User;
 import de.josmer.application.library.geo.GaussKrueger;
-import de.josmer.application.library.interfaces.IExportRadiationRepository;
+import de.josmer.application.library.interfaces.IExportRadiRepository;
 import de.josmer.application.library.interfaces.IRadiationRepository;
 import de.josmer.application.library.interfaces.IUserRepository;
 import de.josmer.application.library.security.Authentication;
@@ -30,12 +30,12 @@ import java.util.regex.Pattern;
 public class ApplicationController {
     private static final String LOGIN_HTML = "src/main/resources/static/html/login.html";
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class.getName());
-    private final IExportRadiationRepository exportRep;
+    private final IExportRadiRepository exportRep;
     private final IRadiationRepository radiationRepository;
     private final IUserRepository userRepository;
 
     @Autowired
-    public ApplicationController(IExportRadiationRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository) {
+    public ApplicationController(IExportRadiRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository) {
         this.exportRep = exportRep;
         this.radiationRepository = radiationRepository;
         this.userRepository = userRepository;

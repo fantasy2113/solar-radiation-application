@@ -2,7 +2,7 @@ package de.josmer.application.repositories;
 
 import de.josmer.application.entities.ExportRadiation;
 import de.josmer.application.entities.Radiation;
-import de.josmer.application.library.interfaces.IExportRadiationRepository;
+import de.josmer.application.library.interfaces.IExportRadiRepository;
 import org.apache.commons.math3.util.Precision;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Component
-public class ExportRadiationRepository implements IExportRadiationRepository {
+public class ExportRadiRepository implements IExportRadiRepository {
 
     @Override
     public List<ExportRadiation> getAll(final List<Radiation> radiations, final double lon, final double lat) {
