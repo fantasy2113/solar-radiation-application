@@ -36,7 +36,7 @@ public final class RadiationRepository extends Repository<Radiation> implements 
     @Override
     public List<Radiation> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
-        gaussKrueger.calulate(lon, lat);
+        gaussKrueger.convertFrom(lon, lat);
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
         final int rechtswert = getRechtswert(gaussKrueger);
         try (Connection connection = getConnection();
