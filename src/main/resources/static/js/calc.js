@@ -13,8 +13,8 @@ jQuery(document).ready(function () {
                 year: $('input[id=year]').val(),
                 lat: $('input[id=lat]').val(),
                 lon: $('input[id=lon]').val(),
-                as: $('input[id=alignment]').val(),
-                ys: $('input[id=tilt]').val()
+                ae: $('input[id=alignment]').val(),
+                ye: $('input[id=tilt]').val()
             },
             success: function (json) {
                 $("#jsGrid").jsGrid({

@@ -10,7 +10,7 @@ import de.josmer.application.library.interfaces.IRadiationRepository;
 import de.josmer.application.library.interfaces.IUserRepository;
 import de.josmer.application.library.security.Authentication;
 import de.josmer.application.library.security.Token;
-import de.josmer.application.library.sun.Calculation;
+import de.josmer.application.library.sun.CalcRadiation;
 import de.josmer.application.library.utils.Toolbox;
 import org.jxls.template.SimpleExporter;
 import org.slf4j.Logger;
@@ -137,8 +137,11 @@ public class ApplicationController {
         final int endDate = Integer.valueOf(req.getYear() + "12");
         LocalDateTime dt = LocalDateTime.of(req.getYear(), 1, 1, 0, 30, 0, 0);
         double[] eGlobHor = radiationRepository.findGlobal(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
-        Calculation calculation = new Calculation(req.getLat(), req.getLon(), eGlobHor, dt, req.getYe(), req.getAe());
-        double[] eGlobGen = calculation.getEGlobGen();
+        CalcRadiation calcRadiation = new CalcRadiation(req.getLat(), req.getLon(), eGlobHor, dt, req.getYe(), req.getAe());
+        double[] eGlobGen = calcRadiation.getEGlobGen();
+        double[] synthMonths = calcRadiation.geteGlobHorMonthlySynth();
+
+
         return new LinkedList<>();
     }
 

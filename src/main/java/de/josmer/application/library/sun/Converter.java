@@ -145,16 +145,16 @@ class Converter {
     }
 
     private double getEDiffHor(double eGlobalHor) {
-        final double kt = eGlobalHor / (CalcUtils.EO * CalcUtils.sin(sunPos.getYsCorr()));
+        final double kt = eGlobalHor / (CalcUtils.EO * CalcUtils.sin(sunPos.getYs()));
         if (kt <= 3.0) {
-            return eGlobalHor * (1.02 - 0.254 * kt + 0.0123 * CalcUtils.sin(sunPos.getYsCorr()));
+            return eGlobalHor * (1.02 - 0.254 * kt + 0.0123 * CalcUtils.sin(sunPos.getYs()));
         }
 
         if (kt > 3.0 && kt < 0.78) {
-            return eGlobalHor * (1.4 - 1.749 * kt + 0.177 * CalcUtils.sin(sunPos.getYsCorr()));
+            return eGlobalHor * (1.4 - 1.749 * kt + 0.177 * CalcUtils.sin(sunPos.getYs()));
         }
 
-        return eGlobalHor * (0.486 * kt - 0.182 * CalcUtils.sin(sunPos.getYsCorr()));
+        return eGlobalHor * (0.486 * kt - 0.182 * CalcUtils.sin(sunPos.getYs()));
     }
 
     void calculateHour(double eGlobalHor, LocalDateTime dt) {
