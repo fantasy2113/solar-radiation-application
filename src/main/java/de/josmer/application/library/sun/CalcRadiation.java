@@ -66,7 +66,7 @@ public class CalcRadiation {
         return dt.getMonthValue() - 1;
     }
 
-    public double[] geteGlobHorMonthlySynth() {
+    public double[] getEGlobHorMonthlySynth() {
         return eGlobHorMonthlySynth;
     }
 }

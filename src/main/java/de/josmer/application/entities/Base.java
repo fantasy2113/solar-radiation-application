@@ -1,6 +1,6 @@
 package de.josmer.application.entities;
 
-abstract class Export {
+abstract class Base {
     private String lat;
     private String lon;
     private String unit;

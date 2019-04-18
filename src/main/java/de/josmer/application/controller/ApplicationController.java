@@ -2,15 +2,16 @@ package de.josmer.application.controller;
 
 import de.josmer.application.controller.requests.CalculationRequest;
 import de.josmer.application.controller.requests.RadiationRequest;
+import de.josmer.application.entities.Calculated;
 import de.josmer.application.entities.ExportRadiation;
 import de.josmer.application.entities.User;
 import de.josmer.application.library.geo.GaussKrueger;
+import de.josmer.application.library.interfaces.ICalculatedRepository;
 import de.josmer.application.library.interfaces.IExportRadiRepository;
 import de.josmer.application.library.interfaces.IRadiationRepository;
 import de.josmer.application.library.interfaces.IUserRepository;
 import de.josmer.application.library.security.Authentication;
 import de.josmer.application.library.security.Token;
-import de.josmer.application.library.sun.CalcRadiation;
 import de.josmer.application.library.utils.Toolbox;
 import org.jxls.template.SimpleExporter;
 import org.slf4j.Logger;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,12 +33,14 @@ public class ApplicationController {
     private final IExportRadiRepository exportRep;
     private final IRadiationRepository radiationRepository;
     private final IUserRepository userRepository;
+    private final ICalculatedRepository calculatedRepository;
 
     @Autowired
-    public ApplicationController(IExportRadiRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository) {
+    public ApplicationController(IExportRadiRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository, ICalculatedRepository calculatedRepository) {
         this.exportRep = exportRep;
         this.radiationRepository = radiationRepository;
         this.userRepository = userRepository;
+        this.calculatedRepository = calculatedRepository;
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
@@ -135,12 +137,9 @@ public class ApplicationController {
         }
         final int startDate = Integer.valueOf(req.getYear() + "01");
         final int endDate = Integer.valueOf(req.getYear() + "12");
-        LocalDateTime dt = LocalDateTime.of(req.getYear(), 1, 1, 0, 30, 0, 0);
-        double[] eGlobHor = radiationRepository.findGlobal(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
-        CalcRadiation calcRadiation = new CalcRadiation(req.getLat(), req.getLon(), eGlobHor, dt, req.getYe(), req.getAe());
-        double[] eGlobGen = calcRadiation.getEGlobGenMonthly();
-        double[] synthMonths = calcRadiation.geteGlobHorMonthlySynth();
 
+        final double[] eGlobHor = radiationRepository.findGlobal(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
+        List<Calculated> calculateds = calculatedRepository.calculateds(eGlobHor, req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear());
 
         return new LinkedList<>();
     }

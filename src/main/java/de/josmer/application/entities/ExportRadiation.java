@@ -1,6 +1,6 @@
 package de.josmer.application.entities;
 
-public class ExportRadiation extends Export {
+public class ExportRadiation extends Base {
     private String date;
     private String type;
     private double value;

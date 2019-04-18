@@ -1,27 +1,18 @@
 package de.josmer.application.entities;
 
-public class ExportCalculated extends Export {
-    private String year;
-    private String month;
+public class Calculated {
+    private String calculatedDate;
     private double ae;
     private double ye;
     private double eGlobHor;
     private double eGlobGen;
 
-    public String getYear() {
-        return year;
+    public String getCalculatedDate() {
+        return calculatedDate;
     }
 
-    public void setYear(String year) {
-        this.year = year;
-    }
-
-    public String getMonth() {
-        return month;
-    }
-
-    public void setMonth(String month) {
-        this.month = month;
+    public void setCalculatedDate(String calculatedDate) {
+        this.calculatedDate = calculatedDate;
     }
 
     public double getAe() {
