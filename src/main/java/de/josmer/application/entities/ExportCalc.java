@@ -26,7 +26,7 @@ public class ExportCalc extends AExport {
         return eGlobHor;
     }
 
-    public void seteGlobHor(double eGlobHor) {
+    public void setEGlobHor(double eGlobHor) {
         this.eGlobHor = eGlobHor;
     }
 
@@ -34,7 +34,7 @@ public class ExportCalc extends AExport {
         return eGlobGen;
     }
 
-    public void seteGlobGen(double eGlobGen) {
+    public void setEGlobGen(double eGlobGen) {
         this.eGlobGen = eGlobGen;
     }
 }

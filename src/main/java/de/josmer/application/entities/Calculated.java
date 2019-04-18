@@ -31,7 +31,7 @@ public class Calculated {
         this.ye = ye;
     }
 
-    public double geteGlobHor() {
+    public double getEGlobHor() {
         return eGlobHor;
     }
 
@@ -39,7 +39,7 @@ public class Calculated {
         this.eGlobHor = eGlobHor;
     }
 
-    public double geteGlobGen() {
+    public double getEGlobGen() {
         return eGlobGen;
     }
 
