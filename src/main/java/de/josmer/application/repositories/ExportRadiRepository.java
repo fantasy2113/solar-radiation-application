@@ -38,7 +38,19 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
                 }
             }
 
+            if (!exports.get(exports.size() - 1).getDate().contains("Summe")) {
+                ExportRadi export = new ExportRadi();
+                export.setDate("Summe " + exports.get(exports.size() - 1).getDate().substring(0, 4));
+                export.setLat("");
+                export.setLon("");
+                export.setType("");
+                export.setValue(Double.valueOf(round(eGlobHorSum, 2)));
+                export.setUnit("kWh/m2");
+                export.setDim("1 km2");
+                export.setSource("DWD CDC");
 
+                exports.add(export);
+            }
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
