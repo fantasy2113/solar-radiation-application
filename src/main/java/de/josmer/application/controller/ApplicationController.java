@@ -44,16 +44,16 @@ public class ApplicationController {
         return Toolbox.readFile(LOGIN_HTML);
     }
 
-    @GetMapping(value = "/radi", produces = MediaType.TEXT_HTML_VALUE)
-    public String radiation(@CookieValue("token") final String token) {
+    @GetMapping(value = "/radi_app", produces = MediaType.TEXT_HTML_VALUE)
+    public String radiationApp(@CookieValue("token") final String token) {
         if (isAccess(Token.getAuthentication(token))) {
             return Toolbox.readFile("src/main/resources/static/html/radi.html");
         }
         return Toolbox.readFile(LOGIN_HTML);
     }
 
-    @GetMapping(value = "/calc", produces = MediaType.TEXT_HTML_VALUE)
-    public String calculation(@CookieValue("token") final String token) {
+    @GetMapping(value = "/calc_app", produces = MediaType.TEXT_HTML_VALUE)
+    public String calculationApp(@CookieValue("token") final String token) {
         if (isAccess(Token.getAuthentication(token))) {
             return Toolbox.readFile("src/main/resources/static/html/calc.html");
         }
@@ -98,8 +98,8 @@ public class ApplicationController {
         return Long.toString(radiationRepository.count());
     }
 
-    @GetMapping("/export")
-    public void export(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) {
+    @GetMapping("/export_radi")
+    public void exportRadi(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) {
         if (!isAccess(Token.getAuthentication(token))) {
             return;
         }
@@ -117,8 +117,8 @@ public class ApplicationController {
         }
     }
 
-    @GetMapping("/find")
-    public List<ExportRadiation> find(@CookieValue("token") final String token, final RadiationRequest req) {
+    @GetMapping("/radiation")
+    public List<ExportRadiation> radiation(@CookieValue("token") final String token, final RadiationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
@@ -126,8 +126,8 @@ public class ApplicationController {
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
-    @GetMapping("/extractor")
-    public List<ExportRadiation> extractor(@CookieValue("token") final String token, final ExtractorRequest req) {
+    @GetMapping("/calculation")
+    public List<ExportRadiation> calculation(@CookieValue("token") final String token, final ExtractorRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }

@@ -52,7 +52,7 @@ jQuery(document).ready(function () {
         $('#jsGrid').empty();
         $.ajax({
             method: 'GET',
-            url: getPath() + 'find',
+            url: getPath() + 'radiation',
             dataType: "json",
             contentType: "application/json",
             data: {
@@ -86,7 +86,7 @@ jQuery(document).ready(function () {
 
     var export_button = jQuery('#export_button');
     export_button.bind('click', function () {
-        $(location).attr('href', getPath() + 'export?' + getExportQuery());
+        $(location).attr('href', getPath() + 'export_radi?' + getExportQuery());
     })
 });
 

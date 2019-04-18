@@ -8,17 +8,16 @@ jQuery(document).ready(function () {
 
     var calc_button = jQuery('#calc_button');
     calc_button.bind('click', function () {
-        $(location).attr('href', getPath() + 'calc');
+        $(location).attr('href', getPath() + 'calc_app');
     });
 
     jQuery(document).ready(function () {
         var radi_button = jQuery('#radi_button');
         radi_button.bind('click', function () {
-            $(location).attr('href', getPath() + 'radi');
+            $(location).attr('href', getPath() + 'radi_app');
         });
     });
 });
-
 
 function getCookie(cname) {
     var name = cname + "=";

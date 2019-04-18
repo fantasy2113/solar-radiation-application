@@ -1,18 +1,20 @@
 jQuery(document).ready(function () {
     $('#radi_button').css("background-color", "whitesmoke");
 
-    var search_button = jQuery('#search_button');
-    search_button.bind('click', function () {
+    var calculation_button = jQuery('#calculation_button');
+    calculation_button.bind('click', function () {
         $('#jsGrid').empty();
         $.ajax({
             method: 'GET',
-            url: getPath() + 'extractor',
+            url: getPath() + 'calculation',
             dataType: "json",
             contentType: "application/json",
             data: {
-                startDate: $('input[id=year]').val(),
+                year: $('input[id=year]').val(),
                 lat: $('input[id=lat]').val(),
-                lon: $('input[id=lon]').val()
+                lon: $('input[id=lon]').val(),
+                as: $('input[id=alignment]').val(),
+                ys: $('input[id=tilt]').val()
             },
             success: function (json) {
                 $("#jsGrid").jsGrid({

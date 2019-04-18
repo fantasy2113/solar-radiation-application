@@ -15,7 +15,7 @@ function getToken(path) {
                 $("#alert").append('<b>' + token + '</b>');
             } else {
                 document.cookie = 'token=' + token + ';';
-                $(location).attr('href', getPath() + 'radi');
+                $(location).attr('href', getPath() + 'radi_app');
             }
         }
     });
