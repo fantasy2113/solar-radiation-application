@@ -112,7 +112,7 @@ public class ApplicationController {
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     exportRep.getHeaders(),
-                    exportRep.getAll(radiationRepository.findGlobal(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
+                    exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
                     exportRep.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -126,7 +126,7 @@ public class ApplicationController {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return exportRep.getAll(radiationRepository.findGlobal(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
+        return exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
