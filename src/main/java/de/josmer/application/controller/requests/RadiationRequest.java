@@ -1,6 +1,7 @@
 package de.josmer.application.controller.requests;
 
 public final class RadiationRequest extends Request {
+    private String startDate;
     private String endDate;
     private String type;
 
@@ -18,5 +19,13 @@ public final class RadiationRequest extends Request {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 }

@@ -11,10 +11,8 @@ jQuery(document).ready(function () {
             contentType: "application/json",
             data: {
                 startDate: $('input[id=year]').val(),
-                endDate: $('input[id=end_date]').val(),
                 lat: $('input[id=lat]').val(),
-                lon: $('input[id=lon]').val(),
-                type: $('#type_select option:selected').text()
+                lon: $('input[id=lon]').val()
             },
             success: function (json) {
                 $("#jsGrid").jsGrid({
