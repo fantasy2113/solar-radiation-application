@@ -3,6 +3,7 @@ jQuery(document).ready(function () {
 
     var calculation_button = jQuery('#calculation_button');
     calculation_button.bind('click', function () {
+        $('html,body').css('cursor', 'wait');
         $('#jsGrid').empty();
         $.ajax({
             method: 'GET',
@@ -34,6 +35,10 @@ jQuery(document).ready(function () {
                         {name: "dim", title: "Dim", type: "text"}
                     ]
                 });
+                $('html,body').css('cursor', 'default');
+            },
+            error: function (request, status, error) {
+                $('html,body').css('cursor', 'default');
             }
         });
     });
