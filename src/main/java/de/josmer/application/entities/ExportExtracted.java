@@ -1,7 +1,5 @@
 package de.josmer.application.entities;
 
-import de.josmer.application.library.abstractclasses.Export;
-
 public class ExportExtracted extends Export {
     private String year;
     private String month;

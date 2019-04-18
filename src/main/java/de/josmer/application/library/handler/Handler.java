@@ -1,4 +1,4 @@
-package de.josmer.application.library.abstractclasses;
+package de.josmer.application.library.handler;
 
 import de.josmer.application.library.interfaces.IHandler;
 

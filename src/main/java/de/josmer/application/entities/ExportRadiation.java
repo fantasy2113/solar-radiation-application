@@ -1,7 +1,5 @@
 package de.josmer.application.entities;
 
-import de.josmer.application.library.abstractclasses.Export;
-
 public class ExportRadiation extends Export {
     private String date;
     private String type;

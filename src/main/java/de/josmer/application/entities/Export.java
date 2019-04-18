@@ -1,6 +1,6 @@
-package de.josmer.application.library.abstractclasses;
+package de.josmer.application.entities;
 
-public abstract class Export {
+abstract class Export {
     private String lat;
     private String lon;
     private String unit;

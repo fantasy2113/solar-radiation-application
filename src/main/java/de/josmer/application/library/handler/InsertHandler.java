@@ -1,7 +1,6 @@
 package de.josmer.application.library.handler;
 
 
-import de.josmer.application.library.abstractclasses.Handler;
 import de.josmer.application.library.crawler.RadiationCrawler;
 import de.josmer.application.library.enums.RadiationTypes;
 import de.josmer.application.repositories.RadiationRepository;

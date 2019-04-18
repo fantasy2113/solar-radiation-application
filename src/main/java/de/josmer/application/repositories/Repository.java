@@ -1,4 +1,4 @@
-package de.josmer.application.library.abstractclasses;
+package de.josmer.application.repositories;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,19 +10,19 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public abstract class Repository<E> {
-    protected static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getName());
+abstract class Repository<E> {
+    static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getName());
     private final String databaseUrl;
 
-    public Repository(final String databaseUrl) {
+    Repository(final String databaseUrl) {
         this.databaseUrl = databaseUrl;
     }
 
-    public Repository() {
+    Repository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
     }
 
-    protected Connection getConnection() throws URISyntaxException, SQLException {
+    Connection getConnection() throws URISyntaxException, SQLException {
         URI dbUri = new URI(databaseUrl);
         String username = dbUri.getUserInfo().split(":")[0];
         String password = dbUri.getUserInfo().split(":")[1];

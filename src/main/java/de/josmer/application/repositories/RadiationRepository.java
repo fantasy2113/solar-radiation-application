@@ -1,7 +1,6 @@
 package de.josmer.application.repositories;
 
 import de.josmer.application.entities.Radiation;
-import de.josmer.application.library.abstractclasses.Repository;
 import de.josmer.application.library.interfaces.IGaussKrueger;
 import de.josmer.application.library.interfaces.IRadiationRepository;
 import org.springframework.stereotype.Component;
