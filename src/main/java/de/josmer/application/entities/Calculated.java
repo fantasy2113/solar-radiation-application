@@ -35,7 +35,7 @@ public class Calculated {
         return eGlobHor;
     }
 
-    public void seteGlobHor(double eGlobHor) {
+    public void setEGlobHor(double eGlobHor) {
         this.eGlobHor = eGlobHor;
     }
 
@@ -43,7 +43,7 @@ public class Calculated {
         return eGlobGen;
     }
 
-    public void seteGlobGen(double eGlobGen) {
+    public void setEGlobGen(double eGlobGen) {
         this.eGlobGen = eGlobGen;
     }
 }
