@@ -1,6 +1,6 @@
 package de.josmer.application.controller;
 
-import de.josmer.application.controller.requests.ExtractorRequest;
+import de.josmer.application.controller.requests.CalculationRequest;
 import de.josmer.application.controller.requests.RadiationRequest;
 import de.josmer.application.entities.ExportRadiation;
 import de.josmer.application.entities.User;
@@ -129,15 +129,15 @@ public class ApplicationController {
     }
 
     @GetMapping("/calculation")
-    public List<ExportRadiation> calculation(@CookieValue("token") final String token, final ExtractorRequest req) {
+    public List<ExportRadiation> calculation(@CookieValue("token") final String token, final CalculationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
         final int startDate = Integer.valueOf(req.getYear() + "01");
         final int endDate = Integer.valueOf(req.getYear() + "12");
         LocalDateTime dt = LocalDateTime.of(req.getYear(), 1, 1, 0, 30, 0, 0);
-        double[] months = radiationRepository.find(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
-        Calculation calculation = new Calculation(req.getLat(), req.getLon(), months, dt, req.getYe(), req.getAe());
+        double[] eGlobHor = radiationRepository.find(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
+        Calculation calculation = new Calculation(req.getLat(), req.getLon(), eGlobHor, dt, req.getYe(), req.getAe());
         double[] eGlobGen = calculation.getEGlobGen();
         return new LinkedList<>();
     }

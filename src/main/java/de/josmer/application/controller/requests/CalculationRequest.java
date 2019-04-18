@@ -1,6 +1,6 @@
 package de.josmer.application.controller.requests;
 
-public final class ExtractorRequest extends Request {
+public final class CalculationRequest extends Request {
     private int year;
     private int ae;
     private int ye;

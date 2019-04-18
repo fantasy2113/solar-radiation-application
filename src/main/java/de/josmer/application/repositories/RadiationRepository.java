@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public final class RadiationRepository extends Repository<Radiation> implements IRadiationRepository {
@@ -26,7 +27,7 @@ public final class RadiationRepository extends Repository<Radiation> implements 
         List<Radiation> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         for (int i = 0; i < retArr.length; i++) {
-            retArr[i] = globalRadiation.get(i).getRadiationValue();
+            retArr[i] = Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", globalRadiation.get(i).getRadiationValue())) * 1000;
         }
         return retArr;
     }

@@ -21,6 +21,10 @@ class TagModel {
 
     double[] getDays(LocalDateTime month, double hGlob, double lat, double lon) {
         final int daysInMonth = CalcUtils.getDaysInMonth(month.getYear(), month.getMonthValue());
+        double[] days = new double[daysInMonth];
+        if (hGlob <= 0) {
+            return days;
+        }
         double[] dailyhe0Hor = new double[daysInMonth];
         double he0HorSum = 0.0;
         for (int d = 0; d < daysInMonth; d++) {
@@ -38,7 +42,6 @@ class TagModel {
             he0HorSum += he0Hor;
         }
         zeroGuard(he0HorSum);
-        double[] days = new double[daysInMonth];
         for (int d = 0; d < daysInMonth; d++) {
             days[d] = hGlob * (dailyhe0Hor[d] / he0HorSum);
         }
@@ -46,6 +49,9 @@ class TagModel {
     }
 
     double[] getHours(LocalDateTime day, double hGlob, double lat, double lon) {
+        if (hGlob <= 0) {
+            return new double[24];
+        }
         SunPostion sunPos = new SunPostion();
         double[] sunYOfh = new double[24];
         double sumSinGammaS = 0.0;
