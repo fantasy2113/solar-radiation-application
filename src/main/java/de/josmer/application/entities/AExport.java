@@ -1,6 +1,7 @@
 package de.josmer.application.entities;
 
-abstract class Base {
+abstract class AExport {
+    private String date;
     private String lat;
     private String lon;
     private String unit;
@@ -45,5 +46,13 @@ abstract class Base {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

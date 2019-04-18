@@ -1,21 +1,19 @@
 package de.josmer.application.repositories;
 
-import de.josmer.application.entities.ExportRadiation;
+import de.josmer.application.entities.ExportRadi;
 import de.josmer.application.entities.Radiation;
 import de.josmer.application.library.interfaces.IExportRadiRepository;
-import org.apache.commons.math3.util.Precision;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 @Component
-public class ExportRadiRepository implements IExportRadiRepository {
+public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiation> implements IExportRadiRepository {
 
     @Override
-    public List<ExportRadiation> getAll(final List<Radiation> radiations, final double lon, final double lat) {
-        List<ExportRadiation> exports = new LinkedList<>();
+    public List<ExportRadi> getAll(final List<Radiation> radiations, final double lon, final double lat) {
+        List<ExportRadi> exports = new LinkedList<>();
         for (Radiation radiation : radiations) {
             exports.add(mapToExport(lon, lat, radiation));
         }
@@ -32,36 +30,19 @@ public class ExportRadiRepository implements IExportRadiRepository {
         return "date, lat, lon, type, value, unit, dim, source, ";
     }
 
-    private ExportRadiation mapToExport(double lon, double lat, Radiation radiation) {
-        ExportRadiation export = new ExportRadiation();
-        export.setDate(parseDate(radiation.getRadiationDate()));
+    @Override
+    protected ExportRadi mapToExport(double lon, double lat, Radiation item) {
+        ExportRadi export = new ExportRadi();
+        export.setDate(parseDate(item.getRadiationDate()));
         export.setLat(round(lat));
         export.setLon(round(lon));
-        export.setType(radiation.getRadiationType());
-        export.setValue(getValue(radiation));
+        export.setType(item.getRadiationType());
+        export.setValue(getValue(item.getRadiationValue()));
         export.setUnit("kWh/m2");
         export.setDim("1 km2");
         export.setSource("DWD CDC");
         return export;
     }
 
-    private String round(double lat) {
-        return String.format(Locale.ENGLISH, "%.3f", Precision.round(lat, 3));
-    }
 
-    private double getValue(Radiation radiation) {
-        return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", radiation.getRadiationValue()));
-    }
-
-    private String parseDate(final int date) {
-        return getDate(String.valueOf(date));
-    }
-
-    public String getDate(final String date) {
-        try {
-            return date.substring(0, 4) + "-" + date.substring(4);
-        } catch (Exception e) {
-            return "undefined";
-        }
-    }
 }

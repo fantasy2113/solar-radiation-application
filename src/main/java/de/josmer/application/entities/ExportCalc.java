@@ -1,19 +1,10 @@
 package de.josmer.application.entities;
 
-public class Calculated {
-    private String calculatedDate;
+public class ExportCalc extends AExport {
     private double ae;
     private double ye;
     private double eGlobHor;
     private double eGlobGen;
-
-    public String getCalculatedDate() {
-        return calculatedDate;
-    }
-
-    public void setCalculatedDate(String calculatedDate) {
-        this.calculatedDate = calculatedDate;
-    }
 
     public double getAe() {
         return ae;

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 
-public final class InsertHandler extends Handler {
+public final class InsertHandler extends AHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(InsertHandler.class.getName());
     private final RadiationTypes radiationTypes;
 

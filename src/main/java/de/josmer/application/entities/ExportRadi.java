@@ -1,7 +1,6 @@
 package de.josmer.application.entities;
 
-public class ExportRadiation extends Base {
-    private String date;
+public class ExportRadi extends AExport {
     private String type;
     private double value;
 
@@ -19,13 +18,5 @@ public class ExportRadiation extends Base {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 }

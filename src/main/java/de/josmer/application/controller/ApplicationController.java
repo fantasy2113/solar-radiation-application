@@ -3,13 +3,11 @@ package de.josmer.application.controller;
 import de.josmer.application.controller.requests.CalculationRequest;
 import de.josmer.application.controller.requests.RadiationRequest;
 import de.josmer.application.entities.Calculated;
-import de.josmer.application.entities.ExportRadiation;
+import de.josmer.application.entities.ExportCalc;
+import de.josmer.application.entities.ExportRadi;
 import de.josmer.application.entities.User;
 import de.josmer.application.library.geo.GaussKrueger;
-import de.josmer.application.library.interfaces.ICalculatedRepository;
-import de.josmer.application.library.interfaces.IExportRadiRepository;
-import de.josmer.application.library.interfaces.IRadiationRepository;
-import de.josmer.application.library.interfaces.IUserRepository;
+import de.josmer.application.library.interfaces.*;
 import de.josmer.application.library.security.Authentication;
 import de.josmer.application.library.security.Token;
 import de.josmer.application.library.utils.Toolbox;
@@ -22,7 +20,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,17 +31,19 @@ import java.util.regex.Pattern;
 public class ApplicationController {
     private static final String LOGIN_HTML = "src/main/resources/static/html/login.html";
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationController.class.getName());
-    private final IExportRadiRepository exportRep;
-    private final IRadiationRepository radiationRepository;
-    private final IUserRepository userRepository;
-    private final ICalculatedRepository calculatedRepository;
+    private final IExportRadiRepository exportRadiRepo;
+    private final IExportCalcRepository exportCalcRepo;
+    private final IRadiationRepository radiRepo;
+    private final IUserRepository userRepo;
+    private final ICalculatedRepository calcRepo;
 
     @Autowired
-    public ApplicationController(IExportRadiRepository exportRep, IRadiationRepository radiationRepository, IUserRepository userRepository, ICalculatedRepository calculatedRepository) {
-        this.exportRep = exportRep;
-        this.radiationRepository = radiationRepository;
-        this.userRepository = userRepository;
-        this.calculatedRepository = calculatedRepository;
+    public ApplicationController(IExportRadiRepository exportRadiRepo, IExportCalcRepository exportCalcRepo, IRadiationRepository radiRepo, IUserRepository userRepo, ICalculatedRepository calcRepo) {
+        this.exportRadiRepo = exportRadiRepo;
+        this.exportCalcRepo = exportCalcRepo;
+        this.radiRepo = radiRepo;
+        this.userRepo = userRepo;
+        this.calcRepo = calcRepo;
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
@@ -69,7 +72,7 @@ public class ApplicationController {
         if (isParameter(login, password)) {
             return "Benutzername oder Passwort sind nicht lang genug!";
         }
-        if (userRepository.get(login).isPresent()) {
+        if (userRepo.get(login).isPresent()) {
             return "Benutzername ist schon vorhanden!";
         }
 
@@ -85,7 +88,7 @@ public class ApplicationController {
 
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
     public String token(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
-        final Optional<User> optionalUser = userRepository.get(login);
+        final Optional<User> optionalUser = userRepo.get(login);
         if (optionalUser.isPresent() && Toolbox.isPassword(password, optionalUser.get().getPassword())) {
             LOGGER.info("login successful");
             return Token.get(optionalUser.get().getId());
@@ -99,7 +102,7 @@ public class ApplicationController {
         if (!isAccess(Token.getAuthentication(token))) {
             return "-1";
         }
-        return Long.toString(radiationRepository.count());
+        return Long.toString(radiRepo.count());
     }
 
     @GetMapping("/export_radi")
@@ -111,9 +114,9 @@ public class ApplicationController {
             response.addHeader("Content-disposition", "attachment; filename=sonneneinstrahlung_" + System.currentTimeMillis() + ".xls");
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
-                    exportRep.getHeaders(),
-                    exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
-                    exportRep.getProps(),
+                    exportRadiRepo.getHeaders(),
+                    exportRadiRepo.getAll(radiRepo.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
+                    exportRadiRepo.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
         } catch (IOException e) {
@@ -122,26 +125,26 @@ public class ApplicationController {
     }
 
     @GetMapping("/radiation")
-    public List<ExportRadiation> radiation(@CookieValue("token") final String token, final RadiationRequest req) {
+    public List<ExportRadi> radiation(@CookieValue("token") final String token, final RadiationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return exportRep.getAll(radiationRepository.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
+        return exportRadiRepo.getAll(radiRepo.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
                 req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
     @GetMapping("/calculation")
-    public List<ExportRadiation> calculation(@CookieValue("token") final String token, final CalculationRequest req) {
+    public List<ExportCalc> calculation(@CookieValue("token") final String token, final CalculationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
         final int startDate = Integer.valueOf(req.getYear() + "01");
         final int endDate = Integer.valueOf(req.getYear() + "12");
 
-        final double[] eGlobHor = radiationRepository.findGlobal(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
-        List<Calculated> calculateds = calculatedRepository.calculateds(eGlobHor, req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear());
+        final double[] eGlobHor = radiRepo.findGlobal(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
+        List<Calculated> calculateds = calcRepo.calculateds(eGlobHor, req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear());
 
-        return new LinkedList<>();
+        return exportCalcRepo.getAll(calculateds, req.getLon(), req.getLat());
     }
 
     private boolean isParameter(String login, String password) {
@@ -164,15 +167,15 @@ public class ApplicationController {
     }
 
     private Optional<User> createUser(String login, String password) {
-        userRepository.saveUser(login, password);
-        return userRepository.get(login);
+        userRepo.saveUser(login, password);
+        return userRepo.get(login);
     }
 
     private boolean isAccess(final Authentication auth) {
         Optional<String> optionalToken = auth.getToken();
         OptionalInt optionalUserId = auth.getUserId();
         if (optionalToken.isPresent() && optionalUserId.isPresent()) {
-            Optional<User> optionalUser = userRepository.get(optionalUserId.getAsInt());
+            Optional<User> optionalUser = userRepo.get(optionalUserId.getAsInt());
             return Token.check(optionalToken.get()) && optionalUser.isPresent();
         }
         return false;

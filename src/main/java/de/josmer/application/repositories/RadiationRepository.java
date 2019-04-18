@@ -13,7 +13,7 @@ import java.util.Locale;
 import java.util.OptionalInt;
 
 @Component
-public final class RadiationRepository extends Repository<Radiation> implements IRadiationRepository {
+public final class RadiationRepository extends ARepository<Radiation> implements IRadiationRepository {
 
     public RadiationRepository(final String databaseUrl) {
         super(databaseUrl);

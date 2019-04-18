@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 @Component
-public class UserRepository extends Repository<User> implements IUserRepository {
+public class UserRepository extends ARepository<User> implements IUserRepository {
     public UserRepository(final String databaseUrl) {
         super(databaseUrl);
     }
