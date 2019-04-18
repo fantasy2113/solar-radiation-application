@@ -28,10 +28,8 @@ jQuery(document).ready(function () {
 
                     fields: [
                         {name: "date", title: "Datum", type: "text"},
-                        {name: "lat", title: "Lat", type: "number"},
-                        {name: "lon", title: "Lon", type: "number"},
-                        {name: "eGlobHor", title: "Hor", type: "number"},
-                        {name: "eGlobGen", title: "Gen", type: "number"},
+                        {name: "eGlobHor", title: "EGlobHor"},
+                        {name: "eGlobGen", title: "EGlobGen"},
                         {name: "unit", title: "Einh.", type: "text"},
                         {name: "dim", title: "Dim.", type: "text"}
                     ]
