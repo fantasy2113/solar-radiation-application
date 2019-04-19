@@ -1,20 +1,20 @@
 jQuery(document).ready(function () {
     var logout_button = jQuery('#logout_button');
     logout_button.bind('click', function () {
-        document.cookie = 'token=no_token;path=' + 'no_path' + ';';
+        document.cookie = 'token=notoken;app=' + 'nopath' + ';';
         $(location).attr('href', getPath());
     });
 
     var calc_button = jQuery('#calc_button');
     calc_button.bind('click', function () {
-    document.cookie = 'path=' + 'calc_app' + ';';
+    document.cookie = 'app=' + 'calcapp' + ';';
         $(location).attr('href', getPath());
     });
 
     jQuery(document).ready(function () {
         var radi_button = jQuery('#radi_button');
         radi_button.bind('click', function () {
-        document.cookie = 'path=' + 'radi_app' + ';';
+        document.cookie = 'app=' + 'radiapp' + ';';
             $(location).attr('href', getPath());
         });
     });
@@ -37,11 +37,9 @@ function getCookie(cname) {
 
 String.prototype.includes = function (str) {
     var returnValue = false;
-
     if (this.indexOf(str) !== -1) {
         returnValue = true;
     }
-
     return returnValue;
 };
 

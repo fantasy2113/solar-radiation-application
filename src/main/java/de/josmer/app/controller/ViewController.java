@@ -29,12 +29,12 @@ public class ViewController extends AController {
                 if (cookie.getName().equals("token")) {
                     token = cookie.getValue();
                 }
-                if (cookie.getName().equals("path")) {
+                if (cookie.getName().equals("app")) {
                     path = cookie.getValue();
                 }
             }
             if (isAccess(Token.getAuthentication(token))) {
-                if (path.equals("calc_app")) {
+                if (path.equals("calcapp")) {
                     return Toolbox.readFile("src/main/resources/static/html/calc.html");
                 }
                 return Toolbox.readFile("src/main/resources/static/html/radi.html");

@@ -73,7 +73,7 @@ jQuery(document).ready(function () {
     calculation_export_button.bind('click', function () {
         $('#jsGrid').empty();
         $('#jsGrid').append('<b>Export läuft ...</b>');
-        $(location).attr('href', getPath() + 'export_calc?' + getExportCalcQuery());
+        $(location).attr('href', getPath() + 'exportcalc?' + getExportCalcQuery());
     });
 });
 

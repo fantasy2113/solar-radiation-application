@@ -1,7 +1,6 @@
 function getToken(path) {
     $("#alert").empty();
     $("#alert").append('<b>&nbsp;</b>');
-    document.cookie = 'token=';
     $.ajax({
         beforeSend: function (request) {
             request.setRequestHeader('login', $('input[id=username]').val());
@@ -14,7 +13,7 @@ function getToken(path) {
             if (token.includes('!')) {
                 $("#alert").append('<b>' + token + '</b>');
             } else {
-                document.cookie = 'token=' + token + ';path=' + 'radi_app' + ';';
+                document.cookie = 'token=' + token + ';app=' + 'radiapp' + ';';
                 $(location).attr('href', getPath());
             }
         }
@@ -29,7 +28,6 @@ jQuery(document).ready(function () {
 
     var save_button = jQuery('#save_button');
     save_button.bind('click', function () {
-        getToken('save_user')
-
+        getToken('saveuser')
     })
 });

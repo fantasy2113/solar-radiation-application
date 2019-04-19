@@ -28,7 +28,7 @@ public class AppController extends AController {
         super(exportRadiRepo, exportCalcRepo, radiRepo, userRepo, calcRepo);
     }
 
-    @GetMapping(value = "/save_user", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/saveuser", produces = MediaType.TEXT_HTML_VALUE)
     public String saveUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         if (isParameter(login, password)) {
             return "Benutzername oder Passwort sind nicht lang genug!";
@@ -66,7 +66,7 @@ public class AppController extends AController {
         return Long.toString(radiRepo.count());
     }
 
-    @GetMapping("/export_radi")
+    @GetMapping("/exportradi")
     public void exportRadi(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) {
         if (!isAccess(Token.getAuthentication(token))) {
             return;
@@ -85,7 +85,7 @@ public class AppController extends AController {
         }
     }
 
-    @GetMapping("/export_calc")
+    @GetMapping("/exportcalc")
     public void exportCalc(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye) {
         if (!isAccess(Token.getAuthentication(token))) {
             return;

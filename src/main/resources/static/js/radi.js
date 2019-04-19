@@ -84,7 +84,7 @@ jQuery(document).ready(function () {
 
     var export_button = jQuery('#export_button');
     export_button.bind('click', function () {
-        $(location).attr('href', getPath() + 'export_radi?' + getExportRadiQuery());
+        $(location).attr('href', getPath() + 'exportradi?' + getExportRadiQuery());
     });
 });
 
