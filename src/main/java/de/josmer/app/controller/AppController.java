@@ -128,5 +128,4 @@ public class AppController extends AController {
         return Integer.valueOf(year + "01");
     }
 
-
 }
