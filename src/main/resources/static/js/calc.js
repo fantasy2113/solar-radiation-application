@@ -65,7 +65,7 @@ function getExportCalcQuery() {
 function getYears() {
     var years = [];
         for (var year = 1991; year <= 2019; year++) {
-            years.push(year);
+            years.push('' + year);
         }
     return years;
 }
