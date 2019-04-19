@@ -14,17 +14,14 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
     @Override
     public List<ExportCalc> getAll(List<Calculated> items, double lon, double lat) {
         List<ExportCalc> exportCalcs = new LinkedList<>();
-
         try {
             double eGlobHor = 0.0;
             double eGlobGen = 0.0;
-
             for (Calculated calculated : items) {
                 eGlobHor += calculated.getEGlobHor();
                 eGlobGen += calculated.getEGlobGen();
                 exportCalcs.add(mapToExport(lon, lat, calculated));
             }
-
             ExportCalc exportCalc = new ExportCalc();
             exportCalc.setEGlobGen(Double.valueOf(round(eGlobGen, 2)));
             exportCalc.setEGlobHor(Double.valueOf(round(eGlobHor, 2)));
@@ -34,9 +31,7 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
             exportCalc.setDim("1 km2");
             exportCalc.setSource("DWD CDC");
             exportCalc.setDate("Summe");
-
             exportCalcs.add(exportCalc);
-
             exportCalc = new ExportCalc();
             exportCalc.setEGlobGen(Double.valueOf(round((eGlobGen / eGlobHor) * 100, 1)));
             exportCalc.setEGlobHor(100.0);
@@ -46,13 +41,10 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
             exportCalc.setDim("");
             exportCalc.setSource("");
             exportCalc.setDate("");
-
             exportCalcs.add(exportCalc);
-
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
-
         return exportCalcs;
     }
 

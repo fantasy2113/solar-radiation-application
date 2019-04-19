@@ -14,10 +14,8 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
     @Override
     public List<ExportRadi> getAll(final List<Radiation> radiations, final double lon, final double lat) {
         List<ExportRadi> exports = new LinkedList<>();
-
         try {
             double eGlobHorSum = 0.0;
-
             for (Radiation radiation : radiations) {
                 exports.add(mapToExport(lon, lat, radiation));
                 eGlobHorSum += radiation.getRadiationValue();
@@ -31,13 +29,10 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
                     export.setUnit("kWh/m2");
                     export.setDim("1 km2");
                     export.setSource("DWD CDC");
-
                     exports.add(export);
-
                     eGlobHorSum = 0.0;
                 }
             }
-
             if (!exports.get(exports.size() - 1).getDate().contains("Summe")) {
                 ExportRadi export = new ExportRadi();
                 export.setDate("Summe " + exports.get(exports.size() - 1).getDate().substring(0, 4));
@@ -48,13 +43,11 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
                 export.setUnit("kWh/m2");
                 export.setDim("1 km2");
                 export.setSource("DWD CDC");
-
                 exports.add(export);
             }
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
-
         return exports;
     }
 
@@ -81,6 +74,4 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
         export.setSource("DWD CDC");
         return export;
     }
-
-
 }
