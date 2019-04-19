@@ -2,7 +2,6 @@ package de.josmer.app.controller;
 
 import de.josmer.app.controller.requests.CalculationRequest;
 import de.josmer.app.controller.requests.RadiationRequest;
-import de.josmer.app.entities.Calculated;
 import de.josmer.app.entities.ExportCalc;
 import de.josmer.app.entities.ExportRadi;
 import de.josmer.app.entities.User;
@@ -86,13 +85,31 @@ public class AppController extends AController {
         }
     }
 
+    @GetMapping("/export_calc")
+    public void exportCalc(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye) {
+        if (!isAccess(Token.getAuthentication(token))) {
+            return;
+        }
+        try {
+            response.addHeader("Content-disposition", "attachment; filename=umrechnung_" + System.currentTimeMillis() + ".xls");
+            response.setContentType("app/vnd.ms-excel");
+            new SimpleExporter().gridExport(
+                    exportCalcRepo.getHeaders(),
+                    exportCalcRepo.getAll(calcRepo.calculateds(radiRepo.findGlobal(new GaussKrueger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
+                    exportCalcRepo.getProps(),
+                    response.getOutputStream());
+            response.flushBuffer();
+        } catch (IOException e) {
+            LOGGER.info(e.getMessage());
+        }
+    }
+
     @GetMapping("/radiation")
     public List<ExportRadi> getRadiation(@CookieValue("token") final String token, final RadiationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return exportRadiRepo.getAll(radiRepo.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()),
-                req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
+        return exportRadiRepo.getAll(radiRepo.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
     @GetMapping("/calculation")
@@ -100,13 +117,15 @@ public class AppController extends AController {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        final int startDate = Integer.valueOf(req.getYear() + "01");
-        final int endDate = Integer.valueOf(req.getYear() + "12");
+        return exportCalcRepo.getAll(calcRepo.calculateds(radiRepo.findGlobal(new GaussKrueger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+    }
 
-        final double[] eGlobHor = radiRepo.findGlobal(new GaussKrueger(), startDate, endDate, req.getLon(), req.getLat());
-        List<Calculated> calculateds = calcRepo.calculateds(eGlobHor, req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear());
+    private Integer getEndDate(int year) {
+        return Integer.valueOf(year + "12");
+    }
 
-        return exportCalcRepo.getAll(calculateds, req.getLon(), req.getLat());
+    private Integer getStartDate(int year) {
+        return Integer.valueOf(year + "01");
     }
 
 
