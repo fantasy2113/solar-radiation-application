@@ -18,10 +18,10 @@ jQuery(document).ready(function () {
     var tilt = jQuery('#tilt');
         tilt.bind('change', function () {
         if($('input[id=tilt]').val() < 0) {
-            $('#alignment').val(0);
+            $('#tilt').val(0);
         }
         if($('input[id=tilt]').val() > 90) {
-            $('#alignment').val(90);
+            $('#tilt').val(90);
         }
     });
 
