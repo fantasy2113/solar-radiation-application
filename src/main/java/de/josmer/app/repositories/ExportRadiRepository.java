@@ -45,6 +45,27 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
                 export.setSource("DWD CDC");
                 exports.add(export);
             }
+
+            int sumCnt = 0;
+            double avgSum = 0.0;
+            for (ExportRadi exportRadi : exports) {
+                if (exportRadi.getDate().contains("Summe")) {
+                    avgSum += exportRadi.getValue();
+                    sumCnt++;
+                }
+            }
+
+            ExportRadi export = new ExportRadi();
+            export.setDate("Summe Mittel");
+            export.setLat("");
+            export.setLon("");
+            export.setType("");
+            export.setValue(Double.valueOf(roundToString(avgSum / sumCnt, 2)));
+            export.setUnit("kWh/m2");
+            export.setDim("1 km2");
+            export.setSource("DWD CDC");
+            exports.add(export);
+
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
