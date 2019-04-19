@@ -1,4 +1,4 @@
-package de.josmer.application.sun;
+package de.josmer.app.sun;
 
 import java.util.HashMap;
 import java.util.Map;

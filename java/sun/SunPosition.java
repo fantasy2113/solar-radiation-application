@@ -1,4 +1,4 @@
-package de.josmer.application.sun;
+package de.josmer.app.sun;
 
 public class SunPosition {
     /// <summary>see Regenerative Energiesysteme [Quaschning] 2.5 ==> Picture 2.16</summary>

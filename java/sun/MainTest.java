@@ -1,4 +1,4 @@
-package de.josmer.application.sun;
+package de.josmer.app.sun;
 
 public class MainTest {
     public static void Main(string[] args) {

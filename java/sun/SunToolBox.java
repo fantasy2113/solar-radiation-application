@@ -1,4 +1,4 @@
-package de.josmer.application.sun;
+package de.josmer.app.sun;
 
 public class SunToolBox {
     /// <summary>global for-loop start - 24 Hours</summary>
