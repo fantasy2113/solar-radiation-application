@@ -5,6 +5,7 @@ jQuery(document).ready(function () {
     calculation_button.bind('click', function () {
         $('html,body').css('cursor', 'wait');
         $('#jsGrid').empty();
+        $('#jsGrid').append('<b>Berechnung läuft ...</b>');
         $.ajax({
             method: 'GET',
             url: getPath() + 'calculation',
@@ -18,6 +19,7 @@ jQuery(document).ready(function () {
                 ye: $('input[id=tilt]').val()
             },
             success: function (json) {
+            $('#jsGrid').empty();
                 $("#jsGrid").jsGrid({
                     width: "620",
                     height: "700",
@@ -37,6 +39,7 @@ jQuery(document).ready(function () {
                 $('html,body').css('cursor', 'default');
             },
             error: function (request, status, error) {
+            $('#jsGrid').empty();
                 $('html,body').css('cursor', 'default');
             }
         });
