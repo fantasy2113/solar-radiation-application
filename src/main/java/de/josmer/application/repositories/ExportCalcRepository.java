@@ -38,7 +38,7 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
             exportCalcs.add(exportCalc);
 
             exportCalc = new ExportCalc();
-            exportCalc.setEGlobGen(Double.valueOf(round((eGlobGen / eGlobHor) * 100, 2)));
+            exportCalc.setEGlobGen(Double.valueOf(round((eGlobGen / eGlobHor) * 100, 1)));
             exportCalc.setEGlobHor(100.0);
             exportCalc.setLat("");
             exportCalc.setLon("");
