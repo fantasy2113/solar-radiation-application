@@ -18,8 +18,8 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
             double eGlobHor = 0.0;
             double eGlobGen = 0.0;
             for (Calculated calculated : items) {
-                eGlobHor += calculated.getEGlobHor();
-                eGlobGen += calculated.getEGlobGen();
+                eGlobHor += Double.valueOf(round(calculated.getEGlobHor(), 0));
+                eGlobGen += Double.valueOf(round(calculated.getEGlobGen(), 0));
                 exportCalcs.add(mapToExport(lon, lat, calculated));
             }
             ExportCalc exportCalc = new ExportCalc();
