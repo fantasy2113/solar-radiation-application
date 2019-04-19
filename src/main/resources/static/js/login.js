@@ -14,13 +14,12 @@ function getToken(path) {
             if (token.includes('!')) {
                 $("#alert").append('<b>' + token + '</b>');
             } else {
-                document.cookie = 'token=' + token + ';';
-                $(location).attr('href', getPath() + 'radi_app');
+                document.cookie = 'token=' + token + ';path=' + 'radi_app' + ';';
+                $(location).attr('href', getPath());
             }
         }
     });
 }
-
 
 jQuery(document).ready(function () {
     var login_button = jQuery('#login_button');

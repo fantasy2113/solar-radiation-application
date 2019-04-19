@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,22 +49,27 @@ public class ApplicationController {
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
-    public String login() {
-        return Toolbox.readFile(LOGIN_HTML);
-    }
-
-    @GetMapping(value = "/radi_app", produces = MediaType.TEXT_HTML_VALUE)
-    public String radiationApp(@CookieValue("token") final String token) {
-        if (isAccess(Token.getAuthentication(token))) {
-            return Toolbox.readFile("src/main/resources/static/html/radi.html");
-        }
-        return Toolbox.readFile(LOGIN_HTML);
-    }
-
-    @GetMapping(value = "/calc_app", produces = MediaType.TEXT_HTML_VALUE)
-    public String calculationApp(@CookieValue("token") final String token) {
-        if (isAccess(Token.getAuthentication(token))) {
-            return Toolbox.readFile("src/main/resources/static/html/calc.html");
+    public String login(HttpServletRequest req) {
+        try {
+            Cookie[] cookies = req.getCookies();
+            String token = "";
+            String path = "";
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token")) {
+                    token = cookie.getValue();
+                }
+                if (cookie.getName().equals("path")) {
+                    path = cookie.getValue();
+                }
+            }
+            if (isAccess(Token.getAuthentication(token))) {
+                if (path.equals("calc_app")) {
+                    return Toolbox.readFile("src/main/resources/static/html/calc.html");
+                }
+                return Toolbox.readFile("src/main/resources/static/html/radi.html");
+            }
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
         }
         return Toolbox.readFile(LOGIN_HTML);
     }

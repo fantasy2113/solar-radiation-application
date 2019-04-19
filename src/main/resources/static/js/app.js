@@ -1,20 +1,21 @@
 jQuery(document).ready(function () {
     var logout_button = jQuery('#logout_button');
     logout_button.bind('click', function () {
-        document.cookie = 'token=;';
+        document.cookie = 'token=no_token;path=' + 'no_path' + ';';
         $(location).attr('href', getPath());
     });
 
-
     var calc_button = jQuery('#calc_button');
     calc_button.bind('click', function () {
-        $(location).attr('href', getPath() + 'calc_app');
+    document.cookie = 'path=' + 'calc_app' + ';';
+        $(location).attr('href', getPath());
     });
 
     jQuery(document).ready(function () {
         var radi_button = jQuery('#radi_button');
         radi_button.bind('click', function () {
-            $(location).attr('href', getPath() + 'radi_app');
+        document.cookie = 'path=' + 'radi_app' + ';';
+            $(location).attr('href', getPath());
         });
     });
 });
