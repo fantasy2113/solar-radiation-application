@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 
 public final class Token {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(Token.class.getName());
     private static String delimiter = null;
     private static String theToken = null;

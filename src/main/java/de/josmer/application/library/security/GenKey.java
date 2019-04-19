@@ -9,7 +9,6 @@ import javax.crypto.SecretKey;
 import java.security.NoSuchAlgorithmException;
 
 class GenKey {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(GenKey.class.getName());
 
     private GenKey() {

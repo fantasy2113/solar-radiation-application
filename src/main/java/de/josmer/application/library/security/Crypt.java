@@ -15,7 +15,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 final class Crypt {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(Crypt.class.getName());
     private Cipher deCryptCipher = null;
     private Cipher enCryptCipher = null;

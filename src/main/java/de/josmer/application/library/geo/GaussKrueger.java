@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public final class GaussKrueger implements IGaussKrueger {
-
     private double lon;
     private double lat;
     private double rechtswert;

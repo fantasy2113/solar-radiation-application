@@ -8,7 +8,6 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 public class Authentication {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(Authentication.class.getName());
     private String token;
     private int userId;

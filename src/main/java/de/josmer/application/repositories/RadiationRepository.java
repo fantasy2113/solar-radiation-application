@@ -47,11 +47,9 @@ public final class RadiationRepository extends ARepository<Radiation> implements
         gaussKrueger.convertFrom(lon, lat);
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
         final OptionalInt optionalRechtswert = getRechtswert(gaussKrueger);
-
         if (optionalRechtswert.isEmpty()) {
             return radiations;
         }
-
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement
                      = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)

@@ -20,11 +20,9 @@ public class CalculatedRepository implements ICalculatedRepository {
     public List<Calculated> calculateds(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
         List<Calculated> calculateds = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
-
         CalcRadiation calcRadiation = new CalcRadiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
         double[] eGlobGenMonthly = calcRadiation.getEGlobGenMonthly();
         double[] eGlobHorMonthlySynth = calcRadiation.getEGlobHorMonthlySynth();
-
         try {
             for (int i = 0; i < 12; i++) {
                 if (eGlobHorMonthlySynth[i] > 0 && eGlobGenMonthly[i] > 0) {
@@ -40,7 +38,6 @@ public class CalculatedRepository implements ICalculatedRepository {
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
-
         return calculateds;
     }
 
