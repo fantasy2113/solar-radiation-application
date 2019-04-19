@@ -31,19 +31,19 @@ public class Calculated {
         this.ye = ye;
     }
 
-    public double getEGlobHor() {
+    public double geteGlobHor() {
         return eGlobHor;
     }
 
-    public void setEGlobHor(double eGlobHor) {
+    public void seteGlobHor(double eGlobHor) {
         this.eGlobHor = eGlobHor;
     }
 
-    public double getEGlobGen() {
+    public double geteGlobGen() {
         return eGlobGen;
     }
 
-    public void setEGlobGen(double eGlobGen) {
+    public void seteGlobGen(double eGlobGen) {
         this.eGlobGen = eGlobGen;
     }
 }

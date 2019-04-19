@@ -17,30 +17,37 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
         try {
             double eGlobHor = 0.0;
             double eGlobGen = 0.0;
+
             for (Calculated calculated : items) {
-                eGlobHor += Double.valueOf(roundToString(calculated.getEGlobHor(), 0));
-                eGlobGen += Double.valueOf(roundToString(calculated.getEGlobGen(), 0));
+                eGlobHor += Double.valueOf(roundToString(calculated.geteGlobHor(), 0));
+                eGlobGen += Double.valueOf(roundToString(calculated.geteGlobGen(), 0));
                 exportCalcs.add(mapToExport(lon, lat, calculated));
             }
+
             ExportCalc exportCalc = new ExportCalc();
-            exportCalc.setEGlobGen(Double.valueOf(roundToString(eGlobGen, 0)));
-            exportCalc.setEGlobHor(Double.valueOf(roundToString(eGlobHor, 0)));
+            exportCalc.seteGlobGen(Double.valueOf(roundToString(eGlobGen, 0)));
+            exportCalc.seteGlobHor(Double.valueOf(roundToString(eGlobHor, 0)));
             exportCalc.setLat(roundToString(lat, 3));
             exportCalc.setLon(roundToString(lon, 3));
             exportCalc.setUnit("kWh/m2");
             exportCalc.setDim("1 km2");
             exportCalc.setSource("DWD CDC");
             exportCalc.setDate("Summe");
+            exportCalc.setYe(String.valueOf((int) items.get(0).getYe()));
+            exportCalc.setAe(String.valueOf((int) items.get(0).getAe()));
+
             exportCalcs.add(exportCalc);
+
             exportCalc = new ExportCalc();
-            exportCalc.setEGlobGen(Double.valueOf(roundToString((eGlobGen / eGlobHor) * 100, 1)));
-            exportCalc.setEGlobHor(100.0);
+            exportCalc.seteGlobGen(Double.valueOf(roundToString((eGlobGen / eGlobHor) * 100, 1)));
+            exportCalc.seteGlobHor(100.0);
             exportCalc.setLat("");
             exportCalc.setLon("");
             exportCalc.setUnit("");
             exportCalc.setDim("");
             exportCalc.setSource("");
             exportCalc.setDate("");
+
             exportCalcs.add(exportCalc);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
@@ -61,14 +68,16 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
     @Override
     protected ExportCalc mapToExport(double lon, double lat, Calculated item) {
         ExportCalc exportCalc = new ExportCalc();
-        exportCalc.setEGlobGen(Double.valueOf(roundToString(item.getEGlobGen(), 0)));
-        exportCalc.setEGlobHor(Double.valueOf(roundToString(item.getEGlobHor(), 0)));
+        exportCalc.seteGlobGen(Double.valueOf(roundToString(item.geteGlobGen(), 0)));
+        exportCalc.seteGlobHor(Double.valueOf(roundToString(item.geteGlobHor(), 0)));
         exportCalc.setLat(roundToString(lat, 3));
         exportCalc.setLon(roundToString(lon, 3));
         exportCalc.setUnit("kWh/m2");
         exportCalc.setDim("1 km2");
         exportCalc.setSource("DWD CDC");
         exportCalc.setDate(item.getCalculatedDate());
+        exportCalc.setYe(String.valueOf((int) item.getYe()));
+        exportCalc.setAe(String.valueOf((int) item.getAe()));
         return exportCalc;
     }
 }

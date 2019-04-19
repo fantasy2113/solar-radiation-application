@@ -27,8 +27,8 @@ public class CalculatedRepository implements ICalculatedRepository {
             for (int i = 0; i < 12; i++) {
                 if (eGlobHorMonthlySynth[i] > 0 && eGlobGenMonthly[i] > 0) {
                     Calculated calculated = new Calculated();
-                    calculated.setEGlobHor(Toolbox.getRound(eGlobHorMonthlySynth[i] / 1000));
-                    calculated.setEGlobGen(Toolbox.getRound(eGlobGenMonthly[i] / 1000));
+                    calculated.seteGlobHor(Toolbox.getRound(eGlobHorMonthlySynth[i] / 1000));
+                    calculated.seteGlobGen(Toolbox.getRound(eGlobGenMonthly[i] / 1000));
                     calculated.setAe(ae);
                     calculated.setYe(ye);
                     calculated.setCalculatedDate(getDate(dt.getYear(), (i + 1)));

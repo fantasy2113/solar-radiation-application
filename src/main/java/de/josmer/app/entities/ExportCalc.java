@@ -1,24 +1,24 @@
 package de.josmer.app.entities;
 
 public class ExportCalc extends AExport {
-    private double ae;
-    private double ye;
+    private String ae;
+    private String ye;
     private double eGlobHor;
     private double eGlobGen;
 
-    public double getAe() {
+    public String getAe() {
         return ae;
     }
 
-    public void setAe(double ae) {
+    public void setAe(String ae) {
         this.ae = ae;
     }
 
-    public double getYe() {
+    public String getYe() {
         return ye;
     }
 
-    public void setYe(double ye) {
+    public void setYe(String ye) {
         this.ye = ye;
     }
 
@@ -26,7 +26,7 @@ public class ExportCalc extends AExport {
         return eGlobHor;
     }
 
-    public void setEGlobHor(double eGlobHor) {
+    public void seteGlobHor(double eGlobHor) {
         this.eGlobHor = eGlobHor;
     }
 
@@ -34,7 +34,7 @@ public class ExportCalc extends AExport {
         return eGlobGen;
     }
 
-    public void setEGlobGen(double eGlobGen) {
+    public void seteGlobGen(double eGlobGen) {
         this.eGlobGen = eGlobGen;
     }
 }

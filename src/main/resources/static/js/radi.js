@@ -84,11 +84,11 @@ jQuery(document).ready(function () {
 
     var export_button = jQuery('#export_button');
     export_button.bind('click', function () {
-        $(location).attr('href', getPath() + 'export_radi?' + getExportQuery());
-    })
+        $(location).attr('href', getPath() + 'export_radi?' + getExportRadiQuery());
+    });
 });
 
-function getExportQuery() {
+function getExportRadiQuery() {
     return 'startDate=' + $('input[id=start_date]').val() + '&endDate=' + $('input[id=end_date]').val()
         + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
         + '&type=' + $('#type_select option:selected').text().replace("-", "#");
