@@ -9,7 +9,7 @@ import java.util.Locale;
 abstract class AExportRepository<R, I> {
     static final Logger LOGGER = LoggerFactory.getLogger(AExportRepository.class.getName());
 
-    String round(double value, int scale) {
+    String roundToString(double value, int scale) {
         return String.format(Locale.ENGLISH, "%." + scale + "f", Precision.round(value, scale));
     }
 

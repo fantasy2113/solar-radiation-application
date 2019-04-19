@@ -25,7 +25,7 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
                     export.setLat("");
                     export.setLon("");
                     export.setType("");
-                    export.setValue(Double.valueOf(round(eGlobHorSum, 2)));
+                    export.setValue(Double.valueOf(roundToString(eGlobHorSum, 2)));
                     export.setUnit("kWh/m2");
                     export.setDim("1 km2");
                     export.setSource("DWD CDC");
@@ -39,7 +39,7 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
                 export.setLat("");
                 export.setLon("");
                 export.setType("");
-                export.setValue(Double.valueOf(round(eGlobHorSum, 2)));
+                export.setValue(Double.valueOf(roundToString(eGlobHorSum, 2)));
                 export.setUnit("kWh/m2");
                 export.setDim("1 km2");
                 export.setSource("DWD CDC");
@@ -53,7 +53,7 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
 
     @Override
     public List<String> getHeaders() {
-        return List.of("Datum", "Lat", "Lon", "Art", "Wert", "Einheit", "Dim", "Quelle");
+        return List.of("Datum", "Lat", "Lon", "Art", "EGlobHor", "Einheit", "Dim", "Quelle");
     }
 
     @Override
@@ -65,8 +65,8 @@ public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiatio
     protected ExportRadi mapToExport(double lon, double lat, Radiation item) {
         ExportRadi export = new ExportRadi();
         export.setDate(parseDate(item.getRadiationDate()));
-        export.setLat(round(lat, 3));
-        export.setLon(round(lon, 3));
+        export.setLat(roundToString(lat, 3));
+        export.setLon(roundToString(lon, 3));
         export.setType(item.getRadiationType());
         export.setValue(getValue(item.getRadiationValue()));
         export.setUnit("kWh/m2");
