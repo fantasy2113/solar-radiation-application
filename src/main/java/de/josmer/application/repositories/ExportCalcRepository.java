@@ -23,8 +23,8 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
                 exportCalcs.add(mapToExport(lon, lat, calculated));
             }
             ExportCalc exportCalc = new ExportCalc();
-            exportCalc.setEGlobGen(Double.valueOf(round(eGlobGen, 2)));
-            exportCalc.setEGlobHor(Double.valueOf(round(eGlobHor, 2)));
+            exportCalc.setEGlobGen(Double.valueOf(round(eGlobGen, 0)));
+            exportCalc.setEGlobHor(Double.valueOf(round(eGlobHor, 0)));
             exportCalc.setLat(round(lat, 3));
             exportCalc.setLon(round(lon, 3));
             exportCalc.setUnit("kWh/m2");
@@ -33,7 +33,7 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
             exportCalc.setDate("Summe");
             exportCalcs.add(exportCalc);
             exportCalc = new ExportCalc();
-            exportCalc.setEGlobGen(Double.valueOf(round((eGlobGen / eGlobHor) * 100, 0)));
+            exportCalc.setEGlobGen(Double.valueOf(round((eGlobGen / eGlobHor) * 100, 1)));
             exportCalc.setEGlobHor(100.0);
             exportCalc.setLat("");
             exportCalc.setLon("");
@@ -61,8 +61,8 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
     @Override
     protected ExportCalc mapToExport(double lon, double lat, Calculated item) {
         ExportCalc exportCalc = new ExportCalc();
-        exportCalc.setEGlobGen(item.getEGlobGen());
-        exportCalc.setEGlobHor(item.getEGlobHor());
+        exportCalc.setEGlobGen(Double.valueOf(round(item.getEGlobGen(), 0)));
+        exportCalc.setEGlobHor(Double.valueOf(round(item.getEGlobHor(), 0)));
         exportCalc.setLat(round(lat, 3));
         exportCalc.setLon(round(lon, 3));
         exportCalc.setUnit("kWh/m2");
