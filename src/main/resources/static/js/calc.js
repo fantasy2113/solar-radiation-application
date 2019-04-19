@@ -4,6 +4,27 @@ jQuery(document).ready(function () {
 
     $('#radi_button').css("background-color", "whitesmoke");
 
+
+    var alignment = jQuery('#alignment');
+    alignment.bind('change', function () {
+        if($('input[id=alignment]').val() < 0) {
+            $('#alignment').val(0);
+        }
+        if($('input[id=alignment]').val() > 360) {
+            $('#alignment').val(360);
+        }
+    });
+
+    var tilt = jQuery('#tilt');
+        tilt.bind('change', function () {
+        if($('input[id=tilt]').val() < 0) {
+            $('#alignment').val(0);
+        }
+        if($('input[id=tilt]').val() > 90) {
+            $('#alignment').val(90);
+        }
+    });
+
     var calculation_button = jQuery('#calculation_button');
     calculation_button.bind('click', function () {
         $('html,body').css('cursor', 'wait');
