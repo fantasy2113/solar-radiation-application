@@ -1,4 +1,7 @@
 jQuery(document).ready(function () {
+
+    autocomplete(document.getElementById("year"), getYears());
+
     $('#radi_button').css("background-color", "whitesmoke");
 
     var calculation_button = jQuery('#calculation_button');
@@ -39,7 +42,7 @@ jQuery(document).ready(function () {
                 $('html,body').css('cursor', 'default');
             },
             error: function (request, status, error) {
-            $('#jsGrid').empty();
+                $('#jsGrid').empty();
                 $('html,body').css('cursor', 'default');
             }
         });
@@ -47,9 +50,9 @@ jQuery(document).ready(function () {
 
     var calculation_export_button = jQuery('#calculation_export_button');
     calculation_export_button.bind('click', function () {
-        $('html,body').css('cursor', 'wait');
+        $('#jsGrid').empty();
+        $('#jsGrid').append('<b>Export läuft ...</b>');
         $(location).attr('href', getPath() + 'export_calc?' + getExportCalcQuery());
-        $('html,body').css('cursor', 'default');
     });
 });
 
@@ -57,4 +60,12 @@ function getExportCalcQuery() {
     return 'year=' + $('input[id=year]').val()
         + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
         + '&ae=' + $('input[id=alignment]').val() + '&ye=' + $('input[id=tilt]').val();
+}
+
+function getYears() {
+    var years = [];
+        for (var year = 1991; year <= 2019; year++) {
+            years.push(year);
+        }
+    return years;
 }

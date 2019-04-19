@@ -71,10 +71,12 @@
         <div>
             <label><b>Quelle:</b> DWD© CDC</label>
         </div>
-        <div>
-            <label for="year"><b>Jahr</b></label>
-            <input id="year" style="margin-left: 1px; width: 149px" type="text" value="2018">
-        </div>
+        <form autocomplete="off">
+            <div class="autocomplete">
+                <label for="year"><b>Jahr</b></label>
+                <input id="year" style="margin-left: 1px; width: 149px" type="text" value="2018">
+            </div>
+        </form>
         <div>
             <button id="calculation_button">Umrechnen</button>
             <button id="calculation_export_button">Export</button>
