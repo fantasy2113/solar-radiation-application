@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Converter {
+
     private static Map<String, double[]> fTabelle;
     private static final String F_11 = "F11";
     private static final String F_12 = "F12";
@@ -129,14 +130,12 @@ class Converter {
         himmelsklarheitsindex = ((eDiffHor + eDirHor) / eDiffHor + CalcUtils.K * Math.pow(z, 3)) / (1 + CalcUtils.K * Math.pow(z, 3));
     }
 
-
     private void setMEDiffGenPerez(double eDiffHor) {
         double term1 = 0.5 * (1 - f1) * (1 + CalcUtils.cos(ye));
         double term2 = f1 * a / b;
         double term3 = f2 * CalcUtils.sin(ye);
         eDiffGen = Math.max(0, eDiffHor * (term1 + term2 + term3));
     }
-
 
     private void seteDirHorExtra(LocalDateTime dt) {
         double localB = sunPos.getSimpleDayAngle(dt.getDayOfYear(), dt.getYear());

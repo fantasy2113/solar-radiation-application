@@ -1,13 +1,12 @@
 package de.josmer.app.library.security;
 
-
+import java.util.Optional;
+import java.util.OptionalInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
-import java.util.OptionalInt;
-
 public class Authentication {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Authentication.class.getName());
     private String token;
     private int userId;

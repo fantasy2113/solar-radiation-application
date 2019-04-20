@@ -1,6 +1,7 @@
 package de.josmer.app.entities;
 
 public class ExportRadi extends AExport {
+
     private String type;
     private double value;
 

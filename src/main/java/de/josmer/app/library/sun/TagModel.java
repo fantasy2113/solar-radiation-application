@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.SplittableRandom;
 
 class TagModel {
+
     private final SplittableRandom random;
 
     TagModel() {

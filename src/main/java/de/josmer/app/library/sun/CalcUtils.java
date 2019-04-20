@@ -3,6 +3,7 @@ package de.josmer.app.library.sun;
 import java.time.YearMonth;
 
 class CalcUtils {
+
     static final double K = 1.041;
     static final double EO = 1360.8;
     static final double EO_TAG = 1367;

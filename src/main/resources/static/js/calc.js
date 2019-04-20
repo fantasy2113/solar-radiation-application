@@ -7,20 +7,20 @@ jQuery(document).ready(function () {
 
     var alignment = jQuery('#alignment');
     alignment.bind('change', function () {
-        if($('input[id=alignment]').val() < 0) {
+        if ($('input[id=alignment]').val() < 0) {
             $('#alignment').val(0);
         }
-        if($('input[id=alignment]').val() > 360) {
+        if ($('input[id=alignment]').val() > 360) {
             $('#alignment').val(360);
         }
     });
 
     var tilt = jQuery('#tilt');
-        tilt.bind('change', function () {
-        if($('input[id=tilt]').val() < 0) {
+    tilt.bind('change', function () {
+        if ($('input[id=tilt]').val() < 0) {
             $('#tilt').val(0);
         }
-        if($('input[id=tilt]').val() > 90) {
+        if ($('input[id=tilt]').val() > 90) {
             $('#tilt').val(90);
         }
     });
@@ -43,7 +43,7 @@ jQuery(document).ready(function () {
                 ye: $('input[id=tilt]').val()
             },
             success: function (json) {
-            $('#jsGrid').empty();
+                $('#jsGrid').empty();
                 $("#jsGrid").jsGrid({
                     width: "620",
                     height: "700",
@@ -79,14 +79,14 @@ jQuery(document).ready(function () {
 
 function getExportCalcQuery() {
     return 'year=' + $('input[id=year]').val()
-        + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
-        + '&ae=' + $('input[id=alignment]').val() + '&ye=' + $('input[id=tilt]').val();
+            + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
+            + '&ae=' + $('input[id=alignment]').val() + '&ye=' + $('input[id=tilt]').val();
 }
 
 function getYears() {
     var years = [];
-        for (var year = 1991; year <= 2019; year++) {
-            years.push('' + year);
-        }
+    for (var year = 1991; year <= 2019; year++) {
+        years.push('' + year);
+    }
     return years;
 }

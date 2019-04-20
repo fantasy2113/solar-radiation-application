@@ -5,5 +5,4 @@ import de.josmer.app.entities.Radiation;
 
 public interface IExportRadiRepository extends IExportRepository<ExportRadi, Radiation> {
 
-
 }

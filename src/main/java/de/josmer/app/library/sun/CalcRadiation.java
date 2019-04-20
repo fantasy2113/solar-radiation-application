@@ -1,12 +1,12 @@
 package de.josmer.app.library.sun;
 
+import java.time.LocalDateTime;
+import java.util.stream.DoubleStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
-import java.util.stream.DoubleStream;
-
 public class CalcRadiation {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CalcRadiation.class.getName());
     private final double lat;
     private final double lon;

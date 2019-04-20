@@ -3,13 +3,12 @@ package de.josmer.app.controller;
 import de.josmer.app.library.interfaces.*;
 import de.josmer.app.library.security.Token;
 import de.josmer.app.library.utils.Toolbox;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class ViewController extends AController {

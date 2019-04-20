@@ -4,16 +4,16 @@ import de.josmer.app.entities.Calculated;
 import de.josmer.app.library.interfaces.ICalculatedRepository;
 import de.josmer.app.library.sun.CalcRadiation;
 import de.josmer.app.library.utils.Toolbox;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
-
 @Component
 public class CalculatedRepository implements ICalculatedRepository {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CalculatedRepository.class.getName());
 
     @Override

@@ -1,14 +1,14 @@
 package de.josmer.app.library.security;
 
+import java.security.NoSuchAlgorithmException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import java.security.NoSuchAlgorithmException;
-
 class GenKey {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GenKey.class.getName());
 
     private GenKey() {

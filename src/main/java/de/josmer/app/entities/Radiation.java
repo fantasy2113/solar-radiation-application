@@ -1,6 +1,7 @@
 package de.josmer.app.entities;
 
 public class Radiation {
+
     private int radiationDate;
     private int gkhMin;
     private int gkhMax;

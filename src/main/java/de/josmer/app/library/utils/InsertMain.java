@@ -7,8 +7,8 @@ import de.josmer.app.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class InsertMain {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(InsertMain.class.getName());
 
     public static void main(String[] args) {

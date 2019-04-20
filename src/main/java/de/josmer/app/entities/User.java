@@ -1,6 +1,7 @@
 package de.josmer.app.entities;
 
 public class User {
+
     private int id;
     private String login;
     private String password;

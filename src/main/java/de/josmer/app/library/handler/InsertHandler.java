@@ -1,23 +1,21 @@
 package de.josmer.app.library.handler;
 
-
 import de.josmer.app.library.crawler.RadiationCrawler;
 import de.josmer.app.library.enums.RadiationTypes;
 import de.josmer.app.repositories.RadiationRepository;
+import java.text.MessageFormat;
+import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.time.LocalDate;
-
 public final class InsertHandler extends AHandler {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(InsertHandler.class.getName());
     private final RadiationTypes radiationTypes;
 
     public InsertHandler(RadiationTypes radiationTypes) {
         this.radiationTypes = radiationTypes;
     }
-
 
     @Override
     public void run() {

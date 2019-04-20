@@ -3,10 +3,9 @@ package de.josmer.app.repositories;
 import de.josmer.app.entities.Calculated;
 import de.josmer.app.entities.ExportCalc;
 import de.josmer.app.library.interfaces.IExportCalcRepository;
-import org.springframework.stereotype.Component;
-
 import java.util.LinkedList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculated> implements IExportCalcRepository {

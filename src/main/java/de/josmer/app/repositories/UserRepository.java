@@ -3,17 +3,17 @@ package de.josmer.app.repositories;
 import de.josmer.app.entities.User;
 import de.josmer.app.library.interfaces.IUserRepository;
 import de.josmer.app.library.utils.Toolbox;
-import org.springframework.stereotype.Component;
-
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 public class UserRepository extends ARepository<User> implements IUserRepository {
+
     public UserRepository(final String databaseUrl) {
         super(databaseUrl);
     }
@@ -35,8 +35,8 @@ public class UserRepository extends ARepository<User> implements IUserRepository
     @Override
     public Optional<User> get(final int id) {
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement
-                     = connection.prepareStatement("SELECT * FROM users WHERE id = ? LIMIT 1")) {
+                PreparedStatement preparedStatement
+                = connection.prepareStatement("SELECT * FROM users WHERE id = ? LIMIT 1")) {
             preparedStatement.setInt(1, id);
             return getData(preparedStatement);
         } catch (SQLException | URISyntaxException e) {
@@ -48,8 +48,8 @@ public class UserRepository extends ARepository<User> implements IUserRepository
     @Override
     public Optional<User> get(final String login) {
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement
-                     = connection.prepareStatement("SELECT * FROM users WHERE login = ? LIMIT 1")) {
+                PreparedStatement preparedStatement
+                = connection.prepareStatement("SELECT * FROM users WHERE login = ? LIMIT 1")) {
             preparedStatement.setString(1, login);
             return getData(preparedStatement);
         } catch (SQLException | URISyntaxException e) {
@@ -70,8 +70,8 @@ public class UserRepository extends ARepository<User> implements IUserRepository
     @Override
     public void saveUser(final String login, final String plainPassword) {
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement
-                     = connection.prepareStatement("INSERT INTO users (login,password,is_active) VALUES (?,?,?)")) {
+                PreparedStatement preparedStatement
+                = connection.prepareStatement("INSERT INTO users (login,password,is_active) VALUES (?,?,?)")) {
             connection.setAutoCommit(false);
             preparedStatement.setString(1, login);
             preparedStatement.setString(2, Toolbox.hashPassword(plainPassword));

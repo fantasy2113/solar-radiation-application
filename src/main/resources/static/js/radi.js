@@ -90,15 +90,15 @@ jQuery(document).ready(function () {
 
 function getExportRadiQuery() {
     return 'startDate=' + $('input[id=start_date]').val() + '&endDate=' + $('input[id=end_date]').val()
-        + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
-        + '&type=' + $('#type_select option:selected').text().replace("-", "#");
+            + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
+            + '&type=' + $('#type_select option:selected').text().replace("-", "#");
 }
 
 function initDateInputs(startYear) {
     var date = new Date();
     var dates = [];
     for (var year = startYear; year <= date.getFullYear(); year++) {
-        if (year != date.getFullYear()) {
+        if (year !== date.getFullYear()) {
             for (var month = 1; month <= 12; month++) {
                 pushToDates(dates, year, month);
             }

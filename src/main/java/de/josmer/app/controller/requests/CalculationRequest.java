@@ -1,6 +1,7 @@
 package de.josmer.app.controller.requests;
 
 public final class CalculationRequest extends ARequest {
+
     private int year;
     private int ae;
     private int ye;

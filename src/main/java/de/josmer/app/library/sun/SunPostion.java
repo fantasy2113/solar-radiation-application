@@ -1,12 +1,12 @@
 package de.josmer.app.library.sun;
 
+import java.time.LocalDateTime;
+import java.time.Year;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
-import java.time.Year;
-
 class SunPostion {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(SunPostion.class.getName());
     private static final double TIMEZONE = 1;
     private double ys;

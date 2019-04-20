@@ -1,11 +1,10 @@
 package de.josmer.app.library.utils;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Locale;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class Toolbox {
 

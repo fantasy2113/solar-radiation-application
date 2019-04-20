@@ -6,6 +6,8 @@ import de.josmer.app.library.handler.TokenHandler;
 import de.josmer.app.library.interfaces.IUserRepository;
 import de.josmer.app.library.security.Token;
 import de.josmer.app.repositories.UserRepository;
+import java.io.IOException;
+import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -15,11 +17,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Arrays;
-
 @Configuration
 @SpringBootApplication
 public class App {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class.getName());
 
     public static void main(String[] args) {
@@ -45,7 +46,7 @@ public class App {
                 return;
             }
             new ProcessBuilder(System.getenv("DEV_BROWSER"), System.getenv("DEV_URL")).start();
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.info(e.getMessage());
         }
     }

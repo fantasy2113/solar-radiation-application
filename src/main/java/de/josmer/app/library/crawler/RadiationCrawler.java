@@ -4,9 +4,6 @@ import de.josmer.app.entities.Radiation;
 import de.josmer.app.library.enums.RadiationTypes;
 import de.josmer.app.library.interfaces.IRadiationRepository;
 import de.josmer.app.library.utils.Toolbox;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -18,8 +15,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class RadiationCrawler {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RadiationCrawler.class.getName());
     private final String templateTargetFile;
     private final String targetUrl;

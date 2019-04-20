@@ -1,6 +1,7 @@
 package de.josmer.app.controller.requests;
 
 public final class RadiationRequest extends ARequest {
+
     private String startDate;
     private String endDate;
     private String type;

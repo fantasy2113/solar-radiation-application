@@ -3,10 +3,9 @@ package de.josmer.app.repositories;
 import de.josmer.app.entities.ExportRadi;
 import de.josmer.app.entities.Radiation;
 import de.josmer.app.library.interfaces.IExportRadiRepository;
-import org.springframework.stereotype.Component;
-
 import java.util.LinkedList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ExportRadiRepository extends AExportRepository<ExportRadi, Radiation> implements IExportRadiRepository {

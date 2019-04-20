@@ -1,6 +1,7 @@
 package de.josmer.app.entities;
 
 public class Calculated {
+
     private String calculatedDate;
     private double ae;
     private double ye;

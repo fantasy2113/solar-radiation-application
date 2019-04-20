@@ -1,6 +1,7 @@
 package de.josmer.app.controller.requests;
 
 abstract class ARequest {
+
     private double lat;
     private double lon;
 

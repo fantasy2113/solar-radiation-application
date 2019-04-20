@@ -3,19 +3,19 @@ package de.josmer.app.repositories;
 import de.josmer.app.entities.Radiation;
 import de.josmer.app.library.interfaces.IGaussKrueger;
 import de.josmer.app.library.interfaces.IRadiationRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.OptionalInt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 @Component
 public final class RadiationRepository extends ARepository<Radiation> implements IRadiationRepository {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RadiationRepository.class.getName());
 
     public RadiationRepository(final String databaseUrl) {
@@ -40,7 +40,6 @@ public final class RadiationRepository extends ARepository<Radiation> implements
         return retArr;
     }
 
-
     @Override
     public List<Radiation> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<Radiation> radiations = new LinkedList<>();
@@ -51,9 +50,9 @@ public final class RadiationRepository extends ARepository<Radiation> implements
             return radiations;
         }
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement
-                     = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
-                     + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? ORDER BY radiation_date ASC LIMIT ?;")) {
+                PreparedStatement preparedStatement
+                = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
+                        + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? ORDER BY radiation_date ASC LIMIT ?;")) {
             preparedStatement.setInt(1, hochwert);
             preparedStatement.setInt(2, hochwert + 1000);
             preparedStatement.setInt(3, optionalRechtswert.getAsInt());
@@ -85,8 +84,8 @@ public final class RadiationRepository extends ARepository<Radiation> implements
     @Override
     public void save(final List<Radiation> radiations) {
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement
-                     = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
+                PreparedStatement preparedStatement
+                = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
             connection.setAutoCommit(false);
             for (Radiation radiation : radiations) {
                 preparedStatement.setString(1, radiation.getRadiationType());
@@ -108,8 +107,8 @@ public final class RadiationRepository extends ARepository<Radiation> implements
     @Override
     public long count() {
         try (Connection con = getConnection();
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery("SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname='radiation';")) {
+                Statement st = con.createStatement();
+                ResultSet rs = st.executeQuery("SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname='radiation';")) {
             if (rs.next()) {
                 return rs.getLong(1);
             }

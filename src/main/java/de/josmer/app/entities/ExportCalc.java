@@ -1,6 +1,7 @@
 package de.josmer.app.entities;
 
 public class ExportCalc extends AExport {
+
     private String ae;
     private String ye;
     private double eGlobHor;

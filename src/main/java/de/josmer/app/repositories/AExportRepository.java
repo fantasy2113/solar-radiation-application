@@ -1,12 +1,12 @@
 package de.josmer.app.repositories;
 
+import java.util.Locale;
 import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Locale;
-
 abstract class AExportRepository<R, I> {
+
     static final Logger LOGGER = LoggerFactory.getLogger(AExportRepository.class.getName());
 
     String roundToString(double value, int scale) {
