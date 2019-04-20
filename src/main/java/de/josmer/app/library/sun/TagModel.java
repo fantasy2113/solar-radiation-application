@@ -91,7 +91,7 @@ class TagModel {
         double hSynHor;
         Map<Double, double[]> map = new HashMap<>();
         do {
-            boolean isNoAdd = false;
+            boolean isNotAdd = false;
             ++cnt;
             ktOfh = calcKtOfh(kt, phi1, sunYOfh);
             egHorOfh = new double[24];
@@ -103,14 +103,14 @@ class TagModel {
                 }
                 double ktMax = 0.88 * Math.cos((Math.PI * (h + 1.0 - 12.5)) / 30.0);
                 if (kth < 0.0 || kth > ktMax) {
-                    isNoAdd = true;
+                    isNotAdd = true;
                     break; //NOSONAR
                 } else {
                     egHorOfh[h] = ktOfh[h] * CalcUtils.EO_TAG * CalcUtils.sin(sunYOfh[h]);
                     hSynHor += egHorOfh[h];
                 }
             }
-            if (!isNoAdd) {
+            if (!isNotAdd) {
                 double diff = Math.abs((hSynHor / he0Hor) - kt) / kt * 100.0;
                 map.put(diff, egHorOfh);
             }
