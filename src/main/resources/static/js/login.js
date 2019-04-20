@@ -23,11 +23,11 @@ function getToken(path) {
 jQuery(document).ready(function () {
     var login_button = jQuery('#login_button');
     login_button.bind('click', function () {
-        getToken('token')
+        getToken('token');
     });
 
     var save_button = jQuery('#save_button');
     save_button.bind('click', function () {
-        getToken('saveuser')
-    })
+        getToken('saveuser');
+    });
 });
