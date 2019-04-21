@@ -20,9 +20,9 @@ class Converter {
     private double eDirGen;
     private double eReflGen;
     private double eGlobalGen;
-    private double albedo;
-    private double ae;
-    private double ye;
+    private final double albedo;
+    private final double ae;
+    private final double ye;
     private double himmelsklarheitsindex;
     private double delta;
     private double airMass;

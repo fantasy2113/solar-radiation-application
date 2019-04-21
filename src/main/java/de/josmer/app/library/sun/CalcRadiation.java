@@ -14,7 +14,7 @@ public class CalcRadiation {
     private final LocalDateTime dt;
     private final double ye;
     private final double ae;
-    private double[] eGlobHorMonthlySynth;
+    private final double[] eGlobHorMonthlySynth;
 
     public CalcRadiation(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
         this.lat = lat;

@@ -12,8 +12,8 @@ class SunPostion {
     private double ys;
     private double as;
     private double zenith;
-    private double[] monthYearCelsiusArr;
-    private double[] monthYearHpaArr;
+    private final double[] monthYearCelsiusArr;
+    private final double[] monthYearHpaArr;
     private LocalDateTime time;
 
     SunPostion() {

@@ -68,28 +68,28 @@ class TagModel {
         zeroGuard(he0Hor);
         double kt = hGlob / he0Hor;
         double phi1 = 0.38 + 0.06 * Math.cos(7.4 * kt - 2.5);
-        Map<Double, double[]> map = getMap(sunYOfh, he0Hor, kt, phi1);
+        Map<Double, double[]> map = calcHours(sunYOfh, he0Hor, kt, phi1);
         final Double minDiff = Collections.min(map.keySet());
-        double[] retHours = map.get(minDiff);
-        inrease(day, 1, 1.0991, retHours);
-        inrease(day, 12, 1.2327, retHours);
-        return retHours;
+        double[] dailyHours = map.get(minDiff);
+        inreaseHours(day, 1, 1.0991, dailyHours);
+        inreaseHours(day, 12, 1.2327, dailyHours);
+        return dailyHours;
     }
 
-    private void inrease(LocalDateTime day, int targetMonth, double val, double[] retHours) {
-        if (day.getMonthValue() == targetMonth) {
+    private void inreaseHours(LocalDateTime day, int month, double val, double[] dailyHours) {
+        if (day.getMonthValue() == month) {
             for (int h = 0; h < 24; h++) {
-                retHours[h] = retHours[h] * val;
+                dailyHours[h] = dailyHours[h] * val;
             }
         }
     }
 
-    private Map<Double, double[]> getMap(double[] sunYOfh, double he0Hor, double kt, double phi1) {
+    private Map<Double, double[]> calcHours(double[] sunYOfh, double he0Hor, double kt, double phi1) {
         int cnt = 0;
         double[] ktOfh;
         double[] egHorOfh;
         double hSynHor;
-        Map<Double, double[]> map = new HashMap<>();
+        Map<Double, double[]> hours = new HashMap<>();
         do {
             boolean isNotAdd = false;
             ++cnt;
@@ -112,10 +112,10 @@ class TagModel {
             }
             if (!isNotAdd) {
                 double diff = Math.abs((hSynHor / he0Hor) - kt) / kt * 100.0;
-                map.put(diff, egHorOfh);
+                hours.put(diff, egHorOfh);
             }
         } while (cnt < 10000);
-        return map;
+        return hours;
     }
 
     private double[] calcKtOfh(double kt, double phi1, double[] sunYOfh) {

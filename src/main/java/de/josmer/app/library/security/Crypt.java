@@ -24,7 +24,6 @@ final class Crypt {
     }
 
     String decrypt(final String code) {
-
         try {
             byte[] encrypted = deCryptCipher.doFinal(code.getBytes(StandardCharsets.UTF_8));
             return Hex.encodeHexString(encrypted);
