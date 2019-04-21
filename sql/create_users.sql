@@ -6,7 +6,7 @@ CREATE TABLE public.users
 (
     id bigserial NOT NULL UNIQUE,
     password character varying(60) COLLATE pg_catalog."default" NOT NULL,
-    login character varying(12) COLLATE pg_catalog."default" NOT NULL,
+    login character varying(60) COLLATE pg_catalog."default" NOT NULL,
     is_active boolean NOT NULL,
     CONSTRAINT user_pkey PRIMARY KEY (id, login),
     CONSTRAINT unique_login UNIQUE (login)
