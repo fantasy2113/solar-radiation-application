@@ -18,14 +18,14 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
             double eGlobGen = 0.0;
 
             for (Calculated calculated : items) {
-                eGlobHor += Double.valueOf(roundToString(calculated.geteGlobHor(), 0));
-                eGlobGen += Double.valueOf(roundToString(calculated.geteGlobGen(), 0));
+                eGlobHor += calculated.geteGlobHor();
+                eGlobGen += calculated.geteGlobGen();
                 exportCalcs.add(mapToExport(lon, lat, calculated));
             }
 
             ExportCalc exportCalc = new ExportCalc();
-            exportCalc.seteGlobGen(Double.valueOf(roundToString(eGlobGen, 0)));
-            exportCalc.seteGlobHor(Double.valueOf(roundToString(eGlobHor, 0)));
+            exportCalc.seteGlobGen(Double.valueOf(roundToString(eGlobGen, 2)));
+            exportCalc.seteGlobHor(Double.valueOf(roundToString(eGlobHor, 2)));
             exportCalc.setLat(roundToString(lat, 3));
             exportCalc.setLon(roundToString(lon, 3));
             exportCalc.setUnit("kWh/m2");
@@ -38,14 +38,14 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
             exportCalcs.add(exportCalc);
 
             exportCalc = new ExportCalc();
-            exportCalc.seteGlobGen(Double.valueOf(roundToString((eGlobGen / eGlobHor) * 100, 1)));
-            exportCalc.seteGlobHor(100.0);
+            exportCalc.seteGlobHor(100);
+            exportCalc.seteGlobGen(Double.valueOf(roundToString(((eGlobGen / eGlobHor) * 100) - 100, 2)));
             exportCalc.setLat("");
             exportCalc.setLon("");
-            exportCalc.setUnit("");
+            exportCalc.setUnit("%");
             exportCalc.setDim("");
             exportCalc.setSource("");
-            exportCalc.setDate("");
+            exportCalc.setDate("G/V");
 
             exportCalcs.add(exportCalc);
         } catch (Exception e) {
@@ -67,8 +67,8 @@ public class ExportCalcRepository extends AExportRepository<ExportCalc, Calculat
     @Override
     protected ExportCalc mapToExport(double lon, double lat, Calculated item) {
         ExportCalc exportCalc = new ExportCalc();
-        exportCalc.seteGlobGen(Double.valueOf(roundToString(item.geteGlobGen(), 0)));
-        exportCalc.seteGlobHor(Double.valueOf(roundToString(item.geteGlobHor(), 0)));
+        exportCalc.seteGlobGen(Double.valueOf(roundToString(item.geteGlobGen(), 2)));
+        exportCalc.seteGlobHor(Double.valueOf(roundToString(item.geteGlobHor(), 2)));
         exportCalc.setLat(roundToString(lat, 3));
         exportCalc.setLon(roundToString(lon, 3));
         exportCalc.setUnit("kWh/m2");
