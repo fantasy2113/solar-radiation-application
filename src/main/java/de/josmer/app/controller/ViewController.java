@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ViewController extends AController {
+public class ViewController extends Controller {
 
     @Autowired
-    ViewController(IExportRadiRepository exportRadiRepo, IExportCalcRepository exportCalcRepo, IRadiationRepository radiRepo, IUserRepository userRepo, ICalculatedRepository calcRepo) {
+    ViewController(IRadiationExport exportRadiRepo, IExport exportCalcRepo, ISolarRadiationRepository radiRepo, IUserRepository userRepo, ISolarRadiationInclinedRepository calcRepo) {
         super(exportRadiRepo, exportCalcRepo, radiRepo, userRepo, calcRepo);
     }
 

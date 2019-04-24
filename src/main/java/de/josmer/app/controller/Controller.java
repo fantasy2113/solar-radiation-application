@@ -11,19 +11,19 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-abstract class AController {
+abstract class Controller {
 
     static final String LOGIN_HTML = "src/main/resources/static/html/login.html";
     static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
-    final IExportRadiRepository exportRadiRepo;
-    final IExportCalcRepository exportCalcRepo;
-    final IRadiationRepository radiRepo;
+    final IRadiationExport radiExport;
+    final IExport solarExport;
+    final ISolarRadiationRepository radiRepo;
     final IUserRepository userRepo;
-    final ICalculatedRepository calcRepo;
+    final ISolarRadiationInclinedRepository calcRepo;
 
-    AController(IExportRadiRepository exportRadiRepo, IExportCalcRepository exportCalcRepo, IRadiationRepository radiRepo, IUserRepository userRepo, ICalculatedRepository calcRepo) {
-        this.exportRadiRepo = exportRadiRepo;
-        this.exportCalcRepo = exportCalcRepo;
+    Controller(IRadiationExport radiExport, IExport solarExport, ISolarRadiationRepository radiRepo, IUserRepository userRepo, ISolarRadiationInclinedRepository calcRepo) {
+        this.radiExport = radiExport;
+        this.solarExport = solarExport;
         this.radiRepo = radiRepo;
         this.userRepo = userRepo;
         this.calcRepo = calcRepo;

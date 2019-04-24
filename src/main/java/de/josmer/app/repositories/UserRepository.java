@@ -12,7 +12,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserRepository extends ARepository<User> implements IUserRepository {
+public class UserRepository extends Repository<User> implements IUserRepository {
 
     public UserRepository(final String databaseUrl) {
         super(databaseUrl);

@@ -1,10 +1,10 @@
-package de.josmer.app.library.sun;
+package de.josmer.app.library.solar;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-class Converter {
+class PerezSkyDiffuseModel {
 
     private static Map<String, double[]> fTabelle;
     private static final String F_11 = "F11";
@@ -15,7 +15,7 @@ class Converter {
     private static final String F_23 = "F23";
     private final double lon;
     private final double lat;
-    private final SunPostion sunPos;
+    private final SolarPostion sunPos;
     private double eDiffGen;
     private double eDirGen;
     private double eReflGen;
@@ -39,13 +39,13 @@ class Converter {
     private double b;
     private double eDirHorExtra;
 
-    Converter(double ye, double ae, double lat, double lon, double albedo) {
+    PerezSkyDiffuseModel(double ye, double ae, double lat, double lon, double albedo) {
         this.ye = ye;
         this.ae = ae;
         this.lat = lat;
         this.lon = lon;
         this.albedo = albedo;
-        this.sunPos = new SunPostion();
+        this.sunPos = new SolarPostion();
     }
 
     public static void initFTabelle() {
@@ -90,7 +90,7 @@ class Converter {
     }
 
     private void setF1AndF2() {
-        double z = CalcUtils.getRad(sunPos.getZenith());
+        double z = Utils.getRad(sunPos.getZenith());
         f1 = (f11 + f12 * delta + f13 * z);
         f1 = Math.max(f1, 0);
         f2 = (f21 + f22 * delta + f23 * z);
@@ -98,7 +98,7 @@ class Converter {
     }
 
     private void setAoi() {
-        aoiProjection = CalcUtils.cos(ye) * CalcUtils.cos(sunPos.getZenith()) + CalcUtils.sin(ye) * CalcUtils.sin(sunPos.getZenith()) * CalcUtils.cos(sunPos.getAs() - ae);
+        aoiProjection = Utils.cos(ye) * Utils.cos(sunPos.getZenith()) + Utils.sin(ye) * Utils.sin(sunPos.getZenith()) * Utils.cos(sunPos.getAs() - ae);
     }
 
     private void setDelta(double eDiffHor) {
@@ -106,56 +106,56 @@ class Converter {
     }
 
     private void setAirMass() {
-        airMass = (1.0 / (CalcUtils.cos(sunPos.getZenith()) + 0.50572 * (Math.pow((6.07995 + (90 - sunPos.getZenith())), -1.6364))));
+        airMass = (1.0 / (Utils.cos(sunPos.getZenith()) + 0.50572 * (Math.pow((6.07995 + (90 - sunPos.getZenith())), -1.6364))));
     }
 
     private void setAandB() {
         a = aoiProjection;
         a = Math.max(a, 0);
-        b = CalcUtils.cos(sunPos.getZenith());
-        b = Math.max(b, CalcUtils.cos(85));
+        b = Utils.cos(sunPos.getZenith());
+        b = Math.max(b, Utils.cos(85));
     }
 
     private void setEReflGen(double eGlobalHor) {
-        eReflGen = eGlobalHor * albedo * (1.0 - CalcUtils.cos(ye)) * 0.5;
+        eReflGen = eGlobalHor * albedo * (1.0 - Utils.cos(ye)) * 0.5;
     }
 
     private void setEDirGen(double eDirHor) {
-        double cosSolarZenith = CalcUtils.cos(sunPos.getZenith());
+        double cosSolarZenith = Utils.cos(sunPos.getZenith());
         double ratio = aoiProjection / cosSolarZenith;
         eDirGen = eDirHor * ratio;
         eDirGen = Math.max(eDirGen, 0);
     }
 
     private void setHimmelsklarheitsindex(double eDiffHor, double eDirHor) {
-        double z = CalcUtils.getRad(sunPos.getZenith());
-        himmelsklarheitsindex = ((eDiffHor + eDirHor) / eDiffHor + CalcUtils.K * Math.pow(z, 3)) / (1 + CalcUtils.K * Math.pow(z, 3));
+        double z = Utils.getRad(sunPos.getZenith());
+        himmelsklarheitsindex = ((eDiffHor + eDirHor) / eDiffHor + Utils.K * Math.pow(z, 3)) / (1 + Utils.K * Math.pow(z, 3));
     }
 
     private void setMEDiffGenPerez(double eDiffHor) {
-        double term1 = 0.5 * (1 - f1) * (1 + CalcUtils.cos(ye));
+        double term1 = 0.5 * (1 - f1) * (1 + Utils.cos(ye));
         double term2 = f1 * a / b;
-        double term3 = f2 * CalcUtils.sin(ye);
+        double term3 = f2 * Utils.sin(ye);
         eDiffGen = Math.max(0, eDiffHor * (term1 + term2 + term3));
     }
 
     private void seteDirHorExtra(LocalDateTime dt) {
         double localB = sunPos.getSimpleDayAngle(dt.getDayOfYear(), dt.getYear());
         double roverR0Sqrd = (1.00011 + 0.034221 * Math.cos(localB) + 0.00128 * Math.sin(localB) + 0.000719 * Math.cos(2 * localB) + 7.7e-05 * Math.sin(2 * localB));
-        eDirHorExtra = CalcUtils.EO * roverR0Sqrd;
+        eDirHorExtra = Utils.EO * roverR0Sqrd;
     }
 
     private double getEDiffHor(double eGlobalHor) {
-        final double kt = eGlobalHor / (CalcUtils.EO * CalcUtils.sin(sunPos.getYs()));
+        final double kt = eGlobalHor / (Utils.EO * Utils.sin(sunPos.getYs()));
         if (kt <= 3.0) {
-            return eGlobalHor * (1.02 - 0.254 * kt + 0.0123 * CalcUtils.sin(sunPos.getYs()));
+            return eGlobalHor * (1.02 - 0.254 * kt + 0.0123 * Utils.sin(sunPos.getYs()));
         }
 
         if (kt > 3.0 && kt < 0.78) {
-            return eGlobalHor * (1.4 - 1.749 * kt + 0.177 * CalcUtils.sin(sunPos.getYs()));
+            return eGlobalHor * (1.4 - 1.749 * kt + 0.177 * Utils.sin(sunPos.getYs()));
         }
 
-        return eGlobalHor * (0.486 * kt - 0.182 * CalcUtils.sin(sunPos.getYs()));
+        return eGlobalHor * (0.486 * kt - 0.182 * Utils.sin(sunPos.getYs()));
     }
 
     void calculateHour(double eGlobalHor, LocalDateTime dt) {

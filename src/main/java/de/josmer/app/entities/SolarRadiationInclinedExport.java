@@ -1,6 +1,6 @@
 package de.josmer.app.entities;
 
-public class ExportCalc extends AExport {
+public class SolarRadiationInclinedExport extends ExportEntity {
 
     private String ae;
     private String ye;

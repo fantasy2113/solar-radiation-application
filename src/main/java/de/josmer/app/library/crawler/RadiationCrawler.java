@@ -1,8 +1,7 @@
 package de.josmer.app.library.crawler;
 
-import de.josmer.app.entities.Radiation;
+import de.josmer.app.entities.SolarRadiation;
 import de.josmer.app.library.enums.RadiationTypes;
-import de.josmer.app.library.interfaces.IRadiationRepository;
 import de.josmer.app.library.utils.Toolbox;
 import java.io.*;
 import java.net.URL;
@@ -17,6 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import de.josmer.app.library.interfaces.ISolarRadiationRepository;
 
 public final class RadiationCrawler {
 
@@ -25,7 +25,7 @@ public final class RadiationCrawler {
     private final String targetUrl;
     private final String targetDir;
     private final RadiationTypes type;
-    private final List<Radiation> radiations;
+    private final List<SolarRadiation> radiations;
     private final int month;
     private final int year;
     private String currentTargetFile;
@@ -83,15 +83,15 @@ public final class RadiationCrawler {
         }
     }
 
-    public void insert(final IRadiationRepository radiationRepository) {
+    public void insert(final ISolarRadiationRepository radiationRepository) {
         inserting(radiationRepository);
     }
 
-    public void insert(final String databaseUrl, final IRadiationRepository radiationRepository) { // NOSONAR
+    public void insert(final String databaseUrl, final ISolarRadiationRepository radiationRepository) { // NOSONAR
         inserting(radiationRepository);
     }
 
-    private void inserting(final IRadiationRepository radiationRepository) {
+    private void inserting(final ISolarRadiationRepository radiationRepository) {
         LOGGER.info("reading...");
         initRadiations();
         LOGGER.info("inserting...");
@@ -116,7 +116,7 @@ public final class RadiationCrawler {
             final String[] columns = rows[row].split(" ");
             int rechtswert = 3280500;
             for (String column : columns) {
-                Radiation radiation = new Radiation();
+                SolarRadiation radiation = new SolarRadiation();
                 radiation.setRadiationValue(Float.parseFloat(column));
                 radiation.setRadiationType(type.name());
                 radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));

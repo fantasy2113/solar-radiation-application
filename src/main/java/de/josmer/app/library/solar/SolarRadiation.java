@@ -1,13 +1,13 @@
-package de.josmer.app.library.sun;
+package de.josmer.app.library.solar;
 
 import java.time.LocalDateTime;
 import java.util.stream.DoubleStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CalcRadiation {
+public class SolarRadiation {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CalcRadiation.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolarRadiation.class.getName());
     private final double lat;
     private final double lon;
     private final double[] eGlobHorMonthly;
@@ -16,7 +16,7 @@ public class CalcRadiation {
     private final double ae;
     private final double[] eGlobHorMonthlySynth;
 
-    public CalcRadiation(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
+    public SolarRadiation(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
         this.lat = lat;
         this.lon = lon;
         this.eGlobHorMonthly = eGlobHorMonthly;
@@ -27,7 +27,7 @@ public class CalcRadiation {
     }
 
     public double[] getEGlobGenMonthly() {
-        Converter.initFTabelle();
+        PerezSkyDiffuseModel.initFTabelle();
         double[] eGlobGenMonths = new double[12];
         try {
             TagModel tagModel = new TagModel();
@@ -40,7 +40,7 @@ public class CalcRadiation {
                     final double[] eGlobalHorArr = tagModel.getHours(dtDay, days[day], lat, lon);
                     eGlobHorSumSynth += DoubleStream.of(eGlobalHorArr).sum();
                     for (int hour = 0; hour < 24; hour++) {
-                        final Converter radiation = new Converter(ye, ae, lat, lon, 0.2);
+                        final PerezSkyDiffuseModel radiation = new PerezSkyDiffuseModel(ye, ae, lat, lon, 0.2);
                         radiation.calculateHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
                         eGlobGenMonthly += radiation.getEGlobalGen();
                     }
@@ -55,7 +55,7 @@ public class CalcRadiation {
     }
 
     private int getDaysInMonth(int month) {
-        return CalcUtils.getDaysInMonth(dt.getYear(), month + 1);
+        return Utils.getDaysInMonth(dt.getYear(), month + 1);
     }
 
     private LocalDateTime getDtDays(int month) {

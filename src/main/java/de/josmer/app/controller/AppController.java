@@ -2,8 +2,8 @@ package de.josmer.app.controller;
 
 import de.josmer.app.controller.requests.CalculationRequest;
 import de.josmer.app.controller.requests.RadiationRequest;
-import de.josmer.app.entities.ExportCalc;
-import de.josmer.app.entities.ExportRadi;
+import de.josmer.app.entities.SolarRadiationInclinedExport;
+import de.josmer.app.entities.SolarRadiationExport;
 import de.josmer.app.entities.User;
 import de.josmer.app.library.geo.GaussKrueger;
 import de.josmer.app.library.interfaces.*;
@@ -20,10 +20,10 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class AppController extends AController {
+public class AppController extends Controller {
 
     @Autowired
-    public AppController(IExportRadiRepository exportRadiRepo, IExportCalcRepository exportCalcRepo, IRadiationRepository radiRepo, IUserRepository userRepo, ICalculatedRepository calcRepo) {
+    public AppController(IRadiationExport exportRadiRepo, IExport exportCalcRepo, ISolarRadiationRepository radiRepo, IUserRepository userRepo, ISolarRadiationInclinedRepository calcRepo) {
         super(exportRadiRepo, exportCalcRepo, radiRepo, userRepo, calcRepo);
     }
 
@@ -74,9 +74,9 @@ public class AppController extends AController {
             response.addHeader("Content-disposition", "attachment; filename=sonneneinstrahlung_" + System.currentTimeMillis() + ".xls");
             response.setContentType("app/vnd.ms-excel");
             new SimpleExporter().gridExport(
-                    exportRadiRepo.getHeaders(),
-                    exportRadiRepo.getAll(radiRepo.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
-                    exportRadiRepo.getProps(),
+                    radiExport.getHeaders(),
+                    radiExport.getItems(radiRepo.find(new GaussKrueger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
+                    radiExport.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
         } catch (IOException e) {
@@ -93,9 +93,9 @@ public class AppController extends AController {
             response.addHeader("Content-disposition", "attachment; filename=umrechnung_" + System.currentTimeMillis() + ".xls");
             response.setContentType("app/vnd.ms-excel");
             new SimpleExporter().gridExport(
-                    exportCalcRepo.getHeaders(),
-                    exportCalcRepo.getAll(calcRepo.calculateds(radiRepo.findGlobal(new GaussKrueger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
-                    exportCalcRepo.getProps(),
+                    solarExport.getHeaders(),
+                    solarExport.getItems(calcRepo.getSolarEnergies(radiRepo.findGlobal(new GaussKrueger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
+                    solarExport.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
         } catch (IOException e) {
@@ -104,19 +104,19 @@ public class AppController extends AController {
     }
 
     @GetMapping("/radiation")
-    public List<ExportRadi> getRadiation(@CookieValue("token") final String token, final RadiationRequest req) {
+    public List<SolarRadiationExport> getRadiation(@CookieValue("token") final String token, final RadiationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return exportRadiRepo.getAll(radiRepo.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
+        return radiExport.getItems(radiRepo.find(new GaussKrueger(), getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
     @GetMapping("/calculation")
-    public List<ExportCalc> getCalculation(@CookieValue("token") final String token, final CalculationRequest req) {
+    public List<SolarRadiationInclinedExport> getCalculation(@CookieValue("token") final String token, final CalculationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return exportCalcRepo.getAll(calcRepo.calculateds(radiRepo.findGlobal(new GaussKrueger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        return solarExport.getItems(calcRepo.getSolarEnergies(radiRepo.findGlobal(new GaussKrueger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
     }
 
     private Integer getEndDate(int year) {

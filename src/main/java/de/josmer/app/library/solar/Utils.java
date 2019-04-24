@@ -1,8 +1,8 @@
-package de.josmer.app.library.sun;
+package de.josmer.app.library.solar;
 
 import java.time.YearMonth;
 
-class CalcUtils {
+class Utils {
 
     static final double K = 1.041;
     static final double EO = 1360.8;
@@ -10,7 +10,7 @@ class CalcUtils {
     static final double RAD = Math.PI / 180.0;
     static final double DEG = 180.0 / Math.PI;
 
-    private CalcUtils() {
+    private Utils() {
     }
 
     static double getRad(double deg) {
