@@ -3,7 +3,6 @@ package de.josmer.app.repositories;
 import de.josmer.app.entities.Calculated;
 import de.josmer.app.library.interfaces.ICalculatedRepository;
 import de.josmer.app.library.sun.CalcRadiation;
-import de.josmer.app.library.utils.Toolbox;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,8 +26,8 @@ public class CalculatedRepository implements ICalculatedRepository {
             for (int i = 0; i < 12; i++) {
                 if (eGlobHorMonthlySynth[i] > 0 && eGlobGenMonthly[i] > 0) {
                     Calculated calculated = new Calculated();
-                    calculated.seteGlobHor(Toolbox.getRound(eGlobHorMonthlySynth[i] / 1000));
-                    calculated.seteGlobGen(Toolbox.getRound(eGlobGenMonthly[i] / 1000));
+                    calculated.seteGlobHor(eGlobHorMonthlySynth[i] / 1000);
+                    calculated.seteGlobGen(eGlobGenMonthly[i] / 1000);
                     calculated.setAe(ae);
                     calculated.setYe(ye);
                     calculated.setCalculatedDate(getDate(dt.getYear(), (i + 1)));
