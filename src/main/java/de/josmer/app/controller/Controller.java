@@ -11,22 +11,22 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-abstract class AController {
+abstract class Controller {
 
     static final String LOGIN_HTML = "src/main/resources/static/html/login.html";
     static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
-    final IExportRadiRepository exportRadiRepo;
-    final IExportCalcRepository exportCalcRepo;
-    final IRadiationRepository radiRepo;
+    final ISolarRadiationExport solRadiExport;
+    final ISolarRadiationInclinedExport solRadIncRepo;
+    final ISolarRadiationRepository solRadiRepo;
     final IUserRepository userRepo;
-    final ICalculatedRepository calcRepo;
+    final ISolarRadiationInclinedRepository solRadiIncRepo;
 
-    AController(IExportRadiRepository exportRadiRepo, IExportCalcRepository exportCalcRepo, IRadiationRepository radiRepo, IUserRepository userRepo, ICalculatedRepository calcRepo) {
-        this.exportRadiRepo = exportRadiRepo;
-        this.exportCalcRepo = exportCalcRepo;
-        this.radiRepo = radiRepo;
+    Controller(ISolarRadiationExport solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolarRadiationRepository solRadiRepo, IUserRepository userRepo, ISolarRadiationInclinedRepository solRadiIncRepo) {
+        this.solRadiExport = solRadiExport;
+        this.solRadIncRepo = solRadIncRepo;
+        this.solRadiRepo = solRadiRepo;
         this.userRepo = userRepo;
-        this.calcRepo = calcRepo;
+        this.solRadiIncRepo = solRadiIncRepo;
     }
 
     boolean isParameter(String login, String password) {

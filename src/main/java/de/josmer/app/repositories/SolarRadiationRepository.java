@@ -1,8 +1,7 @@
 package de.josmer.app.repositories;
 
-import de.josmer.app.entities.Radiation;
+import de.josmer.app.entities.SolRadi;
 import de.josmer.app.library.interfaces.IGaussKrueger;
-import de.josmer.app.library.interfaces.IRadiationRepository;
 import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.LinkedList;
@@ -12,23 +11,24 @@ import java.util.OptionalInt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import de.josmer.app.library.interfaces.ISolarRadiationRepository;
 
 @Component
-public final class RadiationRepository extends ARepository<Radiation> implements IRadiationRepository {
+public final class SolarRadiationRepository extends Repository<SolRadi> implements ISolarRadiationRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RadiationRepository.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolarRadiationRepository.class.getName());
 
-    public RadiationRepository(final String databaseUrl) {
+    public SolarRadiationRepository(final String databaseUrl) {
         super(databaseUrl);
     }
 
-    public RadiationRepository() {
+    public SolarRadiationRepository() {
         super();
     }
 
     @Override
     public double[] findGlobal(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
-        List<Radiation> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
+        List<SolRadi> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         try {
             for (int i = 0; i < retArr.length; i++) {
@@ -41,8 +41,8 @@ public final class RadiationRepository extends ARepository<Radiation> implements
     }
 
     @Override
-    public List<Radiation> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
-        List<Radiation> radiations = new LinkedList<>();
+    public List<SolRadi> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+        List<SolRadi> radiations = new LinkedList<>();
         gaussKrueger.convertFrom(lon, lat);
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
         final OptionalInt optionalRechtswert = getRechtswert(gaussKrueger);
@@ -82,12 +82,12 @@ public final class RadiationRepository extends ARepository<Radiation> implements
     }
 
     @Override
-    public void save(final List<Radiation> radiations) {
+    public void save(final List<SolRadi> radiations) {
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement
                 = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
             connection.setAutoCommit(false);
-            for (Radiation radiation : radiations) {
+            for (SolRadi radiation : radiations) {
                 preparedStatement.setString(1, radiation.getRadiationType());
                 preparedStatement.setInt(2, radiation.getRadiationDate());
                 preparedStatement.setInt(3, radiation.getGkrMin());
@@ -119,8 +119,8 @@ public final class RadiationRepository extends ARepository<Radiation> implements
     }
 
     @Override
-    protected Radiation mapToEntity(ResultSet rs) throws SQLException {
-        Radiation radiation = new Radiation();
+    protected SolRadi mapToEntity(ResultSet rs) throws SQLException {
+        SolRadi radiation = new SolRadi();
         radiation.setRadiationType(rs.getString("radiation_type"));
         radiation.setRadiationDate(rs.getInt("radiation_date"));
         radiation.setGkrMin(rs.getInt("gkr_min"));

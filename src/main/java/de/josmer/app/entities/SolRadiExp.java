@@ -1,6 +1,6 @@
 package de.josmer.app.entities;
 
-public class ExportRadi extends AExport {
+public class SolRadiExp extends EntityExport {
 
     private String type;
     private double value;

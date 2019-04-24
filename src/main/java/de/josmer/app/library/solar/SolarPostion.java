@@ -1,9 +1,9 @@
-package de.josmer.app.library.sun;
+package de.josmer.app.library.solar;
 
 import java.time.LocalDateTime;
 import java.time.Year;
 
-class SunPostion {
+class SolarPostion {
 
     private static final double TIMEZONE = 1;
     private double ys;
@@ -57,11 +57,11 @@ class SunPostion {
     }
 
     private double rad(double grad) {
-        return (grad * CalcUtils.RAD);
+        return (grad * Utils.RAD);
     }
 
     private double grad(double rad) {
-        return (rad * CalcUtils.DEG);
+        return (rad * Utils.DEG);
     }
 
     double getSimpleDayAngle(int dayofyear, int year) {

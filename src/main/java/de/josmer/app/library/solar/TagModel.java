@@ -1,4 +1,4 @@
-package de.josmer.app.library.sun;
+package de.josmer.app.library.solar;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -21,7 +21,7 @@ class TagModel {
     }
 
     double[] getDays(LocalDateTime month, double hGlob, double lat, double lon) {
-        final int daysInMonth = CalcUtils.getDaysInMonth(month.getYear(), month.getMonthValue());
+        final int daysInMonth = Utils.getDaysInMonth(month.getYear(), month.getMonthValue());
         double[] days = new double[daysInMonth];
         if (hGlob <= 0) {
             return days;
@@ -29,13 +29,13 @@ class TagModel {
         double[] dailyhe0Hor = new double[daysInMonth];
         double he0HorSum = 0.0;
         for (int d = 0; d < daysInMonth; d++) {
-            SunPostion sunPos = new SunPostion();
+            SolarPostion sunPos = new SolarPostion();
             double sumSinGammaS = 0.0;
             for (int h = 0; h < 24; h++) {
                 LocalDateTime dt = LocalDateTime.of(month.getYear(), month.getMonthValue(), d + 1, h, month.getMinute(), 0, 0);
                 sunPos.calculate(dt, lat, lon);
                 if (sunPos.getYs() > 0) {
-                    sumSinGammaS += CalcUtils.sin(sunPos.getYs());
+                    sumSinGammaS += Utils.sin(sunPos.getYs());
                 }
             }
             final double he0Hor = e0OfDay(month) * sumSinGammaS;
@@ -53,7 +53,7 @@ class TagModel {
         if (hGlob <= 0) {
             return new double[24];
         }
-        SunPostion sunPos = new SunPostion();
+        SolarPostion sunPos = new SolarPostion();
         double[] sunYOfh = new double[24];
         double sumSinGammaS = 0.0;
         for (int h = 0; h < 24; h++) {
@@ -61,7 +61,7 @@ class TagModel {
             sunPos.calculate(dt, lat, lon);
             sunYOfh[h] = sunPos.getYs();
             if (sunPos.getYs() > 0) {
-                sumSinGammaS += CalcUtils.sin(sunPos.getYs());
+                sumSinGammaS += Utils.sin(sunPos.getYs());
             }
         }
         double he0Hor = e0OfDay(day) * sumSinGammaS;
@@ -71,15 +71,15 @@ class TagModel {
         Map<Double, double[]> map = calcHours(sunYOfh, he0Hor, kt, phi1);
         final Double minDiff = Collections.min(map.keySet());
         double[] dailyHours = map.get(minDiff);
-        inreaseHours(day, 1, 1.0991, dailyHours);
-        inreaseHours(day, 12, 1.2327, dailyHours);
+        inreaseHours(day, 1, 1.093, dailyHours);
+        inreaseHours(day, 12, 1.225, dailyHours);
         return dailyHours;
     }
 
-    private void inreaseHours(LocalDateTime day, int month, double val, double[] dailyHours) {
-        if (day.getMonthValue() == month) {
+    private void inreaseHours(LocalDateTime dt, int month, double multi, double[] dailyHours) {
+        if (dt.getMonthValue() == month) {
             for (int h = 0; h < 24; h++) {
-                dailyHours[h] = dailyHours[h] * val;
+                dailyHours[h] = dailyHours[h] * multi;
             }
         }
     }
@@ -106,7 +106,7 @@ class TagModel {
                     isNotAdd = true;
                     break; //NOSONAR
                 } else {
-                    egHorOfh[h] = ktOfh[h] * CalcUtils.EO_TAG * CalcUtils.sin(sunYOfh[h]);
+                    egHorOfh[h] = ktOfh[h] * Utils.EO_TAG * Utils.sin(sunYOfh[h]);
                     hSynHor += egHorOfh[h];
                 }
             }
@@ -123,7 +123,7 @@ class TagModel {
         double[] ktOfh = new double[24];
         for (int h = 0; h < 24; h++) {
             if (sunYOfh[h] > 0.0) {
-                double ysDeg = CalcUtils.getRad(sunYOfh[h]);
+                double ysDeg = Utils.getRad(sunYOfh[h]);
                 double ktm = -0.19 + 1.12 * kt + 0.24 * Math.exp(-8 * kt)
                         + (0.32 - 1.6 * Math.pow(kt - 0.5, 2))
                         * Math.exp((-0.19 - 2.27 * Math.pow(kt, 2) + 2.51 * Math.pow(kt, 3)) / Math.sin(ysDeg));
@@ -144,6 +144,6 @@ class TagModel {
     }
 
     private double e0OfDay(LocalDateTime day) {
-        return CalcUtils.EO_TAG * (1.0 - 0.0334 * Math.cos(0.0172 * (double) day.getDayOfYear() - 0.04747));
+        return Utils.EO_TAG * (1.0 - 0.0334 * Math.cos(0.0172 * (double) day.getDayOfYear() - 0.04747));
     }
 }
