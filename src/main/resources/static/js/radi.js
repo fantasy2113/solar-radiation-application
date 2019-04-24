@@ -73,7 +73,7 @@ jQuery(document).ready(function () {
 
                     fields: [
                         {name: "date", title: "Datum", type: "text"},
-                        {name: "value", title: "EGlobHor", type: "number"},
+                        {name: "value", title: "EHor", type: "number"},
                         {name: "unit", title: "Einh.", type: "text"},
                         {name: "dim", title: "Dim.", type: "text"}
                     ]
