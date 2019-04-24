@@ -76,10 +76,10 @@ class TagModel {
         return dailyHours;
     }
 
-    private void inreaseHours(LocalDateTime day, int month, double val, double[] dailyHours) {
-        if (day.getMonthValue() == month) {
+    private void inreaseHours(LocalDateTime dt, int month, double multi, double[] dailyHours) {
+        if (dt.getMonthValue() == month) {
             for (int h = 0; h < 24; h++) {
-                dailyHours[h] = dailyHours[h] * val;
+                dailyHours[h] = dailyHours[h] * multi;
             }
         }
     }
