@@ -2,40 +2,30 @@ package de.josmer.app.library.sun;
 
 import java.time.LocalDateTime;
 import java.time.Year;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 class SunPostion {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SunPostion.class.getName());
     private static final double TIMEZONE = 1;
     private double ys;
     private double as;
     private double zenith;
-    private final double[] monthYearCelsiusArr;
-    private final double[] monthYearHpaArr;
     private LocalDateTime time;
 
-    SunPostion() {
-        this.monthYearCelsiusArr = new double[]{0.4, 1.1, 4.6, 8.6, 13.8, 16.4, 18.3, 17.9, 13.7, 9.1, 4.3, 1.7};
-        this.monthYearHpaArr = new double[]{1017, 1017.1, 1015.1, 1013.8, 1015.5, 1015.1, 1015.4, 1016.0, 1016.2, 1016.6, 1015.6, 1015.5};
-    }
-
     void calculate(LocalDateTime dt, double lat, double lon) {
-        time = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
-        double hour = time.getHour();
-        double year = time.getYear();
-        double min = time.getMinute();
-        double sec = time.getSecond();
+        this.time = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
+        double hour = this.time.getHour();
+        double year = this.time.getYear();
+        double min = this.time.getMinute();
+        double sec = this.time.getSecond();
         double j2 = getDaysInYear((int) year);
-        double j = time.getDayOfYear();
+        double j = this.time.getDayOfYear();
         double moz = hour + 1.0 / 60 * min + 1.0 / 3600 * sec - TIMEZONE + 1;
         moz = moz - 4 * (15 - lon) / 60;
         j = j * 360 / j2 + moz / 24;
         double decl = 0.3948 - 23.2559 * Math.cos(rad(j + 9.1)) - 0.3915 * Math.cos(rad(2 * j + 5.4)) - 0.1764 * Math.cos(rad(3 * j + 26.0));
         double zgl = 0.0066 + 7.3525 * Math.cos(rad(j + 85.9)) + 9.9359 * Math.cos(rad(2 * j + 108.9)) + 0.3387 * Math.cos(rad(3 * j + 105.2));
-        double woz = moz + zgl / 60;
-        double w = (12 - woz) * 15;
+        double woz = moz + zgl / 60.0;
+        double w = (12 - woz) * 15.0;
         double asinGs = Math.cos(rad(w)) * Math.cos(rad(lat)) * Math.cos(rad(decl)) + Math.sin(rad(lat)) * Math.sin(rad(decl));
         if (asinGs > 1) {
             asinGs = 1;
@@ -57,9 +47,9 @@ class SunPostion {
         } else {
             sunaz = 180 - sunaz;
         }
-        as = sunaz;
-        ys = sunhi;
-        zenith = 90.0 - ys;
+        this.as = sunaz;
+        this.ys = sunhi;
+        this.zenith = 90.0 - this.ys;
     }
 
     private double getDaysInYear(int year) {
@@ -67,48 +57,26 @@ class SunPostion {
     }
 
     private double rad(double grad) {
-        return (grad * Math.PI / 180);
+        return (grad * CalcUtils.RAD);
     }
 
     private double grad(double rad) {
-        return (rad * 180 / Math.PI);
-    }
-
-    private double getAtmosphericRefractionCorrection(double localPressure, double localTemp) {
-        int isSwitch = ys >= -1.0 * (0.26667 + 0.5667) ? 1 : 0;
-        return ((localPressure / 1010.0) * (283.0 / (273 + localTemp)) * 1.02 / (60 * CalcUtils.tan((ys + 10.3 / (ys + 5.11))))) * isSwitch;
-    }
-
-    double getYsCorr() {
-        // https://github.com/pvlib/pvlib-python/blob/master/pvlib/test/test_spa.py#L40 0.5667
-        try {
-            int index = time.getMonthValue() - 1;
-            double hpa = monthYearHpaArr[index];
-            double celsius = monthYearCelsiusArr[index];
-            return this.ys + getAtmosphericRefractionCorrection(hpa, celsius);
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-        }
-        return 0;
-    }
-
-    double getZenithCorr() {
-        return 90 - getYsCorr();
+        return (rad * CalcUtils.DEG);
     }
 
     double getSimpleDayAngle(int dayofyear, int year) {
-        return (2.0 * Math.PI / getDaysInYear(year)) * (dayofyear - 1);
+        return (2.0 * Math.PI / (double) getDaysInYear(year)) * (dayofyear - 1);
     }
 
     double getAs() {
-        return as;
+        return this.as;
     }
 
     double getYs() {
-        return ys;
+        return this.ys;
     }
 
     double getZenith() {
-        return zenith;
+        return this.zenith;
     }
 }

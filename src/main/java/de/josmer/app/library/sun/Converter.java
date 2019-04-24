@@ -90,7 +90,7 @@ class Converter {
     }
 
     private void setF1AndF2() {
-        double z = CalcUtils.getRad(sunPos.getZenithCorr());
+        double z = CalcUtils.getRad(sunPos.getZenith());
         f1 = (f11 + f12 * delta + f13 * z);
         f1 = Math.max(f1, 0);
         f2 = (f21 + f22 * delta + f23 * z);
@@ -98,7 +98,7 @@ class Converter {
     }
 
     private void setAoi() {
-        aoiProjection = CalcUtils.cos(ye) * CalcUtils.cos(sunPos.getZenithCorr()) + CalcUtils.sin(ye) * CalcUtils.sin(sunPos.getZenithCorr()) * CalcUtils.cos(sunPos.getAs() - ae);
+        aoiProjection = CalcUtils.cos(ye) * CalcUtils.cos(sunPos.getZenith()) + CalcUtils.sin(ye) * CalcUtils.sin(sunPos.getZenith()) * CalcUtils.cos(sunPos.getAs() - ae);
     }
 
     private void setDelta(double eDiffHor) {
@@ -106,13 +106,13 @@ class Converter {
     }
 
     private void setAirMass() {
-        airMass = (1.0 / (CalcUtils.cos(sunPos.getZenithCorr()) + 0.50572 * (Math.pow((6.07995 + (90 - sunPos.getZenithCorr())), -1.6364))));
+        airMass = (1.0 / (CalcUtils.cos(sunPos.getZenith()) + 0.50572 * (Math.pow((6.07995 + (90 - sunPos.getZenith())), -1.6364))));
     }
 
     private void setAandB() {
         a = aoiProjection;
         a = Math.max(a, 0);
-        b = CalcUtils.cos(sunPos.getZenithCorr());
+        b = CalcUtils.cos(sunPos.getZenith());
         b = Math.max(b, CalcUtils.cos(85));
     }
 
@@ -121,14 +121,14 @@ class Converter {
     }
 
     private void setEDirGen(double eDirHor) {
-        double cosSolarZenith = CalcUtils.cos(sunPos.getZenithCorr());
+        double cosSolarZenith = CalcUtils.cos(sunPos.getZenith());
         double ratio = aoiProjection / cosSolarZenith;
         eDirGen = eDirHor * ratio;
         eDirGen = Math.max(eDirGen, 0);
     }
 
     private void setHimmelsklarheitsindex(double eDiffHor, double eDirHor) {
-        double z = CalcUtils.getRad(sunPos.getZenithCorr());
+        double z = CalcUtils.getRad(sunPos.getZenith());
         himmelsklarheitsindex = ((eDiffHor + eDirHor) / eDiffHor + CalcUtils.K * Math.pow(z, 3)) / (1 + CalcUtils.K * Math.pow(z, 3));
     }
 

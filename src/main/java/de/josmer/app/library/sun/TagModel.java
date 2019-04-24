@@ -34,8 +34,8 @@ class TagModel {
             for (int h = 0; h < 24; h++) {
                 LocalDateTime dt = LocalDateTime.of(month.getYear(), month.getMonthValue(), d + 1, h, month.getMinute(), 0, 0);
                 sunPos.calculate(dt, lat, lon);
-                if (sunPos.getYsCorr() > 0) {
-                    sumSinGammaS += CalcUtils.sin(sunPos.getYsCorr());
+                if (sunPos.getYs() > 0) {
+                    sumSinGammaS += CalcUtils.sin(sunPos.getYs());
                 }
             }
             final double he0Hor = e0OfDay(month) * sumSinGammaS;
@@ -59,9 +59,9 @@ class TagModel {
         for (int h = 0; h < 24; h++) {
             LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), h, day.getMinute(), 0, 0);
             sunPos.calculate(dt, lat, lon);
-            sunYOfh[h] = sunPos.getYsCorr();
-            if (sunPos.getYsCorr() > 0) {
-                sumSinGammaS += CalcUtils.sin(sunPos.getYsCorr());
+            sunYOfh[h] = sunPos.getYs();
+            if (sunPos.getYs() > 0) {
+                sumSinGammaS += CalcUtils.sin(sunPos.getYs());
             }
         }
         double he0Hor = e0OfDay(day) * sumSinGammaS;
