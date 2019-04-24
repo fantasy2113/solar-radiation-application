@@ -1,6 +1,6 @@
 package de.josmer.app.entities;
 
-public class Calculated {
+public class SolRadiInc {
 
     private String calculatedDate;
     private double ae;

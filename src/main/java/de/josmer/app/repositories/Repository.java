@@ -9,16 +9,16 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-abstract class ARepository<E> {
+abstract class Repository<E> {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(ARepository.class.getName());
+    static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getName());
     private final String databaseUrl;
 
-    ARepository(final String databaseUrl) {
+    Repository(final String databaseUrl) {
         this.databaseUrl = databaseUrl;
     }
 
-    ARepository() {
+    Repository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
     }
 

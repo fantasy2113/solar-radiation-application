@@ -1,13 +1,13 @@
-package de.josmer.app.repositories;
+package de.josmer.app.exporter;
 
 import java.util.Locale;
 import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-abstract class AExportRepository<R, I> {
+abstract class Export<R, I> {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(AExportRepository.class.getName());
+    static final Logger LOGGER = LoggerFactory.getLogger(Export.class.getName());
 
     String roundToString(double value, int scale) {
         return String.format(Locale.ENGLISH, "%." + scale + "f", Precision.round(value, scale));

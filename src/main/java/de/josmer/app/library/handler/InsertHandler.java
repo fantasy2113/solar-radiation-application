@@ -2,7 +2,7 @@ package de.josmer.app.library.handler;
 
 import de.josmer.app.library.crawler.RadiationCrawler;
 import de.josmer.app.library.enums.RadiationTypes;
-import de.josmer.app.repositories.RadiationRepository;
+import de.josmer.app.repositories.SolarRadiationRepository;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public final class InsertHandler extends AHandler {
         RadiationCrawler radiationCrawler = new RadiationCrawler(localDate.getMonth().getValue(), localDate.getYear(), radiationTypes);
         radiationCrawler.download();
         radiationCrawler.unzip();
-        radiationCrawler.insert(new RadiationRepository());
+        radiationCrawler.insert(new SolarRadiationRepository());
         radiationCrawler.delete();
     }
 }
