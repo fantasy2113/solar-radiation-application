@@ -1,6 +1,6 @@
 package de.josmer.app.repositories;
 
-import de.josmer.app.entities.SolarRadiation;
+import de.josmer.app.entities.SolRadi;
 import de.josmer.app.library.interfaces.IGaussKrueger;
 import java.net.URISyntaxException;
 import java.sql.*;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import de.josmer.app.library.interfaces.ISolarRadiationRepository;
 
 @Component
-public final class SolarRadiationRepository extends Repository<SolarRadiation> implements ISolarRadiationRepository {
+public final class SolarRadiationRepository extends Repository<SolRadi> implements ISolarRadiationRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SolarRadiationRepository.class.getName());
 
@@ -28,7 +28,7 @@ public final class SolarRadiationRepository extends Repository<SolarRadiation> i
 
     @Override
     public double[] findGlobal(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
-        List<SolarRadiation> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
+        List<SolRadi> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         try {
             for (int i = 0; i < retArr.length; i++) {
@@ -41,8 +41,8 @@ public final class SolarRadiationRepository extends Repository<SolarRadiation> i
     }
 
     @Override
-    public List<SolarRadiation> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
-        List<SolarRadiation> radiations = new LinkedList<>();
+    public List<SolRadi> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+        List<SolRadi> radiations = new LinkedList<>();
         gaussKrueger.convertFrom(lon, lat);
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
         final OptionalInt optionalRechtswert = getRechtswert(gaussKrueger);
@@ -82,12 +82,12 @@ public final class SolarRadiationRepository extends Repository<SolarRadiation> i
     }
 
     @Override
-    public void save(final List<SolarRadiation> radiations) {
+    public void save(final List<SolRadi> radiations) {
         try (Connection connection = getConnection();
                 PreparedStatement preparedStatement
                 = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
             connection.setAutoCommit(false);
-            for (SolarRadiation radiation : radiations) {
+            for (SolRadi radiation : radiations) {
                 preparedStatement.setString(1, radiation.getRadiationType());
                 preparedStatement.setInt(2, radiation.getRadiationDate());
                 preparedStatement.setInt(3, radiation.getGkrMin());
@@ -119,8 +119,8 @@ public final class SolarRadiationRepository extends Repository<SolarRadiation> i
     }
 
     @Override
-    protected SolarRadiation mapToEntity(ResultSet rs) throws SQLException {
-        SolarRadiation radiation = new SolarRadiation();
+    protected SolRadi mapToEntity(ResultSet rs) throws SQLException {
+        SolRadi radiation = new SolRadi();
         radiation.setRadiationType(rs.getString("radiation_type"));
         radiation.setRadiationDate(rs.getInt("radiation_date"));
         radiation.setGkrMin(rs.getInt("gkr_min"));

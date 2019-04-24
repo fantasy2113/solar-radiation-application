@@ -1,25 +1,26 @@
 package de.josmer.app.exporter;
 
-import de.josmer.app.entities.SolarRadiation;
+import de.josmer.app.entities.SolRadi;
+import de.josmer.app.entities.SolRadiExp;
+import de.josmer.app.library.interfaces.IRadiationExport;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.stereotype.Component;
-import de.josmer.app.library.interfaces.IRadiationExport;
 
 @Component
-public class SolarRadiationExport extends Export<de.josmer.app.entities.SolarRadiationExport, SolarRadiation> implements IRadiationExport {
+public class SolarRadiationExport extends Export<SolRadiExp, SolRadi> implements IRadiationExport {
 
     @Override
-    public List<de.josmer.app.entities.SolarRadiationExport> getItems(final List<SolarRadiation> radiations, final double lon, final double lat) {
-        List<de.josmer.app.entities.SolarRadiationExport> exports = new LinkedList<>();
+    public List<SolRadiExp> getItems(final List<SolRadi> solarRadiations, final double lon, final double lat) {
+        List<SolRadiExp> exports = new LinkedList<>();
         try {
             double eGlobHorSum = 0.0;
-            for (SolarRadiation radiation : radiations) {
-                exports.add(mapToExport(lon, lat, radiation));
-                eGlobHorSum += radiation.getRadiationValue();
-                if (String.valueOf(radiation.getRadiationDate()).endsWith("12")) {
-                    de.josmer.app.entities.SolarRadiationExport export = new de.josmer.app.entities.SolarRadiationExport();
-                    export.setDate("Summe " + String.valueOf(radiation.getRadiationDate()).substring(0, 4));
+            for (SolRadi solRad : solarRadiations) {
+                exports.add(mapToExport(lon, lat, solRad));
+                eGlobHorSum += solRad.getRadiationValue();
+                if (String.valueOf(solRad.getRadiationDate()).endsWith("12")) {
+                    de.josmer.app.entities.SolRadiExp export = new de.josmer.app.entities.SolRadiExp();
+                    export.setDate("Summe " + String.valueOf(solRad.getRadiationDate()).substring(0, 4));
                     export.setLat("");
                     export.setLon("");
                     export.setType("");
@@ -32,7 +33,7 @@ public class SolarRadiationExport extends Export<de.josmer.app.entities.SolarRad
                 }
             }
             if (!exports.get(exports.size() - 1).getDate().contains("Summe")) {
-                de.josmer.app.entities.SolarRadiationExport export = new de.josmer.app.entities.SolarRadiationExport();
+                de.josmer.app.entities.SolRadiExp export = new de.josmer.app.entities.SolRadiExp();
                 export.setDate("Summe " + exports.get(exports.size() - 1).getDate().substring(0, 4));
                 export.setLat("");
                 export.setLon("");
@@ -46,14 +47,14 @@ public class SolarRadiationExport extends Export<de.josmer.app.entities.SolarRad
 
             int sumCnt = 0;
             double avgSum = 0.0;
-            for (de.josmer.app.entities.SolarRadiationExport exportRadi : exports) {
+            for (de.josmer.app.entities.SolRadiExp exportRadi : exports) {
                 if (exportRadi.getDate().contains("Summe")) {
                     avgSum += exportRadi.getValue();
                     sumCnt++;
                 }
             }
 
-            de.josmer.app.entities.SolarRadiationExport export = new de.josmer.app.entities.SolarRadiationExport();
+            de.josmer.app.entities.SolRadiExp export = new de.josmer.app.entities.SolRadiExp();
             export.setDate("Summe Mittel");
             export.setLat("");
             export.setLon("");
@@ -81,8 +82,8 @@ public class SolarRadiationExport extends Export<de.josmer.app.entities.SolarRad
     }
 
     @Override
-    protected de.josmer.app.entities.SolarRadiationExport mapToExport(double lon, double lat, SolarRadiation item) {
-        de.josmer.app.entities.SolarRadiationExport export = new de.josmer.app.entities.SolarRadiationExport();
+    protected de.josmer.app.entities.SolRadiExp mapToExport(double lon, double lat, SolRadi item) {
+        de.josmer.app.entities.SolRadiExp export = new de.josmer.app.entities.SolRadiExp();
         export.setDate(parseDate(item.getRadiationDate()));
         export.setLat(roundToString(lat, 3));
         export.setLon(roundToString(lon, 3));

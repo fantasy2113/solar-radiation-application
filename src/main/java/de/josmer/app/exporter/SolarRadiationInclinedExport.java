@@ -1,28 +1,29 @@
 package de.josmer.app.exporter;
 
-import de.josmer.app.entities.SolarRadiationInclined;
+import de.josmer.app.entities.SolRadiInc;
+import de.josmer.app.entities.SolRadiIncExp;
+import de.josmer.app.library.interfaces.IExport;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.stereotype.Component;
-import de.josmer.app.library.interfaces.IExport;
 
 @Component
-public class SolarRadiationInclinedExport extends Export<de.josmer.app.entities.SolarRadiationInclinedExport, SolarRadiationInclined> implements IExport {
+public class SolarRadiationInclinedExport extends Export<SolRadiIncExp, SolRadiInc> implements IExport {
 
     @Override
-    public List<de.josmer.app.entities.SolarRadiationInclinedExport> getItems(List<SolarRadiationInclined> items, double lon, double lat) {
-        List<de.josmer.app.entities.SolarRadiationInclinedExport> exportCalcs = new LinkedList<>();
+    public List<SolRadiIncExp> getItems(List<SolRadiInc> items, double lon, double lat) {
+        List<de.josmer.app.entities.SolRadiIncExp> exportCalcs = new LinkedList<>();
         try {
             double eGlobHor = 0.0;
             double eGlobGen = 0.0;
 
-            for (SolarRadiationInclined calculated : items) {
+            for (SolRadiInc calculated : items) {
                 eGlobHor += calculated.geteGlobHor();
                 eGlobGen += calculated.geteGlobGen();
                 exportCalcs.add(mapToExport(lon, lat, calculated));
             }
 
-            de.josmer.app.entities.SolarRadiationInclinedExport exportCalc = new de.josmer.app.entities.SolarRadiationInclinedExport();
+            de.josmer.app.entities.SolRadiIncExp exportCalc = new de.josmer.app.entities.SolRadiIncExp();
             exportCalc.seteGlobGen(Double.valueOf(roundToString(eGlobGen, 2)));
             exportCalc.seteGlobHor(Double.valueOf(roundToString(eGlobHor, 2)));
             exportCalc.setLat(roundToString(lat, 3));
@@ -36,7 +37,7 @@ public class SolarRadiationInclinedExport extends Export<de.josmer.app.entities.
 
             exportCalcs.add(exportCalc);
 
-            exportCalc = new de.josmer.app.entities.SolarRadiationInclinedExport();
+            exportCalc = new de.josmer.app.entities.SolRadiIncExp();
             exportCalc.seteGlobHor(Double.valueOf(roundToString(eGlobGen - eGlobHor, 2)));
             exportCalc.seteGlobGen(Double.valueOf(roundToString(((eGlobGen / eGlobHor) * 100) - 100, 2)));
             exportCalc.setLat("");
@@ -64,8 +65,8 @@ public class SolarRadiationInclinedExport extends Export<de.josmer.app.entities.
     }
 
     @Override
-    protected de.josmer.app.entities.SolarRadiationInclinedExport mapToExport(double lon, double lat, SolarRadiationInclined item) {
-        de.josmer.app.entities.SolarRadiationInclinedExport exportCalc = new de.josmer.app.entities.SolarRadiationInclinedExport();
+    protected de.josmer.app.entities.SolRadiIncExp mapToExport(double lon, double lat, SolRadiInc item) {
+        de.josmer.app.entities.SolRadiIncExp exportCalc = new de.josmer.app.entities.SolRadiIncExp();
         exportCalc.seteGlobGen(Double.valueOf(roundToString(item.geteGlobGen(), 2)));
         exportCalc.seteGlobHor(Double.valueOf(roundToString(item.geteGlobHor(), 2)));
         exportCalc.setLat(roundToString(lat, 3));

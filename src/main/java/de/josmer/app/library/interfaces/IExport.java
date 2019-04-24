@@ -1,7 +1,7 @@
 package de.josmer.app.library.interfaces;
 
-import de.josmer.app.entities.SolarRadiationInclined;
-import de.josmer.app.entities.SolarRadiationInclinedExport;
+import de.josmer.app.entities.SolRadiInc;
+import de.josmer.app.entities.SolRadiIncExp;
 
-public interface IExport extends IExportRepository<SolarRadiationInclinedExport, SolarRadiationInclined> {
+public interface IExport extends IExportRepository<SolRadiIncExp, SolRadiInc> {
 }

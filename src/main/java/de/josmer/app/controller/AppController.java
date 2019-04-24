@@ -2,8 +2,8 @@ package de.josmer.app.controller;
 
 import de.josmer.app.controller.requests.CalculationRequest;
 import de.josmer.app.controller.requests.RadiationRequest;
-import de.josmer.app.entities.SolarRadiationInclinedExport;
-import de.josmer.app.entities.SolarRadiationExport;
+import de.josmer.app.entities.SolRadiIncExp;
+import de.josmer.app.entities.SolRadiExp;
 import de.josmer.app.entities.User;
 import de.josmer.app.library.geo.GaussKrueger;
 import de.josmer.app.library.interfaces.*;
@@ -94,7 +94,7 @@ public class AppController extends Controller {
             response.setContentType("app/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     solarExport.getHeaders(),
-                    solarExport.getItems(calcRepo.getSolarEnergies(radiRepo.findGlobal(new GaussKrueger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
+                    solarExport.getItems(calcRepo.getSolarRadiations(radiRepo.findGlobal(new GaussKrueger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
                     solarExport.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -104,7 +104,7 @@ public class AppController extends Controller {
     }
 
     @GetMapping("/radiation")
-    public List<SolarRadiationExport> getRadiation(@CookieValue("token") final String token, final RadiationRequest req) {
+    public List<SolRadiExp> getRadiation(@CookieValue("token") final String token, final RadiationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
@@ -112,11 +112,11 @@ public class AppController extends Controller {
     }
 
     @GetMapping("/calculation")
-    public List<SolarRadiationInclinedExport> getCalculation(@CookieValue("token") final String token, final CalculationRequest req) {
+    public List<SolRadiIncExp> getCalculation(@CookieValue("token") final String token, final CalculationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return solarExport.getItems(calcRepo.getSolarEnergies(radiRepo.findGlobal(new GaussKrueger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        return solarExport.getItems(calcRepo.getSolarRadiations(radiRepo.findGlobal(new GaussKrueger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
     }
 
     private Integer getEndDate(int year) {

@@ -1,6 +1,6 @@
 package de.josmer.app.repositories;
 
-import de.josmer.app.entities.SolarRadiationInclined;
+import de.josmer.app.entities.SolRadiInc;
 import de.josmer.app.library.solar.SolarRadiation;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
@@ -16,8 +16,8 @@ public class SolarRepositoryInclinedRepository implements ISolarRadiationIncline
     private static final Logger LOGGER = LoggerFactory.getLogger(SolarRepositoryInclinedRepository.class.getName());
 
     @Override
-    public List<SolarRadiationInclined> getSolarEnergies(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
-        List<SolarRadiationInclined> solarEnergies = new LinkedList<>();
+    public List<SolRadiInc> getSolarRadiations(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
+        List<SolRadiInc> solarEnergies = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
         SolarRadiation solarRadiation = new SolarRadiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
         double[] eGlobGenMonthly = solarRadiation.getEGlobGenMonthly();
@@ -25,7 +25,7 @@ public class SolarRepositoryInclinedRepository implements ISolarRadiationIncline
         try {
             for (int i = 0; i < 12; i++) {
                 if (eGlobHorMonthlySynth[i] > 0 && eGlobGenMonthly[i] > 0) {
-                    SolarRadiationInclined solarEnergy = new SolarRadiationInclined();
+                    SolRadiInc solarEnergy = new SolRadiInc();
                     solarEnergy.seteGlobHor(eGlobHorMonthlySynth[i] / 1000);
                     solarEnergy.seteGlobGen(eGlobGenMonthly[i] / 1000);
                     solarEnergy.setAe(ae);

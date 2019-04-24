@@ -1,6 +1,6 @@
 package de.josmer.app.library.crawler;
 
-import de.josmer.app.entities.SolarRadiation;
+import de.josmer.app.entities.SolRadi;
 import de.josmer.app.library.enums.RadiationTypes;
 import de.josmer.app.library.utils.Toolbox;
 import java.io.*;
@@ -25,7 +25,7 @@ public final class RadiationCrawler {
     private final String targetUrl;
     private final String targetDir;
     private final RadiationTypes type;
-    private final List<SolarRadiation> radiations;
+    private final List<SolRadi> radiations;
     private final int month;
     private final int year;
     private String currentTargetFile;
@@ -116,7 +116,7 @@ public final class RadiationCrawler {
             final String[] columns = rows[row].split(" ");
             int rechtswert = 3280500;
             for (String column : columns) {
-                SolarRadiation radiation = new SolarRadiation();
+                SolRadi radiation = new SolRadi();
                 radiation.setRadiationValue(Float.parseFloat(column));
                 radiation.setRadiationType(type.name());
                 radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));

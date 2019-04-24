@@ -1,6 +1,6 @@
 package de.josmer.app.entities;
 
-public class SolarRadiation {
+public class SolRadi {
 
     private int radiationDate;
     private int gkhMin;
@@ -10,7 +10,7 @@ public class SolarRadiation {
     private float radiationValue;
     private String radiationType;
 
-    public SolarRadiation() {
+    public SolRadi() {
         this.radiationValue = (float) 0.0;
     }
 
