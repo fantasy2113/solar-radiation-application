@@ -1,7 +1,12 @@
 package de.josmer.app.library.interfaces;
 
-import de.josmer.app.entities.SolRadiInc;
-import de.josmer.app.entities.SolRadiIncExp;
+import java.util.List;
 
-public interface IExport extends IExportRepository<SolRadiIncExp, SolRadiInc> {
+public interface IExport<R, I> {
+
+    List<R> getItems(List<I> items, double lon, double lat);
+
+    List<String> getHeaders();
+
+    String getProps();
 }

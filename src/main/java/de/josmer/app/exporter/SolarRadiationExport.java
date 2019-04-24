@@ -2,13 +2,13 @@ package de.josmer.app.exporter;
 
 import de.josmer.app.entities.SolRadi;
 import de.josmer.app.entities.SolRadiExp;
-import de.josmer.app.library.interfaces.IRadiationExport;
 import java.util.LinkedList;
 import java.util.List;
 import org.springframework.stereotype.Component;
+import de.josmer.app.library.interfaces.ISolarRadiationExport;
 
 @Component
-public class SolarRadiationExport extends Export<SolRadiExp, SolRadi> implements IRadiationExport {
+public class SolarRadiationExport extends Export<SolRadiExp, SolRadi> implements ISolarRadiationExport {
 
     @Override
     public List<SolRadiExp> getItems(final List<SolRadi> solarRadiations, final double lon, final double lat) {

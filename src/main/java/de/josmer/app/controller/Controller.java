@@ -15,18 +15,18 @@ abstract class Controller {
 
     static final String LOGIN_HTML = "src/main/resources/static/html/login.html";
     static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
-    final IRadiationExport radiExport;
-    final IExport solarExport;
-    final ISolarRadiationRepository radiRepo;
+    final ISolarRadiationExport solRadiExport;
+    final ISolarRadiationInclinedExport solRadIncRepo;
+    final ISolarRadiationRepository solRadiRepo;
     final IUserRepository userRepo;
-    final ISolarRadiationInclinedRepository calcRepo;
+    final ISolarRadiationInclinedRepository solRadiIncRepo;
 
-    Controller(IRadiationExport radiExport, IExport solarExport, ISolarRadiationRepository radiRepo, IUserRepository userRepo, ISolarRadiationInclinedRepository calcRepo) {
-        this.radiExport = radiExport;
-        this.solarExport = solarExport;
-        this.radiRepo = radiRepo;
+    Controller(ISolarRadiationExport solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolarRadiationRepository solRadiRepo, IUserRepository userRepo, ISolarRadiationInclinedRepository solRadiIncRepo) {
+        this.solRadiExport = solRadiExport;
+        this.solRadIncRepo = solRadIncRepo;
+        this.solRadiRepo = solRadiRepo;
         this.userRepo = userRepo;
-        this.calcRepo = calcRepo;
+        this.solRadiIncRepo = solRadiIncRepo;
     }
 
     boolean isParameter(String login, String password) {
