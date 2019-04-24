@@ -5,9 +5,9 @@ import java.util.stream.DoubleStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SolarRadiation {
+public class SolarRadiationInclined {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SolarRadiation.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolarRadiationInclined.class.getName());
     private final double lat;
     private final double lon;
     private final double[] eGlobHorMonthly;
@@ -16,7 +16,7 @@ public class SolarRadiation {
     private final double ae;
     private final double[] eGlobHorMonthlySynth;
 
-    public SolarRadiation(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
+    public SolarRadiationInclined(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
         this.lat = lat;
         this.lon = lon;
         this.eGlobHorMonthly = eGlobHorMonthly;
@@ -40,9 +40,9 @@ public class SolarRadiation {
                     final double[] eGlobalHorArr = tagModel.getHours(dtDay, days[day], lat, lon);
                     eGlobHorSumSynth += DoubleStream.of(eGlobalHorArr).sum();
                     for (int hour = 0; hour < 24; hour++) {
-                        final PerezSkyDiffuseModel radiation = new PerezSkyDiffuseModel(ye, ae, lat, lon, 0.2);
-                        radiation.calculateHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
-                        eGlobGenMonthly += radiation.getEGlobalGen();
+                        final PerezSkyDiffuseModel perezSkyDiffuseModel = new PerezSkyDiffuseModel(ye, ae, lat, lon, 0.2);
+                        perezSkyDiffuseModel.calculateHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
+                        eGlobGenMonthly += perezSkyDiffuseModel.getEGlobalGen();
                     }
                 }
                 eGlobHorMonthlySynth[month] = eGlobHorSumSynth;

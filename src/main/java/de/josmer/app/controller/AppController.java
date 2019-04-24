@@ -94,7 +94,7 @@ public class AppController extends Controller {
             response.setContentType("app/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     solRadIncRepo.getHeaders(),
-                    solRadIncRepo.getItems(solRadiIncRepo.getSolarRadiations(solRadiRepo.findGlobal(new GaussKrueger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
+                    solRadIncRepo.getItems(solRadiIncRepo.getSolarRadiationsInclined(solRadiRepo.findGlobal(new GaussKrueger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
                     solRadIncRepo.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -116,7 +116,7 @@ public class AppController extends Controller {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return solRadIncRepo.getItems(solRadiIncRepo.getSolarRadiations(solRadiRepo.findGlobal(new GaussKrueger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        return solRadIncRepo.getItems(solRadiIncRepo.getSolarRadiationsInclined(solRadiRepo.findGlobal(new GaussKrueger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
     }
 
     private Integer getEndDate(int year) {
