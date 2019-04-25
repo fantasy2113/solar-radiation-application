@@ -1,6 +1,6 @@
 package de.josmer.app.library.interfaces;
 
-import de.josmer.app.entities.User;
+import de.josmer.app.model.entities.User;
 import java.util.Optional;
 
 public interface IUserRepository {
