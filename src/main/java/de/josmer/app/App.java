@@ -1,13 +1,11 @@
 package de.josmer.app;
 
+import de.josmer.app.controller.security.Token;
 import de.josmer.app.library.enums.RadiationTypes;
 import de.josmer.app.library.handler.InsertHandler;
 import de.josmer.app.library.handler.TokenHandler;
 import de.josmer.app.library.interfaces.IUserRepository;
-import de.josmer.app.library.security.Token;
 import de.josmer.app.model.repositories.UserRepository;
-import java.io.IOException;
-import java.util.Arrays;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -16,6 +14,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.io.IOException;
+import java.util.Arrays;
 
 @Configuration
 @SpringBootApplication

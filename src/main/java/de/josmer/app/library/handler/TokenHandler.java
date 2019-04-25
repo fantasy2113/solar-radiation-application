@@ -1,6 +1,6 @@
 package de.josmer.app.library.handler;
 
-import de.josmer.app.library.security.Token;
+import de.josmer.app.controller.security.Token;
 
 public class TokenHandler extends AHandler {
 
