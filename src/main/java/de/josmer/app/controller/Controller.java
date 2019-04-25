@@ -1,16 +1,16 @@
 package de.josmer.app.controller;
 
+import de.josmer.app.controller.security.Authentication;
+import de.josmer.app.controller.security.Token;
 import de.josmer.app.library.interfaces.*;
-import de.josmer.app.library.security.Authentication;
-import de.josmer.app.library.security.Token;
+import de.josmer.app.model.entities.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import de.josmer.app.model.entities.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 abstract class Controller {
 
