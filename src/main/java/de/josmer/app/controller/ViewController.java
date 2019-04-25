@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ViewController extends Controller {
 
     @Autowired
-    ViewController(ISolarRadiationExport exportRadiRepo, ISolarRadiationInclinedExport exportCalcRepo, ISolarRadiationRepository radiRepo, IUserRepository userRepo, ISolarRadiationInclinedRepository calcRepo) {
+    ViewController(ISolRadiExporter exportRadiRepo, ISolarRadiationInclinedExport exportCalcRepo, ISolRadiRepository radiRepo, IUserRepository userRepo, ISolRadiIncRepository calcRepo) {
         super(exportRadiRepo, exportCalcRepo, radiRepo, userRepo, calcRepo);
     }
 

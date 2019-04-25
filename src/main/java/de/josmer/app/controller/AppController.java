@@ -2,9 +2,6 @@ package de.josmer.app.controller;
 
 import de.josmer.app.controller.requests.CalculationRequest;
 import de.josmer.app.controller.requests.RadiationRequest;
-import de.josmer.app.entities.SolRadiExp;
-import de.josmer.app.entities.SolRadiIncExp;
-import de.josmer.app.entities.User;
 import de.josmer.app.library.geo.GaussKrueger;
 import de.josmer.app.library.interfaces.*;
 import de.josmer.app.library.security.Token;
@@ -14,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
+
+import de.josmer.app.model.entities.SolRadiExp;
+import de.josmer.app.model.entities.SolRadiIncExp;
+import de.josmer.app.model.entities.User;
 import org.jxls.template.SimpleExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class AppController extends Controller {
 
     @Autowired
-    public AppController(ISolarRadiationExport solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolarRadiationRepository solRadiRepo, IUserRepository userRepo, ISolarRadiationInclinedRepository solRadiIncRepo) {
+    public AppController(ISolRadiExporter solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolRadiRepository solRadiRepo, IUserRepository userRepo, ISolRadiIncRepository solRadiIncRepo) {
         super(solRadiExport, solRadIncRepo, solRadiRepo, userRepo, solRadiIncRepo);
     }
 
