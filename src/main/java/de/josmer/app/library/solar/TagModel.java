@@ -71,17 +71,7 @@ class TagModel {
         Map<Double, double[]> map = calcHours(sunYOfh, he0Hor, kt, phi1);
         final Double minDiff = Collections.min(map.keySet());
         double[] dailyHours = map.get(minDiff);
-        inreaseHours(day, 1, 1.093, dailyHours);
-        inreaseHours(day, 12, 1.225, dailyHours);
         return dailyHours;
-    }
-
-    private void inreaseHours(LocalDateTime dt, int month, double multi, double[] dailyHours) {
-        if (dt.getMonthValue() == month) {
-            for (int h = 0; h < 24; h++) {
-                dailyHours[h] = dailyHours[h] * multi;
-            }
-        }
     }
 
     private Map<Double, double[]> calcHours(double[] sunYOfh, double he0Hor, double kt, double phi1) {

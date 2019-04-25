@@ -1,14 +1,15 @@
 package de.josmer.app.model.repositories;
 
-import de.josmer.app.model.entities.SolRadiInc;
 import de.josmer.app.library.interfaces.ISolRadiIncRepository;
-import de.josmer.app.library.solar.SolarRadiationInclined;
-import java.time.LocalDateTime;
-import java.util.LinkedList;
-import java.util.List;
+import de.josmer.app.library.solar.GlobToInc;
+import de.josmer.app.model.entities.SolRadiInc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.LinkedList;
+import java.util.List;
 
 @Component
 public class SolRadiIncRepository implements ISolRadiIncRepository {
@@ -19,9 +20,9 @@ public class SolRadiIncRepository implements ISolRadiIncRepository {
     public List<SolRadiInc> getSolarRadiationsInclined(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
         List<SolRadiInc> solarEnergies = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
-        SolarRadiationInclined solarRadiationInclined = new SolarRadiationInclined(lat, lon, eGlobHorMonthly, dt, ye, ae);
-        double[] eGlobGenMonthly = solarRadiationInclined.getEGlobGenMonthly();
-        double[] eGlobHorMonthlySynth = solarRadiationInclined.getEGlobHorMonthlySynth();
+        GlobToInc globToInc = new GlobToInc(lat, lon, eGlobHorMonthly, dt, ye, ae);
+        double[] eGlobGenMonthly = globToInc.getEGlobGenMonthly();
+        double[] eGlobHorMonthlySynth = globToInc.getEGlobHorMonthlySynth();
         try {
             for (int i = 0; i < 12; i++) {
                 if (eGlobHorMonthlySynth[i] > 0 && eGlobGenMonthly[i] > 0) {
