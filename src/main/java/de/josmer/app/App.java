@@ -5,7 +5,7 @@ import de.josmer.app.library.handler.InsertHandler;
 import de.josmer.app.library.handler.TokenHandler;
 import de.josmer.app.library.interfaces.IUserRepository;
 import de.josmer.app.library.security.Token;
-import de.josmer.app.repositories.UserRepository;
+import de.josmer.app.model.repositories.UserRepository;
 import java.io.IOException;
 import java.util.Arrays;
 import org.slf4j.Logger;

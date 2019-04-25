@@ -1,6 +1,5 @@
 package de.josmer.app.controller;
 
-import de.josmer.app.entities.User;
 import de.josmer.app.library.interfaces.*;
 import de.josmer.app.library.security.Authentication;
 import de.josmer.app.library.security.Token;
@@ -8,6 +7,8 @@ import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.josmer.app.model.entities.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,13 +16,13 @@ abstract class Controller {
 
     static final String LOGIN_HTML = "src/main/resources/static/html/login.html";
     static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
-    final ISolarRadiationExport solRadiExport;
+    final ISolRadiExporter solRadiExport;
     final ISolarRadiationInclinedExport solRadIncRepo;
-    final ISolarRadiationRepository solRadiRepo;
+    final ISolRadiRepository solRadiRepo;
     final IUserRepository userRepo;
-    final ISolarRadiationInclinedRepository solRadiIncRepo;
+    final ISolRadiIncRepository solRadiIncRepo;
 
-    Controller(ISolarRadiationExport solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolarRadiationRepository solRadiRepo, IUserRepository userRepo, ISolarRadiationInclinedRepository solRadiIncRepo) {
+    Controller(ISolRadiExporter solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolRadiRepository solRadiRepo, IUserRepository userRepo, ISolRadiIncRepository solRadiIncRepo) {
         this.solRadiExport = solRadiExport;
         this.solRadIncRepo = solRadIncRepo;
         this.solRadiRepo = solRadiRepo;

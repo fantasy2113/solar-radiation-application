@@ -2,8 +2,8 @@ package de.josmer.app.library.utils;
 
 import de.josmer.app.library.crawler.RadiationCrawler;
 import de.josmer.app.library.enums.RadiationTypes;
-import de.josmer.app.repositories.SolarRadiationRepository;
-import de.josmer.app.repositories.UserRepository;
+import de.josmer.app.model.repositories.SolRadiRepository;
+import de.josmer.app.model.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +25,7 @@ public class InsertMain {
                 RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, type);
                 radiationCrawler.download();
                 radiationCrawler.unzip();
-                radiationCrawler.insert(new SolarRadiationRepository("postgres://u9q7kd79d0eodj:pcea69f8d94f3a7af2e3fb3e415a6b4bba5e972ba89efa5db298adf6854d778f3@ec2-52-208-123-217.eu-west-1.compute.amazonaws.com:5432/d2jiiehmaovnt3"));
+                radiationCrawler.insert(new SolRadiRepository("postgres://u9q7kd79d0eodj:pcea69f8d94f3a7af2e3fb3e415a6b4bba5e972ba89efa5db298adf6854d778f3@ec2-52-208-123-217.eu-west-1.compute.amazonaws.com:5432/d2jiiehmaovnt3"));
                 radiationCrawler.delete();
             }
         }
