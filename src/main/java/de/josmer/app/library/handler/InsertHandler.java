@@ -2,12 +2,12 @@ package de.josmer.app.library.handler;
 
 import de.josmer.app.library.crawler.RadiationCrawler;
 import de.josmer.app.library.enums.RadiationTypes;
-import java.text.MessageFormat;
-import java.time.LocalDate;
-
 import de.josmer.app.model.repositories.SolRadiRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.text.MessageFormat;
+import java.time.LocalDate;
 
 public final class InsertHandler extends AHandler {
 

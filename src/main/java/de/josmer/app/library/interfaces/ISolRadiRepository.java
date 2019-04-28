@@ -1,6 +1,7 @@
 package de.josmer.app.library.interfaces;
 
 import de.josmer.app.model.entities.SolRadi;
+
 import java.util.List;
 
 public interface ISolRadiRepository {
