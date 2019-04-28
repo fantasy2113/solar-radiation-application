@@ -4,6 +4,9 @@ import de.josmer.app.library.enums.RadiationTypes;
 import de.josmer.app.library.interfaces.ISolRadiRepository;
 import de.josmer.app.library.utils.Toolbox;
 import de.josmer.app.model.entities.SolRadi;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
@@ -15,8 +18,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class RadiationCrawler {
 
@@ -64,11 +65,11 @@ public final class RadiationCrawler {
             LOGGER.info("unzip...");
             File destDir = new File(targetDir);
             byte[] buffer = new byte[1024];
-            try ( ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip()))) {
+            try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip()))) {
                 ZipEntry zipEntry = zipInputStream.getNextEntry();
                 while (zipEntry != null) {
                     File file = new File(destDir, zipEntry.getName());
-                    try ( FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                    try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
                         int len;
                         while ((len = zipInputStream.read(buffer)) > 0) {
                             fileOutputStream.write(buffer, 0, len);
@@ -101,8 +102,8 @@ public final class RadiationCrawler {
     public void delete() {
         LOGGER.info("deleting....");
         try {
-            Path path = Path.of(getPathnameZip(), getPathnameAsc());
-            Files.delete(path);
+            Files.delete(Path.of(getPathnameZip()));
+            Files.delete(Path.of(getPathnameAsc()));
         } catch (IOException e) {
             LOGGER.info(e.getMessage());
         }
