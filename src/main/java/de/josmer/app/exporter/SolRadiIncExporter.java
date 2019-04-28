@@ -1,12 +1,12 @@
 package de.josmer.app.exporter;
 
-import java.util.LinkedList;
-import java.util.List;
-
+import de.josmer.app.library.interfaces.ISolarRadiationInclinedExport;
 import de.josmer.app.model.entities.SolRadiInc;
 import de.josmer.app.model.entities.SolRadiIncExp;
 import org.springframework.stereotype.Component;
-import de.josmer.app.library.interfaces.ISolarRadiationInclinedExport;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Component
 public class SolRadiIncExporter extends Export<SolRadiIncExp, SolRadiInc> implements ISolarRadiationInclinedExport {

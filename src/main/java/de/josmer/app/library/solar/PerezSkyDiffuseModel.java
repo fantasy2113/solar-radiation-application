@@ -6,23 +6,23 @@ import java.util.Map;
 
 class PerezSkyDiffuseModel {
 
-    private static Map<String, double[]> fTabelle;
     private static final String F_11 = "F11";
     private static final String F_12 = "F12";
     private static final String F_13 = "F13";
     private static final String F_21 = "F21";
     private static final String F_22 = "F22";
     private static final String F_23 = "F23";
+    private static Map<String, double[]> fTabelle;
     private final double lon;
     private final double lat;
     private final SolarPostion sunPos;
+    private final double albedo;
+    private final double ae;
+    private final double ye;
     private double eDiffGen;
     private double eDirGen;
     private double eReflGen;
     private double eGlobalGen;
-    private final double albedo;
-    private final double ae;
-    private final double ye;
     private double himmelsklarheitsindex;
     private double delta;
     private double airMass;
