@@ -65,7 +65,7 @@ class SolarPostion {
     }
 
     double getSimpleDayAngle(int dayofyear, int year) {
-        return (2.0 * Math.PI / (double) getDaysInYear(year)) * (dayofyear - 1);
+        return (2.0 * Math.PI / getDaysInYear(year)) * (dayofyear - 1);
     }
 
     double getAs() {
