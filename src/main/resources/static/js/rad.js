@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-    $('#calc_button').css("background-color", "whitesmoke");
+    $('#irr_button').css("background-color", "whitesmoke");
     initDateInputs(1991);
 
     $('#src').empty();
@@ -8,7 +8,7 @@ jQuery(document).ready(function () {
             request.setRequestHeader('login', $('input[id=username]').val());
             request.setRequestHeader('password', $('input[id=password]').val());
         },
-        url: getPath() + 'count',
+        url: getPath() + 'number_of_rad',
         method: 'GET',
         dataType: "text",
         success: function (rows) {
@@ -52,7 +52,7 @@ jQuery(document).ready(function () {
         $('#jsGrid').empty();
         $.ajax({
             method: 'GET',
-            url: getPath() + 'radiation',
+            url: getPath() + 'rad',
             dataType: "json",
             contentType: "application/json",
             data: {
@@ -66,11 +66,8 @@ jQuery(document).ready(function () {
                 $("#jsGrid").jsGrid({
                     width: "620",
                     height: "700",
-
                     //sorting: true,
-
                     data: json,
-
                     fields: [
                         {name: "date", title: "Datum", type: "text"},
                         {name: "value", title: "EHor", type: "number"},
@@ -84,11 +81,11 @@ jQuery(document).ready(function () {
 
     var export_button = jQuery('#export_button');
     export_button.bind('click', function () {
-        $(location).attr('href', getPath() + 'exportradi?' + getExportRadiQuery());
+        $(location).attr('href', getPath() + 'export_rad?' + getExportRadQuery());
     });
 });
 
-function getExportRadiQuery() {
+function getExportRadQuery() {
     return 'startDate=' + $('input[id=start_date]').val() + '&endDate=' + $('input[id=end_date]').val()
             + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
             + '&type=' + $('#type_select option:selected').text().replace("-", "#");

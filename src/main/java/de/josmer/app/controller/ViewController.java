@@ -27,20 +27,21 @@ public class ViewController extends Controller {
         try {
             Cookie[] cookies = req.getCookies();
             String token = "";
-            String path = "";
+            String app = "";
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     token = cookie.getValue();
                 }
                 if (cookie.getName().equals("app")) {
-                    path = cookie.getValue();
+                    app = cookie.getValue();
                 }
             }
             if (isAccess(Token.getAuthentication(token))) {
-                if (path.equals("irrapp")) {
+                if (app.equals("irr")) {
                     return IRR_HTML;
+                } else {
+                    return RAD_HTML;
                 }
-                return RAD_HTML;
             }
         } catch (Exception e) {
             LOGGER.info(e.getMessage());

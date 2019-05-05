@@ -5,16 +5,16 @@ jQuery(document).ready(function () {
         $(location).attr('href', getPath());
     });
 
-    var calc_button = jQuery('#calc_button');
-    calc_button.bind('click', function () {
-        document.cookie = 'app=' + 'calcapp' + ';';
+    var irr_button = jQuery('#irr_button');
+    irr_button.bind('click', function () {
+        document.cookie = 'app=' + 'irr' + ';';
         $(location).attr('href', getPath());
     });
 
     jQuery(document).ready(function () {
-        var radi_button = jQuery('#radi_button');
-        radi_button.bind('click', function () {
-            document.cookie = 'app=' + 'radiapp' + ';';
+        var rad_button = jQuery('#rad_button');
+        rad_button.bind('click', function () {
+            document.cookie = 'app=' + 'rad' + ';';
             $(location).attr('href', getPath());
         });
     });

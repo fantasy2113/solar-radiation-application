@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.stream.DoubleStream;
 
-public class Irradiation {
+public class SolarIrradiation {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Irradiation.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolarIrradiation.class.getName());
     private final double lat;
     private final double lon;
     private final double[] eGlobHorMonthly;
@@ -17,7 +17,7 @@ public class Irradiation {
     private final double ae;
     private final double[] eGlobHorMonthlySynth;
 
-    public Irradiation(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
+    public SolarIrradiation(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
         this.lat = lat;
         this.lon = lon;
         this.eGlobHorMonthly = eGlobHorMonthly;
@@ -30,15 +30,15 @@ public class Irradiation {
     public double[] getEGlobGenMonthly() {
         double[] eGlobGenMonths = new double[12];
         try {
-            TagModel tagModel = new TagModel();
+            SolarSynthesiser solarSynthesiser = new SolarSynthesiser();
             PerezSkyDiffModel perezSkyDiffModel = new PerezSkyDiffModel(ye, ae, lat, lon, 0.2);
             for (int month = getMonthVal(); month < 12; month++) {
                 double eGlobHorSumSynth = 0;
                 double eGlobGenMonthly = 0.0;
-                final double[] days = tagModel.getDays(getDtDays(month), eGlobHorMonthly[month], lat, lon);
+                final double[] days = solarSynthesiser.extractDays(getDtDays(month), eGlobHorMonthly[month], lat, lon);
                 for (int day = 0; day < getDaysInMonth(month); day++) {
                     final LocalDateTime dtDay = getDtDay(month, day);
-                    final double[] eGlobalHorArr = tagModel.getHours(dtDay, days[day], lat, lon);
+                    final double[] eGlobalHorArr = solarSynthesiser.extractHours(dtDay, days[day], lat, lon);
                     inreaseHours(((days[day] / getSum(eGlobalHorArr)) * 100) / 100, eGlobalHorArr);
                     eGlobHorSumSynth += getSum(eGlobalHorArr);
                     for (int hour = 0; hour < 24; hour++) {

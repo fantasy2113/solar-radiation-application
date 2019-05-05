@@ -38,7 +38,7 @@ public class AppController extends Controller {
         this.solIrrRep = solIrrRep;
     }
 
-    @GetMapping(value = "/saveuser", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(value = "/create_user", produces = MediaType.TEXT_HTML_VALUE)
     public String saveUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         if (isParameter(login, password)) {
             return "Benutzername oder Passwort sind nicht lang genug!";
@@ -67,16 +67,16 @@ public class AppController extends Controller {
         return "";
     }
 
-    @GetMapping(value = "/count", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String getCount(@CookieValue("token") final String token) {
+    @GetMapping(value = "/number_of_rad", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String getNumberOfRad(@CookieValue("token") final String token) {
         if (!isAccess(Token.getAuthentication(token))) {
             return "-1";
         }
         return Long.toString(solRadRep.count());
     }
 
-    @GetMapping("/exportradi")
-    public void exportRadi(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) {
+    @GetMapping("/export_rad")
+    public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) {
         if (!isAccess(Token.getAuthentication(token))) {
             return;
         }
@@ -94,8 +94,8 @@ public class AppController extends Controller {
         }
     }
 
-    @GetMapping("/exportcalc")
-    public void exportCalc(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye) {
+    @GetMapping("/export_irr")
+    public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye) {
         if (!isAccess(Token.getAuthentication(token))) {
             return;
         }
@@ -113,16 +113,16 @@ public class AppController extends Controller {
         }
     }
 
-    @GetMapping("/radiation")
-    public List<SolRadExp> getRadiation(@CookieValue("token") final String token, final RadRequest req) {
+    @GetMapping("/rad")
+    public List<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
         return solRadExp.getItems(solRadRep.find(new GaussKruger(), getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
-    @GetMapping("/calculation")
-    public List<SolIrrExp> getCalculation(@CookieValue("token") final String token, final IrrRequest req) {
+    @GetMapping("/irr")
+    public List<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }

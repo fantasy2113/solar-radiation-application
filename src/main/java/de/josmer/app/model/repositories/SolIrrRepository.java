@@ -1,7 +1,7 @@
 package de.josmer.app.model.repositories;
 
 import de.josmer.app.library.interfaces.ISolIrrRepository;
-import de.josmer.app.library.solar.Irradiation;
+import de.josmer.app.library.solar.SolarIrradiation;
 import de.josmer.app.model.entities.SolIrr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +20,9 @@ public class SolIrrRepository implements ISolIrrRepository {
     public List<SolIrr> getSolRadInc(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
         List<SolIrr> solarEnergies = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
-        Irradiation irradiation = new Irradiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
-        double[] eGlobGenMonthly = irradiation.getEGlobGenMonthly();
-        double[] eGlobHorMonthlySynth = irradiation.getEGlobHorMonthlySynth();
+        SolarIrradiation solarIrradiation = new SolarIrradiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
+        double[] eGlobGenMonthly = solarIrradiation.getEGlobGenMonthly();
+        double[] eGlobHorMonthlySynth = solarIrradiation.getEGlobHorMonthlySynth();
         try {
             for (int i = 0; i < 12; i++) {
                 if (eGlobHorMonthlySynth[i] > 0 && eGlobGenMonthly[i] > 0) {

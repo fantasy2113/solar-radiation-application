@@ -2,7 +2,7 @@ jQuery(document).ready(function () {
 
     autocomplete(document.getElementById("year"), getYears());
 
-    $('#radi_button').css("background-color", "whitesmoke");
+    $('#rad_button').css("background-color", "whitesmoke");
 
 
     var alignment = jQuery('#alignment');
@@ -25,14 +25,14 @@ jQuery(document).ready(function () {
         }
     });
 
-    var calculation_button = jQuery('#calculation_button');
-    calculation_button.bind('click', function () {
+    var calc_irr_button = jQuery('#calc_irr_button');
+    calc_irr_button.bind('click', function () {
         $('html,body').css('cursor', 'wait');
         $('#jsGrid').empty();
         $('#jsGrid').append('<b>Berechnung läuft ...</b>');
         $.ajax({
             method: 'GET',
-            url: getPath() + 'calculation',
+            url: getPath() + 'irr',
             dataType: "json",
             contentType: "application/json",
             data: {
@@ -47,11 +47,8 @@ jQuery(document).ready(function () {
                 $("#jsGrid").jsGrid({
                     width: "620",
                     height: "700",
-
                     //sorting: true,
-
                     data: json,
-
                     fields: [
                         {name: "date", title: "Datum", type: "text"},
                         {name: "eGlobHor", title: "EGlobHor"},
@@ -69,15 +66,15 @@ jQuery(document).ready(function () {
         });
     });
 
-    var calculation_export_button = jQuery('#calculation_export_button');
-    calculation_export_button.bind('click', function () {
+    var calc_irr_export_button = jQuery('#calc_irr_export_button');
+    calc_irr_export_button.bind('click', function () {
         $('#jsGrid').empty();
         $('#jsGrid').append('<b>Export läuft ...</b>');
-        $(location).attr('href', getPath() + 'exportcalc?' + getExportCalcQuery());
+        $(location).attr('href', getPath() + 'export_irr?' + getExportIrrQuery());
     });
 });
 
-function getExportCalcQuery() {
+function getExportIrrQuery() {
     return 'year=' + $('input[id=year]').val()
             + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
             + '&ae=' + $('input[id=alignment]').val() + '&ye=' + $('input[id=tilt]').val();

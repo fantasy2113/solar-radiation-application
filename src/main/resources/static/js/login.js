@@ -13,7 +13,7 @@ function getToken(path) {
             if (token.includes('!')) {
                 $("#alert").append('<b>' + token + '</b>');
             } else {
-                document.cookie = 'token=' + token + ';app=' + 'radiapp' + ';';
+                document.cookie = 'token=' + token + ';app=' + 'rad' + ';';
                 $(location).attr('href', getPath());
             }
         }
@@ -26,8 +26,8 @@ jQuery(document).ready(function () {
         getToken('token');
     });
 
-    var save_button = jQuery('#save_button');
-    save_button.bind('click', function () {
-        getToken('saveuser');
+    var create_button = jQuery('#create_button');
+    create_button.bind('click', function () {
+        getToken('create_user');
     });
 });
