@@ -72,7 +72,7 @@ class TagModel {
         return hoursMap.get(Collections.min(hoursMap.keySet()));
     }
 
-    private Map<Double, double[]> getHoursMap(double[] sunYOfh, double he0Hor, double kt, double phi1) {
+    private Map<Double, double[]> getHoursMap(double[] sunYOfH, double hE0Hor, double kt, double phi) {
         int cnt = 0;
         double[] ktOfh;
         double[] egHorOfh;
@@ -81,7 +81,7 @@ class TagModel {
         do {
             boolean isNotAdd = false;
             ++cnt;
-            ktOfh = calcKtOfh(kt, phi1, sunYOfh);
+            ktOfh = calcKtOfH(kt, phi, sunYOfH);
             egHorOfh = new double[24];
             hSynHor = 0.0;
             for (int h = 0; h < ktOfh.length; h++) {
@@ -94,32 +94,32 @@ class TagModel {
                     isNotAdd = true;
                     break; //NOSONAR
                 } else {
-                    egHorOfh[h] = ktOfh[h] * Utils.EO_TAG * Utils.sin(sunYOfh[h]);
+                    egHorOfh[h] = ktOfh[h] * Utils.EO_TAG * Utils.sin(sunYOfH[h]);
                     hSynHor += egHorOfh[h];
                 }
             }
             if (!isNotAdd) {
-                double diff = Math.abs((hSynHor / he0Hor) - kt) / kt * 100.0;
+                double diff = Math.abs((hSynHor / hE0Hor) - kt) / kt * 100.0;
                 hoursMap.put(diff, egHorOfh);
             }
         } while (cnt < 10000);
         return hoursMap;
     }
 
-    private double[] calcKtOfh(double kt, double phi1, double[] sunYOfh) {
+    private double[] calcKtOfH(double kt, double phi, double[] sunYOfH) {
         double[] yOfh = new double[24];
         double[] ktOfh = new double[24];
         for (int h = 0; h < 24; h++) {
-            if (sunYOfh[h] > 0.0) {
-                double ysDeg = Utils.getRad(sunYOfh[h]);
+            if (sunYOfH[h] > 0.0) {
+                double ysDeg = Utils.getRad(sunYOfH[h]);
                 double ktm = -0.19 + 1.12 * kt + 0.24 * Math.exp(-8 * kt)
                         + (0.32 - 1.6 * Math.pow(kt - 0.5, 2))
                         * Math.exp((-0.19 - 2.27 * Math.pow(kt, 2) + 2.51 * Math.pow(kt, 3)) / Math.sin(ysDeg));
                 double sigma = 0.14 * Math.exp(-20 * Math.pow(kt - 0.35, 2)) * Math.exp(3 * (Math.pow(kt - 0.45, 2) + 16 * Math.pow(kt, 5)) * (1 - Math.sin(ysDeg)));
                 double z = random.nextDouble();
-                double r = sigma * Math.sqrt(1 - Math.pow(phi1, 2)) * ((Math.pow(z, 0.135) - Math.pow(1 - z, 0.135)) / 0.1975);
+                double r = sigma * Math.sqrt(1 - Math.pow(phi, 2)) * ((Math.pow(z, 0.135) - Math.pow(1 - z, 0.135)) / 0.1975);
                 if (h > 0) {
-                    yOfh[h] = phi1 * yOfh[h - 1] + r;
+                    yOfh[h] = phi * yOfh[h - 1] + r;
                 } else {
                     yOfh[h] = r;
                 }
