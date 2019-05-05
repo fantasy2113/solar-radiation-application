@@ -68,18 +68,16 @@ class TagModel {
         zeroGuard(he0Hor);
         double kt = hGlob / he0Hor;
         double phi1 = 0.38 + 0.06 * Math.cos(7.4 * kt - 2.5);
-        Map<Double, double[]> map = calcHours(sunYOfH, he0Hor, kt, phi1);
-        final Double minDiff = Collections.min(map.keySet());
-        double[] dailyHours = map.get(minDiff);
-        return dailyHours;
+        Map<Double, double[]> hoursMap = getHoursMap(sunYOfH, he0Hor, kt, phi1);
+        return hoursMap.get(Collections.min(hoursMap.keySet()));
     }
 
-    private Map<Double, double[]> calcHours(double[] sunYOfh, double he0Hor, double kt, double phi1) {
+    private Map<Double, double[]> getHoursMap(double[] sunYOfh, double he0Hor, double kt, double phi1) {
         int cnt = 0;
         double[] ktOfh;
         double[] egHorOfh;
         double hSynHor;
-        Map<Double, double[]> hours = new HashMap<>();
+        Map<Double, double[]> hoursMap = new HashMap<>();
         do {
             boolean isNotAdd = false;
             ++cnt;
@@ -102,10 +100,10 @@ class TagModel {
             }
             if (!isNotAdd) {
                 double diff = Math.abs((hSynHor / he0Hor) - kt) / kt * 100.0;
-                hours.put(diff, egHorOfh);
+                hoursMap.put(diff, egHorOfh);
             }
         } while (cnt < 10000);
-        return hours;
+        return hoursMap;
     }
 
     private double[] calcKtOfh(double kt, double phi1, double[] sunYOfh) {
