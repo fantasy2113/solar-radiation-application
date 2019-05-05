@@ -28,7 +28,6 @@ public class GlobToInc {
     }
 
     public double[] getEGlobGenMonthly() {
-        PerezSkyDiffuseModel.initFTabelle();
         double[] eGlobGenMonths = new double[12];
         try {
             TagModel tagModel = new TagModel();
@@ -39,12 +38,11 @@ public class GlobToInc {
                 for (int day = 0; day < getDaysInMonth(month); day++) {
                     final LocalDateTime dtDay = getDtDay(month, day);
                     final double[] eGlobalHorArr = tagModel.getHours(dtDay, days[day], lat, lon);
-                    inreaseHours(((days[day] / DoubleStream.of(eGlobalHorArr).sum()) * 100) / 100, eGlobalHorArr);
-                    eGlobHorSumSynth += DoubleStream.of(eGlobalHorArr).sum();
+                    inreaseHours(((days[day] / getSum(eGlobalHorArr)) * 100) / 100, eGlobalHorArr);
+                    eGlobHorSumSynth += getSum(eGlobalHorArr);
                     for (int hour = 0; hour < 24; hour++) {
-                        final PerezSkyDiffuseModel perezSkyDiffuseModel = new PerezSkyDiffuseModel(ye, ae, lat, lon, 0.2);
-                        perezSkyDiffuseModel.calculateHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
-                        eGlobGenMonthly += perezSkyDiffuseModel.getEGlobalGen();
+                        eGlobGenMonthly += new PerezSkyDiffModel(ye, ae, lat, lon, 0.2)
+                                .getCalculatedHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
                     }
                 }
                 eGlobHorMonthlySynth[month] = eGlobHorSumSynth;
@@ -54,6 +52,10 @@ public class GlobToInc {
             LOGGER.info(e.getMessage());
         }
         return eGlobGenMonths;
+    }
+
+    private double getSum(double[] eGlobalHorArr) {
+        return DoubleStream.of(eGlobalHorArr).sum();
     }
 
     private int getDaysInMonth(int month) {
