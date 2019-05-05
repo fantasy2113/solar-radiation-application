@@ -1,30 +1,30 @@
 package de.josmer.app.exporter;
 
 import de.josmer.app.library.interfaces.ISolarRadiationInclinedExport;
-import de.josmer.app.model.entities.SolRadiInc;
-import de.josmer.app.model.entities.SolRadiIncExp;
+import de.josmer.app.model.entities.SolRadInc;
+import de.josmer.app.model.entities.SolRadIncExp;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolRadiIncExporter extends Export<SolRadiIncExp, SolRadiInc> implements ISolarRadiationInclinedExport {
+public class SolRadiIncExporter extends Export<SolRadIncExp, SolRadInc> implements ISolarRadiationInclinedExport {
 
     @Override
-    public List<SolRadiIncExp> getItems(List<SolRadiInc> items, double lon, double lat) {
-        List<SolRadiIncExp> exportCalcs = new LinkedList<>();
+    public List<SolRadIncExp> getItems(List<SolRadInc> items, double lon, double lat) {
+        List<SolRadIncExp> exportCalcs = new LinkedList<>();
         try {
             double eGlobHor = 0.0;
             double eGlobGen = 0.0;
 
-            for (SolRadiInc calculated : items) {
+            for (SolRadInc calculated : items) {
                 eGlobHor += calculated.geteGlobHor();
                 eGlobGen += calculated.geteGlobGen();
                 exportCalcs.add(mapToExport(lon, lat, calculated));
             }
 
-            SolRadiIncExp exportCalc = new SolRadiIncExp();
+            SolRadIncExp exportCalc = new SolRadIncExp();
             exportCalc.seteGlobGen(Double.valueOf(roundToString(eGlobGen, 2)));
             exportCalc.seteGlobHor(Double.valueOf(roundToString(eGlobHor, 2)));
             exportCalc.setLat(roundToString(lat, 3));
@@ -38,7 +38,7 @@ public class SolRadiIncExporter extends Export<SolRadiIncExp, SolRadiInc> implem
 
             exportCalcs.add(exportCalc);
 
-            exportCalc = new SolRadiIncExp();
+            exportCalc = new SolRadIncExp();
             exportCalc.seteGlobHor(Double.valueOf(roundToString(eGlobGen - eGlobHor, 2)));
             exportCalc.seteGlobGen(Double.valueOf(roundToString(((eGlobGen / eGlobHor) * 100) - 100, 2)));
             exportCalc.setLat("");
@@ -66,8 +66,8 @@ public class SolRadiIncExporter extends Export<SolRadiIncExp, SolRadiInc> implem
     }
 
     @Override
-    protected SolRadiIncExp mapToExport(double lon, double lat, SolRadiInc item) {
-        SolRadiIncExp exportCalc = new SolRadiIncExp();
+    protected SolRadIncExp mapToExport(double lon, double lat, SolRadInc item) {
+        SolRadIncExp exportCalc = new SolRadIncExp();
         exportCalc.seteGlobGen(Double.valueOf(roundToString(item.geteGlobGen(), 2)));
         exportCalc.seteGlobHor(Double.valueOf(roundToString(item.geteGlobHor(), 2)));
         exportCalc.setLat(roundToString(lat, 3));

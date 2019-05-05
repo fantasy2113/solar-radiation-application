@@ -24,8 +24,8 @@ class PerezSkyDiffModel {
     private final double albedo;
     private final double ae;
     private final double ye;
-    private double eDiffGen;
-    private double eDirGen;
+    private double eDiffInc;
+    private double eDirInc;
     private double eRefInc;
     private double skyClearnessIndex;
     private double delta;
@@ -115,8 +115,8 @@ class PerezSkyDiffModel {
     private void setEDirInc(double eDirHor) {
         double cosSolarZenith = Utils.cos(solarPostion.getZenith());
         double ratio = aoiProjection / cosSolarZenith;
-        eDirGen = eDirHor * ratio;
-        eDirGen = Math.max(eDirGen, 0);
+        eDirInc = eDirHor * ratio;
+        eDirInc = Math.max(eDirInc, 0);
     }
 
     private void setSkyClearnessIndex(double eDiffHor, double eDirHor) {
@@ -128,7 +128,7 @@ class PerezSkyDiffModel {
         double term1 = 0.5 * (1 - f1) * (1 + Utils.cos(ye));
         double term2 = f1 * a / b;
         double term3 = f2 * Utils.sin(ye);
-        eDiffGen = Math.max(0, eDiffHor * (term1 + term2 + term3));
+        eDiffInc = Math.max(0, eDiffHor * (term1 + term2 + term3));
     }
 
     private void setEDirHorExtra(LocalDateTime dt) {
@@ -149,6 +149,7 @@ class PerezSkyDiffModel {
     }
 
     double getCalculatedHour(double eGlobalHor, LocalDateTime dt) {
+        reset();
         LocalDateTime dateTime = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
         solarPostion.calculate(dateTime, lat, lon);
         if (eGlobalHor > 0 && solarPostion.getYs() > 0) {
@@ -166,6 +167,12 @@ class PerezSkyDiffModel {
             setAB();
             setMEDiffIncPerez(eDiffHor);
         }
-        return eDiffGen + eDirGen + eRefInc;
+        return eDiffInc + eDirInc + eRefInc;
+    }
+
+    private void reset() {
+        eDiffInc = 0;
+        eDirInc = 0;
+        eRefInc = 0;
     }
 }

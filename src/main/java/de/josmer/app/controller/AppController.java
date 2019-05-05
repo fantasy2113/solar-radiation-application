@@ -6,8 +6,8 @@ import de.josmer.app.controller.security.Token;
 import de.josmer.app.library.geo.GaussKrueger;
 import de.josmer.app.library.interfaces.*;
 import de.josmer.app.library.utils.Toolbox;
-import de.josmer.app.model.entities.SolRadiExp;
-import de.josmer.app.model.entities.SolRadiIncExp;
+import de.josmer.app.model.entities.SolRadExp;
+import de.josmer.app.model.entities.SolRadIncExp;
 import de.josmer.app.model.entities.User;
 import org.jxls.template.SimpleExporter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class AppController extends Controller {
 
     @Autowired
-    public AppController(ISolRadiExporter solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolRadiRepository solRadiRepo, IUserRepository userRepo, ISolRadiIncRepository solRadiIncRepo) {
+    public AppController(ISolRadiExporter solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolRadRepository solRadiRepo, IUserRepository userRepo, ISolRadIncRepository solRadiIncRepo) {
         super(solRadiExport, solRadIncRepo, solRadiRepo, userRepo, solRadiIncRepo);
     }
 
@@ -95,7 +95,7 @@ public class AppController extends Controller {
             response.setContentType("app/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     solRadIncRepo.getHeaders(),
-                    solRadIncRepo.getItems(solRadiIncRepo.getSolarRadiationsInclined(solRadiRepo.findGlobal(new GaussKrueger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
+                    solRadIncRepo.getItems(solRadiIncRepo.getSolRadInc(solRadiRepo.findGlobal(new GaussKrueger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
                     solRadIncRepo.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -105,7 +105,7 @@ public class AppController extends Controller {
     }
 
     @GetMapping("/radiation")
-    public List<SolRadiExp> getRadiation(@CookieValue("token") final String token, final RadiationRequest req) {
+    public List<SolRadExp> getRadiation(@CookieValue("token") final String token, final RadiationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
@@ -113,11 +113,11 @@ public class AppController extends Controller {
     }
 
     @GetMapping("/calculation")
-    public List<SolRadiIncExp> getCalculation(@CookieValue("token") final String token, final CalculationRequest req) {
+    public List<SolRadIncExp> getCalculation(@CookieValue("token") final String token, final CalculationRequest req) {
         if (!isAccess(Token.getAuthentication(token))) {
             return new ArrayList<>();
         }
-        return solRadIncRepo.getItems(solRadiIncRepo.getSolarRadiationsInclined(solRadiRepo.findGlobal(new GaussKrueger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        return solRadIncRepo.getItems(solRadiIncRepo.getSolRadInc(solRadiRepo.findGlobal(new GaussKrueger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
     }
 
     private Integer getEndDate(int year) {

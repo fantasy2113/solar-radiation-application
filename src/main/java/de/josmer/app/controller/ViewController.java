@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ViewController extends Controller {
 
     @Autowired
-    ViewController(ISolRadiExporter exportRadiRepo, ISolarRadiationInclinedExport exportCalcRepo, ISolRadiRepository radiRepo, IUserRepository userRepo, ISolRadiIncRepository calcRepo) {
+    ViewController(ISolRadiExporter exportRadiRepo, ISolarRadiationInclinedExport exportCalcRepo, ISolRadRepository radiRepo, IUserRepository userRepo, ISolRadIncRepository calcRepo) {
         super(exportRadiRepo, exportCalcRepo, radiRepo, userRepo, calcRepo);
     }
 

@@ -1,8 +1,8 @@
 package de.josmer.app.library.interfaces;
 
-import de.josmer.app.model.entities.SolRadi;
-import de.josmer.app.model.entities.SolRadiExp;
+import de.josmer.app.model.entities.SolRad;
+import de.josmer.app.model.entities.SolRadExp;
 
-public interface ISolRadiExporter extends IExport<SolRadiExp, SolRadi> {
+public interface ISolRadiExporter extends IExport<SolRadExp, SolRad> {
 
 }

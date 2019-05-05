@@ -1,8 +1,8 @@
 package de.josmer.app.model.repositories;
 
 import de.josmer.app.library.interfaces.IGaussKrueger;
-import de.josmer.app.library.interfaces.ISolRadiRepository;
-import de.josmer.app.model.entities.SolRadi;
+import de.josmer.app.library.interfaces.ISolRadRepository;
+import de.josmer.app.model.entities.SolRad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -15,21 +15,21 @@ import java.util.Locale;
 import java.util.OptionalInt;
 
 @Component
-public final class SolRadiRepository extends Repository<SolRadi> implements ISolRadiRepository {
+public final class SolRadRepository extends Repository<SolRad> implements ISolRadRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SolRadiRepository.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolRadRepository.class.getName());
 
-    public SolRadiRepository(final String databaseUrl) {
+    public SolRadRepository(final String databaseUrl) {
         super(databaseUrl);
     }
 
-    public SolRadiRepository() {
+    public SolRadRepository() {
         super();
     }
 
     @Override
     public double[] findGlobal(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
-        List<SolRadi> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
+        List<SolRad> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         try {
             for (int i = 0; i < retArr.length; i++) {
@@ -42,9 +42,9 @@ public final class SolRadiRepository extends Repository<SolRadi> implements ISol
     }
 
     @Override
-    public List<SolRadi> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
-        List<SolRadi> radiations = new LinkedList<>();
-        gaussKrueger.convertFrom(lon, lat);
+    public List<SolRad> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+        List<SolRad> radiations = new LinkedList<>();
+        gaussKrueger.transformFrom(lon, lat);
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
         final OptionalInt optionalRechtswert = getRechtswert(gaussKrueger);
         if (optionalRechtswert.isEmpty()) {
@@ -83,12 +83,12 @@ public final class SolRadiRepository extends Repository<SolRadi> implements ISol
     }
 
     @Override
-    public void save(final List<SolRadi> radiations) {
+    public void save(final List<SolRad> radiations) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement
                      = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
             connection.setAutoCommit(false);
-            for (SolRadi radiation : radiations) {
+            for (SolRad radiation : radiations) {
                 preparedStatement.setString(1, radiation.getRadiationType());
                 preparedStatement.setInt(2, radiation.getRadiationDate());
                 preparedStatement.setInt(3, radiation.getGkrMin());
@@ -120,8 +120,8 @@ public final class SolRadiRepository extends Repository<SolRadi> implements ISol
     }
 
     @Override
-    protected SolRadi mapToEntity(ResultSet rs) throws SQLException {
-        SolRadi radiation = new SolRadi();
+    protected SolRad mapToEntity(ResultSet rs) throws SQLException {
+        SolRad radiation = new SolRad();
         radiation.setRadiationType(rs.getString("radiation_type"));
         radiation.setRadiationDate(rs.getInt("radiation_date"));
         radiation.setGkrMin(rs.getInt("gkr_min"));

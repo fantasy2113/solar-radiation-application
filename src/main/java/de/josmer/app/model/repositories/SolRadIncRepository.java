@@ -1,8 +1,8 @@
 package de.josmer.app.model.repositories;
 
-import de.josmer.app.library.interfaces.ISolRadiIncRepository;
-import de.josmer.app.library.solar.GlobToInc;
-import de.josmer.app.model.entities.SolRadiInc;
+import de.josmer.app.library.interfaces.ISolRadIncRepository;
+import de.josmer.app.library.solar.Irradiation;
+import de.josmer.app.model.entities.SolRadInc;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -12,21 +12,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolRadiIncRepository implements ISolRadiIncRepository {
+public class SolRadIncRepository implements ISolRadIncRepository {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SolRadiIncRepository.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolRadIncRepository.class.getName());
 
     @Override
-    public List<SolRadiInc> getSolarRadiationsInclined(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
-        List<SolRadiInc> solarEnergies = new LinkedList<>();
+    public List<SolRadInc> getSolRadInc(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
+        List<SolRadInc> solarEnergies = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
-        GlobToInc globToInc = new GlobToInc(lat, lon, eGlobHorMonthly, dt, ye, ae);
-        double[] eGlobGenMonthly = globToInc.getEGlobGenMonthly();
-        double[] eGlobHorMonthlySynth = globToInc.getEGlobHorMonthlySynth();
+        Irradiation irradiation = new Irradiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
+        double[] eGlobGenMonthly = irradiation.getEGlobGenMonthly();
+        double[] eGlobHorMonthlySynth = irradiation.getEGlobHorMonthlySynth();
         try {
             for (int i = 0; i < 12; i++) {
                 if (eGlobHorMonthlySynth[i] > 0 && eGlobGenMonthly[i] > 0) {
-                    SolRadiInc solarEnergy = new SolRadiInc();
+                    SolRadInc solarEnergy = new SolRadInc();
                     solarEnergy.seteGlobHor(eGlobHorMonthlySynth[i] / 1000);
                     solarEnergy.seteGlobGen(eGlobGenMonthly[i] / 1000);
                     solarEnergy.setAe(ae);

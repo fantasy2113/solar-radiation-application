@@ -1,9 +1,9 @@
 package de.josmer.app.library.crawler;
 
 import de.josmer.app.library.enums.RadiationTypes;
-import de.josmer.app.library.interfaces.ISolRadiRepository;
+import de.josmer.app.library.interfaces.ISolRadRepository;
 import de.josmer.app.library.utils.Toolbox;
-import de.josmer.app.model.entities.SolRadi;
+import de.josmer.app.model.entities.SolRad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public final class RadiationCrawler {
     private final String targetUrl;
     private final String targetDir;
     private final RadiationTypes type;
-    private final List<SolRadi> radiations;
+    private final List<SolRad> radiations;
     private final int month;
     private final int year;
     private String currentTargetFile;
@@ -84,15 +84,15 @@ public final class RadiationCrawler {
         }
     }
 
-    public void insert(final ISolRadiRepository radiationRepository) {
+    public void insert(final ISolRadRepository radiationRepository) {
         inserting(radiationRepository);
     }
 
-    public void insert(final String databaseUrl, final ISolRadiRepository radiationRepository) { // NOSONAR
+    public void insert(final String databaseUrl, final ISolRadRepository radiationRepository) { // NOSONAR
         inserting(radiationRepository);
     }
 
-    private void inserting(final ISolRadiRepository radiationRepository) {
+    private void inserting(final ISolRadRepository radiationRepository) {
         LOGGER.info("reading...");
         initRadiations();
         LOGGER.info("inserting...");
@@ -117,7 +117,7 @@ public final class RadiationCrawler {
             final String[] columns = rows[row].split(" ");
             int rechtswert = 3280500;
             for (String column : columns) {
-                SolRadi radiation = new SolRadi();
+                SolRad radiation = new SolRad();
                 radiation.setRadiationValue(Float.parseFloat(column));
                 radiation.setRadiationType(type.name());
                 radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));

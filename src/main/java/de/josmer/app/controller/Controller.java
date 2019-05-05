@@ -18,11 +18,11 @@ abstract class Controller {
     static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
     final ISolRadiExporter solRadiExport;
     final ISolarRadiationInclinedExport solRadIncRepo;
-    final ISolRadiRepository solRadiRepo;
+    final ISolRadRepository solRadiRepo;
     final IUserRepository userRepo;
-    final ISolRadiIncRepository solRadiIncRepo;
+    final ISolRadIncRepository solRadiIncRepo;
 
-    Controller(ISolRadiExporter solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolRadiRepository solRadiRepo, IUserRepository userRepo, ISolRadiIncRepository solRadiIncRepo) {
+    Controller(ISolRadiExporter solRadiExport, ISolarRadiationInclinedExport solRadIncRepo, ISolRadRepository solRadiRepo, IUserRepository userRepo, ISolRadIncRepository solRadiIncRepo) {
         this.solRadiExport = solRadiExport;
         this.solRadIncRepo = solRadIncRepo;
         this.solRadiRepo = solRadiRepo;

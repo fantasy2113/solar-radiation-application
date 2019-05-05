@@ -12,7 +12,7 @@ public final class GaussKrueger implements IGaussKrueger {
     private double hochwert;
 
     @Override
-    public void convertFrom(final double lon, final double lat) {
+    public void transformFrom(final double lon, final double lat) {
         this.lon = lon;
         this.lat = lat;
         wgs84ToPot();

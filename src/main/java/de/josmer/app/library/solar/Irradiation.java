@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.stream.DoubleStream;
 
-public class GlobToInc {
+public class Irradiation {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobToInc.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Irradiation.class.getName());
     private final double lat;
     private final double lon;
     private final double[] eGlobHorMonthly;
@@ -17,7 +17,7 @@ public class GlobToInc {
     private final double ae;
     private final double[] eGlobHorMonthlySynth;
 
-    public GlobToInc(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
+    public Irradiation(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
         this.lat = lat;
         this.lon = lon;
         this.eGlobHorMonthly = eGlobHorMonthly;
@@ -31,6 +31,7 @@ public class GlobToInc {
         double[] eGlobGenMonths = new double[12];
         try {
             TagModel tagModel = new TagModel();
+            PerezSkyDiffModel perezSkyDiffModel = new PerezSkyDiffModel(ye, ae, lat, lon, 0.2);
             for (int month = getMonthVal(); month < 12; month++) {
                 double eGlobHorSumSynth = 0;
                 double eGlobGenMonthly = 0.0;
@@ -41,8 +42,7 @@ public class GlobToInc {
                     inreaseHours(((days[day] / getSum(eGlobalHorArr)) * 100) / 100, eGlobalHorArr);
                     eGlobHorSumSynth += getSum(eGlobalHorArr);
                     for (int hour = 0; hour < 24; hour++) {
-                        eGlobGenMonthly += new PerezSkyDiffModel(ye, ae, lat, lon, 0.2)
-                                .getCalculatedHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
+                        eGlobGenMonthly += perezSkyDiffModel.getCalculatedHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
                     }
                 }
                 eGlobHorMonthlySynth[month] = eGlobHorSumSynth;

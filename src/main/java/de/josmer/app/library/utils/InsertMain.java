@@ -2,7 +2,7 @@ package de.josmer.app.library.utils;
 
 import de.josmer.app.library.crawler.RadiationCrawler;
 import de.josmer.app.library.enums.RadiationTypes;
-import de.josmer.app.model.repositories.SolRadiRepository;
+import de.josmer.app.model.repositories.SolRadRepository;
 import de.josmer.app.model.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ public class InsertMain {
                 RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, type);
                 radiationCrawler.download();
                 radiationCrawler.unzip();
-                radiationCrawler.insert(new SolRadiRepository());
+                radiationCrawler.insert(new SolRadRepository());
                 radiationCrawler.delete();
             }
         }
