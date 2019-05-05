@@ -150,8 +150,7 @@ class PerezSkyDiffModel {
 
     double getCalculatedHour(double eGlobalHor, LocalDateTime dt) {
         reset();
-        LocalDateTime dateTime = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
-        solarPostion.calculate(dateTime, lat, lon);
+        solarPostion.calculate(getDt(dt), lat, lon);
         if (eGlobalHor > 0 && solarPostion.getYs() > 0) {
             setAoi();
             final double eDiffHor = getEDiffHor(eGlobalHor);
@@ -168,6 +167,10 @@ class PerezSkyDiffModel {
             setMEDiffIncPerez(eDiffHor);
         }
         return eDiffInc + eDirInc + eRefInc;
+    }
+
+    private LocalDateTime getDt(LocalDateTime dt) {
+        return LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
     }
 
     private void reset() {
