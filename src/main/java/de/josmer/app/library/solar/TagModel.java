@@ -26,7 +26,7 @@ class TagModel {
         if (hGlob <= 0) {
             return days;
         }
-        double[] dailyhe0Hor = new double[daysInMonth];
+        double[] dailyHe0Hor = new double[daysInMonth];
         double he0HorSum = 0.0;
         for (int d = 0; d < daysInMonth; d++) {
             SolarPostion sunPos = new SolarPostion();
@@ -39,12 +39,12 @@ class TagModel {
                 }
             }
             final double he0Hor = e0OfDay(month) * sumSinGammaS;
-            dailyhe0Hor[d] = he0Hor;
+            dailyHe0Hor[d] = he0Hor;
             he0HorSum += he0Hor;
         }
         zeroGuard(he0HorSum);
         for (int d = 0; d < daysInMonth; d++) {
-            days[d] = hGlob * (dailyhe0Hor[d] / he0HorSum);
+            days[d] = hGlob * (dailyHe0Hor[d] / he0HorSum);
         }
         return days;
     }
@@ -54,12 +54,12 @@ class TagModel {
             return new double[24];
         }
         SolarPostion sunPos = new SolarPostion();
-        double[] sunYOfh = new double[24];
+        double[] sunYOfH = new double[24];
         double sumSinGammaS = 0.0;
         for (int h = 0; h < 24; h++) {
             LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), h, day.getMinute(), 0, 0);
             sunPos.calculate(dt, lat, lon);
-            sunYOfh[h] = sunPos.getYs();
+            sunYOfH[h] = sunPos.getYs();
             if (sunPos.getYs() > 0) {
                 sumSinGammaS += Utils.sin(sunPos.getYs());
             }
@@ -68,7 +68,7 @@ class TagModel {
         zeroGuard(he0Hor);
         double kt = hGlob / he0Hor;
         double phi1 = 0.38 + 0.06 * Math.cos(7.4 * kt - 2.5);
-        Map<Double, double[]> map = calcHours(sunYOfh, he0Hor, kt, phi1);
+        Map<Double, double[]> map = calcHours(sunYOfH, he0Hor, kt, phi1);
         final Double minDiff = Collections.min(map.keySet());
         double[] dailyHours = map.get(minDiff);
         return dailyHours;
