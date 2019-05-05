@@ -1,9 +1,7 @@
 jQuery(document).ready(function () {
-
     autocomplete(document.getElementById("year"), getYears());
 
     $('#rad_button').css("background-color", "whitesmoke");
-
 
     var alignment = jQuery('#alignment');
     alignment.bind('change', function () {

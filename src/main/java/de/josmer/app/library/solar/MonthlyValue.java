@@ -2,18 +2,24 @@ package de.josmer.app.library.solar;
 
 class MonthlyValue {
     private final int month;
-    private final double value;
+    private final double energy;
+    private final double energySynth;
 
-    MonthlyValue(int month, double value) {
+    MonthlyValue(int month, double energy, double energySynth) {
         this.month = month;
-        this.value = value;
+        this.energy = energy;
+        this.energySynth = energySynth;
     }
 
-    int getMonth() {
+    public int getMonth() {
         return month;
     }
 
-    double getValue() {
-        return value;
+    public double getEnergy() {
+        return energy;
+    }
+
+    public double getEnergySynth() {
+        return energySynth;
     }
 }

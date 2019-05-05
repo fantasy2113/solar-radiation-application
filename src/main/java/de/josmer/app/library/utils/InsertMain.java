@@ -19,7 +19,7 @@ public class InsertMain {
     }
 
     private static void insertData(RadTypes type) {
-        for (int year = 2017; year < 2020; year++) {
+        for (int year = 1991; year < 2020; year++) {
             for (int month = 1; month < 13; month++) {
                 LOGGER.info(">>> Month: " + month + ", Year: " + year);
                 RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, type);
