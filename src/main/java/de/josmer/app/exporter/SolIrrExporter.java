@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolRadiIncExporter extends Export<SolIrrExp, SolIrr> implements ISolIrrExporter {
+public class SolIrrExporter extends Export<SolIrrExp, SolIrr> implements ISolIrrExporter {
 
     @Override
     public List<SolIrrExp> getItems(List<SolIrr> items, double lon, double lat) {
