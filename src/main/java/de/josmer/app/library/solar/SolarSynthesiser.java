@@ -29,7 +29,7 @@ class SolarSynthesiser {
         double[] dailyHe0Hor = new double[daysInMonth];
         double he0HorSum = 0.0;
         for (int d = 0; d < daysInMonth; d++) {
-            SolarPostion sunPos = new SolarPostion();
+            SolarPosition sunPos = new SolarPosition();
             double sumSinGammaS = 0.0;
             for (int h = 0; h < 24; h++) {
                 LocalDateTime dt = LocalDateTime.of(month.getYear(), month.getMonthValue(), d + 1, h, month.getMinute(), 0, 0);
@@ -53,7 +53,7 @@ class SolarSynthesiser {
         if (hGlob <= 0) {
             return new double[24];
         }
-        SolarPostion sunPos = new SolarPostion();
+        SolarPosition sunPos = new SolarPosition();
         double[] sunYOfH = new double[24];
         double sumSinGammaS = 0.0;
         for (int h = 0; h < 24; h++) {
