@@ -1,6 +1,6 @@
 package de.josmer.app.model.repositories;
 
-import de.josmer.app.library.interfaces.IGaussKrueger;
+import de.josmer.app.library.interfaces.IGaussKruger;
 import de.josmer.app.library.interfaces.ISolRadRepository;
 import de.josmer.app.model.entities.SolRad;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
-    public double[] findGlobal(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
+    public double[] findGlobal(final IGaussKruger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
         List<SolRad> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         try {
@@ -42,7 +42,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
-    public List<SolRad> find(final IGaussKrueger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+    public List<SolRad> find(final IGaussKruger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<SolRad> radiations = new LinkedList<>();
         gaussKrueger.transformFrom(lon, lat);
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
@@ -71,7 +71,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         return radiations;
     }
 
-    private OptionalInt getRechtswert(IGaussKrueger gaussKrueger) {
+    private OptionalInt getRechtswert(IGaussKruger gaussKrueger) {
         if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("5")) {
             return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert() - 1600000));
         } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("4")) {

@@ -1,6 +1,6 @@
 package de.josmer.app.model.entities;
 
-public class SolRadInc {
+public class SolIrr {
 
     private String calculatedDate;
     private double ae;

@@ -1,6 +1,6 @@
 package de.josmer.app.library.crawler;
 
-import de.josmer.app.library.enums.RadiationTypes;
+import de.josmer.app.library.enums.RadTypes;
 import de.josmer.app.library.interfaces.ISolRadRepository;
 import de.josmer.app.library.utils.Toolbox;
 import de.josmer.app.model.entities.SolRad;
@@ -25,13 +25,13 @@ public final class RadiationCrawler {
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;
-    private final RadiationTypes type;
+    private final RadTypes type;
     private final List<SolRad> radiations;
     private final int month;
     private final int year;
     private String currentTargetFile;
 
-    public RadiationCrawler(final int month, final int year, final RadiationTypes type) {
+    public RadiationCrawler(final int month, final int year, final RadTypes type) {
         this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
                 .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"

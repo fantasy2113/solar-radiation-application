@@ -1,6 +1,6 @@
 package de.josmer.app.exporter;
 
-import de.josmer.app.library.interfaces.ISolRadiExporter;
+import de.josmer.app.library.interfaces.ISolRadExporter;
 import de.josmer.app.model.entities.SolRad;
 import de.josmer.app.model.entities.SolRadExp;
 import org.springframework.stereotype.Component;
@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolRadiExporter extends Export<SolRadExp, SolRad> implements ISolRadiExporter {
+public class SolRadExporter extends Export<SolRadExp, SolRad> implements ISolRadExporter {
 
     @Override
     public List<SolRadExp> getItems(final List<SolRad> solarRadiations, final double lon, final double lat) {

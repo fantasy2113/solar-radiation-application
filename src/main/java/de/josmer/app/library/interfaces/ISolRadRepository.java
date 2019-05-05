@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface ISolRadRepository {
 
-    double[] findGlobal(final IGaussKrueger gaussKrueger, int startDate, int endDate, double lon, double lat);
+    double[] findGlobal(final IGaussKruger gaussKrueger, int startDate, int endDate, double lon, double lat);
 
-    List<SolRad> find(IGaussKrueger gaussKrueger, int startDate, int endDate, String type, double lon, double lat);
+    List<SolRad> find(IGaussKruger gaussKrueger, int startDate, int endDate, String type, double lon, double lat);
 
     void save(List<SolRad> radiations);
 
