@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Component
 public class SolIrrRepository implements ISolIrrRepository {
@@ -21,25 +22,20 @@ public class SolIrrRepository implements ISolIrrRepository {
         List<SolIrr> solarEnergies = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
         SolarIrradiation solarIrradiation = new SolarIrradiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
-        solarIrradiation.compute();
-
-        double[] eGlobGenMonthly = solarIrradiation.getEGlobGenMonthly();
-        double[] eGlobHorMonthlySynth = solarIrradiation.getEGlobHorMonthlySynth();
-        try {
-            for (int i = 0; i < 12; i++) {
-                if (eGlobHorMonthlySynth[i] > 0 && eGlobGenMonthly[i] > 0) {
-                    SolIrr solarEnergy = new SolIrr();
-                    solarEnergy.seteGlobHor(eGlobHorMonthlySynth[i] / 1000);
-                    solarEnergy.seteGlobGen(eGlobGenMonthly[i] / 1000);
-                    solarEnergy.setAe(ae);
-                    solarEnergy.setYe(ye);
-                    solarEnergy.setCalculatedDate(getDate(dt.getYear(), (i + 1)));
-                    solarEnergies.add(solarEnergy);
-                }
+        solarIrradiation.computeParallel();
+        double[] computedEIncMonths = solarIrradiation.getComputedEIncMonths();
+        double[] computedEHorMonths = solarIrradiation.getComputedEHorMonths();
+        IntStream.range(0, 12).forEach(i -> {
+            if (computedEHorMonths[i] > 0 && computedEIncMonths[i] > 0) {
+                SolIrr solarEnergy = new SolIrr();
+                solarEnergy.seteGlobHor(computedEHorMonths[i] / 1000);
+                solarEnergy.seteGlobGen(computedEIncMonths[i] / 1000);
+                solarEnergy.setAe(ae);
+                solarEnergy.setYe(ye);
+                solarEnergy.setCalculatedDate(getDate(dt.getYear(), (i + 1)));
+                solarEnergies.add(solarEnergy);
             }
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-        }
+        });
         return solarEnergies;
     }
 
