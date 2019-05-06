@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Component
 public class SolIrrRepository implements ISolIrrRepository {
@@ -23,19 +22,19 @@ public class SolIrrRepository implements ISolIrrRepository {
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
         SolarIrradiation solarIrradiation = new SolarIrradiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
         solarIrradiation.computeParallel();
-        double[] computedEIncMonths = solarIrradiation.getComputedEIncMonths();
-        double[] computedEHorMonths = solarIrradiation.getComputedEHorMonths();
-        IntStream.range(0, 12).forEach(i -> {
-            if (computedEHorMonths[i] > 0 && computedEIncMonths[i] > 0) {
-                SolIrr solarEnergy = new SolIrr();
-                solarEnergy.seteGlobHor(computedEHorMonths[i] / 1000);
-                solarEnergy.seteGlobGen(computedEIncMonths[i] / 1000);
-                solarEnergy.setAe(ae);
-                solarEnergy.setYe(ye);
-                solarEnergy.setCalculatedDate(getDate(dt.getYear(), (i + 1)));
-                solarEnergies.add(solarEnergy);
+        double[] eIncMonths = solarIrradiation.getEIncMonths();
+        double[] eHorMonths = solarIrradiation.getEHorMonths();
+        for (int i = 0; i < 12; i++) {
+            if (eHorMonths[i] > 0 && eIncMonths[i] > 0) {
+                SolIrr solIrr = new SolIrr();
+                solIrr.seteGlobHor(eHorMonths[i] / 1000);
+                solIrr.seteGlobGen(eIncMonths[i] / 1000);
+                solIrr.setAe(ae);
+                solIrr.setYe(ye);
+                solIrr.setCalculatedDate(getDate(dt.getYear(), (i + 1)));
+                solarEnergies.add(solIrr);
             }
-        });
+        }
         return solarEnergies;
     }
 

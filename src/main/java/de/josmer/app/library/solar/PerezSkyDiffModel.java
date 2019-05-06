@@ -148,7 +148,7 @@ class PerezSkyDiffModel {
         }
     }
 
-    double getIncValue(double eGlobalHor, LocalDateTime dt) {
+    double getHourInc(double eGlobalHor, LocalDateTime dt) {
         reset();
         solarPosition.calculate(getDt(dt), lat, lon);
         if (eGlobalHor > 0 && solarPosition.getYs() > 0) {
