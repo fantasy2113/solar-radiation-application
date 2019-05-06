@@ -21,8 +21,7 @@ public class SolIrrRepository implements ISolIrrRepository {
         List<SolIrr> solarEnergies = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
         SolarIrradiation solarIrradiation = new SolarIrradiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
-        solarIrradiation.computeSlow();
-        double[] eGlobGenMonthly = solarIrradiation.getEGlobIncMonthlySynth();
+        double[] eGlobGenMonthly = solarIrradiation.getEGlobGenMonthly();
         double[] eGlobHorMonthlySynth = solarIrradiation.getEGlobHorMonthlySynth();
         try {
             for (int i = 0; i < 12; i++) {
