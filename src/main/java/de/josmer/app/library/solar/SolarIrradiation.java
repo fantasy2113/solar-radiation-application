@@ -95,10 +95,10 @@ public class SolarIrradiation {
         this.eGlobHorMonthlySynth[m.getMonth()] = m.getEnergySynth();
     }
 
-    private void adjustHours(double adjuster, double[] dailyHours) {
+    private void adjustHours(double multi, double[] dailyHours) {
         IntStream.range(0, 24)
                 .parallel()
-                .forEach(h -> dailyHours[h] = dailyHours[h] * adjuster);
+                .forEach(h -> dailyHours[h] = dailyHours[h] * multi);
     }
 
     private double getAdjuster(double extractedDay, double[] extractedHours) {
