@@ -34,6 +34,7 @@ public class SolarIrradiation {
         this.eGlobHorMonthly = eGlobHorMonthly;
     }
 
+
     public void computeSlow() {
         try {
             SolarSynthesiser solarSynthesiser = new SolarSynthesiser();
@@ -58,6 +59,7 @@ public class SolarIrradiation {
             LOGGER.info(e.getMessage());
         }
     }
+
 
     public void computeFast() {
         try {
