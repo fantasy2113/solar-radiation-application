@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
@@ -19,6 +18,7 @@ public class SolarIrradiation {
     private final LocalDateTime dt;
     private final double ye;
     private final double ae;
+    private final double[] eGlobIncMonthlySynth;
     private final double[] eGlobHorMonthlySynth;
 
     public SolarIrradiation(double lat, double lon, double[] eGlobHorMonthly, LocalDateTime dt, double ye, double ae) {
@@ -29,6 +29,7 @@ public class SolarIrradiation {
         this.ye = ye;
         this.ae = ae;
         this.eGlobHorMonthlySynth = new double[12];
+        this.eGlobIncMonthlySynth = new double[12];
     }
 
     public double[] getEGlobGenMonthly() {
@@ -81,11 +82,19 @@ public class SolarIrradiation {
     }
 
     private void compute() {
-
-        List<MonthlyValue> months = IntStream.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
+        IntStream
+                .range(0, 11)
+                .parallel()
                 .mapToObj(this::computeMonth)
                 .map(CompletableFuture::join)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())
+                .parallelStream()
+                .forEach(this::setSolarEnergy);
+    }
+
+    private void setSolarEnergy(MonthlyValue m) {
+        eGlobIncMonthlySynth[m.getMonth()] = m.getEnergy();
+        eGlobHorMonthlySynth[m.getMonth()] = m.getEnergySynth();
     }
 
     private double getSum(double[] eGlobalHorArr) {
