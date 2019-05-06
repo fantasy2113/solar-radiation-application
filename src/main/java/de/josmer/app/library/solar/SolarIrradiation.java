@@ -34,6 +34,11 @@ public class SolarIrradiation {
         this.eGlobHorMonthly = eGlobHorMonthly;
     }
 
+    private void increaseHours(double multi, double[] dailyHours) {
+        IntStream.range(0, 23)
+                .parallel()
+                .forEach(h -> dailyHours[h] = dailyHours[h] * multi);
+    }
 
     public void computeSlow() {
         try {
@@ -46,8 +51,8 @@ public class SolarIrradiation {
                 for (int day = 0; day < getDaysInMonth(month); day++) {
                     final LocalDateTime dtDay = getDtDay(month, day);
                     final double[] eGlobalHorArr = solarSynthesiser.extractHours(dtDay, days[day], lat, lon);
-                    adjustHours(((days[day] / computeSumOf(eGlobalHorArr)) * 100) / 100, eGlobalHorArr);
-                    eGlobHorSumSynth += computeSumOf(eGlobalHorArr);
+                    increaseHours(((days[day] / getSum(eGlobalHorArr)) * 100) / 100, eGlobalHorArr);
+                    eGlobHorSumSynth += getSum(eGlobalHorArr);
                     for (int hour = 0; hour < 24; hour++) {
                         eGlobGenMonthly += perezSkyDiffModel.getSolarEnergyInc(eGlobalHorArr[hour], getDtHour(month, day, hour));
                     }
@@ -60,36 +65,48 @@ public class SolarIrradiation {
         }
     }
 
-
-    public void computeFast() {
-        try {
-            IntStream.range(0, 12).parallel().mapToObj(this::computeAsync).map(CompletableFuture::join)
-                    .collect(Collectors.toList()).parallelStream().forEach(this::setSolarEnergy);
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-        }
+    private CompletableFuture<MonthlyValue> computeMonth(final int monthIndex) {
+        return CompletableFuture.supplyAsync(() -> calculateMonth(monthIndex));
     }
 
-    private CompletableFuture<MonthlyValue> computeAsync(final int m) {
-        return CompletableFuture.supplyAsync(() -> computeMonth(m));
-    }
-
-    private MonthlyValue computeMonth(final int m) {
+    private MonthlyValue calculateMonth(final int m) {
         final SolarSynthesiser solarSynthesiser = new SolarSynthesiser();
         final PerezSkyDiffModel perezSkyDiffModel = new PerezSkyDiffModel(ye, ae, lat, lon, 0.2);
         final double[] extractedDays = solarSynthesiser.extractDays(getDtDays(m), eGlobHorMonthly[m], lat, lon);
         final List<Double> sumHor = new ArrayList<>();
         final List<Double> sumInc = new ArrayList<>();
-        IntStream.range(0, getDaysInMonth(m)).parallel().forEach(d -> {
-            final LocalDateTime dtDay = getDtDay(m, d);
-            final double[] extractedHours = solarSynthesiser.extractHours(dtDay, extractedDays[d], lat, lon);
-            adjustHours(getAdjuster(extractedDays[d], extractedHours), extractedHours);
-            sumHor.add(computeSumOf(extractedHours));
-            IntStream.range(0, 24).parallel().forEach(h ->
-                    sumInc.add(perezSkyDiffModel.getSolarEnergyInc(extractedHours[h], getDtHour(m, d, h)))
-            );
-        });
+        IntStream.range(0, getDaysInMonth(m))
+                .parallel()
+                .forEach(d -> {
+                    final LocalDateTime dtDay = getDtDay(m, d);
+                    final double[] extractedHours = solarSynthesiser.extractHours(dtDay, extractedDays[d], lat, lon);
+                    increaseHours(((extractedDays[d] / getSum(extractedHours)) * 100) / 100, extractedHours);
+                    sumHor.add(getSum(extractedHours));
+                    IntStream.range(0, 23)
+                            .parallel()
+                            .forEach(h ->
+                                    sumInc.add(perezSkyDiffModel.getSolarEnergyInc(extractedHours[h], getDtHour(m, d, h)))
+                            );
+                });
         return new MonthlyValue(m, computeSumOf(sumInc), computeSumOf(sumHor));
+    }
+
+    private double computeSumOf(List<Double> values) {
+        return values.stream().parallel().flatMapToDouble(DoubleStream::of).sum();
+    }
+
+    private void computeFast() {
+        try {
+            IntStream.range(0, 11)
+                    .parallel()
+                    .mapToObj(this::computeMonth)
+                    .map(CompletableFuture::join)
+                    .collect(Collectors.toList())
+                    .parallelStream()
+                    .forEach(this::setSolarEnergy);
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
+        }
     }
 
     private void setSolarEnergy(MonthlyValue m) {
@@ -97,22 +114,8 @@ public class SolarIrradiation {
         this.eGlobHorMonthlySynth[m.getMonth()] = m.getEnergySynth();
     }
 
-    private void adjustHours(double multi, double[] dailyHours) {
-        IntStream.range(0, 24)
-                .parallel()
-                .forEach(h -> dailyHours[h] = dailyHours[h] * multi);
-    }
-
-    private double getAdjuster(double extractedDay, double[] extractedHours) {
-        return ((extractedDay / computeSumOf(extractedHours)) * 100) / 100;
-    }
-
-    private double computeSumOf(double[] eGlobalHorArr) {
-        return DoubleStream.of(eGlobalHorArr).parallel().sum();
-    }
-
-    private double computeSumOf(List<Double> values) {
-        return values.stream().parallel().flatMapToDouble(DoubleStream::of).sum();
+    private double getSum(double[] eGlobalHorArr) {
+        return DoubleStream.of(eGlobalHorArr).sum();
     }
 
     private int getDaysInMonth(int month) {
