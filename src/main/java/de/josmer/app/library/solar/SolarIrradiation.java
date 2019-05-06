@@ -43,10 +43,10 @@ public class SolarIrradiation {
                 for (int day = 0; day < getDaysInMonth(month); day++) {
                     final LocalDateTime dtDay = getDtDay(month, day);
                     final double[] eGlobalHorArr = solarSynthesiser.extractHours(dtDay, days[day], lat, lon);
-                    inreaseHours(((days[day] / getSum(eGlobalHorArr)) * 100) / 100, eGlobalHorArr);
+                    adjustHours(((days[day] / getSum(eGlobalHorArr)) * 100) / 100, eGlobalHorArr);
                     eGlobHorSumSynth += getSum(eGlobalHorArr);
                     for (int hour = 0; hour < 24; hour++) {
-                        eGlobGenMonthly += perezSkyDiffModel.getCalculatedHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
+                        eGlobGenMonthly += perezSkyDiffModel.getIncValue(eGlobalHorArr[hour], getDtHour(month, day, hour));
                     }
                 }
                 eGlobHorMonthlySynth[month] = eGlobHorSumSynth;
@@ -58,34 +58,37 @@ public class SolarIrradiation {
         return eGlobGenMonths;
     }
 
-    private CompletableFuture<MonthlyValue> computeMonth(final int month) {
-        return CompletableFuture.supplyAsync(() -> calculateMonth(month));
+    private CompletableFuture<MonthlyValue> computeMonthAsync(final int m) {
+        return CompletableFuture.supplyAsync(() -> calculateMonth(m));
     }
 
-    private MonthlyValue calculateMonth(final int month) {
+    private MonthlyValue calculateMonth(final int m) {
+        double sumHorMonth = 0;
+        double sumIncMonth = 0;
         SolarSynthesiser solarSynthesiser = new SolarSynthesiser();
         PerezSkyDiffModel perezSkyDiffModel = new PerezSkyDiffModel(ye, ae, lat, lon, 0.2);
-        double eGlobHorSumSynth = 0.0;
-        double eGlobGenMonthly = 0.0;
-        final double[] days = solarSynthesiser.extractDays(getDtDays(month), eGlobHorMonthly[month], lat, lon);
-        for (int day = 0; day < getDaysInMonth(month); day++) {
-            final LocalDateTime dtDay = getDtDay(month, day);
-            final double[] eGlobalHorArr = solarSynthesiser.extractHours(dtDay, days[day], lat, lon);
-            inreaseHours(((days[day] / getSum(eGlobalHorArr)) * 100) / 100, eGlobalHorArr);
-            eGlobHorSumSynth += getSum(eGlobalHorArr);
-            for (int hour = 0; hour < 24; hour++) {
-                eGlobGenMonthly += perezSkyDiffModel.getCalculatedHour(eGlobalHorArr[hour], getDtHour(month, day, hour));
+        double[] extractedDays = solarSynthesiser.extractDays(getDtDays(m), eGlobHorMonthly[m], lat, lon);
+        for (int d = 0; d < getDaysInMonth(m); d++) {
+            LocalDateTime dtDay = getDtDay(m, d);
+            double[] extractedHours = solarSynthesiser.extractHours(dtDay, extractedDays[d], lat, lon);
+            adjustHours(((extractedDays[d] / getSum(extractedHours)) * 100) / 100, extractedHours);
+            sumHorMonth += getSum(extractedHours);
+            for (int h = 0; h < 24; h++) {
+                sumIncMonth += perezSkyDiffModel.getIncValue(extractedHours[h], getDtHour(m, d, h));
             }
         }
-        return new MonthlyValue(month, eGlobGenMonthly, eGlobHorSumSynth);
+        return new MonthlyValue(m, sumIncMonth, sumHorMonth);
     }
 
-    private void compute() {
+    public void compute() {
 
-        List<MonthlyValue> months = IntStream.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)
-                .mapToObj(this::computeMonth)
+        List<MonthlyValue> months = IntStream.range(0, 12)
+                .parallel()
+                .mapToObj(this::computeMonthAsync)
                 .map(CompletableFuture::join)
                 .collect(Collectors.toList());
+
+        //months.parallelStream().forEach();
     }
 
     private double getSum(double[] eGlobalHorArr) {
@@ -116,7 +119,7 @@ public class SolarIrradiation {
         return eGlobHorMonthlySynth;
     }
 
-    private void inreaseHours(double multi, double[] dailyHours) {
+    private void adjustHours(double multi, double[] dailyHours) {
         for (int h = 0; h < 24; h++) {
             dailyHours[h] = dailyHours[h] * multi;
         }
