@@ -1,7 +1,7 @@
 package de.josmer.app.controller;
 
 import de.josmer.app.controller.security.Token;
-import de.josmer.app.library.interfaces.*;
+import de.josmer.app.library.interfaces.IUserRepository;
 import de.josmer.app.library.utils.Toolbox;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,10 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class ViewController extends Controller {
+    private static final String LOGIN_HTML = Toolbox.readFile("src/main/resources/static/html/login.html");
+    private static final String IRR_HTML = Toolbox.readFile("src/main/resources/static/html/irr.html");
+    private static final String RAD_HTML = Toolbox.readFile("src/main/resources/static/html/rad.html");
 
     @Autowired
-    ViewController(ISolRadiExporter exportRadiRepo, ISolarRadiationInclinedExport exportCalcRepo, ISolRadiRepository radiRepo, IUserRepository userRepo, ISolRadiIncRepository calcRepo) {
-        super(exportRadiRepo, exportCalcRepo, radiRepo, userRepo, calcRepo);
+    public ViewController(IUserRepository userRep) {
+        super(userRep);
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
@@ -24,24 +27,25 @@ public class ViewController extends Controller {
         try {
             Cookie[] cookies = req.getCookies();
             String token = "";
-            String path = "";
+            String app = "";
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("token")) {
                     token = cookie.getValue();
                 }
                 if (cookie.getName().equals("app")) {
-                    path = cookie.getValue();
+                    app = cookie.getValue();
                 }
             }
             if (isAccess(Token.getAuthentication(token))) {
-                if (path.equals("calcapp")) {
-                    return Toolbox.readFile("src/main/resources/static/html/calc.html");
+                if (app.equals("irr")) {
+                    return IRR_HTML;
+                } else {
+                    return RAD_HTML;
                 }
-                return Toolbox.readFile("src/main/resources/static/html/radi.html");
             }
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
-        return Toolbox.readFile(LOGIN_HTML);
+        return LOGIN_HTML;
     }
 }

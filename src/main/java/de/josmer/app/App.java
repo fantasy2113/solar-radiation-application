@@ -1,7 +1,7 @@
 package de.josmer.app;
 
 import de.josmer.app.controller.security.Token;
-import de.josmer.app.library.enums.RadiationTypes;
+import de.josmer.app.library.enums.RadTypes;
 import de.josmer.app.library.handler.InsertHandler;
 import de.josmer.app.library.handler.TokenHandler;
 import de.josmer.app.library.interfaces.IUserRepository;
@@ -35,9 +35,9 @@ public class App {
             userRepository.saveUser("admin", "Super71212!");
         }
 
-        new InsertHandler(RadiationTypes.GLOBAL).start();
-        new InsertHandler(RadiationTypes.DIFFUSE).start();
-        new InsertHandler(RadiationTypes.DIRECT).start();
+        new InsertHandler(RadTypes.GLOBAL).start();
+        new InsertHandler(RadTypes.DIFFUSE).start();
+        new InsertHandler(RadTypes.DIRECT).start();
         new TokenHandler().start();
     }
 

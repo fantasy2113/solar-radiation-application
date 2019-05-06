@@ -1,25 +1,34 @@
 package de.josmer.app.model.entities;
 
-public class SolRadiIncExp extends EntityExport {
+public class SolIrr {
 
-    private String ae;
-    private String ye;
+    private String calculatedDate;
+    private double ae;
+    private double ye;
     private double eGlobHor;
     private double eGlobGen;
 
-    public String getAe() {
+    public String getCalculatedDate() {
+        return calculatedDate;
+    }
+
+    public void setCalculatedDate(String calculatedDate) {
+        this.calculatedDate = calculatedDate;
+    }
+
+    public double getAe() {
         return ae;
     }
 
-    public void setAe(String ae) {
+    public void setAe(double ae) {
         this.ae = ae;
     }
 
-    public String getYe() {
+    public double getYe() {
         return ye;
     }
 
-    public void setYe(String ye) {
+    public void setYe(double ye) {
         this.ye = ye;
     }
 

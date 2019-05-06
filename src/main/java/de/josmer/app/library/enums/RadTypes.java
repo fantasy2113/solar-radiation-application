@@ -1,5 +1,5 @@
 package de.josmer.app.library.enums;
 
-public enum RadiationTypes {
+public enum RadTypes {
     GLOBAL, DIRECT, DIFFUSE
 }

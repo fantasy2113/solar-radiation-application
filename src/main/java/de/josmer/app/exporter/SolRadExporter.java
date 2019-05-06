@@ -1,26 +1,26 @@
 package de.josmer.app.exporter;
 
-import de.josmer.app.library.interfaces.ISolRadiExporter;
-import de.josmer.app.model.entities.SolRadi;
-import de.josmer.app.model.entities.SolRadiExp;
+import de.josmer.app.library.interfaces.ISolRadExporter;
+import de.josmer.app.model.entities.SolRad;
+import de.josmer.app.model.entities.SolRadExp;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolRadiExporter extends Export<SolRadiExp, SolRadi> implements ISolRadiExporter {
+public class SolRadExporter extends Export<SolRadExp, SolRad> implements ISolRadExporter {
 
     @Override
-    public List<SolRadiExp> getItems(final List<SolRadi> solarRadiations, final double lon, final double lat) {
-        List<SolRadiExp> exports = new LinkedList<>();
+    public List<SolRadExp> getItems(final List<SolRad> solarRadiations, final double lon, final double lat) {
+        List<SolRadExp> exports = new LinkedList<>();
         try {
             double eGlobHorSum = 0.0;
-            for (SolRadi solRad : solarRadiations) {
+            for (SolRad solRad : solarRadiations) {
                 exports.add(mapToExport(lon, lat, solRad));
                 eGlobHorSum += solRad.getRadiationValue();
                 if (String.valueOf(solRad.getRadiationDate()).endsWith("12")) {
-                    de.josmer.app.model.entities.SolRadiExp export = new de.josmer.app.model.entities.SolRadiExp();
+                    SolRadExp export = new SolRadExp();
                     export.setDate("Summe " + String.valueOf(solRad.getRadiationDate()).substring(0, 4));
                     export.setLat("");
                     export.setLon("");
@@ -34,7 +34,7 @@ public class SolRadiExporter extends Export<SolRadiExp, SolRadi> implements ISol
                 }
             }
             if (!exports.get(exports.size() - 1).getDate().contains("Summe")) {
-                de.josmer.app.model.entities.SolRadiExp export = new de.josmer.app.model.entities.SolRadiExp();
+                SolRadExp export = new SolRadExp();
                 export.setDate("Summe " + exports.get(exports.size() - 1).getDate().substring(0, 4));
                 export.setLat("");
                 export.setLon("");
@@ -48,14 +48,14 @@ public class SolRadiExporter extends Export<SolRadiExp, SolRadi> implements ISol
 
             int sumCnt = 0;
             double avgSum = 0.0;
-            for (de.josmer.app.model.entities.SolRadiExp exportRadi : exports) {
+            for (SolRadExp exportRadi : exports) {
                 if (exportRadi.getDate().contains("Summe")) {
                     avgSum += exportRadi.getValue();
                     sumCnt++;
                 }
             }
 
-            de.josmer.app.model.entities.SolRadiExp export = new de.josmer.app.model.entities.SolRadiExp();
+            SolRadExp export = new SolRadExp();
             export.setDate("Summe Mittel");
             export.setLat("");
             export.setLon("");
@@ -83,8 +83,8 @@ public class SolRadiExporter extends Export<SolRadiExp, SolRadi> implements ISol
     }
 
     @Override
-    protected de.josmer.app.model.entities.SolRadiExp mapToExport(double lon, double lat, SolRadi item) {
-        de.josmer.app.model.entities.SolRadiExp export = new de.josmer.app.model.entities.SolRadiExp();
+    protected SolRadExp mapToExport(double lon, double lat, SolRad item) {
+        SolRadExp export = new SolRadExp();
         export.setDate(parseDate(item.getRadiationDate()));
         export.setLat(roundToString(lat, 3));
         export.setLon(roundToString(lon, 3));

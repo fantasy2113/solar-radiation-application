@@ -1,6 +1,6 @@
 package de.josmer.app.model.entities;
 
-abstract class EntityExport {
+abstract class AExport {
 
     private String date;
     private String lat;
