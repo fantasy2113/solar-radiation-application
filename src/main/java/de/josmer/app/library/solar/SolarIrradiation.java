@@ -54,7 +54,7 @@ public class SolarIrradiation {
             adjustHours(getAdjuster(extractedDays[dayIndex], extractedHours), extractedHours);
             sumOfHor.add(sumOf(extractedHours));
             for (int hourIndex = 0; hourIndex < 24; hourIndex++) {
-                sumOfInc.add(perezSkyDiffModel.getHourInc(extractedHours[hourIndex], getHour(monthIndex, dayIndex, hourIndex)));
+                sumOfInc.add(perezSkyDiffModel.getHourlyEInc(extractedHours[hourIndex], getHour(monthIndex, dayIndex, hourIndex)));
             }
         }
         return new SolarMonth(monthIndex, sumOfInc.get(), sumOfHor.get());

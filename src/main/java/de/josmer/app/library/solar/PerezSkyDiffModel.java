@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 class PerezSkyDiffModel {
-
     private static final String F_11 = "F11";
     private static final String F_12 = "F12";
     private static final String F_13 = "F13";
@@ -148,7 +147,7 @@ class PerezSkyDiffModel {
         }
     }
 
-    double getHourInc(double eGlobalHor, LocalDateTime dt) {
+    double getHourlyEInc(double eGlobalHor, LocalDateTime dt) {
         reset();
         solarPosition.compute(getDt(dt), lat, lon);
         if (eGlobalHor > 0 && solarPosition.getYs() > 0) {

@@ -1,7 +1,6 @@
 package de.josmer.app.library.solar;
 
 class Sum {
-
     private double value;
 
     Sum() {

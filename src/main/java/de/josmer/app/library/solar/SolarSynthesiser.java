@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.SplittableRandom;
 
 class SolarSynthesiser {
-
     private final SplittableRandom random;
 
     SolarSynthesiser() {
