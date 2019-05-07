@@ -30,41 +30,41 @@ public class SolarIrradiation {
 
     public void compute() {
         List<SolarMonth> solarMonths = new ArrayList<>();
-        for (int m = getStarMonth(); m < 12; m++) {
-            solarMonths.add(calculate(m));
+        for (int monthIndex = getStarMonth(); monthIndex < 12; monthIndex++) {
+            solarMonths.add(calculateMonth(monthIndex));
         }
         for (SolarMonth solarMonth : solarMonths) {
-            setMonths(solarMonth);
+            insertCalculatedMonth(solarMonth);
         }
     }
 
     public void computeParallel() {
-        IntStream.range(0, 12).parallel().mapToObj(this::calculate)
-                .collect(Collectors.toList()).parallelStream().forEach(this::setMonths);
+        IntStream.range(0, 12).parallel().mapToObj(this::calculateMonth)
+                .collect(Collectors.toList()).forEach(this::insertCalculatedMonth);
     }
 
-    private SolarMonth calculate(final int m) {
-        double sumHorMonth = 0;
-        double sumIncMonth = 0;
+    private SolarMonth calculateMonth(final int monthIndex) {
+        Sum sumOfHor = new Sum();
+        Sum sumOfInc = new Sum();
         SolarSynthesiser solarSynthesiser = new SolarSynthesiser();
         PerezSkyDiffModel perezSkyDiffModel = new PerezSkyDiffModel(ye, ae, lat, lon, 0.2);
-        double[] extractedDays = solarSynthesiser.extractDays(getDay(m), eHorMonths[m], lat, lon);
-        for (int d = 0; d < getDaysInMonth(m); d++) {
-            double[] extractedHours = solarSynthesiser.extractHours(getDay(m, d), extractedDays[d], lat, lon);
-            adjustHours(getAdjuster(extractedDays[d], extractedHours), extractedHours);
-            sumHorMonth += sumOf(extractedHours);
-            for (int h = 0; h < 24; h++) {
-                sumIncMonth += perezSkyDiffModel.getHourInc(extractedHours[h], getHour(m, d, h));
+        double[] extractedDays = solarSynthesiser.extractDays(getDay(monthIndex), eHorMonths[monthIndex], lat, lon);
+        for (int dayIndex = 0; dayIndex < getDaysInMonth(monthIndex); dayIndex++) {
+            double[] extractedHours = solarSynthesiser.extractHours(getDay(monthIndex, dayIndex), extractedDays[dayIndex], lat, lon);
+            adjustHours(getAdjuster(extractedDays[dayIndex], extractedHours), extractedHours);
+            sumOfHor.add(sumOf(extractedHours));
+            for (int hourIndex = 0; hourIndex < 24; hourIndex++) {
+                sumOfInc.add(perezSkyDiffModel.getHourInc(extractedHours[hourIndex], getHour(monthIndex, dayIndex, hourIndex)));
             }
         }
-        return new SolarMonth(m, sumIncMonth, sumHorMonth);
+        return new SolarMonth(monthIndex, sumOfInc.get(), sumOfHor.get());
     }
 
-    private double sumOf(double[] eGlobalHorArr) {
-        return DoubleStream.of(eGlobalHorArr).sum();
+    private double sumOf(double[] values) {
+        return DoubleStream.of(values).sum();
     }
 
-    private void setMonths(SolarMonth solarMonth) {
+    private void insertCalculatedMonth(SolarMonth solarMonth) {
         this.computedEHorMonths[solarMonth.getMonthIndex()] = solarMonth.getEHor();
         this.computedEIncMonths[solarMonth.getMonthIndex()] = solarMonth.getEInc();
     }
@@ -79,20 +79,20 @@ public class SolarIrradiation {
         }
     }
 
-    private int getDaysInMonth(int month) {
-        return Utils.getDaysInMonth(dt.getYear(), month + 1);
+    private int getDaysInMonth(int monthIndex) {
+        return Utils.getDaysInMonth(dt.getYear(), monthIndex + 1);
     }
 
-    private LocalDateTime getDay(int month) {
-        return LocalDateTime.of(dt.getYear(), month + 1, 1, 0, 30);
+    private LocalDateTime getDay(int monthIndex) {
+        return LocalDateTime.of(dt.getYear(), monthIndex + 1, 1, 0, 30);
     }
 
-    private LocalDateTime getHour(int month, int day, int hour) {
-        return LocalDateTime.of(dt.getYear(), month + 1, day + 1, hour, 30);
+    private LocalDateTime getHour(int monthIndex, int dayIndex, int hourIndex) {
+        return LocalDateTime.of(dt.getYear(), monthIndex + 1, dayIndex + 1, hourIndex, 30);
     }
 
-    private LocalDateTime getDay(int month, int day) {
-        return LocalDateTime.of(dt.getYear(), month + 1, day + 1, 0, 30);
+    private LocalDateTime getDay(int monthIndex, int dayIndex) {
+        return LocalDateTime.of(dt.getYear(), monthIndex + 1, dayIndex + 1, 0, 30);
     }
 
     private int getStarMonth() {
