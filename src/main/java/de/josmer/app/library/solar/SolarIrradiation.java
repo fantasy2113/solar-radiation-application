@@ -1,8 +1,6 @@
 package de.josmer.app.library.solar;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -29,21 +27,17 @@ public class SolarIrradiation {
     }
 
     public void compute() {
-        List<SolarMonth> solarMonths = new ArrayList<>();
         for (int monthIndex = getStarMonth(); monthIndex < 12; monthIndex++) {
-            solarMonths.add(calculateMonth(monthIndex));
-        }
-        for (SolarMonth solarMonth : solarMonths) {
-            insertCalculatedMonth(solarMonth);
+            insertComputedMonth(computeMonth(monthIndex));
         }
     }
 
     public void computeParallel() {
-        IntStream.range(0, 12).parallel().mapToObj(this::calculateMonth)
-                .collect(Collectors.toList()).forEach(this::insertCalculatedMonth);
+        IntStream.range(0, 12).parallel().mapToObj(this::computeMonth)
+                .collect(Collectors.toList()).forEach(this::insertComputedMonth);
     }
 
-    private SolarMonth calculateMonth(final int monthIndex) {
+    private SolarMonth computeMonth(final int monthIndex) {
         Sum sumOfHor = new Sum();
         Sum sumOfInc = new Sum();
         SolarSynthesiser solarSynthesiser = new SolarSynthesiser();
@@ -64,7 +58,7 @@ public class SolarIrradiation {
         return DoubleStream.of(values).sum();
     }
 
-    private void insertCalculatedMonth(SolarMonth solarMonth) {
+    private void insertComputedMonth(SolarMonth solarMonth) {
         this.computedEHorMonths[solarMonth.getMonthIndex()] = solarMonth.getEHor();
         this.computedEIncMonths[solarMonth.getMonthIndex()] = solarMonth.getEInc();
     }

@@ -10,13 +10,18 @@ class PerezSkyDiffModel {
     private static final String F_21 = "F21";
     private static final String F_22 = "F22";
     private static final String F_23 = "F23";
-    private static final Map<String, double[]> fTab = Map.of(
-            F_11, new double[]{-0.008, 0.130, 0.330, 0.568, 0.873, 1.132, 1.060, 0.678},
-            F_12, new double[]{0.588, 0.683, 0.487, 0.187, -0.392, -1.237, -1.600, -0.327},
-            F_13, new double[]{-0.062, -0.151, -0.221, -0.295, -0.362, -0.412, -0.359, -0.250},
-            F_21, new double[]{-0.060, -0.019, 0.055, 0.109, 0.226, 0.288, 0.264, 0.156},
-            F_22, new double[]{0.072, 0.066, -0.064, -0.152, -0.462, -0.823, -1.127, -1.377},
-            F_23, new double[]{-0.022, -0.029, -0.026, -0.014, 0.001, 0.056, 0.131, 0.251});
+    private static final Map<String, double[]> fTab = getFTab();
+
+    private static Map<String, double[]> getFTab() {
+        return Map.of(
+                F_11, new double[]{-0.008, 0.130, 0.330, 0.568, 0.873, 1.132, 1.060, 0.678},
+                F_12, new double[]{0.588, 0.683, 0.487, 0.187, -0.392, -1.237, -1.600, -0.327},
+                F_13, new double[]{-0.062, -0.151, -0.221, -0.295, -0.362, -0.412, -0.359, -0.250},
+                F_21, new double[]{-0.060, -0.019, 0.055, 0.109, 0.226, 0.288, 0.264, 0.156},
+                F_22, new double[]{0.072, 0.066, -0.064, -0.152, -0.462, -0.823, -1.127, -1.377},
+                F_23, new double[]{-0.022, -0.029, -0.026, -0.014, 0.001, 0.056, 0.131, 0.251});
+    }
+
     private final double lon;
     private final double lat;
     private final SolarPosition solarPosition;
@@ -49,6 +54,32 @@ class PerezSkyDiffModel {
         this.lon = lon;
         this.albedo = albedo;
         this.solarPosition = new SolarPosition();
+    }
+
+    double getHourlyEInc(double eGlobalHor, LocalDateTime dt) {
+        if (eGlobalHor <= 0 || solarPosition.getYs() <= 0) {
+            return 0;
+        }
+        solarPosition.compute(getDt(dt), lat, lon);
+        reset();
+        setAoi();
+        final double eDiffHor = getEDiffHor(eGlobalHor);
+        final double eDirHor = getDirHor(eGlobalHor, eDiffHor);
+        setEDirHorExtra(dt);
+        setEDirInc(eDirHor);
+        setERefInc(eGlobalHor);
+        setAirMass();
+        setDelta(eDiffHor);
+        setSkyClearnessIndex(eDiffHor, eDirHor);
+        setIndexFTab();
+        setF1F2();
+        setAB();
+        setMEDiffIncPerez(eDiffHor);
+        return getResult();
+    }
+
+    private double getDirHor(double eGlobalHor, double eDiffHor) {
+        return eGlobalHor - eDiffHor;
     }
 
     private void setIndexFTab() {
@@ -147,24 +178,8 @@ class PerezSkyDiffModel {
         }
     }
 
-    double getHourlyEInc(double eGlobalHor, LocalDateTime dt) {
-        reset();
-        solarPosition.compute(getDt(dt), lat, lon);
-        if (eGlobalHor > 0 && solarPosition.getYs() > 0) {
-            setAoi();
-            final double eDiffHor = getEDiffHor(eGlobalHor);
-            final double eDirHor = eGlobalHor - eDiffHor;
-            setEDirHorExtra(dt);
-            setEDirInc(eDirHor);
-            setERefInc(eGlobalHor);
-            setAirMass();
-            setDelta(eDiffHor);
-            setSkyClearnessIndex(eDiffHor, eDirHor);
-            setIndexFTab();
-            setF1F2();
-            setAB();
-            setMEDiffIncPerez(eDiffHor);
-        }
+
+    private double getResult() {
         return eDiffInc + eDirInc + eRefInc;
     }
 
