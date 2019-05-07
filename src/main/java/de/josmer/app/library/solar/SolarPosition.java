@@ -4,21 +4,17 @@ import java.time.LocalDateTime;
 import java.time.Year;
 
 class SolarPosition {
-
     private static final double TIMEZONE = 1;
     private double ys;
     private double as;
     private double zenith;
-    private LocalDateTime time;
 
-    void calculate(LocalDateTime dt, double lat, double lon) {
-        this.time = LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
-        double hour = this.time.getHour();
-        double year = this.time.getYear();
-        double min = this.time.getMinute();
-        double sec = this.time.getSecond();
-        double j2 = getDaysInYear((int) year);
-        double j = this.time.getDayOfYear();
+    void compute(LocalDateTime time, double lat, double lon) {
+        double hour = time.getHour();
+        double min = 30;
+        double sec = 0;
+        double j2 = getDaysInYear(time.getYear());
+        double j = time.getDayOfYear();
         double moz = hour + 1.0 / 60 * min + 1.0 / 3600 * sec - TIMEZONE + 1;
         moz = moz - 4 * (15 - lon) / 60;
         j = j * 360 / j2 + moz / 24;
@@ -64,8 +60,8 @@ class SolarPosition {
         return (rad * Utils.DEG);
     }
 
-    double getSimpleDayAngle(int dayofyear, int year) {
-        return (2.0 * Math.PI / getDaysInYear(year)) * (dayofyear - 1);
+    double getSimpleDayAngle(int dayOfYear, int year) {
+        return (2.0 * Math.PI / getDaysInYear(year)) * (dayOfYear - 1);
     }
 
     double getAs() {

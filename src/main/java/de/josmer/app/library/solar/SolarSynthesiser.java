@@ -33,7 +33,7 @@ class SolarSynthesiser {
             double sumSinGammaS = 0.0;
             for (int h = 0; h < 24; h++) {
                 LocalDateTime dt = LocalDateTime.of(month.getYear(), month.getMonthValue(), d + 1, h, month.getMinute(), 0, 0);
-                sunPos.calculate(dt, lat, lon);
+                sunPos.compute(dt, lat, lon);
                 if (sunPos.getYs() > 0) {
                     sumSinGammaS += Utils.sin(sunPos.getYs());
                 }
@@ -58,7 +58,7 @@ class SolarSynthesiser {
         double sumSinGammaS = 0.0;
         for (int h = 0; h < 24; h++) {
             LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), h, day.getMinute(), 0, 0);
-            sunPos.calculate(dt, lat, lon);
+            sunPos.compute(dt, lat, lon);
             sunYOfH[h] = sunPos.getYs();
             if (sunPos.getYs() > 0) {
                 sumSinGammaS += Utils.sin(sunPos.getYs());

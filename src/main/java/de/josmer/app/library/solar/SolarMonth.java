@@ -11,15 +11,15 @@ class SolarMonth {
         this.eHor = eHor;
     }
 
-    public int getMonthIndex() {
+    int getMonthIndex() {
         return monthIndex;
     }
 
-    public double getEInc() {
+    double getEInc() {
         return eInc;
     }
 
-    public double getEHor() {
+    double getEHor() {
         return eHor;
     }
 }
