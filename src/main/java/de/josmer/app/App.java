@@ -26,15 +26,20 @@ public class App {
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-
         openBrowser();
         Token.init();
+        createAdminUser();
+        startHandler();
+    }
 
+    private static void createAdminUser() {
         IUserRepository userRepository = new UserRepository();
         if (userRepository.get("admin").isEmpty()) {
             userRepository.saveUser("admin", "Super71212!");
         }
+    }
 
+    private static void startHandler() {
         new InsertHandler(RadTypes.GLOBAL).start();
         new InsertHandler(RadTypes.DIFFUSE).start();
         new InsertHandler(RadTypes.DIRECT).start();
