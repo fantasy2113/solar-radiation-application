@@ -78,6 +78,8 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
             return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert() - 800000));
         } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("3")) {
             return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert()));
+        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("2")) {
+            return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert() + 800000));
         }
         return OptionalInt.empty();
     }
