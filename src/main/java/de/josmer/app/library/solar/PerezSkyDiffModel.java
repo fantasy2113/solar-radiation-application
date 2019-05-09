@@ -57,10 +57,10 @@ class PerezSkyDiffModel {
     }
 
     double getHourlyEInc(double eGlobalHor, LocalDateTime dt) {
+        solarPosition.compute(getDt(dt), lat, lon);
         if (eGlobalHor <= 0 || solarPosition.getYs() <= 0) {
             return 0;
         }
-        solarPosition.compute(getDt(dt), lat, lon);
         reset();
         setAoi();
         final double eDiffHor = getEDiffHor(eGlobalHor);
