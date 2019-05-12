@@ -101,7 +101,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
                 preparedStatement.executeUpdate();
             }
             connection.commit();
-            LOGGER.info("insert month");
+            LOGGER.info("inserting month");
         } catch (SQLException | URISyntaxException e) {
             LOGGER.info(e.getMessage());
         }
