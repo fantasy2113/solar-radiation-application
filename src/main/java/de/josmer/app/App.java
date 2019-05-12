@@ -28,6 +28,7 @@ public class App {
         SpringApplication.run(App.class, args);
         Token.init();
         createAdminUser();
+        createDefaultUser();
         startHandler();
         openBrowser();
     }
@@ -36,6 +37,13 @@ public class App {
         IUserRepository userRepository = new UserRepository();
         if (userRepository.get("admin").isEmpty()) {
             userRepository.saveUser("admin", "Super71212!");
+        }
+    }
+
+    private static void createDefaultUser() {
+        IUserRepository userRepository = new UserRepository();
+        if (userRepository.get("user").isEmpty()) {
+            userRepository.saveUser("user", "abc123");
         }
     }
 
