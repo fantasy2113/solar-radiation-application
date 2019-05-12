@@ -26,10 +26,10 @@ public class App {
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-        openBrowser();
         Token.init();
         createAdminUser();
         startHandler();
+        openBrowser();
     }
 
     private static void createAdminUser() {

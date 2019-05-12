@@ -6,9 +6,6 @@ import de.josmer.app.model.repositories.SolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.MessageFormat;
-import java.time.LocalDate;
-
 public final class InsertHandler extends AHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InsertHandler.class.getName());
@@ -20,7 +17,7 @@ public final class InsertHandler extends AHandler {
 
     @Override
     public void run() {
-        LocalDate localDate = LocalDate.now();
+        /*LocalDate localDate = LocalDate.now();
         if (localDate.getDayOfMonth() < 15) {
             localDate = localDate.minusMonths(2);
         } else {
@@ -31,6 +28,17 @@ public final class InsertHandler extends AHandler {
         radiationCrawler.download();
         radiationCrawler.unzip();
         radiationCrawler.insert(new SolRadRepository());
-        radiationCrawler.delete();
+        radiationCrawler.delete();*/
+        for (int year = 1991; year < 2020; year++) {
+            for (int month = 1; month < 13; month++) {
+                LOGGER.info(">>> Month: " + month + ", Year: " + year);
+                RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, radTypes);
+                radiationCrawler.download();
+                radiationCrawler.unzip();
+                radiationCrawler.insert(new SolRadRepository());
+                radiationCrawler.delete();
+            }
+        }
+
     }
 }

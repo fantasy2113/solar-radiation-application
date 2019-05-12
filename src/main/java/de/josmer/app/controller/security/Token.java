@@ -43,7 +43,7 @@ public final class Token {
     }
 
     private static void setDelimiter() {
-        final String delimiters = ",:;-_ ";
+        final String delimiters = ",:;_ ";
         delimiter = String.valueOf(delimiters.charAt(new Random().nextInt(delimiters.length())));
     }
 
