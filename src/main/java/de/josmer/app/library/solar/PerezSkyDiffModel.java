@@ -45,6 +45,16 @@ class PerezSkyDiffModel {
         this.solarPosition = new SolarPosition();
     }
 
+    private static Map<String, double[]> getFTab() {
+        return Map.of(
+                F_11, new double[]{-0.008, 0.130, 0.330, 0.568, 0.873, 1.132, 1.060, 0.678},
+                F_12, new double[]{0.588, 0.683, 0.487, 0.187, -0.392, -1.237, -1.600, -0.327},
+                F_13, new double[]{-0.062, -0.151, -0.221, -0.295, -0.362, -0.412, -0.359, -0.250},
+                F_21, new double[]{-0.060, -0.019, 0.055, 0.109, 0.226, 0.288, 0.264, 0.156},
+                F_22, new double[]{0.072, 0.066, -0.064, -0.152, -0.462, -0.823, -1.127, -1.377},
+                F_23, new double[]{-0.022, -0.029, -0.026, -0.014, 0.001, 0.056, 0.131, 0.251});
+    }
+
     void compute(double eGlobalHor, LocalDateTime dt) {
         reset();
         solarPosition.compute(getDt(dt), lat, lon);
@@ -70,16 +80,6 @@ class PerezSkyDiffModel {
 
     double getHourlyEnergy() {
         return eDiffInc + eDirInc + eRefInc;
-    }
-
-    private static Map<String, double[]> getFTab() {
-        return Map.of(
-                F_11, new double[]{-0.008, 0.130, 0.330, 0.568, 0.873, 1.132, 1.060, 0.678},
-                F_12, new double[]{0.588, 0.683, 0.487, 0.187, -0.392, -1.237, -1.600, -0.327},
-                F_13, new double[]{-0.062, -0.151, -0.221, -0.295, -0.362, -0.412, -0.359, -0.250},
-                F_21, new double[]{-0.060, -0.019, 0.055, 0.109, 0.226, 0.288, 0.264, 0.156},
-                F_22, new double[]{0.072, 0.066, -0.064, -0.152, -0.462, -0.823, -1.127, -1.377},
-                F_23, new double[]{-0.022, -0.029, -0.026, -0.014, 0.001, 0.056, 0.131, 0.251});
     }
 
     private double getDirHor(double eGlobalHor, double eDiffHor) {
