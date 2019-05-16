@@ -32,7 +32,7 @@ public class ViewController extends Controller {
                 if (cookie.getName().equals("token")) {
                     token = cookie.getValue();
                 }
-                if (cookie.getName().equals("application")) {
+                if (cookie.getName().equals("app")) {
                     app = cookie.getValue();
                 }
             }
