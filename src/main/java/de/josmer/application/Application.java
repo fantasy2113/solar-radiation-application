@@ -15,7 +15,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 @Configuration
@@ -27,23 +26,15 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
         Token.init();
-        createAdminUser();
-        createDefaultUser();
+        createUser("admin", "Super71212!");
+        createUser("user", "abc123");
         startHandler();
-        openBrowser();
     }
 
-    private static void createAdminUser() {
+    private static void createUser(String username, String plainPassword) {
         IUserRepository userRepository = new UserRepository();
-        if (userRepository.get("admin").isEmpty()) {
-            userRepository.saveUser("admin", "Super71212!");
-        }
-    }
-
-    private static void createDefaultUser() {
-        IUserRepository userRepository = new UserRepository();
-        if (userRepository.get("user").isEmpty()) {
-            userRepository.saveUser("user", "abc123");
+        if (userRepository.get(username).isEmpty()) {
+            userRepository.saveUser(username, plainPassword);
         }
     }
 
@@ -54,16 +45,6 @@ public class Application {
         new TokenHandler().start();
     }
 
-    private static void openBrowser() {
-        try {
-            if (System.getenv("DEV_BROWSER") == null || System.getenv("DEV_URL") == null) {
-                return;
-            }
-            new ProcessBuilder(System.getenv("DEV_BROWSER"), System.getenv("DEV_URL")).start();
-        } catch (IOException e) {
-            LOGGER.info(e.getMessage());
-        }
-    }
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
