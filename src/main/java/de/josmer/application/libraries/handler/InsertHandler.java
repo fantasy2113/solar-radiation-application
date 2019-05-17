@@ -26,6 +26,15 @@ public final class InsertHandler implements Runnable {
 
     @Override
     public void run() {
+        if (System.getenv("INSERT_ALL") == null) {
+            insertData();
+        } else {
+            insertAllData();
+        }
+        System.gc();
+    }
+
+    private void insertData() {
         LocalDate localDate = LocalDate.now();
         if (localDate.getDayOfMonth() < 15) {
             localDate = localDate.minusMonths(2);
@@ -35,12 +44,22 @@ public final class InsertHandler implements Runnable {
         LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), radType)); // NOSONAR
         RadiationCrawler radiationCrawler = new RadiationCrawler(localDate.getMonth().getValue(), localDate.getYear(), radType);
         radiationCrawler.insert(new SolRadRepository(), new FileReader());
-        System.gc();
     }
 
     public void start() {
         ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
         long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
         tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
+    }
+
+    private void insertAllData() {
+        LocalDate localDate = LocalDate.now();
+        for (int year = 1991; year < localDate.getYear(); year++) {
+            for (int month = 1; month < 13; month++) {
+                LOGGER.info(">>> Month: " + month + ", Year: " + year);
+                RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, radType);
+                radiationCrawler.insert(new SolRadRepository(), new FileReader());
+            }
+        }
     }
 }
