@@ -1,6 +1,5 @@
 package de.josmer.application.model.repositories;
 
-import de.josmer.application.library.interfaces.ILogRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,11 +15,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
-public final class LogRepository implements ILogRepository {
+public final class LogRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogRepository.class.getName());
 
-    @Override
     public List<String> getLogs() {
         return readLog("logs/spring-boot-logger.log");
     }

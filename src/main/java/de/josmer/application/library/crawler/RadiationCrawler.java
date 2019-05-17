@@ -1,9 +1,9 @@
 package de.josmer.application.library.crawler;
 
 import de.josmer.application.library.enums.RadTypes;
-import de.josmer.application.library.interfaces.ISolRadRepository;
 import de.josmer.application.library.utils.FileReader;
 import de.josmer.application.model.entities.SolRad;
+import de.josmer.application.model.repositories.SolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,15 +84,15 @@ public final class RadiationCrawler {
         }
     }
 
-    public void insert(final ISolRadRepository radiationRepository, FileReader fileReader) {
+    public void insert(final SolRadRepository radiationRepository, FileReader fileReader) {
         inserting(radiationRepository, fileReader);
     }
 
-    public void insert(final String databaseUrl, final ISolRadRepository radiationRepository, FileReader fileReader) { // NOSONAR
+    public void insert(final String databaseUrl, final SolRadRepository radiationRepository, FileReader fileReader) { // NOSONAR
         inserting(radiationRepository, fileReader);
     }
 
-    private void inserting(final ISolRadRepository radiationRepository, FileReader fileReader) {
+    private void inserting(final SolRadRepository radiationRepository, FileReader fileReader) {
         LOGGER.info("reading...");
         initRadiations(fileReader);
         LOGGER.info("inserting...");

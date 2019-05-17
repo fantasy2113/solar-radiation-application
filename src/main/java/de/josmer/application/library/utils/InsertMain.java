@@ -3,7 +3,6 @@ package de.josmer.application.library.utils;
 import de.josmer.application.library.crawler.RadiationCrawler;
 import de.josmer.application.library.enums.RadTypes;
 import de.josmer.application.model.repositories.SolRadRepository;
-import de.josmer.application.model.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,6 @@ public class InsertMain {
         insertData(RadTypes.GLOBAL);
         insertData(RadTypes.DIRECT);
         insertData(RadTypes.DIFFUSE);
-        new UserRepository().saveUser("user", "abc123");
     }
 
     private static void insertData(RadTypes type) {

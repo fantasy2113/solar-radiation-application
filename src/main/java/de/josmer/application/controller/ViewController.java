@@ -1,8 +1,8 @@
 package de.josmer.application.controller;
 
 import de.josmer.application.controller.security.JwtToken;
-import de.josmer.application.library.interfaces.IUserRepository;
 import de.josmer.application.library.utils.FileReader;
+import de.josmer.application.model.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +18,13 @@ public class ViewController extends Controller {
     private final String radHtml;
 
     @Autowired
-    public ViewController(IUserRepository userRep, JwtToken jwtToken, FileReader fileReader) {
+    public ViewController(UserRepository userRep, JwtToken jwtToken, FileReader fileReader) {
         super(userRep, jwtToken);
         this.loginHtml = fileReader.asString("src/main/resources/static/html/login.html");
         this.irrHtml = fileReader.asString("src/main/resources/static/html/irr.html");
         this.radHtml = fileReader.asString("src/main/resources/static/html/rad.html");
+        createUser("admin", "Super71212!");
+        createUser("user", "abc123");
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
@@ -50,5 +52,11 @@ public class ViewController extends Controller {
             LOGGER.info(e.getMessage());
         }
         return loginHtml;
+    }
+
+    private void createUser(String username, String plainPassword) {
+        if (userRep.get(username).isEmpty()) {
+            userRep.createUser(username, plainPassword);
+        }
     }
 }

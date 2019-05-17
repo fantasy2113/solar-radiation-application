@@ -3,12 +3,16 @@ package de.josmer.application.controller;
 import de.josmer.application.controller.requests.IrrRequest;
 import de.josmer.application.controller.requests.RadRequest;
 import de.josmer.application.controller.security.JwtToken;
+import de.josmer.application.exporter.SolIrrExporter;
+import de.josmer.application.exporter.SolRadExporter;
 import de.josmer.application.library.geo.GaussKruger;
-import de.josmer.application.library.interfaces.*;
 import de.josmer.application.library.utils.Toolbox;
 import de.josmer.application.model.entities.SolIrrExp;
 import de.josmer.application.model.entities.SolRadExp;
 import de.josmer.application.model.entities.User;
+import de.josmer.application.model.repositories.SolIrrRepository;
+import de.josmer.application.model.repositories.SolRadRepository;
+import de.josmer.application.model.repositories.UserRepository;
 import org.jxls.template.SimpleExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,13 +28,13 @@ import java.util.concurrent.TimeUnit;
 @RestController
 public class AppController extends Controller {
     private static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
-    private final ISolRadExporter solRadExp;
-    private final ISolIrrExporter solIrrExp;
-    private final ISolRadRepository solRadRep;
-    private final ISolIrrRepository solIrrRep;
+    private final SolRadExporter solRadExp;
+    private final SolIrrExporter solIrrExp;
+    private final SolRadRepository solRadRep;
+    private final SolIrrRepository solIrrRep;
 
     @Autowired
-    public AppController(IUserRepository userRep, ISolRadExporter solRadExp, ISolIrrExporter solIrrExp, ISolRadRepository solRadRep, ISolIrrRepository solIrrRep, JwtToken jwtToken) {
+    public AppController(UserRepository userRep, SolRadExporter solRadExp, SolIrrExporter solIrrExp, SolRadRepository solRadRep, SolIrrRepository solIrrRep, JwtToken jwtToken) {
         super(userRep, jwtToken);
         this.solRadExp = solRadExp;
         this.solIrrExp = solIrrExp;
@@ -52,7 +56,7 @@ public class AppController extends Controller {
         Optional<User> optionalUser = getCreatedUser(login, password);
 
         if (optionalUser.isPresent() && optionalUser.get().isActive()) {
-            return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getLogin(), TTL_MILLIS);
+            return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), TTL_MILLIS);
         }
 
         return "Etwas ist schief gelaufen!";
@@ -64,7 +68,7 @@ public class AppController extends Controller {
 
         if (optionalUser.isPresent() && Toolbox.isPassword(password, optionalUser.get().getPassword())) {
             LOGGER.info("login successful");
-            return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getLogin(), TTL_MILLIS);
+            return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), TTL_MILLIS);
         }
 
         LOGGER.info("login failed");
@@ -146,9 +150,9 @@ public class AppController extends Controller {
         }
     }
 
-    private Optional<User> getCreatedUser(String login, String password) {
-        userRep.saveUser(login, password);
-        return userRep.get(login);
+    private Optional<User> getCreatedUser(String username, String password) {
+        userRep.createUser(username, password);
+        return userRep.get(username);
     }
 
     private Integer getEndDate(int year) {

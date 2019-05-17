@@ -1,6 +1,5 @@
 package de.josmer.application.exporter;
 
-import de.josmer.application.library.interfaces.ISolIrrExporter;
 import de.josmer.application.model.entities.SolIrr;
 import de.josmer.application.model.entities.SolIrrExp;
 import org.springframework.stereotype.Component;
@@ -9,9 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolIrrExporter extends Export<SolIrrExp, SolIrr> implements ISolIrrExporter {
+public class SolIrrExporter extends Export<SolIrrExp, SolIrr> {
 
-    @Override
     public List<SolIrrExp> getItems(List<SolIrr> items, double lon, double lat) {
         List<SolIrrExp> exportCalcs = new LinkedList<>();
         try {
@@ -55,12 +53,10 @@ public class SolIrrExporter extends Export<SolIrrExp, SolIrr> implements ISolIrr
         return exportCalcs;
     }
 
-    @Override
     public List<String> getHeaders() {
         return List.of("Datum", "Lat", "Lon", "Ausrichtung", "Neigung", "EGlobHor", "EGlobGen", "Einheit", "Dim", "Quelle");
     }
 
-    @Override
     public String getProps() {
         return "date, lat, lon, ae, ye, eGlobHor, eGlobGen, unit, dim, source, ";
     }

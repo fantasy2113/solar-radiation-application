@@ -1,7 +1,6 @@
 package de.josmer.application.model.repositories;
 
-import de.josmer.application.library.interfaces.IGaussKruger;
-import de.josmer.application.library.interfaces.ISolRadRepository;
+import de.josmer.application.library.geo.GaussKruger;
 import de.josmer.application.model.entities.SolRad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ import java.util.Locale;
 import java.util.OptionalInt;
 
 @Component
-public final class SolRadRepository extends Repository<SolRad> implements ISolRadRepository {
+public final class SolRadRepository extends Repository<SolRad> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadRepository.class.getName());
 
@@ -27,8 +26,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         super();
     }
 
-    @Override
-    public double[] findGlobal(final IGaussKruger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
+    public double[] findGlobal(final GaussKruger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
         List<SolRad> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         try {
@@ -41,8 +39,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         return retArr;
     }
 
-    @Override
-    public List<SolRad> find(final IGaussKruger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+    public List<SolRad> find(final GaussKruger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<SolRad> radiations = new LinkedList<>();
         gaussKrueger.transformFrom(lon, lat);
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
@@ -71,7 +68,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         return radiations;
     }
 
-    private OptionalInt getRechtswert(IGaussKruger gaussKrueger) {
+    private OptionalInt getRechtswert(GaussKruger gaussKrueger) {
         if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("5")) {
             return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert() - 1600000));
         } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("4")) {
@@ -84,7 +81,6 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         return OptionalInt.empty();
     }
 
-    @Override
     public void save(final List<SolRad> radiations) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement
@@ -107,7 +103,6 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         }
     }
 
-    @Override
     public long count() {
         try (Connection con = getConnection();
              Statement st = con.createStatement();

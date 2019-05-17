@@ -1,17 +1,15 @@
 package de.josmer.application.library.geo;
 
-import de.josmer.application.library.interfaces.IGaussKruger;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class GaussKruger implements IGaussKruger {
+public final class GaussKruger {
 
     private double lon;
     private double lat;
     private double rechtswert;
     private double hochwert;
 
-    @Override
     public void transformFrom(final double lon, final double lat) {
         this.lon = lon;
         this.lat = lat;
@@ -98,12 +96,10 @@ public final class GaussKruger implements IGaussKruger {
         this.lat = b2;
     }
 
-    @Override
     public double getRechtswert() {
         return rechtswert;
     }
 
-    @Override
     public double getHochwert() {
         return hochwert;
     }

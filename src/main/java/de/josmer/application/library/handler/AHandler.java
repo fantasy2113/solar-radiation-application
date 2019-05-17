@@ -1,7 +1,5 @@
 package de.josmer.application.library.handler;
 
-import de.josmer.application.library.interfaces.IHandler;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -9,9 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-abstract class AHandler implements IHandler {
+abstract class AHandler implements Runnable {
 
-    @Override
     public void start() {
         ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
         long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);

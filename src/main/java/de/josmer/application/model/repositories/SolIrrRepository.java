@@ -1,6 +1,5 @@
 package de.josmer.application.model.repositories;
 
-import de.josmer.application.library.interfaces.ISolIrrRepository;
 import de.josmer.application.library.solar.SolarIrradiation;
 import de.josmer.application.model.entities.SolIrr;
 import org.slf4j.Logger;
@@ -12,11 +11,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolIrrRepository implements ISolIrrRepository {
+public class SolIrrRepository {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SolIrrRepository.class.getName());
 
-    @Override
+
     public List<SolIrr> getSolRadInc(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
         List<SolIrr> solarEnergies = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);

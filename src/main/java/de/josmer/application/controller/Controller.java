@@ -1,17 +1,16 @@
 package de.josmer.application.controller;
 
 import de.josmer.application.controller.security.JwtToken;
-import de.josmer.application.library.interfaces.IUserRepository;
+import de.josmer.application.model.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 abstract class Controller {
     static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
-
-    final IUserRepository userRep;
+    final UserRepository userRep;
     final JwtToken jwtToken;
 
-    public Controller(IUserRepository userRep, JwtToken jwtToken) {
+    public Controller(UserRepository userRep, JwtToken jwtToken) {
         this.userRep = userRep;
         this.jwtToken = jwtToken;
     }
@@ -22,7 +21,6 @@ abstract class Controller {
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
-
         return false;
     }
 }

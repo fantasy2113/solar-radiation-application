@@ -1,6 +1,6 @@
 package de.josmer.application.controller;
 
-import de.josmer.application.library.interfaces.ILogRepository;
+import de.josmer.application.model.repositories.LogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,10 +11,10 @@ import java.util.List;
 @RestController
 public final class LogController {
 
-    private final ILogRepository logRepository;
+    private final LogRepository logRepository;
 
     @Autowired
-    public LogController(ILogRepository logRepository) {
+    public LogController(LogRepository logRepository) {
         this.logRepository = logRepository;
     }
 

@@ -2,8 +2,6 @@ package de.josmer.application;
 
 import de.josmer.application.library.enums.RadTypes;
 import de.josmer.application.library.handler.InsertHandler;
-import de.josmer.application.library.interfaces.IUserRepository;
-import de.josmer.application.model.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -23,16 +21,7 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        createUser("admin", "Super71212!");
-        createUser("user", "abc123");
         startHandler();
-    }
-
-    private static void createUser(String username, String plainPassword) {
-        IUserRepository userRepository = new UserRepository();
-        if (userRepository.get(username).isEmpty()) {
-            userRepository.saveUser(username, plainPassword);
-        }
     }
 
     private static void startHandler() {
@@ -40,7 +29,6 @@ public class Application {
         new InsertHandler(RadTypes.DIFFUSE).start();
         new InsertHandler(RadTypes.DIRECT).start();
     }
-
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
