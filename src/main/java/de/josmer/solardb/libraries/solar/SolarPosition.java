@@ -1,6 +1,5 @@
 package de.josmer.solardb.libraries.solar;
 
-import java.time.LocalDateTime;
 import java.time.Year;
 
 class SolarPosition {
@@ -9,7 +8,7 @@ class SolarPosition {
     private double as;
     private double zenith;
 
-    void compute(LocalDateTime time, double lat, double lon) {
+    void compute(SolarDateTime time, double lat, double lon) {
         double hour = time.getHour();
         double min = 30;
         double sec = 0;

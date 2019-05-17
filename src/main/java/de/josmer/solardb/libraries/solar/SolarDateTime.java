@@ -46,4 +46,8 @@ class SolarDateTime {
     int getDayOfYear() {
         return LocalDateTime.of(year, month, dayInMonth, hour, minute).getDayOfYear();
     }
+
+    int getDayOfMonth() {
+        return LocalDateTime.of(year, month, dayInMonth, hour, minute).getDayOfMonth();
+    }
 }

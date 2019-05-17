@@ -19,8 +19,8 @@ class SolarSynthesiser {
         }
     }
 
-    double[] extractDays(LocalDateTime month, double hGlob, double lat, double lon) {
-        final int daysInMonth = Utils.getDaysInMonth(month.getYear(), month.getMonthValue());
+    double[] extractDays(SolarDateTime month, double hGlob, double lat, double lon) {
+        final int daysInMonth = Utils.getDaysInMonth(month.getYear(), month.getMonth());
         double[] days = new double[daysInMonth];
         if (hGlob <= 0) {
             return days;
@@ -31,7 +31,7 @@ class SolarSynthesiser {
             SolarPosition sunPos = new SolarPosition();
             double sumSinGammaS = 0.0;
             for (int h = 0; h < 24; h++) {
-                LocalDateTime dt = LocalDateTime.of(month.getYear(), month.getMonthValue(), d + 1, h, month.getMinute(), 0, 0);
+                SolarDateTime dt = new SolarDateTime(month.getYear(), month.getMonth(), d + 1, h);
                 sunPos.compute(dt, lat, lon);
                 if (sunPos.getYs() > 0) {
                     sumSinGammaS += Utils.sin(sunPos.getYs());
@@ -48,7 +48,7 @@ class SolarSynthesiser {
         return days;
     }
 
-    double[] extractHours(LocalDateTime day, double hGlob, double lat, double lon) {
+    double[] extractHours(SolarDateTime day, double hGlob, double lat, double lon) {
         if (hGlob <= 0) {
             return new double[24];
         }
@@ -56,7 +56,7 @@ class SolarSynthesiser {
         double[] sunYOfH = new double[24];
         double sumSinGammaS = 0.0;
         for (int h = 0; h < 24; h++) {
-            LocalDateTime dt = LocalDateTime.of(day.getYear(), day.getMonthValue(), day.getDayOfMonth(), h, day.getMinute(), 0, 0);
+            SolarDateTime dt = new SolarDateTime(day.getYear(), day.getMonth(), day.getDayOfMonth(), h);
             sunPos.compute(dt, lat, lon);
             sunYOfH[h] = sunPos.getYs();
             if (sunPos.getYs() > 0) {
@@ -130,7 +130,7 @@ class SolarSynthesiser {
         return ktOfh;
     }
 
-    private double e0OfDay(LocalDateTime day) {
+    private double e0OfDay(SolarDateTime day) {
         return Utils.EO_TAG * (1.0 - 0.0334 * Math.cos(0.0172 * (double) day.getDayOfYear() - 0.04747));
     }
 }

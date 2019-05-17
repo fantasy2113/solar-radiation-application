@@ -55,9 +55,9 @@ class PerezSkyDiffModel {
                 F_23, new double[]{-0.022, -0.029, -0.026, -0.014, 0.001, 0.056, 0.131, 0.251});
     }
 
-    void compute(double eGlobalHor, LocalDateTime dt) {
+    void compute(double eGlobalHor, SolarDateTime dt) {
         resetValues();
-        solarPosition.compute(getDt(dt), lat, lon);
+        solarPosition.compute(dt, lat, lon);
 
         if (eGlobalHor <= 0 || solarPosition.getYs() <= 0) {
             return;
@@ -165,7 +165,7 @@ class PerezSkyDiffModel {
         eDiffInc = Math.max(0, eDiffHor * (term1 + term2 + term3));
     }
 
-    private void computeEDirHorExtra(LocalDateTime dt) {
+    private void computeEDirHorExtra(SolarDateTime dt) {
         double be = solarPosition.getSimpleDayAngle(dt.getDayOfYear(), dt.getYear());
         double roverR0Sqrd = (1.00011 + 0.034221 * Math.cos(be) + 0.00128 * Math.sin(be) + 0.000719 * Math.cos(2 * be) + 7.7e-05 * Math.sin(2 * be));
         eDirHorExtra = Utils.EO * roverR0Sqrd;

@@ -78,16 +78,16 @@ public class SolarIrradiation {
         return Utils.getDaysInMonth(dt.getYear(), monthIndex + 1);
     }
 
-    private LocalDateTime getDay(int monthIndex) {
-        return LocalDateTime.of(dt.getYear(), monthIndex + 1, 1, 0, 30);
+    private SolarDateTime getDay(int monthIndex) {
+        return new SolarDateTime(dt.getYear(), monthIndex + 1, 1, 0);
     }
 
-    private LocalDateTime getHour(int monthIndex, int dayIndex, int hourIndex) {
-        return LocalDateTime.of(dt.getYear(), monthIndex + 1, dayIndex + 1, hourIndex, 30);
+    private SolarDateTime getHour(int monthIndex, int dayIndex, int hourIndex) {
+        return new SolarDateTime(dt.getYear(), monthIndex + 1, dayIndex + 1, hourIndex);
     }
 
-    private LocalDateTime getDay(int monthIndex, int dayIndex) {
-        return LocalDateTime.of(dt.getYear(), monthIndex + 1, dayIndex + 1, 0, 30);
+    private SolarDateTime getDay(int monthIndex, int dayIndex) {
+        return new SolarDateTime(dt.getYear(), monthIndex + 1, dayIndex + 1, 0);
     }
 
     private int getStarMonth() {
