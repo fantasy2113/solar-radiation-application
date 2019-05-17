@@ -2,7 +2,7 @@ package de.josmer.application.library.crawler;
 
 import de.josmer.application.library.enums.RadTypes;
 import de.josmer.application.library.interfaces.ISolRadRepository;
-import de.josmer.application.library.utils.Toolbox;
+import de.josmer.application.library.utils.FileReader;
 import de.josmer.application.model.entities.SolRad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,17 +84,17 @@ public final class RadiationCrawler {
         }
     }
 
-    public void insert(final ISolRadRepository radiationRepository) {
-        inserting(radiationRepository);
+    public void insert(final ISolRadRepository radiationRepository, FileReader fileReader) {
+        inserting(radiationRepository, fileReader);
     }
 
-    public void insert(final String databaseUrl, final ISolRadRepository radiationRepository) { // NOSONAR
-        inserting(radiationRepository);
+    public void insert(final String databaseUrl, final ISolRadRepository radiationRepository, FileReader fileReader) { // NOSONAR
+        inserting(radiationRepository, fileReader);
     }
 
-    private void inserting(final ISolRadRepository radiationRepository) {
+    private void inserting(final ISolRadRepository radiationRepository, FileReader fileReader) {
         LOGGER.info("reading...");
-        initRadiations();
+        initRadiations(fileReader);
         LOGGER.info("inserting...");
         radiationRepository.save(radiations);
     }
@@ -109,8 +109,8 @@ public final class RadiationCrawler {
         }
     }
 
-    private void initRadiations() {
-        final String file = Toolbox.readFile(getPathnameAsc());
+    private void initRadiations(FileReader fileReader) {
+        final String file = fileReader.asString(getPathnameAsc());
         final String[] rows = file.split("\\r\\n");
         int hochwert = 5237500;
         for (int row = rows.length - 1; row >= 28; row--) {

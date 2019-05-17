@@ -25,7 +25,7 @@ public class InsertMain {
                 RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, type);
                 radiationCrawler.download();
                 radiationCrawler.unzip();
-                radiationCrawler.insert(new SolRadRepository());
+                radiationCrawler.insert(new SolRadRepository(), new FileReader());
                 radiationCrawler.delete();
             }
         }
