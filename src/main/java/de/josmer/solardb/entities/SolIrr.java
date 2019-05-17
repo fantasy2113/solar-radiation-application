@@ -1,6 +1,6 @@
 package de.josmer.solardb.entities;
 
-public class SolIrr {
+public final class SolIrr {
     private String calculatedDate;
     private double ae;
     private double ye;

@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Component
-public class FileReader {
+public final class FileReader {
 
     public String asString(final String file) {
         try {

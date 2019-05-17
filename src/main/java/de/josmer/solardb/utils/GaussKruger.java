@@ -1,17 +1,17 @@
 package de.josmer.solardb.utils;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public final class GaussKruger {
     private double lon;
     private double lat;
     private double rechtswert;
     private double hochwert;
 
-    public void transformFrom(final double lon, final double lat) {
+    public GaussKruger(double lon, double lat) {
         this.lon = lon;
         this.lat = lat;
+    }
+
+    public void compute() {
         wgs84ToPot();
         geoToGk();
     }

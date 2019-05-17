@@ -1,6 +1,6 @@
 package de.josmer.solardb.entities;
 
-public class SolIrrExp extends Export {
+public final class SolIrrExp extends Export {
     private String ae;
     private String ye;
     private double eGlobHor;

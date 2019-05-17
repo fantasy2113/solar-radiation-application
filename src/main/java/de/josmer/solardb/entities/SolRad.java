@@ -1,6 +1,6 @@
 package de.josmer.solardb.entities;
 
-public class SolRad {
+public final class SolRad {
     private int radiationDate;
     private int gkhMin;
     private int gkhMax;

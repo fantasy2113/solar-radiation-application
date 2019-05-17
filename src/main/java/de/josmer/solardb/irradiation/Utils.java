@@ -2,7 +2,7 @@ package de.josmer.solardb.irradiation;
 
 import java.time.YearMonth;
 
-class Utils {
+final class Utils {
     static final double K = 1.041;
     static final double EO = 1360.8;
     static final double EO_TAG = 1367;

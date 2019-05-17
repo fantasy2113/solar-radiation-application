@@ -2,7 +2,7 @@ package de.josmer.solardb.irradiation;
 
 import java.time.LocalDateTime;
 
-class SolarDateTime {
+final class SolarDateTime {
     private final int year;
     private final int month;
     private final int dayInMonth;

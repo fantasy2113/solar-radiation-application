@@ -11,7 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolIrrRepository {
+public final class SolIrrRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolIrrRepository.class.getName());
 
     public List<SolIrr> getSolRadInc(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {

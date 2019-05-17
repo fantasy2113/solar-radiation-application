@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> {
+public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> {
 
     public List<SolIrrExp> getItems(List<SolIrr> items, double lon, double lat) {
         List<SolIrrExp> exportCalcs = new LinkedList<>();

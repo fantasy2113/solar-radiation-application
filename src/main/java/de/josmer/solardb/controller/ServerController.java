@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-public class ServerController {
+public final class ServerController {
 
     @RequestMapping("/time")
     public String getServerTime() {

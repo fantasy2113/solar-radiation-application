@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public class SolRadExporter extends Exporter<SolRadExp, SolRad> {
+public final class SolRadExporter extends Exporter<SolRadExp, SolRad> {
 
     public List<SolRadExp> getItems(final List<SolRad> solarRadiations, final double lon, final double lat) {
         List<SolRadExp> exports = new LinkedList<>();

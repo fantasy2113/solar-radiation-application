@@ -1,6 +1,6 @@
 package de.josmer.solardb.entities;
 
-public class SolRadExp extends Export {
+public final class SolRadExp extends Export {
     private String type;
     private double value;
 

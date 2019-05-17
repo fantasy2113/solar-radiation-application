@@ -2,7 +2,7 @@ package de.josmer.solardb.irradiation;
 
 import java.time.Year;
 
-class SolarPosition {
+final class SolarPosition {
     private static final double TIMEZONE = 1;
     private double ys;
     private double as;

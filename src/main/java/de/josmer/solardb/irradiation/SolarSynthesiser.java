@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.SplittableRandom;
 
-class SolarSynthesiser {
+final class SolarSynthesiser {
     private final SplittableRandom random;
 
     SolarSynthesiser() {

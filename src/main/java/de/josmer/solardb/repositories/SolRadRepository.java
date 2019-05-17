@@ -25,8 +25,8 @@ public final class SolRadRepository extends Repository<SolRad> {
         super();
     }
 
-    public double[] findGlobal(final GaussKruger gaussKrueger, final int startDate, final int endDate, final double lon, final double lat) {
-        List<SolRad> globalRadiation = find(gaussKrueger, startDate, endDate, "GLOBAL", lon, lat);
+    public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
+        List<SolRad> globalRadiation = find(startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         try {
             for (int i = 0; i < retArr.length; i++) {
@@ -38,9 +38,10 @@ public final class SolRadRepository extends Repository<SolRad> {
         return retArr;
     }
 
-    public List<SolRad> find(final GaussKruger gaussKrueger, final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+    public List<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<SolRad> radiations = new LinkedList<>();
-        gaussKrueger.transformFrom(lon, lat);
+        GaussKruger gaussKrueger = new GaussKruger(lon, lat);
+        gaussKrueger.compute();
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
         final OptionalInt optionalRechtswert = getRechtswert(gaussKrueger);
         if (optionalRechtswert.isEmpty()) {

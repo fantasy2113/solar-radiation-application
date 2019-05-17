@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
-public class SolarIrradiation {
+public final class SolarIrradiation {
     private final double lat;
     private final double lon;
     private final double ye;

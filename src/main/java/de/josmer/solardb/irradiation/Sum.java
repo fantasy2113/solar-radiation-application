@@ -1,6 +1,6 @@
 package de.josmer.solardb.irradiation;
 
-class Sum {
+final class Sum {
     private double value;
 
     Sum() {

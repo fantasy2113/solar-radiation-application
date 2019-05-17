@@ -3,7 +3,7 @@ package de.josmer.solardb.irradiation;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-class PerezSkyDiffModel {
+final class PerezSkyDiffModel {
     private static final String F_11 = "F11";
     private static final String F_12 = "F12";
     private static final String F_13 = "F13";

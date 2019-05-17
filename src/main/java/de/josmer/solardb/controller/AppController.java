@@ -11,7 +11,6 @@ import de.josmer.solardb.exporter.SolRadExporter;
 import de.josmer.solardb.repositories.SolIrrRepository;
 import de.josmer.solardb.repositories.SolRadRepository;
 import de.josmer.solardb.repositories.UserRepository;
-import de.josmer.solardb.utils.GaussKruger;
 import de.josmer.solardb.utils.UserBCrypt;
 import org.jxls.template.SimpleExporter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-public class AppController extends Controller {
+public final class AppController extends Controller {
     private static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
     private final SolRadExporter solRadExp;
     private final SolIrrExporter solIrrExp;
@@ -95,7 +94,7 @@ public class AppController extends Controller {
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     solRadExp.getHeaders(),
-                    solRadExp.getItems(solRadRep.find(new GaussKruger(), getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
+                    solRadExp.getItems(solRadRep.find(getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
                     solRadExp.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -114,7 +113,7 @@ public class AppController extends Controller {
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     solIrrExp.getHeaders(),
-                    solIrrExp.getItems(solIrrRep.getSolRadInc(solRadRep.findGlobal(new GaussKruger(), getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
+                    solIrrExp.getItems(solIrrRep.getSolRadInc(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
                     solIrrExp.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -128,7 +127,7 @@ public class AppController extends Controller {
         if (!isAccess(token)) {
             return new ArrayList<>();
         }
-        return solRadExp.getItems(solRadRep.find(new GaussKruger(), getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
+        return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
     @GetMapping("/irr")
@@ -136,7 +135,7 @@ public class AppController extends Controller {
         if (!isAccess(token)) {
             return new ArrayList<>();
         }
-        return solIrrExp.getItems(solIrrRep.getSolRadInc(solRadRep.findGlobal(new GaussKruger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        return solIrrExp.getItems(solIrrRep.getSolRadInc(solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
     }
 
     private boolean isParameter(String login, String password) {

@@ -12,7 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-public class ViewController extends Controller {
+public final class ViewController extends Controller {
     private final String loginHtml;
     private final String irrHtml;
     private final String radHtml;

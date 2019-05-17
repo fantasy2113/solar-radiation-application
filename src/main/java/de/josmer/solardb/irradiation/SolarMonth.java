@@ -1,6 +1,6 @@
 package de.josmer.solardb.irradiation;
 
-class SolarMonth {
+final class SolarMonth {
     private final int monthIndex;
     private final double eInc;
     private final double eHor;
