@@ -1,7 +1,6 @@
 package de.josmer.application.entities;
 
 public class SolRadExp extends AExport {
-
     private String type;
     private double value;
 

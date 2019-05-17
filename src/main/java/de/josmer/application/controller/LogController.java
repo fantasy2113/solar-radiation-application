@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 public final class LogController {
-
     private final LogRepository logRepository;
 
     @Autowired

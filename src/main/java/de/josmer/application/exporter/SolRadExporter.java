@@ -20,28 +20,14 @@ public class SolRadExporter extends Export<SolRadExp, SolRad> {
                 if (String.valueOf(solRad.getRadiationDate()).endsWith("12")) {
                     SolRadExp export = new SolRadExp();
                     export.setDate("Summe " + String.valueOf(solRad.getRadiationDate()).substring(0, 4));
-                    export.setLat("");
-                    export.setLon("");
-                    export.setType("");
-                    export.setValue(Double.valueOf(roundToString(eGlobHorSum, 2)));
-                    export.setUnit("kWh/m2");
-                    export.setDim("1 km2");
-                    export.setSource("DWD CDC");
-                    exports.add(export);
+                    addSum(exports, eGlobHorSum, export);
                     eGlobHorSum = 0.0;
                 }
             }
             if (!exports.get(exports.size() - 1).getDate().contains("Summe")) {
                 SolRadExp export = new SolRadExp();
                 export.setDate("Summe " + exports.get(exports.size() - 1).getDate().substring(0, 4));
-                export.setLat("");
-                export.setLon("");
-                export.setType("");
-                export.setValue(Double.valueOf(roundToString(eGlobHorSum, 2)));
-                export.setUnit("kWh/m2");
-                export.setDim("1 km2");
-                export.setSource("DWD CDC");
-                exports.add(export);
+                addSum(exports, eGlobHorSum, export);
             }
 
             int sumCnt = 0;
@@ -55,19 +41,23 @@ public class SolRadExporter extends Export<SolRadExp, SolRad> {
 
             SolRadExp export = new SolRadExp();
             export.setDate("Summe Mittel");
-            export.setLat("");
-            export.setLon("");
-            export.setType("");
-            export.setValue(Double.valueOf(roundToString(avgSum / sumCnt, 2)));
-            export.setUnit("kWh/m2");
-            export.setDim("1 km2");
-            export.setSource("DWD CDC");
-            exports.add(export);
+            addSum(exports, avgSum / sumCnt, export);
 
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
         return exports;
+    }
+
+    private void addSum(List<SolRadExp> exports, double eGlobHorSum, SolRadExp export) {
+        export.setLat("");
+        export.setLon("");
+        export.setType("");
+        export.setValue(Double.valueOf(roundToString(eGlobHorSum, 2)));
+        export.setUnit("kWh/m2");
+        export.setDim("1 km2");
+        export.setSource("DWD CDC");
+        exports.add(export);
     }
 
     public List<String> getHeaders() {

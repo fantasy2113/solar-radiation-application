@@ -1,7 +1,6 @@
 package de.josmer.application.entities;
 
 public class SolRad {
-
     private int radiationDate;
     private int gkhMin;
     private int gkhMax;

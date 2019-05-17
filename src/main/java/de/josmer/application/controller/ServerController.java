@@ -12,5 +12,4 @@ public class ServerController {
     public String getServerTime() {
         return "Server Time: " + LocalDateTime.now();
     }
-
 }

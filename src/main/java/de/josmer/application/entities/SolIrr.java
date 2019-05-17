@@ -1,7 +1,6 @@
 package de.josmer.application.entities;
 
 public class SolIrr {
-
     private String calculatedDate;
     private double ae;
     private double ye;

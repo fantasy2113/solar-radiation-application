@@ -1,7 +1,6 @@
 package de.josmer.application.entities;
 
 public class SolIrrExp extends AExport {
-
     private String ae;
     private String ye;
     private double eGlobHor;
