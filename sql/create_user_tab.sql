@@ -20,5 +20,5 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."user"
+ALTER TABLE public."user_tab"
     OWNER to postgres;
