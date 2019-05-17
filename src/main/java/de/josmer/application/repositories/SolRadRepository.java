@@ -15,7 +15,6 @@ import java.util.OptionalInt;
 
 @Component
 public final class SolRadRepository extends Repository<SolRad> {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadRepository.class.getName());
 
     public SolRadRepository(final String databaseUrl) {

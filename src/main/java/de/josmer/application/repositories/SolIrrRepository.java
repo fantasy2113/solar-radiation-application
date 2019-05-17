@@ -12,9 +12,7 @@ import java.util.List;
 
 @Component
 public class SolIrrRepository {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(SolIrrRepository.class.getName());
-
 
     public List<SolIrr> getSolRadInc(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
         List<SolIrr> solarEnergies = new LinkedList<>();

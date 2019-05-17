@@ -16,7 +16,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public final class InsertHandler implements Runnable {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(InsertHandler.class.getName());
     private final RadTypes radType;
 

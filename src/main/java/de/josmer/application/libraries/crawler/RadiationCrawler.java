@@ -20,7 +20,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public final class RadiationCrawler {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(RadiationCrawler.class.getName());
     private final String templateTargetFile;
     private final String targetUrl;

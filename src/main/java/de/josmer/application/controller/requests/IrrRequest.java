@@ -1,6 +1,6 @@
 package de.josmer.application.controller.requests;
 
-public final class IrrRequest extends ARequest {
+public final class IrrRequest extends Request {
 
     private int year;
     private int ae;

@@ -1,7 +1,6 @@
 package de.josmer.application.controller.requests;
 
-public final class RadRequest extends ARequest {
-
+public final class RadRequest extends Request {
     private String startDate;
     private String endDate;
     private String type;

@@ -1,8 +1,5 @@
 package de.josmer.application.repositories;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Connection;
@@ -11,8 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 abstract class Repository<E> {
-
-    static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getName());
     private final String databaseUrl;
 
     Repository(final String databaseUrl) {

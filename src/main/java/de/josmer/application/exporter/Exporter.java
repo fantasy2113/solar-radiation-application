@@ -6,9 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
-abstract class Export<TOut, TIn> {
+abstract class Exporter<TOut, TIn> {
 
-    static final Logger LOGGER = LoggerFactory.getLogger(Export.class.getName());
+    static final Logger LOGGER = LoggerFactory.getLogger(Exporter.class.getName());
 
     String roundToString(double value, int scale) {
         return String.format(Locale.ENGLISH, "%." + scale + "f", Precision.round(value, scale));

@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 
 @Component
 public final class LogRepository {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(LogRepository.class.getName());
 
     public List<String> getLogs() {
