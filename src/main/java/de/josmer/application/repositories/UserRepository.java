@@ -1,6 +1,6 @@
-package de.josmer.application.model.repositories;
+package de.josmer.application.repositories;
 
-import de.josmer.application.model.entities.User;
+import de.josmer.application.entities.User;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,10 +11,10 @@ import java.util.Optional;
 
 @Component
 public final class UserRepository {
-    private final IUserRepository userRepositoryCrud;
+    private final UserRepositoryCrud userRepositoryCrud;
 
     @Autowired
-    public UserRepository(IUserRepository userRepositoryCrud) {
+    public UserRepository(UserRepositoryCrud userRepositoryCrud) {
         this.userRepositoryCrud = userRepositoryCrud;
     }
 

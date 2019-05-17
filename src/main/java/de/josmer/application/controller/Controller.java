@@ -1,7 +1,7 @@
 package de.josmer.application.controller;
 
 import de.josmer.application.controller.security.JwtToken;
-import de.josmer.application.model.repositories.UserRepository;
+import de.josmer.application.repositories.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

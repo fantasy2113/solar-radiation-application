@@ -2,7 +2,7 @@ package de.josmer.application.library.utils;
 
 import de.josmer.application.library.crawler.RadiationCrawler;
 import de.josmer.application.library.enums.RadTypes;
-import de.josmer.application.model.repositories.SolRadRepository;
+import de.josmer.application.repositories.SolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

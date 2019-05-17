@@ -1,4 +1,4 @@
-package de.josmer.application.model.entities;
+package de.josmer.application.entities;
 
 public class SolIrrExp extends AExport {
 

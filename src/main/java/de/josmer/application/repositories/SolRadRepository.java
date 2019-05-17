@@ -1,7 +1,7 @@
-package de.josmer.application.model.repositories;
+package de.josmer.application.repositories;
 
+import de.josmer.application.entities.SolRad;
 import de.josmer.application.library.geo.GaussKruger;
-import de.josmer.application.model.entities.SolRad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

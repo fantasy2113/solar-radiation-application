@@ -1,7 +1,7 @@
 package de.josmer.application.exporter;
 
-import de.josmer.application.model.entities.SolIrr;
-import de.josmer.application.model.entities.SolIrrExp;
+import de.josmer.application.entities.SolIrr;
+import de.josmer.application.entities.SolIrrExp;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;

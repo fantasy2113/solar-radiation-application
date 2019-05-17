@@ -1,7 +1,7 @@
-package de.josmer.application.model.repositories;
+package de.josmer.application.repositories;
 
 
-import de.josmer.application.model.entities.User;
+import de.josmer.application.entities.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;
@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-interface IUserRepository extends CrudRepository<User, Integer> {
+interface UserRepositoryCrud extends CrudRepository<User, Integer> {
     Optional<User> findByUsername(@Param("username") String username);
 }

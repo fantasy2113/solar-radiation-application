@@ -1,4 +1,4 @@
-package de.josmer.application.model.entities;
+package de.josmer.application.entities;
 
 abstract class AExport {
 

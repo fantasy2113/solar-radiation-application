@@ -1,7 +1,7 @@
 package de.josmer.application.exporter;
 
-import de.josmer.application.model.entities.SolRad;
-import de.josmer.application.model.entities.SolRadExp;
+import de.josmer.application.entities.SolRad;
+import de.josmer.application.entities.SolRadExp;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;

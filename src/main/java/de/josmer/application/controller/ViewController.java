@@ -2,7 +2,7 @@ package de.josmer.application.controller;
 
 import de.josmer.application.controller.security.JwtToken;
 import de.josmer.application.library.utils.FileReader;
-import de.josmer.application.model.repositories.UserRepository;
+import de.josmer.application.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
