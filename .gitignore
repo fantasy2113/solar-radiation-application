@@ -6,3 +6,4 @@ target/
 *.asc
 *.zip
 *.log
+.idea/dictionaries/julian.xml
