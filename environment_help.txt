@@ -1,0 +1,8 @@
+https://devcenter.heroku.com/articles/heroku-postgresql
+https://devcenter.heroku.com/articles/connecting-to-relational-databases-on-heroku-with-java
+
+DATABASE_URL="postgres://<username>:<password>@<host>/<dbname>"
+TEST_URL="url"
+JDBC_DATABASE_URL="jdbc:postgresql://<host>:<port>/<dbname>?sslmode=require&user=<username>&password=<password>"
+JDBC_DATABASE_USERNAME="username"
+JDBC_DATABASE_PASSWORD="<password>"
