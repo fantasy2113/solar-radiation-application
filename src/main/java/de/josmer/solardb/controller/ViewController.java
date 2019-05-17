@@ -1,7 +1,5 @@
 package de.josmer.solardb.controller;
 
-import de.josmer.solardb.controller.security.JwtToken;
-import de.josmer.solardb.repositories.UserRepository;
 import de.josmer.solardb.utils.FileReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,8 +16,7 @@ public final class ViewController extends Controller {
     private final String radHtml;
 
     @Autowired
-    public ViewController(UserRepository userRep, JwtToken jwtToken, FileReader fileReader) {
-        super(userRep, jwtToken);
+    public ViewController(FileReader fileReader) {
         this.loginHtml = fileReader.asString("src/main/resources/static/html/login.html");
         this.irrHtml = fileReader.asString("src/main/resources/static/html/irr.html");
         this.radHtml = fileReader.asString("src/main/resources/static/html/rad.html");
@@ -55,8 +52,8 @@ public final class ViewController extends Controller {
     }
 
     private void createUser(String username, String plainPassword) {
-        if (userRep.get(username).isEmpty()) {
-            userRep.createUser(username, plainPassword);
+        if (getUserRep().get(username).isEmpty()) {
+            getUserRep().createUser(username, plainPassword);
         }
     }
 }

@@ -2,78 +2,38 @@ package de.josmer.solardb.controller;
 
 import de.josmer.solardb.controller.requests.IrrRequest;
 import de.josmer.solardb.controller.requests.RadRequest;
-import de.josmer.solardb.controller.security.JwtToken;
 import de.josmer.solardb.entities.SolIrrExp;
 import de.josmer.solardb.entities.SolRadExp;
-import de.josmer.solardb.entities.User;
 import de.josmer.solardb.exporter.SolIrrExporter;
 import de.josmer.solardb.exporter.SolRadExporter;
 import de.josmer.solardb.repositories.SolIrrRepository;
 import de.josmer.solardb.repositories.SolRadRepository;
-import de.josmer.solardb.repositories.UserRepository;
-import de.josmer.solardb.utils.UserBCrypt;
 import org.jxls.template.SimpleExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 public final class AppController extends Controller {
-    private static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
     private final SolRadExporter solRadExp;
     private final SolIrrExporter solIrrExp;
     private final SolRadRepository solRadRep;
     private final SolIrrRepository solIrrRep;
-    private final UserBCrypt userBCrypt;
 
     @Autowired
-    public AppController(UserRepository userRep, SolRadExporter solRadExp, SolIrrExporter solIrrExp, SolRadRepository solRadRep, SolIrrRepository solIrrRep, JwtToken jwtToken, UserBCrypt userBCrypt) {
-        super(userRep, jwtToken);
+    public AppController(SolRadExporter solRadExp, SolIrrExporter solIrrExp, SolRadRepository solRadRep, SolIrrRepository solIrrRep) {
         this.solRadExp = solRadExp;
         this.solIrrExp = solIrrExp;
         this.solRadRep = solRadRep;
         this.solIrrRep = solIrrRep;
-        this.userBCrypt = userBCrypt;
-    }
-
-    @GetMapping(value = "/create_user", produces = MediaType.TEXT_HTML_VALUE)
-    public String saveUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
-
-        if (isParameter(login, password)) {
-            return "Benutzername oder Passwort sind nicht lang genug!";
-        }
-
-        if (userRep.get(login).isPresent()) {
-            return "Benutzername ist schon vorhanden!";
-        }
-
-        Optional<User> optionalUser = getCreatedUser(login, password);
-
-        if (optionalUser.isPresent() && optionalUser.get().isActive()) {
-            return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), TTL_MILLIS);
-        }
-
-        return "Etwas ist schief gelaufen!";
-    }
-
-    @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String getToken(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
-        final Optional<User> optionalUser = userRep.get(login);
-
-        if (optionalUser.isPresent() && userBCrypt.isPassword(password, optionalUser.get().getPassword())) {
-            LOGGER.info("login successful");
-            return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), TTL_MILLIS);
-        }
-
-        LOGGER.info("login failed");
-        return "";
     }
 
     @GetMapping(value = "/number_of_rad", produces = MediaType.TEXT_PLAIN_VALUE)
@@ -138,10 +98,6 @@ public final class AppController extends Controller {
         return solIrrExp.getItems(solIrrRep.getSolRadInc(solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
     }
 
-    private boolean isParameter(String login, String password) {
-        return login == null || password == null || login.equals("") || password.equals("");
-    }
-
     private int getDate(final String date) {
         try {
             return Integer.valueOf(date.replace("-", "").replace("#", ""));
@@ -149,11 +105,6 @@ public final class AppController extends Controller {
             LOGGER.info(e.getMessage());
             return 0;
         }
-    }
-
-    private Optional<User> getCreatedUser(String username, String password) {
-        userRep.createUser(username, password);
-        return userRep.get(username);
     }
 
     private Integer getEndDate(int year) {
