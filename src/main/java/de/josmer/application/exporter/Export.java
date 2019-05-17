@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
-abstract class Export<R, I> {
+abstract class Export<TOut, TIn> {
 
     static final Logger LOGGER = LoggerFactory.getLogger(Export.class.getName());
 
@@ -31,5 +31,5 @@ abstract class Export<R, I> {
         }
     }
 
-    protected abstract R mapToExport(double lon, double lat, I item);
+    protected abstract TOut mapToExport(double lon, double lat, TIn item);
 }
