@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
 public class AppController extends Controller {
@@ -42,19 +40,21 @@ public class AppController extends Controller {
 
     @GetMapping(value = "/create_user", produces = MediaType.TEXT_HTML_VALUE)
     public String saveUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+
         if (isParameter(login, password)) {
             return "Benutzername oder Passwort sind nicht lang genug!";
         }
+
         if (userRep.get(login).isPresent()) {
             return "Benutzername ist schon vorhanden!";
         }
-        if (isLogin(login) || password.contains(" ")) {
-            return "Benutzername oder Passwort enthalten ungültige Zeichen!";
-        }
-        Optional<User> optionalUser = createUser(login, password);
+
+        Optional<User> optionalUser = getCreatedUser(login, password);
+
         if (optionalUser.isPresent() && optionalUser.get().isActive()) {
             return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getLogin(), TTL_MILLIS);
         }
+
         return "Etwas ist schief gelaufen!";
     }
 
@@ -137,12 +137,6 @@ public class AppController extends Controller {
         return login == null || password == null || login.equals("") || password.equals("");
     }
 
-    private boolean isLogin(final String login) {
-        Pattern special = Pattern.compile("[!#$%&*()_+=|<>?{}\\[\\]~ ]");
-        Matcher hasSpecial = special.matcher(login);
-        return hasSpecial.find();
-    }
-
     private int getDate(final String date) {
         try {
             return Integer.valueOf(date.replace("-", "").replace("#", ""));
@@ -152,7 +146,7 @@ public class AppController extends Controller {
         }
     }
 
-    private Optional<User> createUser(String login, String password) {
+    private Optional<User> getCreatedUser(String login, String password) {
         userRep.saveUser(login, password);
         return userRep.get(login);
     }
