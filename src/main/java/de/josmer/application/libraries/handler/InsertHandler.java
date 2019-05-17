@@ -27,14 +27,14 @@ public final class InsertHandler implements Runnable {
     @Override
     public void run() {
         if (System.getenv("INSERT_ALL") == null) {
-            insertData();
+            insert();
         } else {
-            insertAllData();
+            insertAll();
         }
         System.gc();
     }
 
-    private void insertData() {
+    private void insert() {
         LocalDate localDate = LocalDate.now();
         if (localDate.getDayOfMonth() < 15) {
             localDate = localDate.minusMonths(2);
@@ -52,7 +52,7 @@ public final class InsertHandler implements Runnable {
         tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
     }
 
-    private void insertAllData() {
+    private void insertAll() {
         LocalDate localDate = LocalDate.now();
         for (int year = 1991; year < localDate.getYear(); year++) {
             for (int month = 1; month < 13; month++) {
