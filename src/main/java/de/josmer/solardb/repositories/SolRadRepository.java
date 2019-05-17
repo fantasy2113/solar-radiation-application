@@ -103,7 +103,7 @@ public final class SolRadRepository extends Repository<SolRad> {
         }
     }
 
-    public long count() {
+    public long getNumberOfRadiations() {
         try (Connection con = getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery("SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname='radiation';")) {

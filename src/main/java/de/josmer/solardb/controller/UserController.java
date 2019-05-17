@@ -12,7 +12,7 @@ import java.util.Optional;
 public class UserController extends Controller {
 
     @GetMapping(value = "/create_user", produces = MediaType.TEXT_HTML_VALUE)
-    public String saveUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+    public String createUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
 
         if (isParameter(login, password)) {
             return "Benutzername oder Passwort sind nicht lang genug!";

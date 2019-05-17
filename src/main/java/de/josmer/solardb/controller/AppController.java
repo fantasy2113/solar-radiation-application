@@ -41,7 +41,7 @@ public final class AppController extends Controller {
         if (!isAccess(token)) {
             return "-1";
         }
-        return Long.toString(solRadRep.count());
+        return Long.toString(solRadRep.getNumberOfRadiations());
     }
 
     @GetMapping("/export_rad")
