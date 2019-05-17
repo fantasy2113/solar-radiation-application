@@ -21,10 +21,7 @@ public class InsertMain {
             for (int month = 1; month < 13; month++) {
                 LOGGER.info(">>> Month: " + month + ", Year: " + year);
                 RadiationCrawler radiationCrawler = new RadiationCrawler(month, year, type);
-                radiationCrawler.download();
-                radiationCrawler.unzip();
                 radiationCrawler.insert(new SolRadRepository(), new FileReader());
-                radiationCrawler.delete();
             }
         }
     }
