@@ -2,7 +2,6 @@ package de.josmer.application;
 
 import de.josmer.application.library.enums.RadTypes;
 import de.josmer.application.library.handler.InsertHandler;
-import de.josmer.application.library.handler.TokenHandler;
 import de.josmer.application.library.interfaces.IUserRepository;
 import de.josmer.application.model.repositories.UserRepository;
 import org.slf4j.Logger;
@@ -24,7 +23,6 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        Token.init();
         createUser("admin", "Super71212!");
         createUser("user", "abc123");
         startHandler();
@@ -41,7 +39,6 @@ public class Application {
         new InsertHandler(RadTypes.GLOBAL).start();
         new InsertHandler(RadTypes.DIFFUSE).start();
         new InsertHandler(RadTypes.DIRECT).start();
-        new TokenHandler().start();
     }
 
 

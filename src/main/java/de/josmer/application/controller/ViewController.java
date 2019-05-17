@@ -36,7 +36,7 @@ public class ViewController extends Controller {
                     app = cookie.getValue();
                 }
             }
-            if (isAccess(Token.getAuthentication(token))) {
+            if (isAccess(token)) {
                 if (app.equals("irr")) {
                     return IRR_HTML;
                 } else {

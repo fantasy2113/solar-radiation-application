@@ -53,7 +53,7 @@ public class AppController extends Controller {
         }
         Optional<User> optionalUser = createUser(login, password);
         if (optionalUser.isPresent() && optionalUser.get().isActive()) {
-            return Token.get(optionalUser.get().getId());
+            return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getLogin(), TTL_MILLIS);
         }
         return "Etwas ist schief gelaufen!";
     }
@@ -61,17 +61,19 @@ public class AppController extends Controller {
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
     public String getToken(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         final Optional<User> optionalUser = userRep.get(login);
+
         if (optionalUser.isPresent() && Toolbox.isPassword(password, optionalUser.get().getPassword())) {
             LOGGER.info("login successful");
             return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getLogin(), TTL_MILLIS);
         }
+
         LOGGER.info("login failed");
         return "";
     }
 
     @GetMapping(value = "/number_of_rad", produces = MediaType.TEXT_PLAIN_VALUE)
     public String getNumberOfRad(@CookieValue("token") final String token) {
-        if (!isAccess(Token.getAuthentication(token))) {
+        if (!isAccess(token)) {
             return "-1";
         }
         return Long.toString(solRadRep.count());
@@ -79,7 +81,7 @@ public class AppController extends Controller {
 
     @GetMapping("/export_rad")
     public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) {
-        if (!isAccess(Token.getAuthentication(token))) {
+        if (!isAccess(token)) {
             return;
         }
         try {
@@ -98,7 +100,7 @@ public class AppController extends Controller {
 
     @GetMapping("/export_irr")
     public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye) {
-        if (!isAccess(Token.getAuthentication(token))) {
+        if (!isAccess(token)) {
             return;
         }
         try {
@@ -117,7 +119,7 @@ public class AppController extends Controller {
 
     @GetMapping("/rad")
     public List<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
-        if (!isAccess(Token.getAuthentication(token))) {
+        if (!isAccess(token)) {
             return new ArrayList<>();
         }
         return solRadExp.getItems(solRadRep.find(new GaussKruger(), getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
@@ -125,7 +127,7 @@ public class AppController extends Controller {
 
     @GetMapping("/irr")
     public List<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
-        if (!isAccess(Token.getAuthentication(token))) {
+        if (!isAccess(token)) {
             return new ArrayList<>();
         }
         return solIrrExp.getItems(solIrrRep.getSolRadInc(solRadRep.findGlobal(new GaussKruger(), getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
