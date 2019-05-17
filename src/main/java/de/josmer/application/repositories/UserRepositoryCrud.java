@@ -1,6 +1,5 @@
 package de.josmer.application.repositories;
 
-
 import de.josmer.application.entities.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

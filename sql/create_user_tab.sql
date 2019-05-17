@@ -2,7 +2,7 @@
 
 -- DROP TABLE public."user";
 
-CREATE TABLE public."user"
+CREATE TABLE public."user_tab"
 (
     id         bigserial                                          NOT NULL UNIQUE,
     username   character varying(60) COLLATE pg_catalog."default" NOT NULL,

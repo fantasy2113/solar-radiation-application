@@ -1,13 +1,14 @@
 package de.josmer.application.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "user")
-public final class User {
+@Table(name = "user_tab")
+public final class User implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = IDENTITY)
@@ -16,11 +17,11 @@ public final class User {
     private Timestamp created;
     @Column(name = "modified")
     private Timestamp modified;
-    @Column(name = "username", length = 60, unique = true, nullable = false)
+    @Column(name = "username")
     private String username;
     @Column(name = "is_active")
     private boolean isActive;
-    @Column(name = "password", length = 60)
+    @Column(name = "password")
     private String password;
     @Column(name = "last_login")
     private Timestamp lastLogin;
