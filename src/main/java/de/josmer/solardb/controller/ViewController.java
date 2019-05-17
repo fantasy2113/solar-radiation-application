@@ -1,7 +1,7 @@
 package de.josmer.solardb.controller;
 
-import de.josmer.solardb.controller.requests.WebCookie;
 import de.josmer.solardb.controller.security.JwtToken;
+import de.josmer.solardb.controller.web.WebCookie;
 import de.josmer.solardb.repositories.UserRepository;
 import de.josmer.solardb.utils.FileReader;
 import de.josmer.solardb.utils.UserBCrypt;

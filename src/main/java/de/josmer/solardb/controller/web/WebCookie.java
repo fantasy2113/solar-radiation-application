@@ -1,4 +1,4 @@
-package de.josmer.solardb.controller.requests;
+package de.josmer.solardb.controller.web;
 
 public class WebCookie {
     private String token;

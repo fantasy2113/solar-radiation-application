@@ -1,4 +1,4 @@
-package de.josmer.solardb.controller.security;
+package de.josmer.solardb.controller.web;
 
 public final class WebToken {
     private String secret;
