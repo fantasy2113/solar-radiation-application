@@ -2,12 +2,15 @@ package de.josmer.solardb.controller;
 
 import de.josmer.solardb.controller.requests.IrrRequest;
 import de.josmer.solardb.controller.requests.RadRequest;
+import de.josmer.solardb.controller.security.JwtToken;
 import de.josmer.solardb.entities.SolIrrExp;
 import de.josmer.solardb.entities.SolRadExp;
 import de.josmer.solardb.exporter.SolIrrExporter;
 import de.josmer.solardb.exporter.SolRadExporter;
 import de.josmer.solardb.repositories.SolIrrRepository;
 import de.josmer.solardb.repositories.SolRadRepository;
+import de.josmer.solardb.repositories.UserRepository;
+import de.josmer.solardb.utils.UserBCrypt;
 import org.jxls.template.SimpleExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,7 +32,8 @@ public final class AppController extends Controller {
     private final SolIrrRepository solIrrRep;
 
     @Autowired
-    public AppController(SolRadExporter solRadExp, SolIrrExporter solIrrExp, SolRadRepository solRadRep, SolIrrRepository solIrrRep) {
+    public AppController(UserRepository userRep, JwtToken jwtToken, UserBCrypt userBCrypt, SolRadExporter solRadExp, SolIrrExporter solIrrExp, SolRadRepository solRadRep, SolIrrRepository solIrrRep) {
+        super(userRep, jwtToken, userBCrypt);
         this.solRadExp = solRadExp;
         this.solIrrExp = solIrrExp;
         this.solRadRep = solRadRep;
