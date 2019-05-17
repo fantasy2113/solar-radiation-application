@@ -43,7 +43,7 @@ public final class AppController extends Controller {
     @GetMapping(value = "/number_of_rad", produces = MediaType.TEXT_PLAIN_VALUE)
     public String getNumberOfRad(@CookieValue("token") final String token) {
         if (!isAccess(token)) {
-            return "-1";
+            return "0";
         }
         return Long.toString(solRadRep.getNumberOfRadiations());
     }
