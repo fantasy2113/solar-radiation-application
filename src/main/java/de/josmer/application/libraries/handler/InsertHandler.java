@@ -9,14 +9,19 @@ import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public final class InsertHandler extends AHandler {
+public final class InsertHandler implements Runnable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InsertHandler.class.getName());
-    private final RadTypes radTypes;
+    private final RadTypes radType;
 
-    public InsertHandler(RadTypes radTypes) {
-        this.radTypes = radTypes;
+    public InsertHandler(RadTypes radType) {
+        this.radType = radType;
     }
 
     @Override
@@ -27,12 +32,15 @@ public final class InsertHandler extends AHandler {
         } else {
             localDate = localDate.minusMonths(1);
         }
-        LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), radTypes)); // NOSONAR
-        RadiationCrawler radiationCrawler = new RadiationCrawler(localDate.getMonth().getValue(), localDate.getYear(), radTypes);
-        radiationCrawler.download();
-        radiationCrawler.unzip();
+        LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), radType)); // NOSONAR
+        RadiationCrawler radiationCrawler = new RadiationCrawler(localDate.getMonth().getValue(), localDate.getYear(), radType);
         radiationCrawler.insert(new SolRadRepository(), new FileReader());
-        radiationCrawler.delete();
         System.gc();
+    }
+
+    public void start() {
+        ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
+        long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
+        tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
     }
 }

@@ -43,11 +43,18 @@ public final class RadiationCrawler {
         this.type = type;
     }
 
+    public void insert(final SolRadRepository radiationRepository, FileReader fileReader) {
+        download();
+        unzip();
+        insertRadiation(radiationRepository, fileReader);
+        delete();
+    }
+
     private void setCurrentTargetFile(final String date) {
         this.currentTargetFile = templateTargetFile.replace("{date}", date);
     }
 
-    public void download() {
+    private void download() {
         try {
             LOGGER.info("downloading...");
             setCurrentTargetFile(getDate(year, month));
@@ -60,7 +67,7 @@ public final class RadiationCrawler {
         }
     }
 
-    public void unzip() {
+    private void unzip() {
         try {
             LOGGER.info("unzip...");
             File destDir = new File(targetDir);
@@ -84,22 +91,15 @@ public final class RadiationCrawler {
         }
     }
 
-    public void insert(final SolRadRepository radiationRepository, FileReader fileReader) {
-        inserting(radiationRepository, fileReader);
-    }
 
-    public void insert(final String databaseUrl, final SolRadRepository radiationRepository, FileReader fileReader) { // NOSONAR
-        inserting(radiationRepository, fileReader);
-    }
-
-    private void inserting(final SolRadRepository radiationRepository, FileReader fileReader) {
+    private void insertRadiation(final SolRadRepository radiationRepository, FileReader fileReader) {
         LOGGER.info("reading...");
         initRadiations(fileReader);
-        LOGGER.info("inserting...");
+        LOGGER.info("insertRadiation...");
         radiationRepository.save(radiations);
     }
 
-    public void delete() {
+    private void delete() {
         LOGGER.info("deleting....");
         try {
             Files.delete(Path.of(getPathnameZip()));
