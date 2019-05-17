@@ -52,6 +52,12 @@
             <artifactId>commons-math3</artifactId>
             <version>LATEST</version>
         </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
     </dependencies>
 
     <properties>

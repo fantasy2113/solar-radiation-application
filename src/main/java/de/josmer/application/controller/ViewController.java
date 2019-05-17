@@ -1,6 +1,6 @@
 package de.josmer.application.controller;
 
-import de.josmer.application.controller.security.Token;
+import de.josmer.application.controller.security.JwtToken;
 import de.josmer.application.library.interfaces.IUserRepository;
 import de.josmer.application.library.utils.Toolbox;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +18,8 @@ public class ViewController extends Controller {
     private static final String RAD_HTML = Toolbox.readFile("src/main/resources/static/html/rad.html");
 
     @Autowired
-    public ViewController(IUserRepository userRep) {
-        super(userRep);
+    public ViewController(IUserRepository userRep, JwtToken jwtToken) {
+        super(userRep, jwtToken);
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)

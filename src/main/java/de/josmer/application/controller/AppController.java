@@ -2,7 +2,7 @@ package de.josmer.application.controller;
 
 import de.josmer.application.controller.requests.IrrRequest;
 import de.josmer.application.controller.requests.RadRequest;
-import de.josmer.application.controller.security.Token;
+import de.josmer.application.controller.security.JwtToken;
 import de.josmer.application.library.geo.GaussKruger;
 import de.josmer.application.library.interfaces.*;
 import de.josmer.application.library.utils.Toolbox;
@@ -19,19 +19,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
 public class AppController extends Controller {
+    private static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
     private final ISolRadExporter solRadExp;
     private final ISolIrrExporter solIrrExp;
     private final ISolRadRepository solRadRep;
     private final ISolIrrRepository solIrrRep;
 
     @Autowired
-    public AppController(IUserRepository userRep, ISolRadExporter solRadExp, ISolIrrExporter solIrrExp, ISolRadRepository solRadRep, ISolIrrRepository solIrrRep) {
-        super(userRep);
+    public AppController(IUserRepository userRep, ISolRadExporter solRadExp, ISolIrrExporter solIrrExp, ISolRadRepository solRadRep, ISolIrrRepository solIrrRep, JwtToken jwtToken) {
+        super(userRep, jwtToken);
         this.solRadExp = solRadExp;
         this.solIrrExp = solIrrExp;
         this.solRadRep = solRadRep;
@@ -61,7 +63,7 @@ public class AppController extends Controller {
         final Optional<User> optionalUser = userRep.get(login);
         if (optionalUser.isPresent() && Toolbox.isPassword(password, optionalUser.get().getPassword())) {
             LOGGER.info("login successful");
-            return Token.get(optionalUser.get().getId());
+            return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getLogin(), TTL_MILLIS);
         }
         LOGGER.info("login failed");
         return "";

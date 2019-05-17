@@ -1,4 +1,4 @@
-package de.orbis.application.controller.v1.security;
+package de.josmer.application.controller.security;
 
 public class WebToken {
     private String secret;

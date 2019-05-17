@@ -1,6 +1,5 @@
 package de.josmer.application;
 
-import de.josmer.application.controller.security.Token;
 import de.josmer.application.library.enums.RadTypes;
 import de.josmer.application.library.handler.InsertHandler;
 import de.josmer.application.library.handler.TokenHandler;
