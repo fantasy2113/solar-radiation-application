@@ -1,7 +1,7 @@
 package de.josmer.application;
 
-import de.josmer.application.library.enums.RadTypes;
-import de.josmer.application.library.handler.InsertHandler;
+import de.josmer.application.libraries.enums.RadTypes;
+import de.josmer.application.libraries.handler.InsertHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

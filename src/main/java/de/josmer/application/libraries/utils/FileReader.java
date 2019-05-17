@@ -1,4 +1,4 @@
-package de.josmer.application.library.utils;
+package de.josmer.application.libraries.utils;
 
 import org.springframework.stereotype.Component;
 

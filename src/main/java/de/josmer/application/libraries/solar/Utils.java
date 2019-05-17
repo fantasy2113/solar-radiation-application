@@ -1,4 +1,4 @@
-package de.josmer.application.library.solar;
+package de.josmer.application.libraries.solar;
 
 import java.time.YearMonth;
 

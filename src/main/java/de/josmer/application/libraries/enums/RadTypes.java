@@ -1,4 +1,4 @@
-package de.josmer.application.library.enums;
+package de.josmer.application.libraries.enums;
 
 public enum RadTypes {
     GLOBAL, DIRECT, DIFFUSE

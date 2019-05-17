@@ -1,4 +1,4 @@
-package de.josmer.application.library.geo;
+package de.josmer.application.libraries.geo;
 
 import org.springframework.stereotype.Component;
 

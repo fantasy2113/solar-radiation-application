@@ -1,7 +1,7 @@
 package de.josmer.application.repositories;
 
 import de.josmer.application.entities.User;
-import de.josmer.application.library.utils.UserBCrypt;
+import de.josmer.application.libraries.utils.UserBCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

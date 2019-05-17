@@ -1,8 +1,8 @@
-package de.josmer.application.library.crawler;
+package de.josmer.application.libraries.crawler;
 
 import de.josmer.application.entities.SolRad;
-import de.josmer.application.library.enums.RadTypes;
-import de.josmer.application.library.utils.FileReader;
+import de.josmer.application.libraries.enums.RadTypes;
+import de.josmer.application.libraries.utils.FileReader;
 import de.josmer.application.repositories.SolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
