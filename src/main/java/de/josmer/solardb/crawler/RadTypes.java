@@ -1,4 +1,4 @@
-package de.josmer.solardb.libraries.enums;
+package de.josmer.solardb.crawler;
 
 public enum RadTypes {
     GLOBAL, DIRECT, DIFFUSE

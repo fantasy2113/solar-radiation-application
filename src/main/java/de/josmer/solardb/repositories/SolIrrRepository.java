@@ -1,7 +1,7 @@
 package de.josmer.solardb.repositories;
 
 import de.josmer.solardb.entities.SolIrr;
-import de.josmer.solardb.libraries.solar.SolarIrradiation;
+import de.josmer.solardb.irradiation.SolarIrradiation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

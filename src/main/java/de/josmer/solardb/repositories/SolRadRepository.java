@@ -1,7 +1,7 @@
 package de.josmer.solardb.repositories;
 
 import de.josmer.solardb.entities.SolRad;
-import de.josmer.solardb.libraries.geo.GaussKruger;
+import de.josmer.solardb.utils.GaussKruger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

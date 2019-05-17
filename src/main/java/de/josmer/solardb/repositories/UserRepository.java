@@ -1,7 +1,7 @@
 package de.josmer.solardb.repositories;
 
 import de.josmer.solardb.entities.User;
-import de.josmer.solardb.libraries.utils.UserBCrypt;
+import de.josmer.solardb.utils.UserBCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

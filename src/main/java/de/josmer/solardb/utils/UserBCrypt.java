@@ -1,4 +1,4 @@
-package de.josmer.solardb.libraries.utils;
+package de.josmer.solardb.utils;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Component;

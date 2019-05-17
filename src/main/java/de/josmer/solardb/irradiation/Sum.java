@@ -1,4 +1,4 @@
-package de.josmer.solardb.libraries.solar;
+package de.josmer.solardb.irradiation;
 
 class Sum {
     private double value;

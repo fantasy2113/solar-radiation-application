@@ -1,7 +1,7 @@
 package de.josmer.solardb;
 
-import de.josmer.solardb.libraries.enums.RadTypes;
-import de.josmer.solardb.libraries.handler.InsertHandler;
+import de.josmer.solardb.crawler.RadTypes;
+import de.josmer.solardb.handler.InsertHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
