@@ -21,10 +21,10 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
-        startHandler();
+        startInsertHandler();
     }
 
-    private static void startHandler() {
+    private static void startInsertHandler() {
         new InsertHandler(RadTypes.GLOBAL).start();
         new InsertHandler(RadTypes.DIFFUSE).start();
         new InsertHandler(RadTypes.DIRECT).start();
