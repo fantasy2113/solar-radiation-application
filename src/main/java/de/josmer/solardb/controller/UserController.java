@@ -22,21 +22,16 @@ public class UserController extends Controller {
 
     @GetMapping(value = "/create_user", produces = MediaType.TEXT_HTML_VALUE)
     public String createUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
-
         if (isParameter(login, password)) {
             return "Benutzername oder Passwort sind nicht lang genug!";
         }
-
         if (userRep.get(login).isPresent()) {
             return "Benutzername ist schon vorhanden!";
         }
-
         Optional<User> optionalUser = getCreatedUser(login, password);
-
         if (optionalUser.isPresent() && optionalUser.get().isActive()) {
             return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), TTL_MILLIS);
         }
-
         return "Etwas ist schief gelaufen!";
     }
 

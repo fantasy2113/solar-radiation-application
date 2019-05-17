@@ -1,5 +1,6 @@
 package de.josmer.solardb.controller;
 
+import de.josmer.solardb.controller.requests.WebCookie;
 import de.josmer.solardb.controller.security.JwtToken;
 import de.josmer.solardb.repositories.UserRepository;
 import de.josmer.solardb.utils.FileReader;
@@ -29,30 +30,36 @@ public final class ViewController extends Controller {
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
-    public String getView(HttpServletRequest req) {
+    public String getHtml(HttpServletRequest req) {
         try {
-            Cookie[] cookies = req.getCookies();
-            String token = "";
-            String app = "";
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-                    token = cookie.getValue();
-                }
-                if (cookie.getName().equals("app")) {
-                    app = cookie.getValue();
-                }
-            }
-            if (isAccess(token)) {
-                if (app.equals("irr")) {
-                    return irrHtml;
-                } else {
-                    return radHtml;
-                }
+            WebCookie webCookie = new WebCookie();
+            setWebCookie(webCookie, req.getCookies());
+            if (isAccess(webCookie.getToken())) {
+                return chooseHtml(webCookie.getApp());
             }
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
         return loginHtml;
+    }
+
+    private String chooseHtml(String app) {
+        if (app.equals("irr")) {
+            return irrHtml;
+        } else {
+            return radHtml;
+        }
+    }
+
+    private void setWebCookie(WebCookie webCookie, Cookie[] cookies) {
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("token")) {
+                webCookie.setToken(cookie.getValue());
+            }
+            if (cookie.getName().equals("app")) {
+                webCookie.setApp(cookie.getValue());
+            }
+        }
     }
 
     private void createUser(String username, String plainPassword) {
