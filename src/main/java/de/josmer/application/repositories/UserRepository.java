@@ -1,7 +1,7 @@
 package de.josmer.application.repositories;
 
 import de.josmer.application.entities.User;
-import org.mindrot.jbcrypt.BCrypt;
+import de.josmer.application.library.utils.UserBCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,10 +12,12 @@ import java.util.Optional;
 @Component
 public final class UserRepository {
     private final UserRepositoryCrud userRepositoryCrud;
+    private final UserBCrypt userBCrypt;
 
     @Autowired
-    public UserRepository(UserRepositoryCrud userRepositoryCrud) {
+    public UserRepository(UserRepositoryCrud userRepositoryCrud, UserBCrypt userBCrypt) {
         this.userRepositoryCrud = userRepositoryCrud;
+        this.userBCrypt = userBCrypt;
     }
 
     public Optional<User> get(final Integer id) {
@@ -40,10 +42,10 @@ public final class UserRepository {
         }
     }
 
-    private User initUser(final String username, final String plainPassword) {
+    private User initUser(final String username, final String plainTextPassword) {
         LocalDateTime localDateTime = LocalDateTime.now();
         User user = new User();
-        user.setPassword(BCrypt.hashpw(plainPassword, BCrypt.gensalt()));
+        user.setPassword(userBCrypt.hashPassword(plainTextPassword));
         user.setUsername(username);
         user.setCreated(Timestamp.valueOf(localDateTime));
         user.setModified(Timestamp.valueOf(localDateTime));

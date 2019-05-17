@@ -9,7 +9,7 @@ import de.josmer.application.entities.User;
 import de.josmer.application.exporter.SolIrrExporter;
 import de.josmer.application.exporter.SolRadExporter;
 import de.josmer.application.library.geo.GaussKruger;
-import de.josmer.application.library.utils.Toolbox;
+import de.josmer.application.library.utils.UserBCrypt;
 import de.josmer.application.repositories.SolIrrRepository;
 import de.josmer.application.repositories.SolRadRepository;
 import de.josmer.application.repositories.UserRepository;
@@ -32,14 +32,16 @@ public class AppController extends Controller {
     private final SolIrrExporter solIrrExp;
     private final SolRadRepository solRadRep;
     private final SolIrrRepository solIrrRep;
+    private final UserBCrypt userBCrypt;
 
     @Autowired
-    public AppController(UserRepository userRep, SolRadExporter solRadExp, SolIrrExporter solIrrExp, SolRadRepository solRadRep, SolIrrRepository solIrrRep, JwtToken jwtToken) {
+    public AppController(UserRepository userRep, SolRadExporter solRadExp, SolIrrExporter solIrrExp, SolRadRepository solRadRep, SolIrrRepository solIrrRep, JwtToken jwtToken, UserBCrypt userBCrypt) {
         super(userRep, jwtToken);
         this.solRadExp = solRadExp;
         this.solIrrExp = solIrrExp;
         this.solRadRep = solRadRep;
         this.solIrrRep = solIrrRep;
+        this.userBCrypt = userBCrypt;
     }
 
     @GetMapping(value = "/create_user", produces = MediaType.TEXT_HTML_VALUE)
@@ -66,7 +68,7 @@ public class AppController extends Controller {
     public String getToken(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         final Optional<User> optionalUser = userRep.get(login);
 
-        if (optionalUser.isPresent() && Toolbox.isPassword(password, optionalUser.get().getPassword())) {
+        if (optionalUser.isPresent() && userBCrypt.isPassword(password, optionalUser.get().getPassword())) {
             LOGGER.info("login successful");
             return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), TTL_MILLIS);
         }
