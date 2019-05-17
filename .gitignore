@@ -1,9 +1,6 @@
-.idea/workspace.xml
-.idea/uiDesigner.xml
-.idea/libraries/**
-.idea/sonarlint/
+.idea/
 target/
 *.asc
 *.zip
 *.log
-.idea/dictionaries/julian.xml
+solar-radiation-application.iml
