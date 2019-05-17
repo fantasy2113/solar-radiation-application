@@ -11,8 +11,8 @@ CREATE TABLE public."user_tab"
     last_login timestamp without time zone                        NOT NULL,
     created    timestamp without time zone                        NOT NULL,
     modified   timestamp without time zone                        NOT NULL,
-    CONSTRAINT user_pkey_ PRIMARY KEY (id, username),
-    CONSTRAINT user_username_key_ UNIQUE (username)
+    CONSTRAINT user_tab_pkey PRIMARY KEY (id, username),
+    CONSTRAINT user_tab_username_key UNIQUE (username)
 
 )
 WITH (
