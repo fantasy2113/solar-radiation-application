@@ -1,7 +1,9 @@
 package de.josmer.springboot.dwdcdc.app.crawler;
 
+import de.josmer.springboot.dwdcdc.app.entities.SolRad;
+import de.josmer.springboot.dwdcdc.app.enums.SolRadTypes;
 import de.josmer.springboot.dwdcdc.app.interfaces.IFileReader;
-import de.josmer.springboot.dwdcdc.app.interfaces.ISolRad;
+import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadCrawler;
 import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,20 +23,31 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public final class RadiationCrawler<TSolRad extends ISolRad> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(RadiationCrawler.class.getName());
-    private final String templateTargetFile;
-    private final String targetUrl;
-    private final String targetDir;
-    private final RadTypes type;
-    private final List<ISolRad> radiations;
-    private final int month;
-    private final int year;
-    private final Class<TSolRad> solRadClass;
+public final class SolRadCrawler implements ISolRadCrawler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolRadCrawler.class.getName());
+    private String templateTargetFile;
+    private String targetUrl;
+    private String targetDir;
+    private SolRadTypes type;
+    private List<SolRad> radiations;
+    private int month;
+    private int year;
     private String currentTargetFile;
 
-    public RadiationCrawler(final int month, final int year, final RadTypes type, Class<TSolRad> solRadClass) {
-        this.solRadClass = solRadClass;
+    @Override
+    public void insert(ISolRadRepository solRadRepository, IFileReader fileReader, int month, int year, SolRadTypes type) {
+        try {
+            init(month, year, type);
+            download();
+            unzip();
+            insertRadiation(solRadRepository, fileReader);
+            delete();
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
+        }
+    }
+
+    private void init(int month, int year, SolRadTypes type) {
         this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
                 .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
@@ -44,17 +57,6 @@ public final class RadiationCrawler<TSolRad extends ISolRad> {
         this.month = month;
         this.year = year;
         this.type = type;
-    }
-
-    public void insert(final ISolRadRepository radiationRepository, IFileReader fileReader) {
-        try {
-            download();
-            unzip();
-            insertRadiation(radiationRepository, fileReader);
-            delete();
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-        }
     }
 
     private void setCurrentTargetFile(final String date) {
@@ -91,11 +93,11 @@ public final class RadiationCrawler<TSolRad extends ISolRad> {
     }
 
 
-    private void insertRadiation(final ISolRadRepository radiationRepository, IFileReader fileReader) throws Exception {
+    private void insertRadiation(ISolRadRepository solRadRepository, IFileReader fileReader) throws Exception {
         LOGGER.info("reading...");
         initRadiations(fileReader);
         LOGGER.info("insertRadiation...");
-        radiationRepository.save(radiations);
+        solRadRepository.save(radiations);
     }
 
     private void delete() throws Exception {
@@ -107,25 +109,29 @@ public final class RadiationCrawler<TSolRad extends ISolRad> {
     private void initRadiations(IFileReader fileReader) throws Exception {
         final String file = fileReader.asString(getPathnameAsc());
         final String[] rows = file.split("\\r\\n");
-        int hochwert = 5237500;
+        int gkh = 5237500;
         for (int row = rows.length - 1; row >= 28; row--) {
             final String[] columns = rows[row].split(" ");
-            int rechtswert = 3280500;
+            int gkr = 3280500;
             for (String column : columns) {
-                ISolRad radiation = solRadClass.getDeclaredConstructor().newInstance();
-                radiation.setRadiationValue(Float.parseFloat(column));
-                radiation.setRadiationType(type.name());
-                radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
-                radiation.setGkhMin(hochwert);
-                radiation.setGkhMax(hochwert + 1000);
-                radiation.setGkrMin(rechtswert);
-                radiation.setGkrMax(rechtswert + 1000);
-                radiations.add(radiation);
-                rechtswert += 1000;
+                radiations.add(initSolRad(gkh, gkr, column));
+                gkr += 1000;
             }
-            hochwert += 1000;
+            gkh += 1000;
         }
         Collections.reverse(radiations);
+    }
+
+    private SolRad initSolRad(int gkh, int gkr, String column) {
+        SolRad radiation = new SolRad();
+        radiation.setRadiationValue(Float.parseFloat(column));
+        radiation.setRadiationType(type.name());
+        radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
+        radiation.setGkhMin(gkh);
+        radiation.setGkhMax(gkh + 1000);
+        radiation.setGkrMin(gkr);
+        radiation.setGkrMax(gkr + 1000);
+        return radiation;
     }
 
     private String getDate(final Integer year, final Integer month) {
