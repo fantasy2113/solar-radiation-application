@@ -1,7 +1,8 @@
 package de.josmer.solardb;
 
-import de.josmer.solardb.utils.crawler.RadTypes;
-import de.josmer.solardb.utils.handler.InsertHandler;
+import de.josmer.solardb.base.crawler.RadTypes;
+import de.josmer.solardb.base.handler.InsertHandler;
+import de.josmer.solardb.repositories.SolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -24,9 +25,9 @@ public class Application {
     }
 
     private static void startInsertHandler() {
-        new InsertHandler(RadTypes.GLOBAL).start();
-        new InsertHandler(RadTypes.DIFFUSE).start();
-        new InsertHandler(RadTypes.DIRECT).start();
+        new InsertHandler(RadTypes.GLOBAL, new SolRadRepository()).start();
+        new InsertHandler(RadTypes.DIFFUSE, new SolRadRepository()).start();
+        new InsertHandler(RadTypes.DIRECT, new SolRadRepository()).start();
     }
 
     @Bean

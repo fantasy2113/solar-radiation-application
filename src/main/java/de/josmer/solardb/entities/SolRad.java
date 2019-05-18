@@ -1,6 +1,6 @@
 package de.josmer.solardb.entities;
 
-import de.josmer.solardb.utils.interfaces.ISolRad;
+import de.josmer.solardb.base.interfaces.ISolRad;
 
 public final class SolRad implements ISolRad {
     private int radiationDate;

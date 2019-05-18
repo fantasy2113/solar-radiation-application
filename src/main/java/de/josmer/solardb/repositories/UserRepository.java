@@ -1,7 +1,9 @@
 package de.josmer.solardb.repositories;
 
+import de.josmer.solardb.base.UserBCrypt;
+import de.josmer.solardb.base.interfaces.IUser;
+import de.josmer.solardb.base.interfaces.IUserRepository;
 import de.josmer.solardb.entities.User;
-import de.josmer.solardb.utils.UserBCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
-public final class UserRepository {
+public final class UserRepository implements IUserRepository {
     private final UserRepositoryCrud userRepositoryCrud;
     private final UserBCrypt userBCrypt;
 
@@ -20,31 +22,34 @@ public final class UserRepository {
         this.userBCrypt = userBCrypt;
     }
 
-    public Optional<User> get(final Integer id) {
-        Optional<User> optionalUser = userRepositoryCrud.findById(id);
+    @Override
+    public Optional<IUser> get(final Integer id) {
+        Optional<IUser> optionalUser = userRepositoryCrud.findById(id);
         if (optionalUser.isPresent() && isValid(optionalUser.get())) {
             return optionalUser;
         }
         return Optional.empty();
     }
 
-    public Optional<User> get(final String username) {
-        Optional<User> optionalUser = userRepositoryCrud.findByUsername(username);
+    @Override
+    public Optional<IUser> get(final String username) {
+        Optional<IUser> optionalUser = userRepositoryCrud.findByUsername(username);
         if (optionalUser.isPresent() && isValid(optionalUser.get())) {
             return optionalUser;
         }
         return Optional.empty();
     }
 
+    @Override
     public void createUser(final String username, final String plainPassword) {
         if (userRepositoryCrud.findByUsername(username).isEmpty()) {
             userRepositoryCrud.save(initUser(username, plainPassword));
         }
     }
 
-    private User initUser(final String username, final String plainTextPassword) {
+    private IUser initUser(final String username, final String plainTextPassword) {
         LocalDateTime localDateTime = LocalDateTime.now();
-        User user = new User();
+        IUser user = new User();
         user.setPassword(userBCrypt.hashPassword(plainTextPassword));
         user.setUsername(username);
         user.setCreated(Timestamp.valueOf(localDateTime));
@@ -54,7 +59,7 @@ public final class UserRepository {
         return user;
     }
 
-    private boolean isValid(User user) {
+    private boolean isValid(IUser user) {
         return user.isActive();
     }
 }

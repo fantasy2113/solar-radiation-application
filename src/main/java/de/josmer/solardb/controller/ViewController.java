@@ -1,10 +1,11 @@
 package de.josmer.solardb.controller;
 
-import de.josmer.solardb.controller.security.JwtToken;
-import de.josmer.solardb.controller.web.WebCookie;
+import de.josmer.solardb.base.FileReader;
+import de.josmer.solardb.base.UserBCrypt;
+import de.josmer.solardb.base.controller.Controller;
+import de.josmer.solardb.base.security.JwtToken;
+import de.josmer.solardb.base.web.WebCookie;
 import de.josmer.solardb.repositories.UserRepository;
-import de.josmer.solardb.utils.FileReader;
-import de.josmer.solardb.utils.UserBCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,7 +1,7 @@
 package de.josmer.solardb.exporter;
 
+import de.josmer.solardb.base.interfaces.ISolRad;
 import de.josmer.solardb.entities.SolRadExp;
-import de.josmer.solardb.utils.interfaces.ISolRad;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;

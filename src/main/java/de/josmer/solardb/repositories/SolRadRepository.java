@@ -1,9 +1,9 @@
 package de.josmer.solardb.repositories;
 
+import de.josmer.solardb.base.GaussKruger;
+import de.josmer.solardb.base.interfaces.ISolRad;
+import de.josmer.solardb.base.interfaces.ISolRadRepository;
 import de.josmer.solardb.entities.SolRad;
-import de.josmer.solardb.utils.GaussKruger;
-import de.josmer.solardb.utils.interfaces.ISolRad;
-import de.josmer.solardb.utils.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
