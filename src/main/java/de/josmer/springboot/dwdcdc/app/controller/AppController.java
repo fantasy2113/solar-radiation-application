@@ -4,12 +4,7 @@ import de.josmer.springboot.dwdcdc.app.controller.requests.IrrRequest;
 import de.josmer.springboot.dwdcdc.app.controller.requests.RadRequest;
 import de.josmer.springboot.dwdcdc.app.entities.SolIrrExp;
 import de.josmer.springboot.dwdcdc.app.entities.SolRadExp;
-import de.josmer.springboot.dwdcdc.app.exporter.SolIrrExporter;
-import de.josmer.springboot.dwdcdc.app.exporter.SolRadExporter;
-import de.josmer.springboot.dwdcdc.app.interfaces.IJwtToken;
-import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadRepository;
-import de.josmer.springboot.dwdcdc.app.interfaces.IUserBCrypt;
-import de.josmer.springboot.dwdcdc.app.interfaces.IUserRepository;
+import de.josmer.springboot.dwdcdc.app.interfaces.*;
 import de.josmer.springboot.dwdcdc.app.repositories.SolIrrRepository;
 import org.jxls.template.SimpleExporter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +21,13 @@ import java.util.List;
 
 @RestController
 public final class AppController extends Controller {
-    private final SolRadExporter solRadExp;
-    private final SolIrrExporter solIrrExp;
+    private final ISolRadExporter solRadExp;
+    private final ISolIrrExporter solIrrExp;
     private final ISolRadRepository solRadRep;
     private final SolIrrRepository solIrrRep;
 
     @Autowired
-    public AppController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, SolRadExporter solRadExp, SolIrrExporter solIrrExp, ISolRadRepository solRadRep, SolIrrRepository solIrrRep) {
+    public AppController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadExporter solRadExp, ISolIrrExporter solIrrExp, ISolRadRepository solRadRep, SolIrrRepository solIrrRep) {
         super(userRep, jwtToken, userBCrypt);
         this.solRadExp = solRadExp;
         this.solIrrExp = solIrrExp;

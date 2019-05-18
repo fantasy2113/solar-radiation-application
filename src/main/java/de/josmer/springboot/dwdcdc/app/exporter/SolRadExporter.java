@@ -2,19 +2,21 @@ package de.josmer.springboot.dwdcdc.app.exporter;
 
 import de.josmer.springboot.dwdcdc.app.entities.SolRadExp;
 import de.josmer.springboot.dwdcdc.app.interfaces.ISolRad;
+import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadExporter;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public final class SolRadExporter extends Exporter<SolRadExp, ISolRad> {
+public final class SolRadExporter extends Exporter<SolRadExp, ISolRad> implements ISolRadExporter {
 
-    public List<SolRadExp> getItems(final List<ISolRad> solarRadiations, final double lon, final double lat) {
+    @Override
+    public List<SolRadExp> getItems(final List<ISolRad> items, final double lon, final double lat) {
         List<SolRadExp> exports = new LinkedList<>();
         try {
             double eGlobHorSum = 0.0;
-            for (ISolRad solRad : solarRadiations) {
+            for (ISolRad solRad : items) {
                 exports.add(mapToExport(lon, lat, solRad));
                 eGlobHorSum += solRad.getRadiationValue();
                 if (String.valueOf(solRad.getRadiationDate()).endsWith("12")) {
@@ -60,10 +62,12 @@ public final class SolRadExporter extends Exporter<SolRadExp, ISolRad> {
         exports.add(export);
     }
 
+    @Override
     public List<String> getHeaders() {
         return List.of("Datum", "Lat", "Lon", "Art", "EGlobHor", "Einheit", "Dim", "Quelle");
     }
 
+    @Override
     public String getProps() {
         return "date, lat, lon, type, value, unit, dim, source, ";
     }
