@@ -28,16 +28,12 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
 
     @Override
     public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
-        List<SolRad> globalRadiation = find(startDate, endDate, "GLOBAL", lon, lat);
-        double[] retArr = new double[12];
-        try {
-            for (int i = 0; i < retArr.length; i++) {
-                retArr[i] = Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", globalRadiation.get(i).getRadiationValue())) * 1000;
-            }
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-        }
-        return retArr;
+        return find(startDate, endDate, "GLOBAL", lon, lat)
+                .stream().sequential().map(SolRad::getRadiationValue).mapToDouble(this::convertValue).toArray();
+    }
+
+    private double convertValue(double value) {
+        return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", value)) * 1000;
     }
 
     @Override

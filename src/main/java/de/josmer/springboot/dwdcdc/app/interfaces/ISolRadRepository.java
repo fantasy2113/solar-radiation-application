@@ -9,6 +9,5 @@ public interface ISolRadRepository extends ISave<SolRad> {
 
     List<SolRad> find(int startDate, int endDate, String radiationType, double lon, double lat);
 
-
     long getNumberOfRadiations();
 }
