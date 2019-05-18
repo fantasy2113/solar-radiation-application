@@ -113,20 +113,24 @@ public final class SolRadCrawler implements ISolRadCrawler {
             final String[] columns = rows[row].split(" ");
             int rechtswert = 3280500;
             for (String column : columns) {
-                SolRad radiation = new SolRad();
-                radiation.setRadiationValue(Float.parseFloat(column));
-                radiation.setRadiationType(type.name());
-                radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
-                radiation.setGkhMin(hochwert);
-                radiation.setGkhMax(hochwert + 1000);
-                radiation.setGkrMin(rechtswert);
-                radiation.setGkrMax(rechtswert + 1000);
-                radiations.add(radiation);
+                radiations.add(initSolRad(hochwert, rechtswert, column));
                 rechtswert += 1000;
             }
             hochwert += 1000;
         }
         Collections.reverse(radiations);
+    }
+
+    private SolRad initSolRad(int hochwert, int rechtswert, String column) {
+        SolRad radiation = new SolRad();
+        radiation.setRadiationValue(Float.parseFloat(column));
+        radiation.setRadiationType(type.name());
+        radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
+        radiation.setGkhMin(hochwert);
+        radiation.setGkhMax(hochwert + 1000);
+        radiation.setGkrMin(rechtswert);
+        radiation.setGkrMax(rechtswert + 1000);
+        return radiation;
     }
 
     private String getDate(final Integer year, final Integer month) {
