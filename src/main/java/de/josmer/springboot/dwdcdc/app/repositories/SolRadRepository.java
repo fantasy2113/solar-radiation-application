@@ -27,19 +27,31 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
-    public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
-        return find(startDate, endDate, "GLOBAL", lon, lat)
-                .stream().sequential().map(SolRad::getRadiationValue)
-                .mapToDouble(this::convertValue).toArray();
-    }
-
-    private double convertValue(double value) {
-        return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", value)) * 1000;
+    public boolean isInTable(int date, String radiationType) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date = ? AND radiation_type = ? LIMIT 1;")) {
+            preparedStatement.setInt(1, date);
+            preparedStatement.setString(2, radiationType);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException | URISyntaxException e) {
+            LOGGER.info(e.getMessage());
+        }
+        return false;
     }
 
     @Override
-    public List<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
-        List<SolRad> radiations = new LinkedList<>();
+    public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
+        LinkedList<SolRad> solRads = find(startDate, endDate, "GLOBAL", lon, lat);
+        increaseToFullYear(solRads);
+        return solRads.stream().sequential().map(SolRad::getRadiationValue)
+                .mapToDouble(this::convertValue).toArray();
+    }
+
+    @Override
+    public LinkedList<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+        LinkedList<SolRad> radiations = new LinkedList<>();
         GaussKruger gaussKrueger = new GaussKruger(lon, lat);
         gaussKrueger.compute();
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
@@ -149,5 +161,15 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
             }
         }
         return sb.append(")").toString();
+    }
+
+    private double convertValue(double value) {
+        return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", value)) * 1000;
+    }
+
+    private void increaseToFullYear(LinkedList<SolRad> solRads) {
+        while (solRads.size() <= 12) {
+            solRads.add(new SolRad());
+        }
     }
 }

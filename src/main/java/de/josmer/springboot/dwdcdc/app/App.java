@@ -1,6 +1,5 @@
 package de.josmer.springboot.dwdcdc.app;
 
-import de.josmer.springboot.dwdcdc.app.crawler.SolRadCrawler;
 import de.josmer.springboot.dwdcdc.app.enums.SolRadTypes;
 import de.josmer.springboot.dwdcdc.app.handler.SolRadInsertHandler;
 import de.josmer.springboot.dwdcdc.app.repositories.SolRadRepository;
@@ -27,9 +26,9 @@ public class App {
     }
 
     private static void startInsertHandler() {
-        new SolRadInsertHandler(SolRadTypes.GLOBAL, new SolRadRepository(), new FileReader(), new SolRadCrawler()).start();
-        new SolRadInsertHandler(SolRadTypes.DIFFUSE, new SolRadRepository(), new FileReader(), new SolRadCrawler()).start();
-        new SolRadInsertHandler(SolRadTypes.DIRECT, new SolRadRepository(), new FileReader(), new SolRadCrawler()).start();
+        new SolRadInsertHandler(SolRadTypes.GLOBAL, new SolRadRepository(), new FileReader()).start();
+        new SolRadInsertHandler(SolRadTypes.DIFFUSE, new SolRadRepository(), new FileReader()).start();
+        new SolRadInsertHandler(SolRadTypes.DIRECT, new SolRadRepository(), new FileReader()).start();
     }
 
     @Bean
