@@ -25,38 +25,33 @@ import java.util.zip.ZipInputStream;
 
 public final class SolRadCrawler implements ISolRadCrawler {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadCrawler.class.getName());
-    private String templateTargetFile;
-    private String targetUrl;
-    private String targetDir;
-    private SolRadTypes type;
-    private List<SolRad> radiations;
-    private int month;
-    private int year;
+    private final String templateTargetFile;
+    private final String targetUrl;
+    private final String targetDir;
+    private final SolRadTypes type;
+    private final List<SolRad> radiations;
+    private final int month;
+    private final int year;
     private String currentTargetFile;
 
+    public SolRadCrawler(SolRadTypes type, int month, int year) {
+        this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
+                .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
+        this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
+                .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
+        this.targetDir = "temp/";
+        this.radiations = new LinkedList<>();
+        this.month = month;
+        this.year = year;
+        this.type = type;
+    }
+
     @Override
-    public void insert(ISolRadRepository solRadRepository, IFileReader fileReader, int month, int year, SolRadTypes type) {
-        init(month, year, type);
+    public void insert(ISolRadRepository solRadRepository, IFileReader fileReader) {
         download();
         unzip();
         insertRadiation(solRadRepository, fileReader);
         delete();
-    }
-
-    private void init(int month, int year, SolRadTypes type) {
-        try {
-            this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
-                    .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
-            this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
-                    .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
-            this.targetDir = "temp/";
-            this.radiations = new LinkedList<>();
-            this.month = month;
-            this.year = year;
-            this.type = type;
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-        }
     }
 
     private void setCurrentTargetFile(final String date) {
