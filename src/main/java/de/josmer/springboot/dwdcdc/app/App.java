@@ -1,7 +1,7 @@
 package de.josmer.springboot.dwdcdc.app;
 
 import de.josmer.springboot.dwdcdc.app.crawler.SolRadCrawler;
-import de.josmer.springboot.dwdcdc.app.crawler.SolRadTypes;
+import de.josmer.springboot.dwdcdc.app.enums.SolRadTypes;
 import de.josmer.springboot.dwdcdc.app.handler.SolRadInsertHandler;
 import de.josmer.springboot.dwdcdc.app.repositories.SolRadRepository;
 import de.josmer.springboot.dwdcdc.app.utils.FileReader;
