@@ -36,14 +36,17 @@ public final class SolRadInsertHandler implements Runnable {
         } else {
             insertAll();
         }
-
         System.gc();
     }
 
     public void start() {
         ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
         long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
-        tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
+        if (System.getenv("INSERT_ALL") == null) {
+            tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
+        } else {
+            tokenService.execute(this);
+        }
     }
 
     private LocalDate getLocalDate() {
