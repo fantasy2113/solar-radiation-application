@@ -65,7 +65,7 @@ public final class SolRadInsertHandler implements Runnable {
 
     private void insertAll() {
         LocalDate localDate = LocalDate.now();
-        for (int year = 1991; year < localDate.getYear(); year++) {
+        for (int year = 1991; year < localDate.getYear() + 1; year++) {
             for (int month = 1; month < 13; month++) {
                 LOGGER.info(">>> Month: " + month + ", Year: " + year);
                 solRadCrawler.insert(solRadRepository, fileReader, month, year, radType);

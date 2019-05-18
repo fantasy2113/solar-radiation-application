@@ -33,10 +33,6 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
                 .mapToDouble(this::convertValue).toArray();
     }
 
-    private double convertValue(double value) {
-        return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", value)) * 1000;
-    }
-
     @Override
     public List<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         List<SolRad> radiations = new LinkedList<>();
@@ -149,5 +145,9 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
             }
         }
         return sb.append(")").toString();
+    }
+
+    private double convertValue(double value) {
+        return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", value)) * 1000;
     }
 }
