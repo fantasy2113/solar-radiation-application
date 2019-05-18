@@ -35,8 +35,8 @@ public final class SolRadCrawler implements ISolRadCrawler {
 
     @Override
     public void insert(ISolRadRepository solRadRepository, IFileReader fileReader, int month, int year, RadTypes type) {
-        init(month, year, type);
         try {
+            init(month, year, type);
             download();
             unzip();
             insertRadiation(solRadRepository, fileReader);
