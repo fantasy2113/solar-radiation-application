@@ -1,10 +1,9 @@
 package de.josmer.springboot.dwdcdc.app.repositories;
 
-import de.josmer.springboot.dwdcdc.app.base.irradiation.ComputedIrradiation;
-import de.josmer.springboot.dwdcdc.app.base.irradiation.SolarIrradiation;
 import de.josmer.springboot.dwdcdc.app.entities.SolIrr;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import de.josmer.springboot.dwdcdc.app.interfaces.ISolIrrRepository;
+import de.josmer.springboot.dwdcdc.app.irradiation.ComputedIrradiation;
+import de.josmer.springboot.dwdcdc.app.irradiation.SolarIrradiation;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -12,9 +11,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public final class SolIrrRepository {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SolIrrRepository.class.getName());
+public final class SolIrrRepository implements ISolIrrRepository {
 
+    @Override
     public List<SolIrr> getIrradiation(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
         List<SolIrr> irradiation = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);

@@ -2,16 +2,17 @@ package de.josmer.springboot.dwdcdc.app.exporter;
 
 import de.josmer.springboot.dwdcdc.app.entities.SolIrr;
 import de.josmer.springboot.dwdcdc.app.entities.SolIrrExp;
+import de.josmer.springboot.dwdcdc.app.interfaces.ISolIrrExporter;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> {
-
+public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements ISolIrrExporter {
+    @Override
     public List<SolIrrExp> getItems(List<SolIrr> items, double lon, double lat) {
-        List<SolIrrExp> exportCalcs = new LinkedList<>();
+        List<SolIrrExp> exports = new LinkedList<>();
         try {
             double eGlobHor = 0.0;
             double eGlobGen = 0.0;
@@ -19,7 +20,7 @@ public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> {
             for (SolIrr calculated : items) {
                 eGlobHor += calculated.geteGlobHor();
                 eGlobGen += calculated.geteGlobGen();
-                exportCalcs.add(mapToExport(lon, lat, calculated));
+                exports.add(mapToExport(lon, lat, calculated));
             }
 
             SolIrrExp exportCalc = new SolIrrExp();
@@ -34,7 +35,7 @@ public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> {
             exportCalc.setYe(String.valueOf((int) items.get(0).getYe()));
             exportCalc.setAe(String.valueOf((int) items.get(0).getAe()));
 
-            exportCalcs.add(exportCalc);
+            exports.add(exportCalc);
 
             exportCalc = new SolIrrExp();
             exportCalc.seteGlobHor(Double.valueOf(roundToString(eGlobGen - eGlobHor, 2)));
@@ -46,17 +47,19 @@ public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> {
             exportCalc.setSource("");
             exportCalc.setDate("G/V");
 
-            exportCalcs.add(exportCalc);
+            exports.add(exportCalc);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
-        return exportCalcs;
+        return exports;
     }
 
+    @Override
     public List<String> getHeaders() {
         return List.of("Datum", "Lat", "Lon", "Ausrichtung", "Neigung", "EGlobHor", "EGlobGen", "Einheit", "Dim", "Quelle");
     }
 
+    @Override
     public String getProps() {
         return "date, lat, lon, ae, ye, eGlobHor, eGlobGen, unit, dim, source, ";
     }

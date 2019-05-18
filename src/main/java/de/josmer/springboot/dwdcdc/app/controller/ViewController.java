@@ -1,11 +1,10 @@
 package de.josmer.springboot.dwdcdc.app.controller;
 
-import de.josmer.springboot.dwdcdc.app.base.controller.Controller;
-import de.josmer.springboot.dwdcdc.app.base.interfaces.IFileReader;
-import de.josmer.springboot.dwdcdc.app.base.interfaces.IJwtToken;
-import de.josmer.springboot.dwdcdc.app.base.interfaces.IUserBCrypt;
-import de.josmer.springboot.dwdcdc.app.base.interfaces.IUserRepository;
-import de.josmer.springboot.dwdcdc.app.base.web.WebCookie;
+import de.josmer.springboot.dwdcdc.app.interfaces.IFileReader;
+import de.josmer.springboot.dwdcdc.app.interfaces.IJwtToken;
+import de.josmer.springboot.dwdcdc.app.interfaces.IUserBCrypt;
+import de.josmer.springboot.dwdcdc.app.interfaces.IUserRepository;
+import de.josmer.springboot.dwdcdc.app.web.WebCookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

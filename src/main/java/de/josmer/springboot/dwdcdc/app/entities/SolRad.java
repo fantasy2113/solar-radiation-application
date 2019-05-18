@@ -1,6 +1,6 @@
 package de.josmer.springboot.dwdcdc.app.entities;
 
-import de.josmer.springboot.dwdcdc.app.base.interfaces.ISolRad;
+import de.josmer.springboot.dwdcdc.app.interfaces.ISolRad;
 
 public final class SolRad implements ISolRad {
     private int radiationDate;
