@@ -94,11 +94,7 @@ public final class SolarIrradiation {
         return dt.getMonthValue() - 1;
     }
 
-    public double[] getEHorMonths() {
-        return computedEHorMonths;
-    }
-
-    public double[] getEIncMonths() {
-        return computedEIncMonths;
+    public ComputedIrradiation getComputedIrradiation() {
+        return new ComputedIrradiation(computedEHorMonths, computedEIncMonths);
     }
 }
