@@ -77,7 +77,7 @@ public final class AppController extends Controller {
             response.setContentType("application/vnd.ms-excel");
             new SimpleExporter().gridExport(
                     solIrrExp.getHeaders(),
-                    solIrrExp.getItems(solIrrRep.getSolRadInc(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
+                    solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
                     solIrrExp.getProps(),
                     response.getOutputStream());
             response.flushBuffer();
@@ -99,7 +99,7 @@ public final class AppController extends Controller {
         if (!isAccess(token)) {
             return new ArrayList<>();
         }
-        return solIrrExp.getItems(solIrrRep.getSolRadInc(solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        return solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
     }
 
     private int getDate(final String date) {
