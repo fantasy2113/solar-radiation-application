@@ -1,4 +1,4 @@
-package de.josmer.dwdcdc.springboot.base;
+package de.josmer.dwdcdc.springboot.base.utils;
 
 import org.springframework.stereotype.Component;
 

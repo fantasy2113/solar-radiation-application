@@ -1,4 +1,4 @@
-package de.josmer.dwdcdc.springboot.base;
+package de.josmer.dwdcdc.springboot.base.security;
 
 import de.josmer.dwdcdc.springboot.base.interfaces.IUserBCrypt;
 import org.mindrot.jbcrypt.BCrypt;

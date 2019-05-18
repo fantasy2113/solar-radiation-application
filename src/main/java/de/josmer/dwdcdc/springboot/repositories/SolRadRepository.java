@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.springboot.repositories;
 
-import de.josmer.dwdcdc.springboot.base.GaussKruger;
+import de.josmer.dwdcdc.springboot.base.geo.GaussKruger;
 import de.josmer.dwdcdc.springboot.base.interfaces.ISolRad;
 import de.josmer.dwdcdc.springboot.base.interfaces.ISolRadRepository;
 import de.josmer.dwdcdc.springboot.entities.SolRad;

@@ -1,8 +1,8 @@
 package de.josmer.dwdcdc.springboot.base.repositories;
 
-import de.josmer.dwdcdc.springboot.base.UserBCrypt;
 import de.josmer.dwdcdc.springboot.base.entities.User;
 import de.josmer.dwdcdc.springboot.base.interfaces.IUserRepository;
+import de.josmer.dwdcdc.springboot.base.security.UserBCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

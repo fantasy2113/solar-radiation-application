@@ -1,10 +1,10 @@
 package de.josmer.dwdcdc.springboot.controller;
 
-import de.josmer.dwdcdc.springboot.base.FileReader;
-import de.josmer.dwdcdc.springboot.base.UserBCrypt;
 import de.josmer.dwdcdc.springboot.base.controller.Controller;
 import de.josmer.dwdcdc.springboot.base.repositories.UserRepository;
 import de.josmer.dwdcdc.springboot.base.security.JwtToken;
+import de.josmer.dwdcdc.springboot.base.security.UserBCrypt;
+import de.josmer.dwdcdc.springboot.base.utils.FileReader;
 import de.josmer.dwdcdc.springboot.base.web.WebCookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

@@ -2,6 +2,7 @@ package de.josmer.dwdcdc.springboot;
 
 import de.josmer.dwdcdc.springboot.base.crawler.RadTypes;
 import de.josmer.dwdcdc.springboot.base.handler.InsertHandler;
+import de.josmer.dwdcdc.springboot.base.utils.FileReader;
 import de.josmer.dwdcdc.springboot.entities.SolRad;
 import de.josmer.dwdcdc.springboot.repositories.SolRadRepository;
 import org.slf4j.Logger;
@@ -26,9 +27,9 @@ public class Application {
     }
 
     private static void startInsertHandler() {
-        new InsertHandler<>(RadTypes.GLOBAL, new SolRadRepository(), SolRad.class).start();
-        new InsertHandler<>(RadTypes.DIFFUSE, new SolRadRepository(), SolRad.class).start();
-        new InsertHandler<>(RadTypes.DIRECT, new SolRadRepository(), SolRad.class).start();
+        new InsertHandler<>(RadTypes.GLOBAL, new SolRadRepository(), SolRad.class, new FileReader()).start();
+        new InsertHandler<>(RadTypes.DIFFUSE, new SolRadRepository(), SolRad.class, new FileReader()).start();
+        new InsertHandler<>(RadTypes.DIRECT, new SolRadRepository(), SolRad.class, new FileReader()).start();
     }
 
     @Bean

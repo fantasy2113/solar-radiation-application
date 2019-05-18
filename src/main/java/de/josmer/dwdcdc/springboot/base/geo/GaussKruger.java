@@ -1,4 +1,4 @@
-package de.josmer.dwdcdc.springboot.base;
+package de.josmer.dwdcdc.springboot.base.geo;
 
 public final class GaussKruger {
     private double lon;
