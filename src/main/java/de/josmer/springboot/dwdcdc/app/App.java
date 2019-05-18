@@ -27,8 +27,8 @@ public class App {
 
     private static void startInsertHandler() {
         new SolRadInsertHandler(SolRadTypes.GLOBAL, new SolRadRepository(), new FileReader()).start();
-        //new SolRadInsertHandler(SolRadTypes.DIFFUSE, new SolRadRepository(), new FileReader()).start();
-        //new SolRadInsertHandler(SolRadTypes.DIRECT, new SolRadRepository(), new FileReader()).start();
+        new SolRadInsertHandler(SolRadTypes.DIFFUSE, new SolRadRepository(), new FileReader()).start();
+        new SolRadInsertHandler(SolRadTypes.DIRECT, new SolRadRepository(), new FileReader()).start();
     }
 
     @Bean

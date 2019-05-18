@@ -27,6 +27,21 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
+    public boolean isInTable(int date, String radiationType) {
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date = ? AND radiation_type = ? LIMIT 1;")) {
+            preparedStatement.setInt(1, date);
+            preparedStatement.setString(2, radiationType);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException | URISyntaxException e) {
+            LOGGER.info(e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
     public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
         LinkedList<SolRad> solRads = find(startDate, endDate, "GLOBAL", lon, lat);
         increaseToFullYear(solRads);
