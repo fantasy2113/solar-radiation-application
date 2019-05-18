@@ -27,7 +27,7 @@ public final class SolIrrRepository {
 
     private void addIrradiation(int ae, int ye, List<SolIrr> irradiation, LocalDateTime dt, ComputedIrradiation computedIrradiation) {
         for (int monthIndex = 0; monthIndex < 12; monthIndex++) {
-            if (computedIrradiation.getMonthHor(monthIndex) > 0 && computedIrradiation.getMonthInc(monthIndex) > 0) {
+            if (isAdd(computedIrradiation, monthIndex)) {
                 SolIrr solIrr = new SolIrr();
                 solIrr.seteGlobHor(computedIrradiation.getMonthHor(monthIndex) / 1000);
                 solIrr.seteGlobGen(computedIrradiation.getMonthInc(monthIndex) / 1000);
@@ -37,6 +37,10 @@ public final class SolIrrRepository {
                 irradiation.add(solIrr);
             }
         }
+    }
+
+    private boolean isAdd(ComputedIrradiation computedIrradiation, int monthIndex) {
+        return computedIrradiation.getMonthHor(monthIndex) > 0 && computedIrradiation.getMonthInc(monthIndex) > 0;
     }
 
     private String getDate(int year, int month) {
