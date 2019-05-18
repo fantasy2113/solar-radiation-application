@@ -1,6 +1,6 @@
 package de.josmer.springboot.dwdcdc.app.controller;
 
-import de.josmer.springboot.dwdcdc.app.repositories.LogRepository;
+import de.josmer.springboot.dwdcdc.app.interfaces.ILogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +10,10 @@ import java.util.List;
 
 @RestController
 public class LogController {
-    private final LogRepository logRepository;
+    private final ILogRepository logRepository;
 
     @Autowired
-    public LogController(LogRepository logRepository) {
+    public LogController(ILogRepository logRepository) {
         this.logRepository = logRepository;
     }
 
