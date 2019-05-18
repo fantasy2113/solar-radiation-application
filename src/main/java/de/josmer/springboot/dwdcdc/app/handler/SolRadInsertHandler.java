@@ -1,8 +1,8 @@
 package de.josmer.springboot.dwdcdc.app.handler;
 
+import de.josmer.springboot.dwdcdc.app.crawler.SolRadCrawler;
 import de.josmer.springboot.dwdcdc.app.enums.SolRadTypes;
 import de.josmer.springboot.dwdcdc.app.interfaces.IFileReader;
-import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadCrawler;
 import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +20,11 @@ public final class SolRadInsertHandler implements Runnable {
     private final SolRadTypes radType;
     private final ISolRadRepository solRadRepository;
     private final IFileReader fileReader;
-    private final ISolRadCrawler solRadCrawler;
 
-    public SolRadInsertHandler(SolRadTypes radType, ISolRadRepository solRadRepository, IFileReader fileReader, ISolRadCrawler solRadCrawler) {
+    public SolRadInsertHandler(SolRadTypes radType, ISolRadRepository solRadRepository, IFileReader fileReader) {
         this.radType = radType;
         this.solRadRepository = solRadRepository;
         this.fileReader = fileReader;
-        this.solRadCrawler = solRadCrawler;
     }
 
     @Override
@@ -60,7 +58,8 @@ public final class SolRadInsertHandler implements Runnable {
     private void insert() {
         LocalDate localDate = getLocalDate();
         LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), radType)); // NOSONAR
-        solRadCrawler.insert(solRadRepository, fileReader, localDate.getMonth().getValue(), localDate.getYear(), radType);
+        SolRadCrawler solRadCrawler = new SolRadCrawler(radType, localDate.getMonth().getValue(), localDate.getYear());
+        solRadCrawler.insert(solRadRepository, fileReader);
     }
 
     private void insertAll() {
@@ -68,7 +67,8 @@ public final class SolRadInsertHandler implements Runnable {
         for (int year = 1991; year < localDate.getYear() + 1; year++) {
             for (int month = 1; month < 13; month++) {
                 LOGGER.info(">>> Month: " + month + ", Year: " + year);
-                solRadCrawler.insert(solRadRepository, fileReader, month, year, radType);
+                SolRadCrawler solRadCrawler = new SolRadCrawler(radType, month, year);
+                solRadCrawler.insert(solRadRepository, fileReader);
             }
         }
     }
