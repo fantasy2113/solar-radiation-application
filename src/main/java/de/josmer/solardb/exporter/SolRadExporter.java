@@ -1,20 +1,20 @@
 package de.josmer.solardb.exporter;
 
-import de.josmer.solardb.entities.SolRad;
 import de.josmer.solardb.entities.SolRadExp;
+import de.josmer.solardb.utils.interfaces.ISolRad;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public final class SolRadExporter extends Exporter<SolRadExp, SolRad> {
+public final class SolRadExporter extends Exporter<SolRadExp, ISolRad> {
 
-    public List<SolRadExp> getItems(final List<SolRad> solarRadiations, final double lon, final double lat) {
+    public List<SolRadExp> getItems(final List<ISolRad> solarRadiations, final double lon, final double lat) {
         List<SolRadExp> exports = new LinkedList<>();
         try {
             double eGlobHorSum = 0.0;
-            for (SolRad solRad : solarRadiations) {
+            for (ISolRad solRad : solarRadiations) {
                 exports.add(mapToExport(lon, lat, solRad));
                 eGlobHorSum += solRad.getRadiationValue();
                 if (String.valueOf(solRad.getRadiationDate()).endsWith("12")) {
@@ -69,7 +69,7 @@ public final class SolRadExporter extends Exporter<SolRadExp, SolRad> {
     }
 
     @Override
-    protected SolRadExp mapToExport(double lon, double lat, SolRad item) {
+    protected SolRadExp mapToExport(double lon, double lat, ISolRad item) {
         SolRadExp export = new SolRadExp();
         export.setDate(parseDate(item.getRadiationDate()));
         export.setLat(roundToString(lat, 3));

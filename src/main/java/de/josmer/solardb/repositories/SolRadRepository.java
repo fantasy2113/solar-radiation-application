@@ -2,6 +2,8 @@ package de.josmer.solardb.repositories;
 
 import de.josmer.solardb.entities.SolRad;
 import de.josmer.solardb.utils.GaussKruger;
+import de.josmer.solardb.utils.interfaces.ISolRad;
+import de.josmer.solardb.utils.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,7 +16,7 @@ import java.util.Locale;
 import java.util.OptionalInt;
 
 @Component
-public final class SolRadRepository extends Repository<SolRad> {
+public final class SolRadRepository extends Repository<SolRad> implements ISolRadRepository {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadRepository.class.getName());
 
     public SolRadRepository(final String databaseUrl) {
@@ -25,8 +27,9 @@ public final class SolRadRepository extends Repository<SolRad> {
         super();
     }
 
+    @Override
     public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
-        List<SolRad> globalRadiation = find(startDate, endDate, "GLOBAL", lon, lat);
+        List<ISolRad> globalRadiation = find(startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         try {
             for (int i = 0; i < retArr.length; i++) {
@@ -38,8 +41,9 @@ public final class SolRadRepository extends Repository<SolRad> {
         return retArr;
     }
 
-    public List<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
-        List<SolRad> radiations = new LinkedList<>();
+    @Override
+    public List<ISolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+        List<ISolRad> radiations = new LinkedList<>();
         GaussKruger gaussKrueger = new GaussKruger(lon, lat);
         gaussKrueger.compute();
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
@@ -81,12 +85,13 @@ public final class SolRadRepository extends Repository<SolRad> {
         return OptionalInt.empty();
     }
 
-    public void save(final List<SolRad> radiations) {
+    @Override
+    public void save(final List<ISolRad> radiations) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement
                      = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
             connection.setAutoCommit(false);
-            for (SolRad radiation : radiations) {
+            for (ISolRad radiation : radiations) {
                 preparedStatement.setString(1, radiation.getRadiationType());
                 preparedStatement.setInt(2, radiation.getRadiationDate());
                 preparedStatement.setInt(3, radiation.getGkrMin());
@@ -103,6 +108,7 @@ public final class SolRadRepository extends Repository<SolRad> {
         }
     }
 
+    @Override
     public long getNumberOfRadiations() {
         try (Connection con = getConnection();
              Statement st = con.createStatement();

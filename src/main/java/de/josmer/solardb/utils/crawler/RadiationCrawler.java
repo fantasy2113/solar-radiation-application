@@ -1,8 +1,9 @@
-package de.josmer.solardb.crawler;
+package de.josmer.solardb.utils.crawler;
 
 import de.josmer.solardb.entities.SolRad;
-import de.josmer.solardb.repositories.SolRadRepository;
 import de.josmer.solardb.utils.FileReader;
+import de.josmer.solardb.utils.interfaces.ISolRad;
+import de.josmer.solardb.utils.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ public final class RadiationCrawler {
     private final String targetUrl;
     private final String targetDir;
     private final RadTypes type;
-    private final List<SolRad> radiations;
+    private final List<ISolRad> radiations;
     private final int month;
     private final int year;
     private String currentTargetFile;
@@ -41,7 +42,7 @@ public final class RadiationCrawler {
         this.type = type;
     }
 
-    public void insert(final SolRadRepository radiationRepository, FileReader fileReader) {
+    public void insert(final ISolRadRepository radiationRepository, FileReader fileReader) {
         download();
         unzip();
         insertRadiation(radiationRepository, fileReader);
@@ -90,7 +91,7 @@ public final class RadiationCrawler {
     }
 
 
-    private void insertRadiation(final SolRadRepository radiationRepository, FileReader fileReader) {
+    private void insertRadiation(final ISolRadRepository radiationRepository, FileReader fileReader) {
         LOGGER.info("reading...");
         initRadiations(fileReader);
         LOGGER.info("insertRadiation...");

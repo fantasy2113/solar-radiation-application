@@ -1,4 +1,4 @@
-package de.josmer.solardb.irradiation;
+package de.josmer.solardb.utils.irradiation;
 
 public final class ComputedIrradiation {
     private final double[] computedEHorMonths;

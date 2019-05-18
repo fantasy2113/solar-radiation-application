@@ -1,9 +1,9 @@
-package de.josmer.solardb.handler;
+package de.josmer.solardb.utils.handler;
 
-import de.josmer.solardb.crawler.RadTypes;
-import de.josmer.solardb.crawler.RadiationCrawler;
 import de.josmer.solardb.repositories.SolRadRepository;
 import de.josmer.solardb.utils.FileReader;
+import de.josmer.solardb.utils.crawler.RadTypes;
+import de.josmer.solardb.utils.crawler.RadiationCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
