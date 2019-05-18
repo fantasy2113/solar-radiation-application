@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,41 +42,21 @@ public final class AppController extends Controller {
     }
 
     @GetMapping("/export_rad")
-    public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) {
+    public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) throws Exception {
         if (!isAccess(token)) {
             return;
         }
-        try {
-            response.addHeader("Content-disposition", "attachment; filename=sonneneinstrahlung_" + System.currentTimeMillis() + ".xls");
-            response.setContentType("application/vnd.ms-excel");
-            new SimpleExporter().gridExport(
-                    solRadExp.getHeaders(),
-                    solRadExp.getItems(solRadRep.find(getDate(startDate), getDate(endDate), type, lon, lat), lon, lat),
-                    solRadExp.getProps(),
-                    response.getOutputStream());
-            response.flushBuffer();
-        } catch (IOException e) {
-            LOGGER.info(e.getMessage());
-        }
+        final List<SolRadExp> items = solRadExp.getItems(solRadRep.find(getDate(startDate), getDate(endDate), type, lon, lat), lon, lat);
+        initExcelExport(response, "sonneneinstrahlung_", items, solRadExp.getProps(), solRadExp.getHeaders());
     }
 
     @GetMapping("/export_irr")
-    public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye) {
+    public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye) throws Exception {
         if (!isAccess(token)) {
             return;
         }
-        try {
-            response.addHeader("Content-disposition", "attachment; filename=umrechnung_" + System.currentTimeMillis() + ".xls");
-            response.setContentType("application/vnd.ms-excel");
-            new SimpleExporter().gridExport(
-                    solIrrExp.getHeaders(),
-                    solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat),
-                    solIrrExp.getProps(),
-                    response.getOutputStream());
-            response.flushBuffer();
-        } catch (IOException e) {
-            LOGGER.info(e.getMessage());
-        }
+        final List<SolIrrExp> items = solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat);
+        initExcelExport(response, "umrechnung_", items, solIrrExp.getProps(), solIrrExp.getHeaders());
     }
 
     @GetMapping("/rad")
@@ -94,6 +73,13 @@ public final class AppController extends Controller {
             return new ArrayList<>();
         }
         return solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+    }
+
+    private void initExcelExport(HttpServletResponse response, String exportName, List<?> items, String props, List<String> headers) throws Exception {
+        response.addHeader("Content-disposition", "attachment; filename=" + exportName + System.currentTimeMillis() + ".xls");
+        response.setContentType("application/vnd.ms-excel");
+        new SimpleExporter().gridExport(headers, items, props, response.getOutputStream());
+        response.flushBuffer();
     }
 
     private int getDate(final String date) {
