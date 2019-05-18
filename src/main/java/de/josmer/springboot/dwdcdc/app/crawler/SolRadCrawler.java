@@ -39,7 +39,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
                 .replace("{radiation}", solRadType.name().toLowerCase(Locale.ENGLISH));
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
                 .replace("{radiation}", solRadType.name().toLowerCase(Locale.ENGLISH));
-        this.targetDir = "temp/";
+        this.targetDir = "./temp/";
         this.radiations = new LinkedList<>();
         this.month = month;
         this.year = year;

@@ -28,14 +28,15 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
 
     @Override
     public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
-        return find(startDate, endDate, "GLOBAL", lon, lat)
-                .stream().sequential().map(SolRad::getRadiationValue)
+        LinkedList<SolRad> solRads = find(startDate, endDate, "GLOBAL", lon, lat);
+        increaseToFullYear(solRads);
+        return solRads.stream().sequential().map(SolRad::getRadiationValue)
                 .mapToDouble(this::convertValue).toArray();
     }
 
     @Override
-    public List<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
-        List<SolRad> radiations = new LinkedList<>();
+    public LinkedList<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+        LinkedList<SolRad> radiations = new LinkedList<>();
         GaussKruger gaussKrueger = new GaussKruger(lon, lat);
         gaussKrueger.compute();
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
@@ -149,5 +150,11 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
 
     private double convertValue(double value) {
         return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", value)) * 1000;
+    }
+
+    private void increaseToFullYear(LinkedList<SolRad> solRads) {
+        while (solRads.size() <= 12) {
+            solRads.add(new SolRad());
+        }
     }
 }
