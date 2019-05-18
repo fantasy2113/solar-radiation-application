@@ -1,7 +1,7 @@
 package de.josmer.springboot.dwdcdc.app.exporter;
 
+import de.josmer.springboot.dwdcdc.app.entities.SolRad;
 import de.josmer.springboot.dwdcdc.app.entities.SolRadExp;
-import de.josmer.springboot.dwdcdc.app.interfaces.ISolRad;
 import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadExporter;
 import org.springframework.stereotype.Component;
 
@@ -9,14 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Component
-public final class SolRadExporter extends Exporter<SolRadExp, ISolRad> implements ISolRadExporter {
+public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements ISolRadExporter {
 
     @Override
-    public List<SolRadExp> getItems(final List<ISolRad> items, final double lon, final double lat) {
+    public List<SolRadExp> getItems(final List<SolRad> items, final double lon, final double lat) {
         List<SolRadExp> exports = new LinkedList<>();
         try {
             double eGlobHorSum = 0.0;
-            for (ISolRad solRad : items) {
+            for (SolRad solRad : items) {
                 exports.add(mapToExport(lon, lat, solRad));
                 eGlobHorSum += solRad.getRadiationValue();
                 if (String.valueOf(solRad.getRadiationDate()).endsWith("12")) {
@@ -73,7 +73,7 @@ public final class SolRadExporter extends Exporter<SolRadExp, ISolRad> implement
     }
 
     @Override
-    protected SolRadExp mapToExport(double lon, double lat, ISolRad item) {
+    protected SolRadExp mapToExport(double lon, double lat, SolRad item) {
         SolRadExp export = new SolRadExp();
         export.setDate(parseDate(item.getRadiationDate()));
         export.setLat(roundToString(lat, 3));

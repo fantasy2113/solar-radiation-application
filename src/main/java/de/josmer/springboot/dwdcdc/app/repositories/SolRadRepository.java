@@ -2,7 +2,6 @@ package de.josmer.springboot.dwdcdc.app.repositories;
 
 import de.josmer.springboot.dwdcdc.app.entities.SolRad;
 import de.josmer.springboot.dwdcdc.app.geo.GaussKruger;
-import de.josmer.springboot.dwdcdc.app.interfaces.ISolRad;
 import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +28,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
 
     @Override
     public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
-        List<ISolRad> globalRadiation = find(startDate, endDate, "GLOBAL", lon, lat);
+        List<SolRad> globalRadiation = find(startDate, endDate, "GLOBAL", lon, lat);
         double[] retArr = new double[12];
         try {
             for (int i = 0; i < retArr.length; i++) {
@@ -42,8 +41,8 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
-    public List<ISolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
-        List<ISolRad> radiations = new LinkedList<>();
+    public List<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+        List<SolRad> radiations = new LinkedList<>();
         GaussKruger gaussKrueger = new GaussKruger(lon, lat);
         gaussKrueger.compute();
         final int hochwert = getGkValues(gaussKrueger.getHochwert());
@@ -86,12 +85,12 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
-    public void save(final List<ISolRad> radiations) {
+    public void save(final List<SolRad> radiations) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement
                      = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
             connection.setAutoCommit(false);
-            for (ISolRad radiation : radiations) {
+            for (SolRad radiation : radiations) {
                 preparedStatement.setString(1, radiation.getRadiationType());
                 preparedStatement.setInt(2, radiation.getRadiationDate());
                 preparedStatement.setInt(3, radiation.getGkrMin());

@@ -1,8 +1,8 @@
 package de.josmer.springboot.dwdcdc.app;
 
 import de.josmer.springboot.dwdcdc.app.crawler.RadTypes;
-import de.josmer.springboot.dwdcdc.app.entities.SolRad;
-import de.josmer.springboot.dwdcdc.app.handler.InsertHandler;
+import de.josmer.springboot.dwdcdc.app.crawler.SolRadCrawler;
+import de.josmer.springboot.dwdcdc.app.handler.SolRadInsertHandler;
 import de.josmer.springboot.dwdcdc.app.repositories.SolRadRepository;
 import de.josmer.springboot.dwdcdc.app.utils.FileReader;
 import org.slf4j.Logger;
@@ -27,9 +27,9 @@ public class App {
     }
 
     private static void startInsertHandler() {
-        new InsertHandler<>(RadTypes.GLOBAL, new SolRadRepository(), SolRad.class, new FileReader()).start();
-        new InsertHandler<>(RadTypes.DIFFUSE, new SolRadRepository(), SolRad.class, new FileReader()).start();
-        new InsertHandler<>(RadTypes.DIRECT, new SolRadRepository(), SolRad.class, new FileReader()).start();
+        new SolRadInsertHandler(RadTypes.GLOBAL, new SolRadRepository(), new FileReader(), new SolRadCrawler()).start();
+        new SolRadInsertHandler(RadTypes.DIFFUSE, new SolRadRepository(), new FileReader(), new SolRadCrawler()).start();
+        new SolRadInsertHandler(RadTypes.DIRECT, new SolRadRepository(), new FileReader(), new SolRadCrawler()).start();
     }
 
     @Bean
