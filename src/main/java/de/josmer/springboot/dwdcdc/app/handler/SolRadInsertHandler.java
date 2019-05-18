@@ -63,11 +63,18 @@ public final class SolRadInsertHandler implements Runnable {
 
     private void insertAll() {
         LocalDate localDate = LocalDate.now();
-        for (int year = 1991; year < localDate.getYear() + 1; year++) {
+        for (int year = getStartYear(); year < localDate.getYear() + 1; year++) {
             for (int month = 1; month < 13; month++) {
                 LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", month, year, solRadType));
                 new SolRadCrawler(solRadType, month, year).insert(solRadRepository, fileReader);
             }
         }
+    }
+
+    private int getStartYear() {
+        if (solRadType == SolRadTypes.GLOBAL) {
+            return 1991;
+        }
+        return 2015;
     }
 }
