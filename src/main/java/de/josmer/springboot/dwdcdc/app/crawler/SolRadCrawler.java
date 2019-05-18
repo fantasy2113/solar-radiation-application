@@ -27,14 +27,14 @@ public final class SolRadCrawler implements ISolRadCrawler {
     private String templateTargetFile;
     private String targetUrl;
     private String targetDir;
-    private RadTypes type;
+    private SolRadTypes type;
     private List<SolRad> radiations;
     private int month;
     private int year;
     private String currentTargetFile;
 
     @Override
-    public void insert(ISolRadRepository solRadRepository, IFileReader fileReader, int month, int year, RadTypes type) {
+    public void insert(ISolRadRepository solRadRepository, IFileReader fileReader, int month, int year, SolRadTypes type) {
         try {
             init(month, year, type);
             download();
@@ -46,7 +46,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
         }
     }
 
-    private void init(int month, int year, RadTypes type) {
+    private void init(int month, int year, SolRadTypes type) {
         this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
                 .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
@@ -108,28 +108,28 @@ public final class SolRadCrawler implements ISolRadCrawler {
     private void initRadiations(IFileReader fileReader) throws Exception {
         final String file = fileReader.asString(getPathnameAsc());
         final String[] rows = file.split("\\r\\n");
-        int hochwert = 5237500;
+        int gkh = 5237500;
         for (int row = rows.length - 1; row >= 28; row--) {
             final String[] columns = rows[row].split(" ");
-            int rechtswert = 3280500;
+            int gkr = 3280500;
             for (String column : columns) {
-                radiations.add(initSolRad(hochwert, rechtswert, column));
-                rechtswert += 1000;
+                radiations.add(initSolRad(gkh, gkr, column));
+                gkr += 1000;
             }
-            hochwert += 1000;
+            gkh += 1000;
         }
         Collections.reverse(radiations);
     }
 
-    private SolRad initSolRad(int hochwert, int rechtswert, String column) {
+    private SolRad initSolRad(int gkh, int gkr, String column) {
         SolRad radiation = new SolRad();
         radiation.setRadiationValue(Float.parseFloat(column));
         radiation.setRadiationType(type.name());
         radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
-        radiation.setGkhMin(hochwert);
-        radiation.setGkhMax(hochwert + 1000);
-        radiation.setGkrMin(rechtswert);
-        radiation.setGkrMax(rechtswert + 1000);
+        radiation.setGkhMin(gkh);
+        radiation.setGkhMax(gkh + 1000);
+        radiation.setGkrMin(gkr);
+        radiation.setGkrMax(gkr + 1000);
         return radiation;
     }
 

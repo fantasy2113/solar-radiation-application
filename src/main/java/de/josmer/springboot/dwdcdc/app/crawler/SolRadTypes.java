@@ -1,5 +1,5 @@
 package de.josmer.springboot.dwdcdc.app.crawler;
 
-public enum RadTypes {
+public enum SolRadTypes {
     GLOBAL, DIRECT, DIFFUSE
 }

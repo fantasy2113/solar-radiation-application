@@ -1,6 +1,6 @@
 package de.josmer.springboot.dwdcdc.app.handler;
 
-import de.josmer.springboot.dwdcdc.app.crawler.RadTypes;
+import de.josmer.springboot.dwdcdc.app.crawler.SolRadTypes;
 import de.josmer.springboot.dwdcdc.app.interfaces.IFileReader;
 import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadCrawler;
 import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadRepository;
@@ -17,12 +17,12 @@ import java.util.concurrent.TimeUnit;
 
 public final class SolRadInsertHandler implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadInsertHandler.class.getName());
-    private final RadTypes radType;
+    private final SolRadTypes radType;
     private final ISolRadRepository solRadRepository;
     private final IFileReader fileReader;
     private final ISolRadCrawler solRadCrawler;
 
-    public SolRadInsertHandler(RadTypes radType, ISolRadRepository solRadRepository, IFileReader fileReader, ISolRadCrawler solRadCrawler) {
+    public SolRadInsertHandler(SolRadTypes radType, ISolRadRepository solRadRepository, IFileReader fileReader, ISolRadCrawler solRadCrawler) {
         this.radType = radType;
         this.solRadRepository = solRadRepository;
         this.fileReader = fileReader;

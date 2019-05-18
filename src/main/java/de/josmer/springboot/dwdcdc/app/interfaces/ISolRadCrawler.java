@@ -1,7 +1,7 @@
 package de.josmer.springboot.dwdcdc.app.interfaces;
 
-import de.josmer.springboot.dwdcdc.app.crawler.RadTypes;
+import de.josmer.springboot.dwdcdc.app.crawler.SolRadTypes;
 
 public interface ISolRadCrawler {
-    void insert(ISolRadRepository solRadRepository, IFileReader fileReader, int month, int year, RadTypes type);
+    void insert(ISolRadRepository solRadRepository, IFileReader fileReader, int month, int year, SolRadTypes type);
 }
