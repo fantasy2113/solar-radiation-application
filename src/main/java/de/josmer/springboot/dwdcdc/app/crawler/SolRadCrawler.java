@@ -28,22 +28,22 @@ public final class SolRadCrawler implements ISolRadCrawler {
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;
-    private final SolRadTypes type;
+    private final SolRadTypes solRadType;
     private final List<SolRad> radiations;
     private final int month;
     private final int year;
     private String currentTargetFile;
 
-    public SolRadCrawler(SolRadTypes type, int month, int year) {
+    public SolRadCrawler(SolRadTypes solRadType, int month, int year) {
         this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
-                .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
+                .replace("{radiation}", solRadType.name().toLowerCase(Locale.ENGLISH));
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
-                .replace("{radiation}", type.name().toLowerCase(Locale.ENGLISH));
+                .replace("{radiation}", solRadType.name().toLowerCase(Locale.ENGLISH));
         this.targetDir = "temp/";
         this.radiations = new LinkedList<>();
         this.month = month;
         this.year = year;
-        this.type = type;
+        this.solRadType = solRadType;
     }
 
     @Override
@@ -140,7 +140,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
     private SolRad initSolRad(int gkh, int gkr, String column) {
         SolRad radiation = new SolRad();
         radiation.setRadiationValue(Float.parseFloat(column));
-        radiation.setRadiationType(type.name());
+        radiation.setRadiationType(solRadType.name());
         radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
         radiation.setGkhMin(gkh);
         radiation.setGkhMax(gkh + 1000);

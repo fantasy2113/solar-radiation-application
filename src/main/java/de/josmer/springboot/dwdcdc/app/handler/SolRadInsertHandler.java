@@ -17,12 +17,12 @@ import java.util.concurrent.TimeUnit;
 
 public final class SolRadInsertHandler implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadInsertHandler.class.getName());
-    private final SolRadTypes radType;
+    private final SolRadTypes solRadType;
     private final ISolRadRepository solRadRepository;
     private final IFileReader fileReader;
 
-    public SolRadInsertHandler(SolRadTypes radType, ISolRadRepository solRadRepository, IFileReader fileReader) {
-        this.radType = radType;
+    public SolRadInsertHandler(SolRadTypes solRadType, ISolRadRepository solRadRepository, IFileReader fileReader) {
+        this.solRadType = solRadType;
         this.solRadRepository = solRadRepository;
         this.fileReader = fileReader;
     }
@@ -57,9 +57,8 @@ public final class SolRadInsertHandler implements Runnable {
 
     private void insert() {
         LocalDate localDate = getLocalDate();
-        LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), radType)); // NOSONAR
-        SolRadCrawler solRadCrawler = new SolRadCrawler(radType, localDate.getMonth().getValue(), localDate.getYear());
-        solRadCrawler.insert(solRadRepository, fileReader);
+        LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), solRadType)); // NOSONAR
+        new SolRadCrawler(solRadType, localDate.getMonth().getValue(), localDate.getYear()).insert(solRadRepository, fileReader);
     }
 
     private void insertAll() {
@@ -67,8 +66,7 @@ public final class SolRadInsertHandler implements Runnable {
         for (int year = 1991; year < localDate.getYear() + 1; year++) {
             for (int month = 1; month < 13; month++) {
                 LOGGER.info(">>> Month: " + month + ", Year: " + year);
-                SolRadCrawler solRadCrawler = new SolRadCrawler(radType, month, year);
-                solRadCrawler.insert(solRadRepository, fileReader);
+                new SolRadCrawler(solRadType, month, year).insert(solRadRepository, fileReader);
             }
         }
     }
