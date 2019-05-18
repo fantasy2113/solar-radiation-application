@@ -1,10 +1,10 @@
 package de.josmer.dwdcdc.springboot.controller;
 
 import de.josmer.dwdcdc.springboot.base.controller.Controller;
-import de.josmer.dwdcdc.springboot.base.repositories.UserRepository;
-import de.josmer.dwdcdc.springboot.base.security.JwtToken;
-import de.josmer.dwdcdc.springboot.base.security.UserBCrypt;
-import de.josmer.dwdcdc.springboot.base.utils.FileReader;
+import de.josmer.dwdcdc.springboot.base.interfaces.IFileReader;
+import de.josmer.dwdcdc.springboot.base.interfaces.IJwtToken;
+import de.josmer.dwdcdc.springboot.base.interfaces.IUserBCrypt;
+import de.josmer.dwdcdc.springboot.base.interfaces.IUserRepository;
 import de.josmer.dwdcdc.springboot.base.web.WebCookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,7 +21,7 @@ public final class ViewController extends Controller {
     private final String radHtml;
 
     @Autowired
-    public ViewController(UserRepository userRep, JwtToken jwtToken, UserBCrypt userBCrypt, FileReader fileReader) {
+    public ViewController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, IFileReader fileReader) {
         super(userRep, jwtToken, userBCrypt);
         this.loginHtml = fileReader.asString("src/main/resources/static/html/login.html");
         this.irrHtml = fileReader.asString("src/main/resources/static/html/irr.html");

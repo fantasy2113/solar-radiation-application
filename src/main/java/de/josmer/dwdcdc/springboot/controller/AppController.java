@@ -1,9 +1,10 @@
 package de.josmer.dwdcdc.springboot.controller;
 
 import de.josmer.dwdcdc.springboot.base.controller.Controller;
-import de.josmer.dwdcdc.springboot.base.repositories.UserRepository;
-import de.josmer.dwdcdc.springboot.base.security.JwtToken;
-import de.josmer.dwdcdc.springboot.base.security.UserBCrypt;
+import de.josmer.dwdcdc.springboot.base.interfaces.IJwtToken;
+import de.josmer.dwdcdc.springboot.base.interfaces.ISolRadRepository;
+import de.josmer.dwdcdc.springboot.base.interfaces.IUserBCrypt;
+import de.josmer.dwdcdc.springboot.base.interfaces.IUserRepository;
 import de.josmer.dwdcdc.springboot.controller.requests.IrrRequest;
 import de.josmer.dwdcdc.springboot.controller.requests.RadRequest;
 import de.josmer.dwdcdc.springboot.entities.SolIrrExp;
@@ -11,7 +12,6 @@ import de.josmer.dwdcdc.springboot.entities.SolRadExp;
 import de.josmer.dwdcdc.springboot.exporter.SolIrrExporter;
 import de.josmer.dwdcdc.springboot.exporter.SolRadExporter;
 import de.josmer.dwdcdc.springboot.repositories.SolIrrRepository;
-import de.josmer.dwdcdc.springboot.repositories.SolRadRepository;
 import org.jxls.template.SimpleExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -29,11 +29,11 @@ import java.util.List;
 public final class AppController extends Controller {
     private final SolRadExporter solRadExp;
     private final SolIrrExporter solIrrExp;
-    private final SolRadRepository solRadRep;
+    private final ISolRadRepository solRadRep;
     private final SolIrrRepository solIrrRep;
 
     @Autowired
-    public AppController(UserRepository userRep, JwtToken jwtToken, UserBCrypt userBCrypt, SolRadExporter solRadExp, SolIrrExporter solIrrExp, SolRadRepository solRadRep, SolIrrRepository solIrrRep) {
+    public AppController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, SolRadExporter solRadExp, SolIrrExporter solIrrExp, ISolRadRepository solRadRep, SolIrrRepository solIrrRep) {
         super(userRep, jwtToken, userBCrypt);
         this.solRadExp = solRadExp;
         this.solIrrExp = solIrrExp;
