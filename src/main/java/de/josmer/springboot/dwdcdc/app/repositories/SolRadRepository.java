@@ -1,9 +1,9 @@
 package de.josmer.springboot.dwdcdc.app.repositories;
 
-import de.josmer.springboot.dwdcdc.app.base.geo.GaussKruger;
-import de.josmer.springboot.dwdcdc.app.base.interfaces.ISolRad;
-import de.josmer.springboot.dwdcdc.app.base.interfaces.ISolRadRepository;
 import de.josmer.springboot.dwdcdc.app.entities.SolRad;
+import de.josmer.springboot.dwdcdc.app.geo.GaussKruger;
+import de.josmer.springboot.dwdcdc.app.interfaces.ISolRad;
+import de.josmer.springboot.dwdcdc.app.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

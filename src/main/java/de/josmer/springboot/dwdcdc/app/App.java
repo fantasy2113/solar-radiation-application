@@ -1,10 +1,10 @@
 package de.josmer.springboot.dwdcdc.app;
 
-import de.josmer.springboot.dwdcdc.app.base.crawler.RadTypes;
-import de.josmer.springboot.dwdcdc.app.base.handler.InsertHandler;
-import de.josmer.springboot.dwdcdc.app.base.utils.FileReader;
+import de.josmer.springboot.dwdcdc.app.crawler.RadTypes;
 import de.josmer.springboot.dwdcdc.app.entities.SolRad;
+import de.josmer.springboot.dwdcdc.app.handler.InsertHandler;
 import de.josmer.springboot.dwdcdc.app.repositories.SolRadRepository;
+import de.josmer.springboot.dwdcdc.app.utils.FileReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

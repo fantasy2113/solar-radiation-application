@@ -1,8 +1,8 @@
 package de.josmer.springboot.dwdcdc.app.repositories;
 
-import de.josmer.springboot.dwdcdc.app.base.irradiation.ComputedIrradiation;
-import de.josmer.springboot.dwdcdc.app.base.irradiation.SolarIrradiation;
 import de.josmer.springboot.dwdcdc.app.entities.SolIrr;
+import de.josmer.springboot.dwdcdc.app.irradiation.ComputedIrradiation;
+import de.josmer.springboot.dwdcdc.app.irradiation.SolarIrradiation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

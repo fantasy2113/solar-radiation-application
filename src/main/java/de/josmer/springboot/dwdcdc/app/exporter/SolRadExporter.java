@@ -1,7 +1,7 @@
 package de.josmer.springboot.dwdcdc.app.exporter;
 
-import de.josmer.springboot.dwdcdc.app.base.interfaces.ISolRad;
 import de.josmer.springboot.dwdcdc.app.entities.SolRadExp;
+import de.josmer.springboot.dwdcdc.app.interfaces.ISolRad;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
