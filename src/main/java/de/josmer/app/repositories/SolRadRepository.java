@@ -94,6 +94,10 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
 
     @Override
     public void save(final List<SolRad> radiations) {
+        if (radiations.isEmpty()) {
+            return;
+        }
+
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement
                      = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
