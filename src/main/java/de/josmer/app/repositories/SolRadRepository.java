@@ -51,10 +51,10 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     @Override
     public LinkedList<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         LinkedList<SolRad> radiations = new LinkedList<>();
-        GaussKruger gaussKrueger = new GaussKruger(lon, lat);
-        gaussKrueger.compute();
-        final int hochwert = getGkValues(gaussKrueger.getHochwert());
-        final OptionalInt optionalRechtswert = getRechtswert(gaussKrueger);
+        GaussKruger gaussKruger = new GaussKruger(lon, lat);
+        gaussKruger.compute();
+        final int hochwert = getGkValues(gaussKruger.getHochwert());
+        final OptionalInt optionalRechtswert = getRechtswert(gaussKruger);
         if (optionalRechtswert.isEmpty()) {
             return radiations;
         }
@@ -79,21 +79,25 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         return radiations;
     }
 
-    private OptionalInt getRechtswert(GaussKruger gaussKrueger) {
-        if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("5")) {
-            return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert() - 1600000));
-        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("4")) {
-            return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert() - 800000));
-        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("3")) {
-            return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert()));
-        } else if (String.valueOf(gaussKrueger.getRechtswert()).startsWith("2")) {
-            return OptionalInt.of(getGkValues(gaussKrueger.getRechtswert() + 800000));
+    private OptionalInt getRechtswert(GaussKruger gaussKruger) {
+        if (String.valueOf(gaussKruger.getRechtswert()).startsWith("5")) {
+            return OptionalInt.of(getGkValues(gaussKruger.getRechtswert() - 1600000));
+        } else if (String.valueOf(gaussKruger.getRechtswert()).startsWith("4")) {
+            return OptionalInt.of(getGkValues(gaussKruger.getRechtswert() - 800000));
+        } else if (String.valueOf(gaussKruger.getRechtswert()).startsWith("3")) {
+            return OptionalInt.of(getGkValues(gaussKruger.getRechtswert()));
+        } else if (String.valueOf(gaussKruger.getRechtswert()).startsWith("2")) {
+            return OptionalInt.of(getGkValues(gaussKruger.getRechtswert() + 800000));
         }
         return OptionalInt.empty();
     }
 
     @Override
     public void save(final List<SolRad> radiations) {
+        if (radiations.isEmpty()) {
+            return;
+        }
+
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement
                      = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
