@@ -64,7 +64,13 @@ public final class SolRadInsertHandler implements Runnable {
 
     private void insertAll() {
         LocalDate localDate = LocalDate.now();
-        IntStream.range(getStartYear(), localDate.getYear() + 1).parallel().forEach(this::insertYear);
+        if (System.getenv("INSERT_ALL").equals("parallel")) {
+            IntStream.range(getStartYear(), localDate.getYear() + 1).parallel().forEach(this::insertYear);
+        } else {
+            for (int year = getStartYear(); year < localDate.getYear() + 1; year++) {
+                insertYear(year);
+            }
+        }
     }
 
     private void insertYear(int year) {
