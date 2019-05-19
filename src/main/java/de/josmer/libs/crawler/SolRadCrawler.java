@@ -18,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -29,7 +28,6 @@ public final class SolRadCrawler implements ISolRadCrawler {
     private final String targetUrl;
     private final String targetDir;
     private final SolRadTypes solRadType;
-    private final List<SolRad> radiations;
     private final int month;
     private final int year;
     private String currentTargetFile;
@@ -41,7 +39,6 @@ public final class SolRadCrawler implements ISolRadCrawler {
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
                 .replace("{radiation}", getSolRadType());
         this.targetDir = "./temp/";
-        this.radiations = new LinkedList<>();
         this.month = month;
         this.year = year;
     }
@@ -103,9 +100,9 @@ public final class SolRadCrawler implements ISolRadCrawler {
     private void insertRadiation(ISolRadRepository solRadRepository, IFileReader fileReader) {
         try {
             LOGGER.info("reading...");
-            initRadiations(fileReader);
+            LinkedList<SolRad> solRads = getSolRads(fileReader);
             LOGGER.info("insertRadiation...");
-            solRadRepository.save(radiations);
+            solRadRepository.save(solRads);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
@@ -121,7 +118,8 @@ public final class SolRadCrawler implements ISolRadCrawler {
         }
     }
 
-    private void initRadiations(IFileReader fileReader) {
+    private LinkedList<SolRad> getSolRads(IFileReader fileReader) {
+        LinkedList<SolRad> solRads = new LinkedList<>();
         try {
             final String[] rows = fileReader.asString(getPathnameAsc()).split("\\r\\n");
             versionGuard(rows[2]);
@@ -130,19 +128,27 @@ public final class SolRadCrawler implements ISolRadCrawler {
                 final String[] columns = rows[row].split(" ");
                 int gkr = 3280500;
                 for (String column : columns) {
-                    radiations.add(initSolRad(gkh, gkr, column));
+                    solRads.add(initSolRad(gkh, gkr, column));
                     gkr += 1000;
                 }
                 gkh += 1000;
             }
-            Collections.reverse(radiations);
+            Collections.reverse(solRads);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
+        return solRads;
     }
 
     private void versionGuard(String version) throws Exception {
-        if (!version.equals("Datensatz_Version=V003")) {
+        boolean isWrongVersion = true;
+        if (version.equals("Datensatz_Version=V003")) {
+            isWrongVersion = false;
+        }
+        if (version.equals("Datensatz_Version=V0.3")) {
+            isWrongVersion = false;
+        }
+        if (isWrongVersion) {
             throw new Exception("wrong version");
         }
     }
