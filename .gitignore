@@ -3,4 +3,4 @@ target/
 *.asc
 *.zip
 *.log
-solar-radiation-application.iml
+app.iml
