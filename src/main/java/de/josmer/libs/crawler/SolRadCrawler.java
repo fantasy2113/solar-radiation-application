@@ -35,15 +35,15 @@ public final class SolRadCrawler implements ISolRadCrawler {
     private String currentTargetFile;
 
     public SolRadCrawler(SolRadTypes solRadType, int month, int year) {
+        this.solRadType = solRadType;
         this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
-                .replace("{radiation}", solRadType.name().toLowerCase(Locale.ENGLISH));
+                .replace("{radiation}", getSolRadType());
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
-                .replace("{radiation}", solRadType.name().toLowerCase(Locale.ENGLISH));
+                .replace("{radiation}", getSolRadType());
         this.targetDir = "./temp/";
         this.radiations = new LinkedList<>();
         this.month = month;
         this.year = year;
-        this.solRadType = solRadType;
     }
 
     @Override
@@ -148,15 +148,15 @@ public final class SolRadCrawler implements ISolRadCrawler {
     }
 
     private SolRad initSolRad(int gkh, int gkr, String column) {
-        SolRad radiation = new SolRad();
-        radiation.setRadiationValue(Float.parseFloat(column));
-        radiation.setRadiationType(solRadType.name());
-        radiation.setRadiationDate(Integer.valueOf(getDate(year, month)));
-        radiation.setGkhMin(gkh);
-        radiation.setGkhMax(gkh + 1000);
-        radiation.setGkrMin(gkr);
-        radiation.setGkrMax(gkr + 1000);
-        return radiation;
+        SolRad solRad = new SolRad();
+        solRad.setRadiationValue(Float.parseFloat(column));
+        solRad.setRadiationType(solRadType.name());
+        solRad.setRadiationDate(Integer.valueOf(getDate(year, month)));
+        solRad.setGkhMin(gkh);
+        solRad.setGkhMax(gkh + 1000);
+        solRad.setGkrMin(gkr);
+        solRad.setGkrMax(gkr + 1000);
+        return solRad;
     }
 
     private String getDate(final Integer year, final Integer month) {
@@ -169,6 +169,11 @@ public final class SolRadCrawler implements ISolRadCrawler {
             date.append(month);
         }
         return date.toString();
+    }
+
+
+    private String getSolRadType() {
+        return this.solRadType.name().toLowerCase(Locale.ENGLISH);
     }
 
     private String getUrl() {

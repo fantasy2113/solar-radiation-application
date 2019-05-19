@@ -11,8 +11,8 @@ import java.util.List;
 @Component
 public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements ISolIrrExporter {
     @Override
-    public List<SolIrrExp> getItems(List<SolIrr> items, double lon, double lat) {
-        List<SolIrrExp> exports = new LinkedList<>();
+    public LinkedList<SolIrrExp> getItems(LinkedList<SolIrr> items, double lon, double lat) {
+        LinkedList<SolIrrExp> exports = new LinkedList<>();
         try {
             double eGlobHor = 0.0;
             double eGlobGen = 0.0;
@@ -32,8 +32,11 @@ public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements
             exportCalc.setDim("1 km2");
             exportCalc.setSource("DWD CDC");
             exportCalc.setDate("Summe");
-            exportCalc.setYe(String.valueOf((int) items.get(0).getYe()));
-            exportCalc.setAe(String.valueOf((int) items.get(0).getAe()));
+
+            if (items.size() >= 1) {
+                exportCalc.setYe(String.valueOf((int) items.get(0).getYe()));
+                exportCalc.setAe(String.valueOf((int) items.get(0).getAe()));
+            }
 
             exports.add(exportCalc);
 
@@ -46,6 +49,10 @@ public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements
             exportCalc.setDim("");
             exportCalc.setSource("");
             exportCalc.setDate("G/V");
+
+            if (Double.isNaN(exportCalc.geteGlobGen())) {
+                exportCalc.seteGlobGen(0);
+            }
 
             exports.add(exportCalc);
         } catch (Exception e) {
@@ -66,17 +73,17 @@ public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements
 
     @Override
     protected SolIrrExp mapToExport(double lon, double lat, SolIrr item) {
-        SolIrrExp exportCalc = new SolIrrExp();
-        exportCalc.seteGlobGen(Double.valueOf(roundToString(item.geteGlobGen(), 2)));
-        exportCalc.seteGlobHor(Double.valueOf(roundToString(item.geteGlobHor(), 2)));
-        exportCalc.setLat(roundToString(lat, 3));
-        exportCalc.setLon(roundToString(lon, 3));
-        exportCalc.setUnit("kWh/m2");
-        exportCalc.setDim("1 km2");
-        exportCalc.setSource("DWD CDC");
-        exportCalc.setDate(item.getCalculatedDate());
-        exportCalc.setYe(String.valueOf((int) item.getYe()));
-        exportCalc.setAe(String.valueOf((int) item.getAe()));
-        return exportCalc;
+        SolIrrExp solIrrExp = new SolIrrExp();
+        solIrrExp.seteGlobGen(Double.valueOf(roundToString(item.geteGlobGen(), 2)));
+        solIrrExp.seteGlobHor(Double.valueOf(roundToString(item.geteGlobHor(), 2)));
+        solIrrExp.setLat(roundToString(lat, 3));
+        solIrrExp.setLon(roundToString(lon, 3));
+        solIrrExp.setUnit("kWh/m2");
+        solIrrExp.setDim("1 km2");
+        solIrrExp.setSource("DWD CDC");
+        solIrrExp.setDate(item.getCalculatedDate());
+        solIrrExp.setYe(String.valueOf((int) item.getYe()));
+        solIrrExp.setAe(String.valueOf((int) item.getAe()));
+        return solIrrExp;
     }
 }

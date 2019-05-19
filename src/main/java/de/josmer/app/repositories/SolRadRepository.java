@@ -138,7 +138,15 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         radiation.setGkrMax(rs.getInt("gkr_max"));
         radiation.setGkhMin(rs.getInt("gkh_min"));
         radiation.setGkhMax(rs.getInt("gkh_max"));
-        radiation.setRadiationValue(rs.getFloat("radiation_value"));
+
+        final float radiationValue = rs.getFloat("radiation_value");
+
+        if (radiationValue > 0) {
+            radiation.setRadiationValue(radiationValue);
+        } else {
+            radiation.setRadiationValue(0);
+        }
+
         return radiation;
     }
 

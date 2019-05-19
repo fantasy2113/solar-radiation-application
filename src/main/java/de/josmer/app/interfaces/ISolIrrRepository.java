@@ -2,8 +2,8 @@ package de.josmer.app.interfaces;
 
 import de.josmer.app.entities.SolIrr;
 
-import java.util.List;
+import java.util.LinkedList;
 
 public interface ISolIrrRepository {
-    List<SolIrr> getIrradiation(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year);
+    LinkedList<SolIrr> getIrradiation(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year);
 }
