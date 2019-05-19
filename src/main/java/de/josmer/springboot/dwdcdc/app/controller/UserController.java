@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-public class UserController extends Controller {
+public final class UserController extends Controller {
 
     @Autowired
     public UserController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt) {
