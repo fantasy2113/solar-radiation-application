@@ -44,7 +44,6 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     @Override
     public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
         LinkedList<SolRad> solRads = find(startDate, endDate, "GLOBAL", lon, lat);
-        increaseToFullYear(solRads);
         return solRads.stream().sequential().map(SolRad::getRadiationValue)
                 .mapToDouble(this::convertValue).toArray();
     }
@@ -165,11 +164,5 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
 
     private double convertValue(double value) {
         return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", value)) * 1000;
-    }
-
-    private void increaseToFullYear(LinkedList<SolRad> solRads) {
-        while (solRads.size() <= 12) {
-            solRads.add(new SolRad());
-        }
     }
 }

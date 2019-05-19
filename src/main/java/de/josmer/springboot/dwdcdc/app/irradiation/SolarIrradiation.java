@@ -6,6 +6,7 @@ import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 public final class SolarIrradiation {
+    private final int limit;
     private final double lat;
     private final double lon;
     private final double ye;
@@ -24,16 +25,17 @@ public final class SolarIrradiation {
         this.eHorMonths = eHorMonths;
         this.computedEHorMonths = new double[12];
         this.computedEIncMonths = new double[12];
+        this.limit = this.eHorMonths.length;
     }
 
     public void compute() {
-        for (int monthIndex = getStarMonth(); monthIndex < 12; monthIndex++) {
+        for (int monthIndex = getStarMonth(); monthIndex < limit; monthIndex++) {
             insertComputedMonth(computeMonth(monthIndex));
         }
     }
 
     public void computeParallel() {
-        IntStream.range(0, 12).parallel().mapToObj(this::computeMonth)
+        IntStream.range(0, limit).parallel().mapToObj(this::computeMonth)
                 .collect(Collectors.toList()).forEach(this::insertComputedMonth);
     }
 
