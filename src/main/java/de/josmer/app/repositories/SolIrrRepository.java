@@ -14,8 +14,8 @@ import java.util.List;
 public final class SolIrrRepository implements ISolIrrRepository {
 
     @Override
-    public List<SolIrr> getIrradiation(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
-        List<SolIrr> irradiation = new LinkedList<>();
+    public LinkedList<SolIrr> getIrradiation(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
+        LinkedList<SolIrr> irradiation = new LinkedList<>();
         LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
         SolarIrradiation solarIrradiation = new SolarIrradiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
         solarIrradiation.computeParallel();
