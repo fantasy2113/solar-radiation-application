@@ -79,15 +79,15 @@ public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements
 
     @Override
     protected SolRadExp mapToExport(double lon, double lat, SolRad item) {
-        SolRadExp export = new SolRadExp();
-        export.setDate(parseDate(item.getRadiationDate()));
-        export.setLat(roundToString(lat, 3));
-        export.setLon(roundToString(lon, 3));
-        export.setType(item.getRadiationType());
-        export.setValue(getValue(item.getRadiationValue()));
-        export.setUnit("kWh/m2");
-        export.setDim("1 km2");
-        export.setSource("DWD CDC");
-        return export;
+        SolRadExp solRadExp = new SolRadExp();
+        solRadExp.setDate(parseDate(item.getRadiationDate()));
+        solRadExp.setLat(roundToString(lat, 3));
+        solRadExp.setLon(roundToString(lon, 3));
+        solRadExp.setType(item.getRadiationType());
+        solRadExp.setValue(getValue(item.getRadiationValue()));
+        solRadExp.setUnit("kWh/m2");
+        solRadExp.setDim("1 km2");
+        solRadExp.setSource("DWD CDC");
+        return solRadExp;
     }
 }
