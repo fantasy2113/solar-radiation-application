@@ -116,7 +116,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
         LinkedList<SolRad> solRads = new LinkedList<>();
         try {
             final String[] rows = fileReader.asString(getPathnameAsc()).split("\\r\\n");
-            versionGuard(rows[2]);
+            rightVersionGuard(rows[2]);
             int gkh = 5237500;
             for (int row = rows.length - 1; row >= 28; row--) {
                 final String[] columns = rows[row].split(" ");
@@ -134,17 +134,14 @@ public final class SolRadCrawler implements ISolRadCrawler {
         return solRads;
     }
 
-    private void versionGuard(String version) throws Exception {
-        boolean isWrongVersion = true;
-        if (version.equals("Datensatz_Version=V003")) {
-            isWrongVersion = false;
-        }
-        if (version.equals("Datensatz_Version=V0.3")) {
-            isWrongVersion = false;
-        }
-        if (isWrongVersion) {
+    private void rightVersionGuard(String version) throws Exception {
+        if (isRightVersion(version)) {
             throw new Exception("wrong version");
         }
+    }
+
+    private boolean isRightVersion(String version) {
+        return version.equals("Datensatz_Version=V003") || version.equals("Datensatz_Version=V0.3");
     }
 
     private SolRad initSolRad(int gkh, int gkr, String column) {
