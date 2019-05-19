@@ -61,7 +61,6 @@ public final class SolRadCrawler implements ISolRadCrawler {
 
     private void download() {
         try {
-            LOGGER.info("downloading...");
             setCurrentTargetFile(getDate(year, month));
             URL url = new URL(getUrl());
             URLConnection connection = url.openConnection();
@@ -74,7 +73,6 @@ public final class SolRadCrawler implements ISolRadCrawler {
 
     private void unzip() {
         try {
-            LOGGER.info("unzip...");
             File destDir = new File(targetDir);
             byte[] buffer = new byte[1024];
             try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip()))) {
@@ -99,10 +97,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
 
     private void insertRadiation(ISolRadRepository solRadRepository, IFileReader fileReader) {
         try {
-            LOGGER.info("reading...");
-            LinkedList<SolRad> solRads = getSolRads(fileReader);
-            LOGGER.info("insertRadiation...");
-            solRadRepository.save(solRads);
+            solRadRepository.save(getSolRads(fileReader));
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
@@ -110,7 +105,6 @@ public final class SolRadCrawler implements ISolRadCrawler {
 
     private void delete() {
         try {
-            LOGGER.info("deleting....");
             Files.delete(Path.of(getPathnameZip()));
             Files.delete(Path.of(getPathnameAsc()));
         } catch (Exception e) {
