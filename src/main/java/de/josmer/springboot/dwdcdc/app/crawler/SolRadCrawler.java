@@ -49,7 +49,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
     @Override
     public void insert(ISolRadRepository solRadRepository, IFileReader fileReader) {
         if (solRadRepository.isInTable(Integer.valueOf(getDate(year, month)), solRadType.name())) {
-            LOGGER.info("row exists");
+            LOGGER.info("month already exists");
             return;
         }
         download();
