@@ -123,8 +123,8 @@ public final class SolRadCrawler implements ISolRadCrawler {
 
     private void initRadiations(IFileReader fileReader) {
         try {
-            final String file = fileReader.asString(getPathnameAsc());
-            final String[] rows = file.split("\\r\\n");
+            final String[] rows = fileReader.asString(getPathnameAsc()).split("\\r\\n");
+            versionGuard(rows[2]);
             int gkh = 5237500;
             for (int row = rows.length - 1; row >= 28; row--) {
                 final String[] columns = rows[row].split(" ");
@@ -138,6 +138,12 @@ public final class SolRadCrawler implements ISolRadCrawler {
             Collections.reverse(radiations);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
+        }
+    }
+
+    private void versionGuard(String version) throws Exception {
+        if (!version.equals("Datensatz_Version=V003")) {
+            throw new Exception("wrong version");
         }
     }
 
