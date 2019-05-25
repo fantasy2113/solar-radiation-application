@@ -1,4 +1,4 @@
-package de.josmer.libs.solar;
+package de.josmer.app.utils.solar;
 
 public final class ComputedIrradiation {
     private final double[] computedEHorMonths;

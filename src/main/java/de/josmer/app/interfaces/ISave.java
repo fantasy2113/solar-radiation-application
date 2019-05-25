@@ -1,4 +1,4 @@
-package de.josmer.libs.interfaces;
+package de.josmer.app.interfaces;
 
 import java.util.List;
 

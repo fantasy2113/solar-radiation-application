@@ -1,10 +1,10 @@
-package de.josmer.libs.crawler;
+package de.josmer.app.crawler;
 
-import de.josmer.libs.entities.SolRad;
-import de.josmer.libs.enums.SolRadTypes;
-import de.josmer.libs.interfaces.IFileReader;
-import de.josmer.libs.interfaces.ISolRadCrawler;
-import de.josmer.libs.interfaces.ISolRadRepository;
+import de.josmer.app.entities.SolRad;
+import de.josmer.app.enums.SolRadTypes;
+import de.josmer.app.interfaces.IFileReader;
+import de.josmer.app.interfaces.ISolRadCrawler;
+import de.josmer.app.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

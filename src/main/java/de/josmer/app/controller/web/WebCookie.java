@@ -1,4 +1,4 @@
-package de.josmer.libs.web;
+package de.josmer.app.controller.web;
 
 public class WebCookie {
     private String token;

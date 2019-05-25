@@ -1,6 +1,6 @@
-package de.josmer.libs.interfaces;
+package de.josmer.app.interfaces;
 
-import de.josmer.libs.entities.SolRad;
+import de.josmer.app.entities.SolRad;
 
 import java.util.LinkedList;
 

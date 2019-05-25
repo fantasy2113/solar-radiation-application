@@ -2,8 +2,8 @@ package de.josmer.app.repositories;
 
 import de.josmer.app.entities.SolIrr;
 import de.josmer.app.interfaces.ISolIrrRepository;
-import de.josmer.libs.solar.ComputedIrradiation;
-import de.josmer.libs.solar.SolarIrradiation;
+import de.josmer.app.utils.solar.ComputedIrradiation;
+import de.josmer.app.utils.solar.SolarIrradiation;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

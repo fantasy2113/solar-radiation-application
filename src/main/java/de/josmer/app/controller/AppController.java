@@ -5,7 +5,7 @@ import de.josmer.app.controller.requests.RadRequest;
 import de.josmer.app.entities.SolIrrExp;
 import de.josmer.app.entities.SolRadExp;
 import de.josmer.app.interfaces.*;
-import de.josmer.libs.interfaces.ISolRadRepository;
+import de.josmer.app.interfaces.ISolRadRepository;
 import org.jxls.template.SimpleExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

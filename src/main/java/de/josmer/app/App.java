@@ -2,8 +2,8 @@ package de.josmer.app;
 
 import de.josmer.app.repositories.SolRadRepository;
 import de.josmer.app.utils.FileReader;
-import de.josmer.libs.enums.SolRadTypes;
-import de.josmer.libs.handler.SolRadInsertHandler;
+import de.josmer.app.enums.SolRadTypes;
+import de.josmer.app.handler.SolRadInsertHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;

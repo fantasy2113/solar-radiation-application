@@ -1,4 +1,4 @@
-package de.josmer.libs.geo;
+package de.josmer.app.utils.geo;
 
 public final class GaussKruger {
     private double lon;
