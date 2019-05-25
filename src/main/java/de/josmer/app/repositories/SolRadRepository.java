@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.OptionalInt;
+import java.util.stream.IntStream;
 
 @Component
 public final class SolRadRepository extends Repository<SolRad> implements ISolRadRepository {
@@ -144,15 +145,12 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     private String getInDates(final int startDate, final int endDate) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("IN (");
-        for (int i = startDate; i <= endDate; i++) {
-            sb.append(i);
-            if (i != endDate) {
-                sb.append(",");
-            }
-        }
-        return sb.append(")").toString();
+        StringBuilder sb = new StringBuilder("IN (");
+        IntStream.range(startDate, endDate + 1).forEach(d -> {
+            sb.append(d);
+            sb.append(",");
+        });
+        return sb.append(")").toString().replace(",)", ")");
     }
 
     private double convertValue(double value) {
