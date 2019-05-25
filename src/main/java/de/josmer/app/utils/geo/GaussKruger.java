@@ -1,6 +1,8 @@
 package de.josmer.app.utils.geo;
 
-public final class GaussKruger {
+import de.josmer.app.utils.geo.interfaces.IGaussKruger;
+
+public final class GaussKruger implements IGaussKruger {
     private double lon;
     private double lat;
     private double rechtswert;
@@ -11,6 +13,7 @@ public final class GaussKruger {
         this.lat = lat;
     }
 
+    @Override
     public void compute() {
         wgs84ToPot();
         geoToGk();
@@ -95,10 +98,12 @@ public final class GaussKruger {
         this.lat = b2;
     }
 
+    @Override
     public double getRechtswert() {
         return rechtswert;
     }
 
+    @Override
     public double getHochwert() {
         return hochwert;
     }

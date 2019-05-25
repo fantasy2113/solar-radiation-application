@@ -1,8 +1,9 @@
 package de.josmer.app.repositories;
 
 import de.josmer.app.entities.SolRad;
-import de.josmer.app.utils.geo.GaussKruger;
 import de.josmer.app.interfaces.ISolRadRepository;
+import de.josmer.app.utils.geo.GaussKruger;
+import de.josmer.app.utils.geo.GkConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -51,13 +52,15 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     @Override
     public LinkedList<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
         LinkedList<SolRad> radiations = new LinkedList<>();
-        GaussKruger gaussKruger = new GaussKruger(lon, lat);
-        gaussKruger.compute();
-        final int hochwert = getGkValues(gaussKruger.getHochwert());
-        final OptionalInt optionalRechtswert = getRechtswert(gaussKruger);
+        GkConverter gkConverter = new GkConverter(new GaussKruger(lon, lat));
+
+        final int hochwert = gkConverter.getHochwert();
+        final OptionalInt optionalRechtswert = gkConverter.getRechtswert();
+
         if (optionalRechtswert.isEmpty()) {
             return radiations;
         }
+
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement
                      = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
@@ -77,19 +80,6 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
             LOGGER.info(e.getMessage());
         }
         return radiations;
-    }
-
-    private OptionalInt getRechtswert(GaussKruger gaussKruger) {
-        if (String.valueOf(gaussKruger.getRechtswert()).startsWith("5")) {
-            return OptionalInt.of(getGkValues(gaussKruger.getRechtswert() - 1600000));
-        } else if (String.valueOf(gaussKruger.getRechtswert()).startsWith("4")) {
-            return OptionalInt.of(getGkValues(gaussKruger.getRechtswert() - 800000));
-        } else if (String.valueOf(gaussKruger.getRechtswert()).startsWith("3")) {
-            return OptionalInt.of(getGkValues(gaussKruger.getRechtswert()));
-        } else if (String.valueOf(gaussKruger.getRechtswert()).startsWith("2")) {
-            return OptionalInt.of(getGkValues(gaussKruger.getRechtswert() + 800000));
-        }
-        return OptionalInt.empty();
     }
 
     @Override
@@ -151,14 +141,6 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         }
 
         return radiation;
-    }
-
-    private int getGkValues(final double value) {
-        Integer gkMin = (int) value;
-        while (!gkMin.toString().endsWith("500")) {
-            gkMin--;
-        }
-        return gkMin;
     }
 
     private String getInDates(final int startDate, final int endDate) {
