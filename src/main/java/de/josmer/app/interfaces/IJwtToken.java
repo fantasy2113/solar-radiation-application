@@ -8,6 +8,4 @@ public interface IJwtToken {
     String create(String id, String issuer, String subject, long ttlMillis);
 
     String getSecretKey();
-
-    void setSecretKey(String secretKey);
 }

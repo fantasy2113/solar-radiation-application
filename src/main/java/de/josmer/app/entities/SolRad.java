@@ -1,4 +1,4 @@
-package de.josmer.libs.entities;
+package de.josmer.app.entities;
 
 public final class SolRad {
     private int radiationDate;

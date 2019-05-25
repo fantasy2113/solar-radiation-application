@@ -1,6 +1,6 @@
 package de.josmer.app.utils;
 
-import de.josmer.libs.interfaces.IFileReader;
+import de.josmer.app.interfaces.IFileReader;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
