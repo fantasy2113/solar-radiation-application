@@ -5,6 +5,8 @@ import de.josmer.app.interfaces.IUserBCrypt;
 import de.josmer.app.interfaces.IUserRepository;
 import de.josmer.libs.interfaces.IFileReader;
 import de.josmer.libs.web.WebCookie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public final class ViewController extends Controller {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class.getName());
     private final String loginHtml;
     private final String irrHtml;
     private final String radHtml;
@@ -40,13 +43,16 @@ public final class ViewController extends Controller {
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
+        LOGGER.info("return - login");
         return loginHtml;
     }
 
     private String chooseHtml(String app) {
         if (app.equals("irr")) {
+            LOGGER.info("return - irr");
             return irrHtml;
         } else {
+            LOGGER.info("return - rad");
             return radHtml;
         }
     }

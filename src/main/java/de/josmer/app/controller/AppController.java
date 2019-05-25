@@ -7,6 +7,8 @@ import de.josmer.app.entities.SolRadExp;
 import de.josmer.app.interfaces.*;
 import de.josmer.libs.interfaces.ISolRadRepository;
 import org.jxls.template.SimpleExporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @RestController
 public final class AppController extends Controller {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
     private final ISolRadExporter solRadExp;
     private final ISolIrrExporter solIrrExp;
     private final ISolRadRepository solRadRep;
@@ -36,6 +39,7 @@ public final class AppController extends Controller {
 
     @GetMapping(value = "/number_of_rad", produces = MediaType.TEXT_PLAIN_VALUE)
     public String getNumberOfRad(@CookieValue("token") final String token) {
+        LOGGER.info("get - number_of_rad");
         if (!isAccess(token)) {
             return "0";
         }
@@ -44,6 +48,7 @@ public final class AppController extends Controller {
 
     @GetMapping("/export_rad")
     public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) throws Exception {
+        LOGGER.info("get - export_rad");
         if (!isAccess(token)) {
             return;
         }
@@ -53,6 +58,7 @@ public final class AppController extends Controller {
 
     @GetMapping("/export_irr")
     public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye) throws Exception {
+        LOGGER.info("get - export_irr");
         if (!isAccess(token)) {
             return;
         }
@@ -62,6 +68,7 @@ public final class AppController extends Controller {
 
     @GetMapping("/rad")
     public List<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
+        LOGGER.info("get - rad");
         if (!isAccess(token)) {
             return new ArrayList<>();
         }
@@ -70,6 +77,7 @@ public final class AppController extends Controller {
 
     @GetMapping("/irr")
     public List<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
+        LOGGER.info("get - irr");
         if (!isAccess(token)) {
             return new ArrayList<>();
         }

@@ -4,6 +4,8 @@ import de.josmer.app.entities.User;
 import de.josmer.app.interfaces.IJwtToken;
 import de.josmer.app.interfaces.IUserBCrypt;
 import de.josmer.app.interfaces.IUserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 public final class UserController extends Controller {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class.getName());
 
     @Autowired
     public UserController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt) {
@@ -36,6 +39,7 @@ public final class UserController extends Controller {
     }
 
     private Optional<User> getCreatedUser(String username, String password) {
+        LOGGER.info("create: " + username);
         userRep.createUser(username, password);
         return userRep.get(username);
     }
