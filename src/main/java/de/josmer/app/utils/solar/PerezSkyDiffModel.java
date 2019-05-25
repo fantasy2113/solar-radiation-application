@@ -1,6 +1,5 @@
 package de.josmer.app.utils.solar;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 final class PerezSkyDiffModel {
@@ -180,10 +179,6 @@ final class PerezSkyDiffModel {
         } else {
             return eGlobalHor * (0.486 * kt - 0.182 * Utils.sin(solarPosition.getYs()));
         }
-    }
-
-    private LocalDateTime getDt(LocalDateTime dt) {
-        return LocalDateTime.of(dt.getYear(), dt.getMonthValue(), dt.getDayOfMonth(), dt.getHour(), dt.getMinute(), 0, 0);
     }
 
     private void resetValues() {

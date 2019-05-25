@@ -33,7 +33,7 @@ public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements
             exportCalc.setSource("DWD CDC");
             exportCalc.setDate("Summe");
 
-            if (items.size() >= 1) {
+            if (!items.isEmpty()) {
                 exportCalc.setYe(String.valueOf((int) items.get(0).getYe()));
                 exportCalc.setAe(String.valueOf((int) items.get(0).getAe()));
             }

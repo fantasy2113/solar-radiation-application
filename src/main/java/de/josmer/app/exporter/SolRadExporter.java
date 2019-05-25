@@ -1,8 +1,8 @@
 package de.josmer.app.exporter;
 
+import de.josmer.app.entities.SolRad;
 import de.josmer.app.entities.SolRadExp;
 import de.josmer.app.interfaces.ISolRadExporter;
-import de.josmer.app.entities.SolRad;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -26,7 +26,7 @@ public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements
                     eGlobHorSum = 0.0;
                 }
             }
-            if (solRadExps.size() >= 1 && !solRadExps.get(solRadExps.size() - 1).getDate().contains("Summe")) {
+            if (!solRadExps.isEmpty() && !solRadExps.get(solRadExps.size() - 1).getDate().contains("Summe")) {
                 SolRadExp export = new SolRadExp();
                 export.setDate("Summe " + solRadExps.get(solRadExps.size() - 1).getDate().substring(0, 4));
                 addSum(solRadExps, eGlobHorSum, export);

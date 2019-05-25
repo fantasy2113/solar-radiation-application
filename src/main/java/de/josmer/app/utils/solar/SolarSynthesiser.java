@@ -97,7 +97,7 @@ final class SolarSynthesiser {
                     hSynHor += egHorOfh[h];
                 }
             }
-            if (!isNotAdd) {
+            if (!isNotAdd && kt > 0) {
                 double diff = Math.abs((hSynHor / hE0Hor) - kt) / kt * 100.0;
                 hoursMap.put(diff, egHorOfh);
             }

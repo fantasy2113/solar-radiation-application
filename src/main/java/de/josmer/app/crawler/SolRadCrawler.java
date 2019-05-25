@@ -134,9 +134,9 @@ public final class SolRadCrawler implements ISolRadCrawler {
         return solRads;
     }
 
-    private void rightVersionGuard(String version) throws Exception {
+    private void rightVersionGuard(String version) {
         if (!isRightVersion(version)) {
-            throw new Exception("wrong version");
+            throw new IllegalArgumentException("wrong version");
         }
     }
 

@@ -35,7 +35,6 @@ public final class SolRadInsertHandler implements Runnable {
         } else {
             insertAll();
         }
-        System.gc();
     }
 
     public void start() {
