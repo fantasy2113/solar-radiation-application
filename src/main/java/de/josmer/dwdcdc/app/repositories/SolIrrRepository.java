@@ -6,7 +6,6 @@ import de.josmer.dwdcdc.utils.solar.ComputedIrradiation;
 import de.josmer.dwdcdc.utils.solar.SolarIrradiation;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,15 +15,14 @@ public final class SolIrrRepository implements ISolIrrRepository {
     @Override
     public LinkedList<SolIrr> getIrradiation(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
         LinkedList<SolIrr> irradiation = new LinkedList<>();
-        LocalDateTime dt = LocalDateTime.of(year, 1, 1, 0, 30, 0, 0);
-        SolarIrradiation solarIrradiation = new SolarIrradiation(lat, lon, eGlobHorMonthly, dt, ye, ae);
+        SolarIrradiation solarIrradiation = new SolarIrradiation(lat, lon, eGlobHorMonthly, year, ye, ae);
         solarIrradiation.computeParallel();
         ComputedIrradiation computedIrradiation = solarIrradiation.getComputedIrradiation();
-        addIrradiation(ae, ye, irradiation, dt, computedIrradiation);
+        addIrradiation(ae, ye, irradiation, year, computedIrradiation);
         return irradiation;
     }
 
-    private void addIrradiation(int ae, int ye, List<SolIrr> irradiation, LocalDateTime dt, ComputedIrradiation computedIrradiation) {
+    private void addIrradiation(int ae, int ye, List<SolIrr> irradiation, int year, ComputedIrradiation computedIrradiation) {
         for (int monthIndex = 0; monthIndex < 12; monthIndex++) {
             if (isAdd(computedIrradiation, monthIndex)) {
                 SolIrr solIrr = new SolIrr();
@@ -32,7 +30,7 @@ public final class SolIrrRepository implements ISolIrrRepository {
                 solIrr.seteGlobGen(computedIrradiation.getMonthInc(monthIndex) / 1000);
                 solIrr.setAe(ae);
                 solIrr.setYe(ye);
-                solIrr.setCalculatedDate(getDate(dt.getYear(), (monthIndex + 1)));
+                solIrr.setCalculatedDate(getDate(year, (monthIndex + 1)));
                 irradiation.add(solIrr);
             }
         }
