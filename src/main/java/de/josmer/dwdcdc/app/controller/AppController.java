@@ -28,7 +28,8 @@ public final class AppController extends Controller {
     private final ISolIrrRepository solIrrRep;
 
     @Autowired
-    public AppController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadExporter solRadExp, ISolIrrExporter solIrrExp, ISolRadRepository solRadRep, ISolIrrRepository solIrrRep) {
+    public AppController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadExporter solRadExp,
+                         ISolIrrExporter solIrrExp, ISolRadRepository solRadRep, ISolIrrRepository solIrrRep) {
         super(userRep, jwtToken, userBCrypt);
         this.solRadExp = solRadExp;
         this.solIrrExp = solIrrExp;
@@ -46,7 +47,9 @@ public final class AppController extends Controller {
     }
 
     @GetMapping("/export_rad")
-    public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate, @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("type") final String type) throws Exception {
+    public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate,
+                          @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat,
+                          @RequestParam("type") final String type) throws Exception {
         LOGGER.info("get - export_rad");
         if (!isAccess(token)) {
             return;
@@ -56,12 +59,15 @@ public final class AppController extends Controller {
     }
 
     @GetMapping("/export_irr")
-    public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye) throws Exception {
+    public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year,
+                          @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae,
+                          @RequestParam("ye") final int ye) throws Exception {
         LOGGER.info("get - export_irr");
         if (!isAccess(token)) {
             return;
         }
-        final List<SolIrrExp> items = solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat), lon, lat, ae, ye, year), lon, lat);
+        final List<SolIrrExp> items = solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat),
+                lon, lat, ae, ye, year), lon, lat);
         initExcelExport(response, "umrechnung_", items, solIrrExp.getProps(), solIrrExp.getHeaders());
     }
 
@@ -71,7 +77,8 @@ public final class AppController extends Controller {
         if (!isAccess(token)) {
             return new ArrayList<>();
         }
-        return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()), getSolRadTypes(req.getType()), req.getLon(), req.getLat()), req.getLon(), req.getLat());
+        return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()), getSolRadTypes(req.getType()), req.getLon(),
+                req.getLat()), req.getLon(), req.getLat());
     }
 
     @GetMapping("/irr")
@@ -80,7 +87,8 @@ public final class AppController extends Controller {
         if (!isAccess(token)) {
             return new ArrayList<>();
         }
-        return solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(), req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        return solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(),
+                req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
     }
 
     private void initExcelExport(HttpServletResponse response, String exportName, List<?> items, String props, List<String> headers) throws Exception {
