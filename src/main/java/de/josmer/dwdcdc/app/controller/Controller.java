@@ -4,9 +4,11 @@ import de.josmer.dwdcdc.app.entities.User;
 import de.josmer.dwdcdc.app.interfaces.IJwtToken;
 import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
 import de.josmer.dwdcdc.app.interfaces.IUserRepository;
+import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +23,10 @@ abstract class Controller {
         this.userRep = userRep;
         this.jwtToken = jwtToken;
         this.userBCrypt = userBCrypt;
+    }
+
+    SolRadTypes getSolRadTypes(String type) {
+        return SolRadTypes.valueOf(type.toUpperCase(Locale.ENGLISH));
     }
 
     final boolean isAccess(final String token) {

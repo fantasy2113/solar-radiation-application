@@ -51,7 +51,7 @@ public final class AppController extends Controller {
         if (!isAccess(token)) {
             return;
         }
-        final List<SolRadExp> items = solRadExp.getItems(solRadRep.find(getDate(startDate), getDate(endDate), type, lon, lat), lon, lat);
+        final List<SolRadExp> items = solRadExp.getItems(solRadRep.find(getDate(startDate), getDate(endDate), getSolRadTypes(type), lon, lat), lon, lat);
         initExcelExport(response, "sonneneinstrahlung_", items, solRadExp.getProps(), solRadExp.getHeaders());
     }
 
@@ -71,7 +71,7 @@ public final class AppController extends Controller {
         if (!isAccess(token)) {
             return new ArrayList<>();
         }
-        return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()), req.getType(), req.getLon(), req.getLat()), req.getLon(), req.getLat());
+        return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()), getSolRadTypes(req.getType()), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 
     @GetMapping("/irr")
