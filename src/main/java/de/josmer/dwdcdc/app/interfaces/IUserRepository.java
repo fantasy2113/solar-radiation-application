@@ -10,4 +10,6 @@ public interface IUserRepository {
     Optional<User> get(String username);
 
     void createUser(String username, String plainPassword);
+
+    void updateLastLogin(User user);
 }

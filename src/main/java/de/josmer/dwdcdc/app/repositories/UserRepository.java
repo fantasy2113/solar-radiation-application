@@ -46,6 +46,12 @@ public final class UserRepository implements IUserRepository {
         }
     }
 
+    @Override
+    public void updateLastLogin(User user) {
+        user.setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
+        userRepositoryCrud.save(user);
+    }
+
     private User initUser(final String username, final String plainTextPassword) {
         LocalDateTime localDateTime = LocalDateTime.now();
         User user = new User();
