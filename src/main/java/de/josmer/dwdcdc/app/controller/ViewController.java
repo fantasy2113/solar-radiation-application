@@ -28,8 +28,8 @@ public final class ViewController extends Controller {
         this.loginHtml = fileReader.getDataAsString("src/main/resources/static/html/login.html");
         this.irrHtml = fileReader.getDataAsString("src/main/resources/static/html/irr.html");
         this.radHtml = fileReader.getDataAsString("src/main/resources/static/html/rad.html");
-        createUser("admin", "Super71212!");
-        createUser("user", "abc123");
+        createUser("admin", System.getenv("APP_ADMIN_PASSWORD"));
+        createUser("user", System.getenv("APP_USER_PASSWORD"));
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
