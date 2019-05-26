@@ -5,7 +5,7 @@ import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 
 import java.util.List;
 
-public interface ISaveSolRad {
+public interface IBasicSolRad {
     boolean isAlreadyExist(int date, SolRadTypes solRadTypes);
 
     void save(List<SolRad> solRads);

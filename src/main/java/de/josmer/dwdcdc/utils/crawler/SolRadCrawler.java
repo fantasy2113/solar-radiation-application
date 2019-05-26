@@ -2,8 +2,8 @@ package de.josmer.dwdcdc.utils.crawler;
 
 import de.josmer.dwdcdc.utils.entities.SolRad;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
+import de.josmer.dwdcdc.utils.interfaces.IBasicSolRad;
 import de.josmer.dwdcdc.utils.interfaces.IFileReader;
-import de.josmer.dwdcdc.utils.interfaces.ISaveSolRad;
 import de.josmer.dwdcdc.utils.interfaces.ISolRadCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,14 +44,14 @@ public final class SolRadCrawler implements ISolRadCrawler {
     }
 
     @Override
-    public void insert(ISaveSolRad solRadRepository, IFileReader fileReader) {
-        if (solRadRepository.isAlreadyExist(Integer.valueOf(getDate(year, month)), solRadType)) {
+    public void insert(IBasicSolRad basicSolRad, IFileReader fileReader) {
+        if (basicSolRad.isAlreadyExist(Integer.valueOf(getDate(year, month)), solRadType)) {
             LOGGER.info("month already exists");
             return;
         }
         download();
         unzip();
-        insertRadiation(solRadRepository, fileReader);
+        insertRadiation(basicSolRad, fileReader);
         delete();
     }
 
@@ -95,9 +95,9 @@ public final class SolRadCrawler implements ISolRadCrawler {
     }
 
 
-    private void insertRadiation(ISaveSolRad solRadRepository, IFileReader fileReader) {
+    private void insertRadiation(IBasicSolRad basicSolRad, IFileReader fileReader) {
         try {
-            solRadRepository.save(getSolRads(fileReader));
+            basicSolRad.save(getSolRads(fileReader));
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
