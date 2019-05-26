@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 abstract class Controller {
     private static final Logger A_LOGGER = LoggerFactory.getLogger(AppController.class.getName());
-    static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
+    public static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
     final IUserRepository userRep;
     final IJwtToken jwtToken;
     IUserBCrypt userBCrypt;
