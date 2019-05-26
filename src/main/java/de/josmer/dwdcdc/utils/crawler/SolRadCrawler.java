@@ -115,23 +115,34 @@ public final class SolRadCrawler implements ISolRadCrawler {
     private LinkedList<SolRad> getSolRads(IFileReader fileReader) {
         LinkedList<SolRad> solRads = new LinkedList<>();
         try {
-            final String[] rows = fileReader.asString(getPathnameAsc()).split("\\r\\n");
+            final String[] rows = getColumns(fileReader.asString(getPathnameAsc()), "\\r\\n");
             rightVersionGuard(rows[2]);
             int gkh = 5237500;
-            for (int row = rows.length - 1; row >= 28; row--) {
-                final String[] columns = rows[row].split(" ");
+            for (int rowIndex = getLastRowIndex(rows); rowIndex >= 28; rowIndex--) {
                 int gkr = 3280500;
-                for (String column : columns) {
+                for (String column : getColumns(rows[rowIndex], " ")) {
                     solRads.add(initSolRad(gkh, gkr, column));
-                    gkr += 1000;
+                    gkr = increment(gkr);
                 }
-                gkh += 1000;
+                gkh = increment(gkh);
             }
             Collections.reverse(solRads);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
         return solRads;
+    }
+
+    private int increment(int gk) {
+        return gk + 1000;
+    }
+
+    private String[] getColumns(String row, String s) {
+        return row.split(s);
+    }
+
+    private int getLastRowIndex(String[] rows) {
+        return rows.length - 1;
     }
 
     private void rightVersionGuard(String version) {
