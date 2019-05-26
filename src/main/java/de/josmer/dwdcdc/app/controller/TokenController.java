@@ -28,12 +28,17 @@ public final class TokenController extends Controller {
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> getToken(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         final Optional<User> optionalUser = userRep.get(login);
-        if (optionalUser.isPresent() && userBCrypt.isPassword(password, optionalUser.get().getPassword())) {
+        if (optionalUser.isPresent() && check(password, optionalUser.get())) {
+            userRep.updateLastLogin(optionalUser.get());
             LOGGER.info("login successful: " + login);
             return new ResponseEntity<>(initToken(optionalUser.get()), HttpStatus.OK);
         }
         LOGGER.info("login failed");
         return new ResponseEntity<>("", HttpStatus.UNAUTHORIZED);
+    }
+
+    private boolean check(String password, User user) {
+        return userBCrypt.isPassword(password, user.getPassword()) && user.isActive();
     }
 
     private String initToken(User user) {

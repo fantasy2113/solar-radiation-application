@@ -1,7 +1,7 @@
 package de.josmer.dwdcdc.app.repositories;
 
-import de.josmer.dwdcdc.app.controller.security.UserBCrypt;
 import de.josmer.dwdcdc.app.entities.User;
+import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
 import de.josmer.dwdcdc.app.interfaces.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,10 +13,10 @@ import java.util.Optional;
 @Component
 public final class UserRepository implements IUserRepository {
     private final UserRepositoryCrud userRepositoryCrud;
-    private final UserBCrypt userBCrypt;
+    private final IUserBCrypt userBCrypt;
 
     @Autowired
-    public UserRepository(UserRepositoryCrud userRepositoryCrud, UserBCrypt userBCrypt) {
+    public UserRepository(UserRepositoryCrud userRepositoryCrud, IUserBCrypt userBCrypt) {
         this.userRepositoryCrud = userRepositoryCrud;
         this.userBCrypt = userBCrypt;
     }
@@ -44,6 +44,24 @@ public final class UserRepository implements IUserRepository {
         if (userRepositoryCrud.findByUsername(username).isEmpty()) {
             userRepositoryCrud.save(initUser(username, plainPassword));
         }
+    }
+
+    @Override
+    public void updateLastLogin(User user) {
+        user.setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
+        userRepositoryCrud.save(user);
+    }
+
+    @Override
+    public void deactivateUser(User user) {
+        user.setIsActive(false);
+        userRepositoryCrud.save(user);
+    }
+
+    @Override
+    public void activateUser(User user) {
+        user.setIsActive(true);
+        userRepositoryCrud.save(user);
     }
 
     private User initUser(final String username, final String plainTextPassword) {
