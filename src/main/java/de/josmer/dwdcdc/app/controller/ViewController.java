@@ -4,7 +4,7 @@ import de.josmer.dwdcdc.app.controller.web.WebCookie;
 import de.josmer.dwdcdc.app.interfaces.IJwtToken;
 import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
 import de.josmer.dwdcdc.app.interfaces.IUserRepository;
-import de.josmer.dwdcdc.utils.interfaces.IFileReader;
+import de.josmer.dwdcdc.utils.interfaces.IDataReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +23,11 @@ public final class ViewController extends Controller {
     private final String radHtml;
 
     @Autowired
-    public ViewController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, IFileReader fileReader) {
+    public ViewController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, IDataReader fileReader) {
         super(userRep, jwtToken, userBCrypt);
-        this.loginHtml = fileReader.asString("src/main/resources/static/html/login.html");
-        this.irrHtml = fileReader.asString("src/main/resources/static/html/irr.html");
-        this.radHtml = fileReader.asString("src/main/resources/static/html/rad.html");
+        this.loginHtml = fileReader.getDataAsString("src/main/resources/static/html/login.html");
+        this.irrHtml = fileReader.getDataAsString("src/main/resources/static/html/irr.html");
+        this.radHtml = fileReader.getDataAsString("src/main/resources/static/html/rad.html");
         createUser("admin", "Super71212!");
         createUser("user", "abc123");
     }

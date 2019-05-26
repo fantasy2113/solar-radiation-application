@@ -3,7 +3,7 @@ package de.josmer.dwdcdc.utils.crawler;
 import de.josmer.dwdcdc.utils.entities.SolRad;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.interfaces.IBasicSolRad;
-import de.josmer.dwdcdc.utils.interfaces.IFileReader;
+import de.josmer.dwdcdc.utils.interfaces.IDataReader;
 import de.josmer.dwdcdc.utils.interfaces.ISolRadCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
     }
 
     @Override
-    public void insert(IBasicSolRad basicSolRad, IFileReader fileReader) {
+    public void insert(IBasicSolRad basicSolRad, IDataReader fileReader) {
         if (basicSolRad.isAlreadyExist(Integer.valueOf(getDate(year, month)), solRadType)) {
             LOGGER.info("month already exists");
             return;
@@ -95,7 +95,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
     }
 
 
-    private void insertRadiation(IBasicSolRad basicSolRad, IFileReader fileReader) {
+    private void insertRadiation(IBasicSolRad basicSolRad, IDataReader fileReader) {
         try {
             basicSolRad.save(getSolRads(fileReader));
         } catch (Exception e) {
@@ -112,10 +112,10 @@ public final class SolRadCrawler implements ISolRadCrawler {
         }
     }
 
-    private LinkedList<SolRad> getSolRads(IFileReader fileReader) {
+    private LinkedList<SolRad> getSolRads(IDataReader fileReader) {
         LinkedList<SolRad> solRads = new LinkedList<>();
         try {
-            final String[] rows = getColumns(fileReader.asString(getPathnameAsc()), "\\r\\n");
+            final String[] rows = getColumns(fileReader.getDataAsString(getPathnameAsc()), "\\r\\n");
             rightVersionGuard(rows[2]);
             int gkh = 5237500;
             for (int rowIndex = getLastRowIndex(rows); rowIndex >= 28; rowIndex--) {

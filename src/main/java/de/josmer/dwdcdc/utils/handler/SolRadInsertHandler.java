@@ -3,7 +3,7 @@ package de.josmer.dwdcdc.utils.handler;
 import de.josmer.dwdcdc.app.interfaces.ISolRadRepository;
 import de.josmer.dwdcdc.utils.crawler.SolRadCrawler;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
-import de.josmer.dwdcdc.utils.interfaces.IFileReader;
+import de.josmer.dwdcdc.utils.interfaces.IDataReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,9 +20,9 @@ public final class SolRadInsertHandler implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadInsertHandler.class.getName());
     private final SolRadTypes solRadType;
     private final ISolRadRepository solRadRepository;
-    private final IFileReader fileReader;
+    private final IDataReader fileReader;
 
-    public SolRadInsertHandler(SolRadTypes solRadType, ISolRadRepository solRadRepository, IFileReader fileReader) {
+    public SolRadInsertHandler(SolRadTypes solRadType, ISolRadRepository solRadRepository, IDataReader fileReader) {
         this.solRadType = solRadType;
         this.solRadRepository = solRadRepository;
         this.fileReader = fileReader;
