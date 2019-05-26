@@ -8,3 +8,4 @@ JDBC_DATABASE_PASSWORD=<password>
 APP_SECRET=<secret>
 APP_ADMIN_PASSWORD=<password>
 APP_USER_PASSWORD=<password>
+TZ=Europe/Berlin
