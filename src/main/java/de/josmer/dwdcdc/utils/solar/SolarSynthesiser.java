@@ -83,7 +83,7 @@ final class SolarSynthesiser {
             ktOfh = calcKtOfH(kt, phi, sunYOfH);
             egHorOfh = new double[24];
             hSynHor = 0.0;
-            for (int h = 0; h < ktOfh.length; h++) {
+            for (int h = 0; h < ktOfh.length; h++) { //NOSONAR
                 double kth = ktOfh[h];
                 if (kt == 0.0) {
                     continue; //NOSONAR

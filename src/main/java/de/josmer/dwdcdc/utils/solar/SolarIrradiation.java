@@ -29,9 +29,8 @@ public final class SolarIrradiation {
     }
 
     public void compute() {
-        for (int monthIndex = getStarMonth(); monthIndex < limit; monthIndex++) {
-            insertComputedMonth(computeMonth(monthIndex));
-        }
+        IntStream.range(0, limit).sequential().mapToObj(this::computeMonth)
+                .collect(Collectors.toList()).forEach(this::insertComputedMonth);
     }
 
     public void computeParallel() {
