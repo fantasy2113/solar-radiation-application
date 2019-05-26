@@ -1,9 +1,9 @@
 package de.josmer.dwdcdc.utils.handler;
 
+import de.josmer.dwdcdc.app.interfaces.ISolRadRepository;
 import de.josmer.dwdcdc.utils.crawler.SolRadCrawler;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.interfaces.IFileReader;
-import de.josmer.dwdcdc.utils.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

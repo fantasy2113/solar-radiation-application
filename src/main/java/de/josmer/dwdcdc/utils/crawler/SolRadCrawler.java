@@ -3,8 +3,8 @@ package de.josmer.dwdcdc.utils.crawler;
 import de.josmer.dwdcdc.utils.entities.SolRad;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.interfaces.IFileReader;
+import de.josmer.dwdcdc.utils.interfaces.ISaveSolRad;
 import de.josmer.dwdcdc.utils.interfaces.ISolRadCrawler;
-import de.josmer.dwdcdc.utils.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,8 +44,8 @@ public final class SolRadCrawler implements ISolRadCrawler {
     }
 
     @Override
-    public void insert(ISolRadRepository solRadRepository, IFileReader fileReader) {
-        if (solRadRepository.isInTable(Integer.valueOf(getDate(year, month)), solRadType.name())) {
+    public void insert(ISaveSolRad solRadRepository, IFileReader fileReader) {
+        if (solRadRepository.isAlreadyExist(Integer.valueOf(getDate(year, month)), solRadType)) {
             LOGGER.info("month already exists");
             return;
         }
@@ -95,7 +95,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
     }
 
 
-    private void insertRadiation(ISolRadRepository solRadRepository, IFileReader fileReader) {
+    private void insertRadiation(ISaveSolRad solRadRepository, IFileReader fileReader) {
         try {
             solRadRepository.save(getSolRads(fileReader));
         } catch (Exception e) {

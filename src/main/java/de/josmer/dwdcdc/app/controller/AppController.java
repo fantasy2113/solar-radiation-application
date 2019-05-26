@@ -5,7 +5,6 @@ import de.josmer.dwdcdc.app.controller.requests.RadRequest;
 import de.josmer.dwdcdc.app.entities.SolIrrExp;
 import de.josmer.dwdcdc.app.entities.SolRadExp;
 import de.josmer.dwdcdc.app.interfaces.*;
-import de.josmer.dwdcdc.utils.interfaces.ISolRadRepository;
 import org.jxls.template.SimpleExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

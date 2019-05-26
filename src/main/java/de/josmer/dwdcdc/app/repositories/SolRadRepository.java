@@ -1,9 +1,10 @@
 package de.josmer.dwdcdc.app.repositories;
 
+import de.josmer.dwdcdc.app.interfaces.ISolRadRepository;
 import de.josmer.dwdcdc.utils.entities.SolRad;
+import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.geo.GaussKruger;
 import de.josmer.dwdcdc.utils.geo.GkConverter;
-import de.josmer.dwdcdc.utils.interfaces.ISolRadRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -29,11 +30,11 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
-    public boolean isInTable(int date, String radiationType) {
+    public boolean isAlreadyExist(int date, SolRadTypes solRadTypes) {
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date = ? AND radiation_type = ? LIMIT 1;")) {
             preparedStatement.setInt(1, date);
-            preparedStatement.setString(2, radiationType);
+            preparedStatement.setString(2, solRadTypes.name());
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 return rs.next();
             }
@@ -45,13 +46,13 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
 
     @Override
     public double[] findGlobal(final int startDate, final int endDate, final double lon, final double lat) {
-        LinkedList<SolRad> solRads = find(startDate, endDate, "GLOBAL", lon, lat);
+        LinkedList<SolRad> solRads = find(startDate, endDate, SolRadTypes.GLOBAL, lon, lat);
         return solRads.stream().sequential().map(SolRad::getRadiationValue)
                 .mapToDouble(this::convertValue).toArray();
     }
 
     @Override
-    public LinkedList<SolRad> find(final int startDate, final int endDate, final String radiationType, final double lon, final double lat) {
+    public LinkedList<SolRad> find(final int startDate, final int endDate, final SolRadTypes solRadTypes, final double lon, final double lat) {
         LinkedList<SolRad> radiations = new LinkedList<>();
         GkConverter gkConverter = new GkConverter(new GaussKruger(lon, lat));
 
@@ -70,7 +71,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
             preparedStatement.setInt(2, hochwert + 1000);
             preparedStatement.setInt(3, optionalRechtswert.getAsInt());
             preparedStatement.setInt(4, optionalRechtswert.getAsInt() + 1000);
-            preparedStatement.setString(5, radiationType);
+            preparedStatement.setString(5, solRadTypes.name());
             preparedStatement.setInt(6, endDate - startDate + 1);
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
