@@ -52,6 +52,18 @@ public final class UserRepository implements IUserRepository {
         userRepositoryCrud.save(user);
     }
 
+    @Override
+    public void deactivateUser(User user) {
+        user.setIsActive(false);
+        userRepositoryCrud.save(user);
+    }
+
+    @Override
+    public void activateUser(User user) {
+        user.setIsActive(true);
+        userRepositoryCrud.save(user);
+    }
+
     private User initUser(final String username, final String plainTextPassword) {
         LocalDateTime localDateTime = LocalDateTime.now();
         User user = new User();

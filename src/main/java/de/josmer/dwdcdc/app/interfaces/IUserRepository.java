@@ -12,4 +12,8 @@ public interface IUserRepository {
     void createUser(String username, String plainPassword);
 
     void updateLastLogin(User user);
+
+    void deactivateUser(User user);
+
+    void activateUser(User user);
 }
