@@ -19,14 +19,13 @@ public final class SolarIrradiation {
     private final double[] computedEHorMonths;
     private final double[] computedEIncMonths;
 
-    public SolarIrradiation(double lat, double lon, double[] eHorMonths, int year, double ye, double ae) throws IllegalArgumentException {
+    public SolarIrradiation(double lat, double lon, double[] eHorMonths, int year, double ye, double ae) {
         this.lat = lat;
         this.lon = lon;
         this.year = year;
         this.ye = ye;
         this.ae = ae;
         this.eHorMonths = eHorMonths;
-        eHorMonthsGuard();
         this.computedEHorMonths = new double[12];
         this.computedEIncMonths = new double[12];
         this.limit = this.eHorMonths.length;
@@ -45,12 +44,6 @@ public final class SolarIrradiation {
             IntStream.range(0, limit).parallel().mapToObj(this::computeMonth).collect(Collectors.toList()).forEach(this::insertComputedMonth);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
-        }
-    }
-
-    private void eHorMonthsGuard() throws IllegalArgumentException {
-        if (eHorMonths == null || eHorMonths.length > 12) {
-            throw new IllegalArgumentException("to many values in eHorMonths");
         }
     }
 
