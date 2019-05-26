@@ -32,6 +32,11 @@ public final class SolarIrradiation {
     }
 
     public void compute() {
+        if (isLimit()) {
+            monthInfo();
+            return;
+        }
+
         try {
             IntStream.range(0, limit).sequential().mapToObj(this::computeMonth).collect(Collectors.toList()).forEach(this::insertComputedMonth);
         } catch (Exception e) {
@@ -40,6 +45,11 @@ public final class SolarIrradiation {
     }
 
     public void computeParallel() {
+        if (isLimit()) {
+            monthInfo();
+            return;
+        }
+
         try {
             IntStream.range(0, limit).parallel().mapToObj(this::computeMonth).collect(Collectors.toList()).forEach(this::insertComputedMonth);
         } catch (Exception e) {
@@ -100,7 +110,15 @@ public final class SolarIrradiation {
         return new SolarDateTime(year, monthIndex + 1, dayIndex + 1, 0);
     }
 
-    public ComputedIrradiation getComputedIrradiation() {
-        return new ComputedIrradiation(computedEHorMonths, computedEIncMonths);
+    public ComputedYear getComputedYear() {
+        return new ComputedYear(computedEHorMonths, computedEIncMonths);
+    }
+
+    private void monthInfo() {
+        LOGGER.info("max. 12 Months");
+    }
+
+    private boolean isLimit() {
+        return limit > 12;
     }
 }
