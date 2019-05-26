@@ -1,7 +1,7 @@
 package de.josmer.dwdcdc.app;
 
 import de.josmer.dwdcdc.app.repositories.SolRadRepository;
-import de.josmer.dwdcdc.utils.FileReader;
+import de.josmer.dwdcdc.app.utils.FileReader;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.handler.SolRadInsertHandler;
 import org.slf4j.Logger;

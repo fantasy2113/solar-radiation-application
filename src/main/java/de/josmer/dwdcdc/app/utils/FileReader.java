@@ -1,4 +1,4 @@
-package de.josmer.dwdcdc.utils;
+package de.josmer.dwdcdc.app.utils;
 
 import de.josmer.dwdcdc.utils.interfaces.IFileReader;
 import org.springframework.stereotype.Component;
