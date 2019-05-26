@@ -49,7 +49,7 @@ public class TokenControllerTest {
         Optional<User> optionalUser = userRepository.get("admin");
         HttpHeaders headers = new HttpHeaders();
         headers.add("login", "admin");
-        headers.add("password", "Super71212!");
+        headers.add("password", System.getenv("APP_ADMIN_PASSWORD"));
         final String token = jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), Controller.TTL_MILLIS);
         ResponseEntity<String> response = template.exchange(base.toString(), HttpMethod.GET, new HttpEntity<>(headers), String.class);
         Claims decode = jwtToken.decode(response.getBody());
