@@ -30,20 +30,28 @@ public final class SolRadInsertHandler implements Runnable {
 
     @Override
     public void run() {
-        if (System.getenv("INSERT_ALL") == null) {
-            insert();
-        } else {
-            insertAll();
+        try {
+            if (System.getenv("INSERT_ALL") == null) {
+                insert();
+            } else {
+                insertAll();
+            }
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
         }
     }
 
     public void start() {
-        ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
-        long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
-        if (System.getenv("INSERT_ALL") == null) {
-            tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
-        } else {
-            tokenService.execute(this);
+        try {
+            ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
+            long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
+            if (System.getenv("INSERT_ALL") == null) {
+                tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
+            } else {
+                tokenService.execute(this);
+            }
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
         }
     }
 
@@ -64,19 +72,25 @@ public final class SolRadInsertHandler implements Runnable {
     private void insertAll() {
         LocalDate localDate = LocalDate.now();
         if (System.getenv("INSERT_ALL").equals("parallel")) {
-            IntStream.range(getStartYear(), localDate.getYear() + 1).parallel().forEach(this::insertYear);
+            IntStream.range(getStartYear(), getEndYear(localDate)).parallel().forEach(this::insertYear);
         } else {
-            for (int year = getStartYear(); year < localDate.getYear() + 1; year++) {
-                insertYear(year);
-            }
+            IntStream.range(getStartYear(), getEndYear(localDate)).sequential().forEach(this::insertYear);
         }
     }
 
     private void insertYear(int year) {
-        for (int month = 1; month < 13; month++) {
-            LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", month, year, solRadType));
-            new SolRadCrawler(solRadType, month, year).insert(solRadRepository, fileReader);
+        try {
+            for (int month = 1; month < 13; month++) {
+                LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", month, year, solRadType));
+                new SolRadCrawler(solRadType, month, year).insert(solRadRepository, fileReader);
+            }
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
         }
+    }
+
+    private int getEndYear(LocalDate localDate) {
+        return localDate.getYear() + 1;
     }
 
     private int getStartYear() {
