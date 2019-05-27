@@ -1,11 +1,11 @@
 package de.josmer.dwdcdc.utils.solar;
 
-public final class ComputedIrradiation {
+public final class ComputedYear {
     private final double[] computedEHorMonths;
     private final double[] computedEIncMonths;
 
 
-    ComputedIrradiation(double[] computedEHorMonths, double[] computedEIncMonths) {
+    ComputedYear(double[] computedEHorMonths, double[] computedEIncMonths) {
         this.computedEHorMonths = computedEHorMonths;
         this.computedEIncMonths = computedEIncMonths;
     }

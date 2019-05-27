@@ -1,25 +1,28 @@
 package de.josmer.dwdcdc.utils.solar;
 
-import java.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 
 public final class SolarIrradiation {
+    private static final Logger LOGGER = LoggerFactory.getLogger(SolarIrradiation.class.getName());
     private final int limit;
     private final double lat;
     private final double lon;
     private final double ye;
     private final double ae;
-    private final LocalDateTime dt;
+    private final int year;
     private final double[] eHorMonths;
     private final double[] computedEHorMonths;
     private final double[] computedEIncMonths;
 
-    public SolarIrradiation(double lat, double lon, double[] eHorMonths, LocalDateTime dt, double ye, double ae) {
+    public SolarIrradiation(double lat, double lon, double[] eHorMonths, int year, double ye, double ae) {
         this.lat = lat;
         this.lon = lon;
-        this.dt = dt;
+        this.year = year;
         this.ye = ye;
         this.ae = ae;
         this.eHorMonths = eHorMonths;
@@ -29,14 +32,29 @@ public final class SolarIrradiation {
     }
 
     public void compute() {
-        for (int monthIndex = getStarMonth(); monthIndex < limit; monthIndex++) {
-            insertComputedMonth(computeMonth(monthIndex));
+        if (isLimit()) {
+            monthInfo();
+            return;
+        }
+
+        try {
+            IntStream.range(0, limit).sequential().mapToObj(this::computeMonth).collect(Collectors.toList()).forEach(this::insertComputedMonth);
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
         }
     }
 
     public void computeParallel() {
-        IntStream.range(0, limit).parallel().mapToObj(this::computeMonth)
-                .collect(Collectors.toList()).forEach(this::insertComputedMonth);
+        if (isLimit()) {
+            monthInfo();
+            return;
+        }
+
+        try {
+            IntStream.range(0, limit).parallel().mapToObj(this::computeMonth).collect(Collectors.toList()).forEach(this::insertComputedMonth);
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
+        }
     }
 
     private SolarMonth computeMonth(final int monthIndex) {
@@ -77,26 +95,30 @@ public final class SolarIrradiation {
     }
 
     private int getDaysInMonth(int monthIndex) {
-        return Utils.getDaysInMonth(dt.getYear(), monthIndex + 1);
+        return Utils.getDaysInMonth(year, monthIndex + 1);
     }
 
     private SolarDateTime getDay(int monthIndex) {
-        return new SolarDateTime(dt.getYear(), monthIndex + 1, 1, 0);
+        return new SolarDateTime(year, monthIndex + 1, 1, 0);
     }
 
     private SolarDateTime getHour(int monthIndex, int dayIndex, int hourIndex) {
-        return new SolarDateTime(dt.getYear(), monthIndex + 1, dayIndex + 1, hourIndex);
+        return new SolarDateTime(year, monthIndex + 1, dayIndex + 1, hourIndex);
     }
 
     private SolarDateTime getDay(int monthIndex, int dayIndex) {
-        return new SolarDateTime(dt.getYear(), monthIndex + 1, dayIndex + 1, 0);
+        return new SolarDateTime(year, monthIndex + 1, dayIndex + 1, 0);
     }
 
-    private int getStarMonth() {
-        return dt.getMonthValue() - 1;
+    public ComputedYear getComputedYear() {
+        return new ComputedYear(computedEHorMonths, computedEIncMonths);
     }
 
-    public ComputedIrradiation getComputedIrradiation() {
-        return new ComputedIrradiation(computedEHorMonths, computedEIncMonths);
+    private void monthInfo() {
+        LOGGER.info("max. 12 Months");
+    }
+
+    private boolean isLimit() {
+        return limit > 12;
     }
 }
