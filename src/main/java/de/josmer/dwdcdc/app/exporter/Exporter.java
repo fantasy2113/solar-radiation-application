@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
-abstract class Exporter<TOut, TIn> {
+abstract class Exporter<TOut, TInput> {
 
     static final Logger LOGGER = LoggerFactory.getLogger(Exporter.class.getName());
 
@@ -22,7 +22,7 @@ abstract class Exporter<TOut, TIn> {
         return getDate(String.valueOf(date));
     }
 
-    String getDate(final String date) {
+    private String getDate(final String date) {
         try {
             return date.substring(0, 4) + "-" + date.substring(4);
         } catch (Exception e) {
@@ -31,5 +31,5 @@ abstract class Exporter<TOut, TIn> {
         }
     }
 
-    protected abstract TOut mapToExport(double lon, double lat, TIn item);
+    protected abstract TOut mapToExport(double lon, double lat, TInput item);
 }

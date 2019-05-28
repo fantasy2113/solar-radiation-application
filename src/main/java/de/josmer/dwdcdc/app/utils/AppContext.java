@@ -14,7 +14,7 @@ public class AppContext implements ApplicationContextAware {
         return context.getBean(beanClass);
     }
 
-    public static Object get(String beanName) {
+    public static Object getBean(String beanName) {
         return context.getBean(beanName);
     }
 
