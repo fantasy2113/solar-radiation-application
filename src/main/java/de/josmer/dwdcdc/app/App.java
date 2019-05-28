@@ -48,7 +48,7 @@ public class App {
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
             LOGGER.info("Let's inspect the beans provided by Spring Boot:");
-            Arrays.stream(ctx.getBeanDefinitionNames()).sorted().sequential().forEach(LOGGER::info);
+            Arrays.stream(ctx.getBeanDefinitionNames()).sorted().forEachOrdered(LOGGER::info);
         };
     }
 }
