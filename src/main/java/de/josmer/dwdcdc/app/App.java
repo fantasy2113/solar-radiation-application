@@ -16,8 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @Configuration
 @SpringBootApplication
@@ -50,9 +48,7 @@ public class App {
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
             LOGGER.info("Let's inspect the beans provided by Spring Boot:");
-            List<String> beanNames = Arrays.asList(ctx.getBeanDefinitionNames());
-            Collections.sort(beanNames);
-            beanNames.stream().sequential().forEach(LOGGER::info);
+            Arrays.stream(ctx.getBeanDefinitionNames()).sorted().sequential().forEach(LOGGER::info);
         };
     }
 }
