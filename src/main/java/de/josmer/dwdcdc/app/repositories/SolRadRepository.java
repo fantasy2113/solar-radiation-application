@@ -95,14 +95,14 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
              PreparedStatement preparedStatement
                      = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
             connection.setAutoCommit(false);
-            for (ISolRad radiation : radiations) {
-                preparedStatement.setString(1, radiation.getRadiationType());
-                preparedStatement.setInt(2, radiation.getRadiationDate());
-                preparedStatement.setInt(3, radiation.getGkrMin());
-                preparedStatement.setInt(4, radiation.getGkrMax());
-                preparedStatement.setInt(5, radiation.getGkhMin());
-                preparedStatement.setInt(6, radiation.getGkhMax());
-                preparedStatement.setFloat(7, radiation.getRadiationValue());
+            for (ISolRad solRad : radiations) {
+                preparedStatement.setString(1, solRad.getRadiationType());
+                preparedStatement.setInt(2, solRad.getRadiationDate());
+                preparedStatement.setInt(3, solRad.getGkrMin());
+                preparedStatement.setInt(4, solRad.getGkrMax());
+                preparedStatement.setInt(5, solRad.getGkhMin());
+                preparedStatement.setInt(6, solRad.getGkhMax());
+                preparedStatement.setFloat(7, solRad.getRadiationValue());
                 preparedStatement.executeUpdate();
             }
             connection.commit();
