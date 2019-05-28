@@ -147,7 +147,7 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
     }
 
     private ISolRad initSolRad(int gkh, int gkr, String column) throws Exception {
-        ISolRad solRad = solRadClass.newInstance();
+        ISolRad solRad = solRadClass.getDeclaredConstructor().newInstance();
         solRad.setRadiationValue(Float.parseFloat(column));
         solRad.setRadiationType(solRadType.name());
         solRad.setRadiationDate(Integer.valueOf(getDate(year, month)));
