@@ -4,6 +4,7 @@ import de.josmer.dwdcdc.app.interfaces.ISolRadRepository;
 import de.josmer.dwdcdc.utils.crawler.SolRadCrawler;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.interfaces.IDataReader;
+import de.josmer.dwdcdc.utils.interfaces.ISolRad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,16 +17,18 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-public final class SolRadInsertHandler implements Runnable {
+public final class SolRadInsertHandler<T extends ISolRad> implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadInsertHandler.class.getName());
     private final SolRadTypes solRadType;
+    private final Class<T> solRadClass;
     private final ISolRadRepository solRadRepository;
     private final IDataReader fileReader;
 
-    public SolRadInsertHandler(SolRadTypes solRadType, ISolRadRepository solRadRepository, IDataReader fileReader) {
+    public SolRadInsertHandler(SolRadTypes solRadType, Class<T> solRadClass, ISolRadRepository solRadRepository, IDataReader fileReader) {
         this.solRadType = solRadType;
         this.solRadRepository = solRadRepository;
         this.fileReader = fileReader;
+        this.solRadClass = solRadClass;
     }
 
     @Override
@@ -66,7 +69,7 @@ public final class SolRadInsertHandler implements Runnable {
     private void insert() {
         LocalDate localDate = getLocalDate();
         LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), solRadType));
-        new SolRadCrawler(solRadType, localDate.getMonth().getValue(), localDate.getYear()).insert(solRadRepository, fileReader);
+        new SolRadCrawler<>(solRadType, solRadClass, localDate.getMonth().getValue(), localDate.getYear()).insert(solRadRepository, fileReader);
     }
 
     private void insertAll() {
@@ -82,7 +85,7 @@ public final class SolRadInsertHandler implements Runnable {
         try {
             for (int month = 1; month < 13; month++) {
                 LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", month, year, solRadType));
-                new SolRadCrawler(solRadType, month, year).insert(solRadRepository, fileReader);
+                new SolRadCrawler<>(solRadType, solRadClass, month, year).insert(solRadRepository, fileReader);
             }
         } catch (Exception e) {
             LOGGER.info(e.getMessage());

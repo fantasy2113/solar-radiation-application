@@ -1,8 +1,8 @@
 package de.josmer.dwdcdc.app.exporter;
 
+import de.josmer.dwdcdc.app.entities.SolRad;
 import de.josmer.dwdcdc.app.entities.SolRadExp;
 import de.josmer.dwdcdc.app.interfaces.ISolRadExporter;
-import de.josmer.dwdcdc.utils.entities.SolRad;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;

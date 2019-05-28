@@ -1,10 +1,11 @@
 package de.josmer.dwdcdc.app.repositories;
 
+import de.josmer.dwdcdc.app.entities.SolRad;
 import de.josmer.dwdcdc.app.interfaces.ISolRadRepository;
-import de.josmer.dwdcdc.utils.entities.SolRad;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.geo.GaussKruger;
 import de.josmer.dwdcdc.utils.geo.GkConverter;
+import de.josmer.dwdcdc.utils.interfaces.ISolRad;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -85,7 +86,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
-    public void save(final List<SolRad> radiations) {
+    public void save(final List<ISolRad> radiations) {
         if (radiations.isEmpty()) {
             return;
         }
@@ -94,7 +95,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
              PreparedStatement preparedStatement
                      = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
             connection.setAutoCommit(false);
-            for (SolRad radiation : radiations) {
+            for (ISolRad radiation : radiations) {
                 preparedStatement.setString(1, radiation.getRadiationType());
                 preparedStatement.setInt(2, radiation.getRadiationDate());
                 preparedStatement.setInt(3, radiation.getGkrMin());
