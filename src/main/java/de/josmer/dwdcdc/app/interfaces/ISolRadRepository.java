@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.interfaces;
 
-import de.josmer.dwdcdc.utils.entities.SolRad;
+import de.josmer.dwdcdc.app.entities.SolRad;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.interfaces.IBasicSolRad;
 

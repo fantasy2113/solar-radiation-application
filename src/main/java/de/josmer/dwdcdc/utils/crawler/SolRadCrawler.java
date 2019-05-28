@@ -1,9 +1,9 @@
 package de.josmer.dwdcdc.utils.crawler;
 
-import de.josmer.dwdcdc.utils.entities.SolRad;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.interfaces.IBasicSolRad;
 import de.josmer.dwdcdc.utils.interfaces.IDataReader;
+import de.josmer.dwdcdc.utils.interfaces.ISolRad;
 import de.josmer.dwdcdc.utils.interfaces.ISolRadCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,17 +22,18 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-public final class SolRadCrawler implements ISolRadCrawler {
+public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadCrawler.class.getName());
     private final String templateTargetFile;
     private final String targetUrl;
     private final String targetDir;
     private final SolRadTypes solRadType;
+    private final Class<T> solRadClass;
     private final int month;
     private final int year;
     private String currentTargetFile;
 
-    public SolRadCrawler(SolRadTypes solRadType, int month, int year) {
+    public SolRadCrawler(SolRadTypes solRadType, Class<T> solRadClass, int month, int year) {
         this.solRadType = solRadType;
         this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
                 .replace("{radiation}", getSolRadType());
@@ -41,6 +42,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
         this.targetDir = "./temp/";
         this.month = month;
         this.year = year;
+        this.solRadClass = solRadClass;
     }
 
     @Override
@@ -92,7 +94,7 @@ public final class SolRadCrawler implements ISolRadCrawler {
     }
 
 
-    private void insertRadiation(IBasicSolRad basicSolRad, IDataReader fileReader) {
+    private void insertRadiation(IBasicSolRad basicSolRad, IDataReader fileReader) throws Exception {
         basicSolRad.save(getSolRads(fileReader));
     }
 
@@ -105,8 +107,8 @@ public final class SolRadCrawler implements ISolRadCrawler {
         }
     }
 
-    private LinkedList<SolRad> getSolRads(IDataReader fileReader) {
-        LinkedList<SolRad> solRads = new LinkedList<>();
+    private LinkedList<ISolRad> getSolRads(IDataReader fileReader) throws Exception {
+        LinkedList<ISolRad> solRads = new LinkedList<>();
         final String[] rows = getColumns(fileReader.getDataAsString(getPathnameAsc()), "\\r\\n");
         rightVersionGuard(rows[2]);
         int gkh = 5237500;
@@ -144,8 +146,8 @@ public final class SolRadCrawler implements ISolRadCrawler {
         return version.equals("Datensatz_Version=V003") || version.equals("Datensatz_Version=V0.3");
     }
 
-    private SolRad initSolRad(int gkh, int gkr, String column) {
-        SolRad solRad = new SolRad();
+    private ISolRad initSolRad(int gkh, int gkr, String column) throws Exception {
+        ISolRad solRad = solRadClass.newInstance();
         solRad.setRadiationValue(Float.parseFloat(column));
         solRad.setRadiationType(solRadType.name());
         solRad.setRadiationDate(Integer.valueOf(getDate(year, month)));
