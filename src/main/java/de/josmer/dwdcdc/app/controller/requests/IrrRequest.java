@@ -28,4 +28,9 @@ public final class IrrRequest extends Request {
     public void setYe(int ye) {
         this.ye = ye;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this.lon + this.lat + this.ae + this.ye + this.ae);
+    }
 }
