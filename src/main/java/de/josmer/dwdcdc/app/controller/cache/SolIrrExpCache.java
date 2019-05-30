@@ -13,11 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class SolIrrExpCache implements ISolIrrExpCache {
-
     protected static final Logger LOGGER = LoggerFactory.getLogger(SolIrrExpCache.class.getName());
-
     private static final int LIMIT = 1000;
-
     private final ConcurrentHashMap<String, LinkedList<SolIrrExp>> computedSolIrrExps;
 
     public SolIrrExpCache() {
