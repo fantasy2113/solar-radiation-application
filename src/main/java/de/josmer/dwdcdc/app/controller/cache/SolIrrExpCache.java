@@ -2,6 +2,7 @@ package de.josmer.dwdcdc.app.controller.cache;
 
 import de.josmer.dwdcdc.app.controller.requests.IrrRequest;
 import de.josmer.dwdcdc.app.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.interfaces.ISolIrrExpCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class SolIrrExpCache {
+public class SolIrrExpCache implements ISolIrrExpCache {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(SolIrrExpCache.class.getName());
 
@@ -23,6 +24,7 @@ public class SolIrrExpCache {
         this.computedSolIrrExps = new ConcurrentHashMap<>();
     }
 
+    @Override
     public void add(final IrrRequest irrRequest, final LinkedList<SolIrrExp> solIrrExps) {
         try {
             clear();
@@ -32,6 +34,7 @@ public class SolIrrExpCache {
         }
     }
 
+    @Override
     public Optional<LinkedList<SolIrrExp>> get(final IrrRequest irrRequest) {
         try {
             return Optional.ofNullable(computedSolIrrExps.get(irrRequest.toString()));

@@ -10,33 +10,41 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class IrrController extends AppController {
 
     private final ISolIrrExporter solIrrExp;
     private final ISolIrrRepository solIrrRep;
+    private final ISolIrrExpCache solIrrExpCache;
 
     @Autowired
-    public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep, ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep) {
+    public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
+                         ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep, ISolIrrExpCache solIrrExpCache) {
         super(userRep, jwtToken, userBCrypt, solRadRep);
         this.solIrrExp = solIrrExp;
         this.solIrrRep = solIrrRep;
+        this.solIrrExpCache = solIrrExpCache;
     }
 
     @GetMapping("/irr")
-    public List<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
+    public LinkedList<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
         LOGGER.info("get - irr");
         if (!isAccess(token)) {
-            return new ArrayList<>();
+            return new LinkedList<>();
         }
-        return solIrrExp.getItems(
+        Optional<LinkedList<SolIrrExp>> optionalSolIrrExps = solIrrExpCache.get(req);
+        if (optionalSolIrrExps.isPresent()) {
+            return optionalSolIrrExps.get();
+        }
+        LinkedList<SolIrrExp> solIrrExps = solIrrExp.getItems(
                 solIrrRep.getIrradiation(
                         solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(),
                                 req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        solIrrExpCache.add(req, solIrrExps);
+        return solIrrExps;
     }
 
     @GetMapping("/export_irr")
