@@ -27,7 +27,7 @@ public class SolIrrExpCache implements ISolIrrExpCache {
             clear();
             final String key = irrRequest.toString();
             computedSolIrrExps.putIfAbsent(key, solIrrExps);
-            LOGGER.info("cache: " + key);
+            LOGGER.info("create cache for: " + key);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
