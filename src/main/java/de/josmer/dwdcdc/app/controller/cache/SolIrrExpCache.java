@@ -13,11 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class SolIrrExpCache implements ISolIrrExpCache {
-
     protected static final Logger LOGGER = LoggerFactory.getLogger(SolIrrExpCache.class.getName());
-
     private static final int LIMIT = 1000;
-
     private final ConcurrentHashMap<String, LinkedList<SolIrrExp>> computedSolIrrExps;
 
     public SolIrrExpCache() {
@@ -28,7 +25,9 @@ public class SolIrrExpCache implements ISolIrrExpCache {
     public void add(final IrrRequest irrRequest, final LinkedList<SolIrrExp> solIrrExps) {
         try {
             clear();
-            computedSolIrrExps.putIfAbsent(irrRequest.toString(), solIrrExps);
+            final String key = irrRequest.toString();
+            computedSolIrrExps.putIfAbsent(key, solIrrExps);
+            LOGGER.info("create cache for: " + key);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
@@ -47,6 +46,7 @@ public class SolIrrExpCache implements ISolIrrExpCache {
     private void clear() {
         if (computedSolIrrExps.size() > LIMIT) {
             computedSolIrrExps.clear();
+            LOGGER.info("clear");
         }
     }
 }
