@@ -23,7 +23,7 @@ public class SolIrrExpCache {
         this.computedSolIrrExps = new ConcurrentHashMap<>();
     }
 
-    public void add(final IrrRequest irrRequest, LinkedList<SolIrrExp> solIrrExps) {
+    public void add(final IrrRequest irrRequest, final LinkedList<SolIrrExp> solIrrExps) {
         try {
             clear();
             computedSolIrrExps.putIfAbsent(irrRequest.toString(), solIrrExps);
@@ -33,7 +33,12 @@ public class SolIrrExpCache {
     }
 
     public Optional<LinkedList<SolIrrExp>> get(final IrrRequest irrRequest) {
-        return Optional.ofNullable(computedSolIrrExps.get(irrRequest.toString()));
+        try {
+            return Optional.ofNullable(computedSolIrrExps.get(irrRequest.toString()));
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
+        }
+        return Optional.empty();
     }
 
     private void clear() {
