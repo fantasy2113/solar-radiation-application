@@ -7,9 +7,7 @@ import de.josmer.dwdcdc.app.interfaces.IUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,15 +24,26 @@ public final class TokenController extends Controller {
     }
 
     @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> getToken(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+    public String getToken(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         final Optional<User> optionalUser = userRep.get(login);
         if (optionalUser.isPresent() && check(password, optionalUser.get())) {
             userRep.updateLastLogin(optionalUser.get());
             LOGGER.info("login successful: " + login);
-            return new ResponseEntity<>(initToken(optionalUser.get()), HttpStatus.OK);
+            return initToken(optionalUser.get());
         }
         LOGGER.info("login failed");
-        return new ResponseEntity<>("", HttpStatus.UNAUTHORIZED);
+        return "";
+    }
+
+    @GetMapping(value = "/check", produces = MediaType.TEXT_PLAIN_VALUE)
+    public String check(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+        final Optional<User> optionalUser = userRep.get(login);
+        if (optionalUser.isPresent() && check(password, optionalUser.get())) {
+            LOGGER.info("check successful: " + login);
+            return "authorized";
+        }
+        LOGGER.info("check failed");
+        return "unauthorized";
     }
 
     private boolean check(String password, User user) {

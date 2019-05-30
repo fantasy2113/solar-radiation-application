@@ -73,7 +73,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
             preparedStatement.setInt(3, optionalRechtswert.getAsInt());
             preparedStatement.setInt(4, optionalRechtswert.getAsInt() + 1000);
             preparedStatement.setString(5, solRadTypes.name());
-            preparedStatement.setInt(6, endDate - startDate + 1);
+            preparedStatement.setInt(6, getLimit(startDate, endDate));
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
                     radiations.add(mapToEntity(rs));
@@ -95,14 +95,14 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
              PreparedStatement preparedStatement
                      = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
             connection.setAutoCommit(false);
-            for (ISolRad radiation : radiations) {
-                preparedStatement.setString(1, radiation.getRadiationType());
-                preparedStatement.setInt(2, radiation.getRadiationDate());
-                preparedStatement.setInt(3, radiation.getGkrMin());
-                preparedStatement.setInt(4, radiation.getGkrMax());
-                preparedStatement.setInt(5, radiation.getGkhMin());
-                preparedStatement.setInt(6, radiation.getGkhMax());
-                preparedStatement.setFloat(7, radiation.getRadiationValue());
+            for (ISolRad solRad : radiations) {
+                preparedStatement.setString(1, solRad.getRadiationType());
+                preparedStatement.setInt(2, solRad.getRadiationDate());
+                preparedStatement.setInt(3, solRad.getGkrMin());
+                preparedStatement.setInt(4, solRad.getGkrMax());
+                preparedStatement.setInt(5, solRad.getGkhMin());
+                preparedStatement.setInt(6, solRad.getGkhMax());
+                preparedStatement.setFloat(7, solRad.getRadiationValue());
                 preparedStatement.executeUpdate();
             }
             connection.commit();
@@ -127,23 +127,23 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
 
     @Override
     protected SolRad mapToEntity(ResultSet rs) throws SQLException {
-        SolRad radiation = new SolRad();
-        radiation.setRadiationType(rs.getString("radiation_type"));
-        radiation.setRadiationDate(rs.getInt("radiation_date"));
-        radiation.setGkrMin(rs.getInt("gkr_min"));
-        radiation.setGkrMax(rs.getInt("gkr_max"));
-        radiation.setGkhMin(rs.getInt("gkh_min"));
-        radiation.setGkhMax(rs.getInt("gkh_max"));
+        SolRad solRad = new SolRad();
+        solRad.setRadiationType(rs.getString("radiation_type"));
+        solRad.setRadiationDate(rs.getInt("radiation_date"));
+        solRad.setGkrMin(rs.getInt("gkr_min"));
+        solRad.setGkrMax(rs.getInt("gkr_max"));
+        solRad.setGkhMin(rs.getInt("gkh_min"));
+        solRad.setGkhMax(rs.getInt("gkh_max"));
+        checkRadiationValue(solRad, rs.getFloat("radiation_value"));
+        return solRad;
+    }
 
-        final float radiationValue = rs.getFloat("radiation_value");
-
+    private void checkRadiationValue(SolRad radiation, float radiationValue) {
         if (radiationValue > 0) {
             radiation.setRadiationValue(radiationValue);
         } else {
             radiation.setRadiationValue(0);
         }
-
-        return radiation;
     }
 
     private String getInDates(final int startDate, final int endDate) {
@@ -157,5 +157,9 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
 
     private double convertValue(double value) {
         return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", value)) * 1000;
+    }
+
+    private int getLimit(int startDate, int endDate) {
+        return endDate - startDate + 1;
     }
 }
