@@ -13,8 +13,8 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 abstract class Controller {
-    private static final Logger A_LOGGER = LoggerFactory.getLogger(AppController.class.getName());
-    public static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
+    static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
     final IUserRepository userRep;
     final IJwtToken jwtToken;
     IUserBCrypt userBCrypt;
@@ -25,7 +25,7 @@ abstract class Controller {
         this.userBCrypt = userBCrypt;
     }
 
-    SolRadTypes getSolRadTypes(String type) {
+    final SolRadTypes getSolRadTypes(String type) {
         return SolRadTypes.valueOf(type.toUpperCase(Locale.ENGLISH));
     }
 
@@ -34,7 +34,7 @@ abstract class Controller {
             Optional<User> userOptional = userRep.get(Integer.valueOf(jwtToken.decode(token).getId()));
             return userOptional.isPresent() && userOptional.get().isActive();
         } catch (Exception e) {
-            A_LOGGER.info(e.getMessage());
+            LOGGER.info(e.getMessage());
         }
         return false;
     }

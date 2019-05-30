@@ -1,8 +1,8 @@
 package de.josmer.dwdcdc.app.controller.requests;
 
 abstract class Request {
-    private double lat;
-    private double lon;
+    protected double lat;
+    protected double lon;
 
     public double getLat() {
         return lat;
