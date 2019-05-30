@@ -2,6 +2,8 @@ package de.josmer.dwdcdc.app.controller;
 
 import de.josmer.dwdcdc.app.controller.requests.RadRequest;
 import de.josmer.dwdcdc.app.entities.SolRadExp;
+import de.josmer.dwdcdc.app.interfaces.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,13 @@ import java.util.List;
 
 @RestController
 public class RadController extends AppController {
+    private final ISolRadExporter solRadExp;
+
+    @Autowired
+    public RadController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep, ISolRadExporter solRadExp) {
+        super(userRep, jwtToken, userBCrypt, solRadRep);
+        this.solRadExp = solRadExp;
+    }
 
     @GetMapping("/export_rad")
     public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate,
