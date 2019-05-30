@@ -35,16 +35,7 @@ public class IrrController extends AppController {
         if (!isAccess(token)) {
             return new LinkedList<>();
         }
-        Optional<LinkedList<SolIrrExp>> optionalSolIrrExps = solIrrExpCache.get(req);
-        if (optionalSolIrrExps.isPresent()) {
-            return optionalSolIrrExps.get();
-        }
-        LinkedList<SolIrrExp> solIrrExps = solIrrExp.getItems(
-                solIrrRep.getIrradiation(
-                        solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(),
-                                req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
-        solIrrExpCache.add(req, solIrrExps);
-        return solIrrExps;
+        return getSolIrrExps(req);
     }
 
     @GetMapping("/export_irr")
@@ -55,8 +46,25 @@ public class IrrController extends AppController {
         if (!isAccess(token)) {
             return;
         }
-        final LinkedList<SolIrrExp> items = solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat),
-                lon, lat, ae, ye, year), lon, lat);
-        initExcelExport(response, "umrechnung_", items, solIrrExp.getProps(), solIrrExp.getHeaders());
+        IrrRequest irrRequest = new IrrRequest();
+        irrRequest.setLat(lat);
+        irrRequest.setLon(lon);
+        irrRequest.setAe(ae);
+        irrRequest.setYe(ye);
+        irrRequest.setYear(year);
+        initExcelExport(response, "umrechnung_", getSolIrrExps(irrRequest), solIrrExp.getProps(), solIrrExp.getHeaders());
+    }
+
+    private LinkedList<SolIrrExp> getSolIrrExps(final IrrRequest req) {
+        Optional<LinkedList<SolIrrExp>> optionalSolIrrExps = solIrrExpCache.get(req);
+        if (optionalSolIrrExps.isPresent()) {
+            return optionalSolIrrExps.get();
+        }
+        LinkedList<SolIrrExp> solIrrExps = solIrrExp.getItems(
+                solIrrRep.getIrradiation(
+                        solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(),
+                                req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        solIrrExpCache.add(req, solIrrExps);
+        return solIrrExps;
     }
 }
