@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class RadController extends AppController {
         if (!isAccess(token)) {
             return;
         }
-        final List<SolRadExp> items = solRadExp.getItems(solRadRep.find(getDate(startDate), getDate(endDate), getSolRadTypes(type), lon, lat), lon, lat);
+        final LinkedList<SolRadExp> items = solRadExp.getItems(solRadRep.find(getDate(startDate), getDate(endDate), getSolRadTypes(type), lon, lat), lon, lat);
         initExcelExport(response, "sonneneinstrahlung_", items, solRadExp.getProps(), solRadExp.getHeaders());
     }
 

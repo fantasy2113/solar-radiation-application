@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -46,7 +47,7 @@ public class IrrController extends AppController {
         if (!isAccess(token)) {
             return;
         }
-        final List<SolIrrExp> items = solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat),
+        final LinkedList<SolIrrExp> items = solIrrExp.getItems(solIrrRep.getIrradiation(solRadRep.findGlobal(getStartDate(year), getEndDate(year), lon, lat),
                 lon, lat, ae, ye, year), lon, lat);
         initExcelExport(response, "umrechnung_", items, solIrrExp.getProps(), solIrrExp.getHeaders());
     }
