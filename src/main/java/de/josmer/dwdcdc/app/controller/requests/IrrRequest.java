@@ -31,6 +31,6 @@ public final class IrrRequest extends Request {
 
     @Override
     public String toString() {
-        return String.valueOf(this.lon + this.lat + this.ae + this.ye + this.ae);
+        return this.lon + ";" + this.lat + ";" + this.ae + ";" + this.ye + ";" + this.year;
     }
 }
