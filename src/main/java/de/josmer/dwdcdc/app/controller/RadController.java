@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 @RestController
 public class RadController extends AppController {
@@ -33,16 +31,25 @@ public class RadController extends AppController {
         if (!isAccess(token)) {
             return;
         }
-        final LinkedList<SolRadExp> items = solRadExp.getItems(solRadRep.find(getDate(startDate), getDate(endDate), getSolRadTypes(type), lon, lat), lon, lat);
-        initExcelExport(response, "sonneneinstrahlung_", items, solRadExp.getProps(), solRadExp.getHeaders());
+        RadRequest req = new RadRequest();
+        req.setStartDate(startDate);
+        req.setEndDate(endDate);
+        req.setType(type);
+        req.setLat(lat);
+        req.setLon(lon);
+        initExcelExport(response, "sonneneinstrahlung_", getSolRadExps(req), solRadExp.getProps(), solRadExp.getHeaders());
     }
 
     @GetMapping("/rad")
-    public List<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
+    public LinkedList<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
         LOGGER.info("get - rad");
         if (!isAccess(token)) {
-            return new ArrayList<>();
+            return new LinkedList<>();
         }
+        return getSolRadExps(req);
+    }
+
+    private LinkedList<SolRadExp> getSolRadExps(RadRequest req) {
         return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()), getSolRadTypes(req.getType()), req.getLon(),
                 req.getLat()), req.getLon(), req.getLat());
     }
