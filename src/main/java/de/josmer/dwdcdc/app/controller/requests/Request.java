@@ -4,6 +4,14 @@ abstract class Request {
     protected double lat;
     protected double lon;
 
+    public Request() {
+    }
+
+    public Request(double lat, double lon) {
+        this.lat = lat;
+        this.lon = lon;
+    }
+
     public double getLat() {
         return lat;
     }

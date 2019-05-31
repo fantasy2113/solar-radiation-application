@@ -31,13 +31,7 @@ public class RadController extends AppController {
         if (!isAccess(token)) {
             return;
         }
-        RadRequest req = new RadRequest();
-        req.setStartDate(startDate);
-        req.setEndDate(endDate);
-        req.setType(type);
-        req.setLat(lat);
-        req.setLon(lon);
-        initExcelExport(response, "sonneneinstrahlung_", getSolRadExps(req), solRadExp.getProps(), solRadExp.getHeaders());
+        initExcelExport(response, "sonneneinstrahlung_", getSolRadExps(new RadRequest(lat, lon, startDate, endDate, type)), solRadExp.getProps(), solRadExp.getHeaders());
     }
 
     @GetMapping("/rad")

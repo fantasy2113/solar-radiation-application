@@ -5,6 +5,16 @@ public final class IrrRequest extends Request {
     private int ae;
     private int ye;
 
+    public IrrRequest(double lat, double lon, int year, int ae, int ye) {
+        super(lat, lon);
+        this.year = year;
+        this.ae = ae;
+        this.ye = ye;
+    }
+
+    public IrrRequest() {
+    }
+
     public int getYear() {
         return year;
     }
