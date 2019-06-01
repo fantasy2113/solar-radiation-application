@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedList;
 
 @RestController
-public class RadController extends AppController {
+public final class RadController extends AppController {
     private final ISolRadExporter solRadExp;
 
     @Autowired

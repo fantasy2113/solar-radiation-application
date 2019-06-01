@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 @RestController
-public class IrrController extends AppController {
+public final class IrrController extends AppController {
 
     private final ISolIrrExporter solIrrExp;
     private final ISolIrrRepository solIrrRep;
