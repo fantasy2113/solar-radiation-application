@@ -19,7 +19,6 @@ abstract class AppController extends Controller {
         this.solRadRep = solRadRep;
     }
 
-
     final void initExcelExport(HttpServletResponse response, String exportName, List<?> items, String props, List<String> headers) throws Exception {
         response.addHeader("Content-disposition", "attachment; filename=" + exportName + System.currentTimeMillis() + ".xls");
         response.setContentType("application/vnd.ms-excel");
