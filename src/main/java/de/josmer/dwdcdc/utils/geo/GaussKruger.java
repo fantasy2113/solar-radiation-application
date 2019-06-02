@@ -8,9 +8,8 @@ public final class GaussKruger implements IGaussKruger {
     private double rechtswert;
     private double hochwert;
 
-    public GaussKruger(double lon, double lat) {
-        this.lon = lon;
-        this.lat = lat;
+    public GaussKruger(final double lon, final double lat) {
+        setGeo(lon, lat);
     }
 
     @Override
@@ -113,4 +112,10 @@ public final class GaussKruger implements IGaussKruger {
         return Integer.valueOf(String.valueOf(String.valueOf(rechtswert).charAt(0)));
     }
 
+    private void setGeo(double lon, double lat) {
+        if (lon > 0 && lat > 0) {
+            this.lon = lon;
+            this.lat = lat;
+        }
+    }
 }
