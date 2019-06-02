@@ -12,7 +12,6 @@ public class GkConverter {
         this.gaussKruger.compute();
     }
 
-
     public OptionalInt getRechtswert() {
         switch (gaussKruger.getMeridianstreifen()) {
             case 5:
@@ -32,11 +31,15 @@ public class GkConverter {
         return getGkValues(gaussKruger.getHochwert());
     }
 
-    private int getGkValues(final double value) {
-        Integer gkMin = (int) value;
-        while (!gkMin.toString().endsWith("500")) {
+    private int getGkValues(final double gk) {
+        Integer gkMin = (int) gk;
+        while (isIncrement(gkMin)) {
             gkMin--;
         }
         return gkMin;
+    }
+
+    private boolean isIncrement(final Integer gkMin) {
+        return !gkMin.toString().endsWith("500");
     }
 }
