@@ -108,4 +108,9 @@ public final class GaussKruger implements IGaussKruger {
         return hochwert;
     }
 
+    @Override
+    public int getMeridianstreifen() {
+        return String.valueOf(rechtswert).charAt(0);
+    }
+
 }

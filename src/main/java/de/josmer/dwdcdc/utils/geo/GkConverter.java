@@ -1,40 +1,31 @@
 package de.josmer.dwdcdc.utils.geo;
 
 import de.josmer.dwdcdc.utils.interfaces.IGaussKruger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.OptionalInt;
 
 public class GkConverter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GkConverter.class.getName());
     private final IGaussKruger gaussKruger;
 
     public GkConverter(IGaussKruger gaussKruger) {
         this.gaussKruger = gaussKruger;
-        try {
-            this.gaussKruger.compute();
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-        }
+        this.gaussKruger.compute();
     }
 
 
     public OptionalInt getRechtswert() {
-        try {
-            if (String.valueOf(gaussKruger.getRechtswert()).startsWith("5")) {
+        switch (gaussKruger.getMeridianstreifen()) {
+            case 5:
                 return OptionalInt.of(getGkValues(gaussKruger.getRechtswert() - 1600000));
-            } else if (String.valueOf(gaussKruger.getRechtswert()).startsWith("4")) {
+            case 4:
                 return OptionalInt.of(getGkValues(gaussKruger.getRechtswert() - 800000));
-            } else if (String.valueOf(gaussKruger.getRechtswert()).startsWith("3")) {
+            case 3:
                 return OptionalInt.of(getGkValues(gaussKruger.getRechtswert()));
-            } else if (String.valueOf(gaussKruger.getRechtswert()).startsWith("2")) {
+            case 2:
                 return OptionalInt.of(getGkValues(gaussKruger.getRechtswert() + 800000));
-            }
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            default:
+                return OptionalInt.empty();
         }
-        return OptionalInt.empty();
     }
 
     public int getHochwert() {
