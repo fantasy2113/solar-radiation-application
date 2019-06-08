@@ -34,6 +34,9 @@ public final class UserController extends Controller {
                 webToken.setAuthorized(true);
                 return webToken;
             }
+        } else {
+            webToken.setUserError(true);
+            return webToken;
         }
         webToken.setError(true);
         return webToken;

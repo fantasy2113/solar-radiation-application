@@ -39,18 +39,6 @@ public final class TokenController extends Controller {
         return webToken;
     }
 
-    @GetMapping(value = "/authentication")
-    public WebToken authentication(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
-        WebToken webToken = new WebToken();
-        final Optional<User> optionalUser = userRep.get(login);
-        if (optionalUser.isPresent() && check(password, optionalUser.get())) {
-            LOGGER.info("check successful: " + login);
-            webToken.setAuthorized(true);
-        }
-        LOGGER.info("check failed");
-        return webToken;
-    }
-
     private boolean check(String password, User user) {
         return userBCrypt.isPassword(password, user.getPassword()) && user.isActive();
     }
