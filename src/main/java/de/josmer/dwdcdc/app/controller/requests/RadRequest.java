@@ -5,6 +5,16 @@ public final class RadRequest extends Request {
     private String endDate;
     private String type;
 
+    public RadRequest(double lat, double lon, String startDate, String endDate, String type) {
+        super(lat, lon);
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.type = type;
+    }
+
+    public RadRequest() {
+    }
+
     public String getEndDate() {
         return endDate;
     }

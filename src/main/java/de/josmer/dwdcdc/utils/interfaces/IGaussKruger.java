@@ -6,4 +6,6 @@ public interface IGaussKruger {
     double getRechtswert();
 
     double getHochwert();
+
+    int getMeridianstreifen();
 }

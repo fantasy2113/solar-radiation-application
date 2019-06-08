@@ -14,7 +14,7 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 @RestController
-public class IrrController extends AppController {
+public final class IrrController extends AppController {
 
     private final ISolIrrExporter solIrrExp;
     private final ISolIrrRepository solIrrRep;
@@ -46,13 +46,7 @@ public class IrrController extends AppController {
         if (!isAccess(token)) {
             return;
         }
-        IrrRequest irrRequest = new IrrRequest();
-        irrRequest.setLat(lat);
-        irrRequest.setLon(lon);
-        irrRequest.setAe(ae);
-        irrRequest.setYe(ye);
-        irrRequest.setYear(year);
-        initExcelExport(response, "umrechnung_", getSolIrrExps(irrRequest), solIrrExp.getProps(), solIrrExp.getHeaders());
+        initExcelExport(response, "umrechnung_", getSolIrrExps(new IrrRequest(lat, lon, year, ae, ye)), solIrrExp.getProps(), solIrrExp.getHeaders());
     }
 
     private LinkedList<SolIrrExp> getSolIrrExps(final IrrRequest req) {

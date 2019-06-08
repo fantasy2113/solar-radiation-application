@@ -9,12 +9,12 @@ function getToken(path, username, password) {
         },
         url: getPath() + path,
         method: 'GET',
-        dataType: "text",
+        dataType: "json",
         success: function (result) {
-            if (path === 'create_user' && result === 'create_failed') {
+            if (path === 'create_user' && result.error) {
                 $("#alert").append('<b>' + ERROR_MSG + '</b>');
-            } else {
-                document.cookie = 'token=' + result + ';app=' + 'rad' + ';';
+            } else if (result.authorized) {
+                document.cookie = 'token=' + result.token + ';app=' + 'rad' + ';';
                 $(location).attr('href', getPath());
             }
         }
@@ -40,16 +40,14 @@ jQuery(document).ready(function () {
                     request.setRequestHeader('login', $('input[id=username]').val());
                     request.setRequestHeader('password', $('input[id=password]').val());
                 },
-                url: getPath() + 'check',
+                url: getPath() + 'authentication',
                 method: 'GET',
-                dataType: "text",
+                dataType: "json",
                 success: function (result) {
-                    if (result === 'unauthorized') {
+                    if (!result.authorized) {
                         $("#alert").append('<b>' + 'Passwort oder Benutzername falsch' + '</b>');
-                    } else if (result === 'authorized') {
-                        getToken('token', username, password);
                     } else {
-                        $("#alert").append('<b>' + ERROR_MSG + '</b>');
+                        getToken('token', username, password);
                     }
                 }
             });

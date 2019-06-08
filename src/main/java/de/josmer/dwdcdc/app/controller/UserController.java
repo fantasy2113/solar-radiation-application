@@ -1,5 +1,6 @@
 package de.josmer.dwdcdc.app.controller;
 
+import de.josmer.dwdcdc.app.controller.web.WebToken;
 import de.josmer.dwdcdc.app.entities.User;
 import de.josmer.dwdcdc.app.interfaces.IJwtToken;
 import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
@@ -7,7 +8,6 @@ import de.josmer.dwdcdc.app.interfaces.IUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,15 +23,20 @@ public final class UserController extends Controller {
         super(userRep, jwtToken, userBCrypt);
     }
 
-    @GetMapping(value = "/create_user", produces = MediaType.TEXT_HTML_VALUE)
-    public String createUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+    @GetMapping(value = "/create_user")
+    public WebToken createUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+        WebToken webToken = new WebToken();
         if (!isParameter(login, password) && userRep.get(login).isEmpty()) {
             Optional<User> optionalUser = getCreatedUser(login, password);
             if (optionalUser.isPresent() && optionalUser.get().isActive()) {
-                return jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), TTL_MILLIS);
+                webToken.setToken(jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), TTL_MILLIS));
+                webToken.setSecret(jwtToken.getSecretKey());
+                webToken.setAuthorized(true);
+                return webToken;
             }
         }
-        return "create_failed";
+        webToken.setError(true);
+        return webToken;
     }
 
     private Optional<User> getCreatedUser(String username, String password) {
