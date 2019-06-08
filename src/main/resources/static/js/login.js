@@ -1,7 +1,9 @@
-var ERROR_MSG = 'Etwas ist schief gelaufen';
+var ERROR_MSG_1 = 'Etwas ist schief gelaufen';
+var ERROR_MSG_2 = 'Bitte Passwort UND Benutzername eingeben';
+var ERROR_MSG_3 = 'Passwort oder Benutzername falsch';
+var ERROR_MSG_4 = 'Benutzer existiert bereits';
 
-function getToken(path, username, password) {
-    clear();
+function getToken(username, password, path) {
     $.ajax({
         beforeSend: function (request) {
             request.setRequestHeader('login', username);
@@ -12,13 +14,28 @@ function getToken(path, username, password) {
         dataType: "json",
         success: function (result) {
             if (path === 'create_user' && result.error) {
-                $("#alert").append('<b>' + ERROR_MSG + '</b>');
+                $("#alert").append('<b>' + ERROR_MSG_1 + '</b>');
+            } else if (path === 'create_user' && result.userError) {
+                $("#alert").append('<b>' + ERROR_MSG_4 + '</b>');
+            } else if (!result.authorized) {
+                $("#alert").append('<b>' + ERROR_MSG_3 + '</b>');
             } else if (result.authorized) {
                 document.cookie = 'token=' + result.token + ';app=' + 'rad' + ';';
                 $(location).attr('href', getPath());
+            } else {
+                $("#alert").append('<b>' + ERROR_MSG_1 + '</b>');
             }
         }
     });
+}
+
+function login(path, username, password) {
+    clear();
+    if (username === '' || password === '' || username === undefined || password === undefined) {
+        $("#alert").append('<b>' + ERROR_MSG_2 + '</b>');
+    } else {
+        getToken(username, password, path);
+    }
 }
 
 function clear() {
@@ -29,38 +46,12 @@ function clear() {
 jQuery(document).ready(function () {
     var login_button = jQuery('#login_button');
     login_button.bind('click', function () {
-        clear();
-        var password = $('input[id=password]').val();
-        var username = $('input[id=username]').val();
-        if (username === '' || password === '') {
-            $("#alert").append('<b>' + 'Bitte Passwort UND Benutzername eingeben' + '</b>');
-        } else {
-            $.ajax({
-                beforeSend: function (request) {
-                    request.setRequestHeader('login', $('input[id=username]').val());
-                    request.setRequestHeader('password', $('input[id=password]').val());
-                },
-                url: getPath() + 'authentication',
-                method: 'GET',
-                dataType: "json",
-                success: function (result) {
-                    if (!result.authorized) {
-                        $("#alert").append('<b>' + 'Passwort oder Benutzername falsch' + '</b>');
-                    } else {
-                        getToken('token', username, password);
-                    }
-                }
-            });
-        }
-    })
-    ;
+        login('token', $('input[id=username]').val(), $('input[id=password]').val());
+    });
 
     var create_button = jQuery('#create_button');
     create_button.bind('click', function () {
-        clear();
-        var password = $('input[id=password]').val();
-        var username = $('input[id=username]').val();
-        getToken('create_user', username, password);
+        login('create_user', $('input[id=username]').val(), $('input[id=password]').val());
     });
 
 
@@ -73,5 +64,4 @@ jQuery(document).ready(function () {
     password_input.bind('change', function () {
         clear();
     });
-})
-;
+});

@@ -5,12 +5,14 @@ public final class WebToken {
     private String token;
     private boolean authorized;
     private boolean error;
+    private boolean userError;
 
     public WebToken() {
         this.secret = "";
         this.token = "";
         this.authorized = false;
         this.error = false;
+        this.userError = false;
     }
 
     public String getSecret() {
@@ -43,5 +45,13 @@ public final class WebToken {
 
     public void setError(boolean error) {
         this.error = error;
+    }
+
+    public boolean isUserError() {
+        return userError;
+    }
+
+    public void setUserError(boolean userError) {
+        this.userError = userError;
     }
 }
