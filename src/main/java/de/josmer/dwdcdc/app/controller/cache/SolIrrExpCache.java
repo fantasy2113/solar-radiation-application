@@ -30,7 +30,7 @@ public class SolIrrExpCache implements ISolIrrExpCache {
     }
 
     private void cleaning() {
-        if (computedSolIrrExps.size() > LIMIT) {
+        if (computedSolIrrExps.size() >= LIMIT) {
             computedSolIrrExps.remove(computedSolIrrExps.keys().nextElement());
         }
     }
