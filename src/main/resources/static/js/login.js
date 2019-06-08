@@ -13,7 +13,7 @@ function getToken(path, username, password) {
         success: function (result) {
             if (path === 'create_user' && result.error) {
                 $("#alert").append('<b>' + ERROR_MSG + '</b>');
-            } else {
+            } else if (result.authorized) {
                 document.cookie = 'token=' + result.token + ';app=' + 'rad' + ';';
                 $(location).attr('href', getPath());
             }
