@@ -1,5 +1,6 @@
 package de.josmer.dwdcdc.app.controller;
 
+import de.josmer.dwdcdc.app.controller.web.WebToken;
 import de.josmer.dwdcdc.app.entities.User;
 import de.josmer.dwdcdc.app.interfaces.IJwtToken;
 import de.josmer.dwdcdc.app.interfaces.IUserRepository;
@@ -51,8 +52,8 @@ public class TokenControllerTest {
         headers.add("login", "admin");
         headers.add("password", System.getenv("APP_ADMIN_PASSWORD"));
         final String token = jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), Controller.TTL_MILLIS);
-        ResponseEntity<String> response = template.exchange(base.toString(), HttpMethod.GET, new HttpEntity<>(headers), String.class);
-        Claims decode = jwtToken.decode(response.getBody());
+        ResponseEntity<WebToken> response = template.exchange(base.toString(), HttpMethod.GET, new HttpEntity<>(headers), WebToken.class);
+        Claims decode = jwtToken.decode(response.getBody().getToken());
 
         assertEquals(optionalUser.get().getId(), (int) Integer.valueOf(decode.getId()));
         assertEquals(optionalUser.get().getUsername(), decode.getSubject());
