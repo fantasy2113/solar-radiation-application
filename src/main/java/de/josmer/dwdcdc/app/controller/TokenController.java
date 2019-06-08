@@ -1,5 +1,6 @@
 package de.josmer.dwdcdc.app.controller;
 
+import de.josmer.dwdcdc.app.controller.web.WebToken;
 import de.josmer.dwdcdc.app.entities.User;
 import de.josmer.dwdcdc.app.interfaces.IJwtToken;
 import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
@@ -7,7 +8,6 @@ import de.josmer.dwdcdc.app.interfaces.IUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,27 +23,32 @@ public final class TokenController extends Controller {
         super(userRep, jwtToken, userBCrypt);
     }
 
-    @GetMapping(value = "/token", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String getToken(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+    @GetMapping(value = "/token")
+    public WebToken getToken(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+        WebToken webToken = new WebToken();
         final Optional<User> optionalUser = userRep.get(login);
         if (optionalUser.isPresent() && check(password, optionalUser.get())) {
             userRep.updateLastLogin(optionalUser.get());
             LOGGER.info("login successful: " + login);
-            return initToken(optionalUser.get());
+            webToken.setToken(initToken(optionalUser.get()));
+            webToken.setSecret(jwtToken.getSecretKey());
+            webToken.setAuthorized(true);
+            return webToken;
         }
         LOGGER.info("login failed");
-        return "";
+        return webToken;
     }
 
-    @GetMapping(value = "/check", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String check(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+    @GetMapping(value = "/authentication")
+    public WebToken authentication(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
+        WebToken webToken = new WebToken();
         final Optional<User> optionalUser = userRep.get(login);
         if (optionalUser.isPresent() && check(password, optionalUser.get())) {
             LOGGER.info("check successful: " + login);
-            return "authorized";
+            webToken.setAuthorized(true);
         }
         LOGGER.info("check failed");
-        return "unauthorized";
+        return webToken;
     }
 
     private boolean check(String password, User user) {
