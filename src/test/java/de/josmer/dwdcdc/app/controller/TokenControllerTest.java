@@ -27,12 +27,9 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TokenControllerTest {
-
     @LocalServerPort
     private int port;
-
     private URL base;
-
     @Autowired
     private TestRestTemplate template;
     @Autowired
