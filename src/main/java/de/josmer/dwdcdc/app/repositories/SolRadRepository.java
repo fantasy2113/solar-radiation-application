@@ -112,12 +112,12 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
-    public long getNumberOfRadiations() {
+    public int getNumberOfRadiations() {
         try (Connection con = getConnection();
              Statement st = con.createStatement();
              ResultSet rs = st.executeQuery("SELECT reltuples::BIGINT AS estimate FROM pg_class WHERE relname='radiation';")) {
             if (rs.next()) {
-                return rs.getLong(1);
+                return (int) rs.getLong(1);
             }
         } catch (SQLException | URISyntaxException e) {
             LOGGER.info(e.getMessage());

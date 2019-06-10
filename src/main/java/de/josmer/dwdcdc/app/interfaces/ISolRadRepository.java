@@ -12,5 +12,5 @@ public interface ISolRadRepository extends IBasicSolRad {
 
     LinkedList<SolRad> find(int startDate, int endDate, SolRadTypes solRadTypes, double lon, double lat);
 
-    long getNumberOfRadiations();
+    int getNumberOfRadiations();
 }

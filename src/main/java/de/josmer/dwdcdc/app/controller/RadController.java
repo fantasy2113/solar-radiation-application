@@ -1,10 +1,10 @@
 package de.josmer.dwdcdc.app.controller;
 
 import de.josmer.dwdcdc.app.controller.requests.RadRequest;
+import de.josmer.dwdcdc.app.controller.web.WebInfo;
 import de.josmer.dwdcdc.app.entities.SolRadExp;
 import de.josmer.dwdcdc.app.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,12 +48,14 @@ public final class RadController extends AppController {
                 req.getLat()), req.getLon(), req.getLat());
     }
 
-    @GetMapping(value = "/number_of_rad", produces = MediaType.TEXT_PLAIN_VALUE)
-    public String getNumberOfRad(@CookieValue("token") final String token) {
+    @GetMapping(value = "/number_of_rad")
+    public WebInfo getNumberOfRad(@CookieValue("token") final String token) {
+        WebInfo webInfo = new WebInfo();
         LOGGER.info("get - number_of_rad");
         if (!isAccess(token)) {
-            return "0";
+            return webInfo;
         }
-        return Long.toString(solRadRep.getNumberOfRadiations());
+        webInfo.setNumberOfRad(solRadRep.getNumberOfRadiations());
+        return webInfo;
     }
 }

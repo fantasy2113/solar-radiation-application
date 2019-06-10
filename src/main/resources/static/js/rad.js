@@ -10,9 +10,9 @@ jQuery(document).ready(function () {
         },
         url: getPath() + 'number_of_rad',
         method: 'GET',
-        dataType: "text",
-        success: function (rows) {
-            $('#rows').append('<b>Datenanzahl: </b>' + rows);
+        dataType: "json",
+        success: function (result) {
+            $('#rows').append('<b>Datenanzahl: </b>' + result.numberOfRad);
         }
     });
 
@@ -87,8 +87,8 @@ jQuery(document).ready(function () {
 
 function getExportRadQuery() {
     return 'startDate=' + $('input[id=start_date]').val() + '&endDate=' + $('input[id=end_date]').val()
-            + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
-            + '&type=' + $('#type_select option:selected').text().replace("-", "#");
+        + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
+        + '&type=' + $('#type_select option:selected').text().replace("-", "#");
 }
 
 function initDateInputs(startYear) {
