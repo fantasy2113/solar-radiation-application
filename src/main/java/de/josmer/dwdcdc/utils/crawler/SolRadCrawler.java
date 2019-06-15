@@ -45,7 +45,7 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
         String targetFile = null;
         try {
             final String dateAsString = getDate(year, month);
-            int dateAsInt = Integer.valueOf(dateAsString);
+            final int dateAsInt = Integer.valueOf(dateAsString);
             if (basicSolRad.isAlreadyExist(dateAsInt, solRadType)) {
                 LOGGER.info("month already exists");
                 return;
