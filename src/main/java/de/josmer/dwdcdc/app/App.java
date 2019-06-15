@@ -18,6 +18,7 @@ import java.util.Arrays;
 @SpringBootApplication
 public class App {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class.getName());
+    public static boolean isTest = false;
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
@@ -25,6 +26,9 @@ public class App {
 
     @Bean
     public void startInsertHandler() {
+        if (App.isTest) {
+            return;
+        }
         new SolRadInsertHandler(
                 Context.getCrawler(Beans.CRAWLER_GLOBAL),
                 Context.getBean(SolRadRepository.class),

@@ -1,11 +1,13 @@
 package de.josmer.dwdcdc.app.controller;
 
+import de.josmer.dwdcdc.app.App;
 import de.josmer.dwdcdc.app.controller.web.WebToken;
 import de.josmer.dwdcdc.app.entities.User;
 import de.josmer.dwdcdc.app.interfaces.IJwtToken;
 import de.josmer.dwdcdc.app.interfaces.IUserRepository;
 import io.jsonwebtoken.Claims;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,11 @@ public class TokenControllerTest {
     private IUserRepository userRepository;
     @Autowired
     private IJwtToken jwtToken;
+
+    @BeforeClass
+    public void setUpClass() throws Exception {
+        App.isTest = true;
+    }
 
     @Before
     public void setUp() throws Exception {
