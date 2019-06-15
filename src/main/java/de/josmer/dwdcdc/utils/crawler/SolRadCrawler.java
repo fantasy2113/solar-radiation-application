@@ -42,21 +42,22 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
 
     @Override
     public void insert(IBasicSolRad basicSolRad, IDataReader fileReader, int month, int year) {
-        String currentTargetFile = null;
+        String targetFile = null;
         try {
-            final String date = getDate(year, month);
-            if (basicSolRad.isAlreadyExist(Integer.valueOf(date), solRadType)) {
+            final String dateAsString = getDate(year, month);
+            int dateAsInt = Integer.valueOf(dateAsString);
+            if (basicSolRad.isAlreadyExist(dateAsInt, solRadType)) {
                 LOGGER.info("month already exists");
                 return;
             }
-            currentTargetFile = getCurrentTargetFile(getDate(year, month));
-            download(year, month, currentTargetFile);
-            unzip(currentTargetFile);
-            insertRadiation(basicSolRad, fileReader, year, month, currentTargetFile);
+            targetFile = getCurrentTargetFile(dateAsString);
+            download(targetFile);
+            unzip(targetFile);
+            insertRadiation(basicSolRad, fileReader, dateAsInt, targetFile);
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         } finally {
-            delete(currentTargetFile);
+            delete(targetFile);
         }
     }
 
@@ -69,17 +70,17 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
         return templateTargetFile.replace("{date}", date);
     }
 
-    private void download(int month, int year, String currentTargetFile) throws Exception {
-        URL url = new URL(getUrl(currentTargetFile));
+    private void download(String targetFile) throws Exception {
+        URL url = new URL(getUrl(targetFile));
         URLConnection connection = url.openConnection();
         InputStream inputStream = connection.getInputStream();
-        inputStream.transferTo(new FileOutputStream(getPathnameZip(currentTargetFile)));
+        inputStream.transferTo(new FileOutputStream(getPathnameZip(targetFile)));
     }
 
-    private void unzip(String currentTargetFile) throws Exception {
+    private void unzip(String targetFile) throws Exception {
         File destDir = new File(targetDir);
         byte[] buffer = new byte[1024];
-        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip(currentTargetFile)))) {
+        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(getPathnameZip(targetFile)))) {
             ZipEntry zipEntry = zipInputStream.getNextEntry();
             while (zipEntry != null) {
                 File file = new File(destDir, zipEntry.getName());
@@ -95,28 +96,28 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
         }
     }
 
-    private void insertRadiation(IBasicSolRad basicSolRad, IDataReader fileReader, int month, int year, String currentTargetFile) throws Exception {
-        basicSolRad.save(getSolRads(fileReader, month, year, currentTargetFile));
+    private void insertRadiation(IBasicSolRad basicSolRad, IDataReader fileReader, int dateAsInt, String targetFile) throws Exception {
+        basicSolRad.save(getSolRads(fileReader, dateAsInt, targetFile));
     }
 
-    private void delete(String currentTargetFile) {
+    private void delete(String targetFile) {
         try {
-            Files.delete(Path.of(getPathnameZip(currentTargetFile)));
-            Files.delete(Path.of(getPathnameAsc(currentTargetFile)));
+            Files.delete(Path.of(getPathnameZip(targetFile)));
+            Files.delete(Path.of(getPathnameAsc(targetFile)));
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
     }
 
-    private LinkedList<ISolRad> getSolRads(IDataReader fileReader, int month, int year, String currentTargetFile) throws Exception {
+    private LinkedList<ISolRad> getSolRads(IDataReader fileReader, int dateAsInt, String targetFile) throws Exception {
         LinkedList<ISolRad> solRads = new LinkedList<>();
-        final String[] rows = getColumns(fileReader.getDataAsString(getPathnameAsc(currentTargetFile)), "\\r\\n");
+        final String[] rows = getColumns(fileReader.getDataAsString(getPathnameAsc(targetFile)), "\\r\\n");
         rightVersionGuard(rows[2]);
         int gkh = 5237500;
         for (int rowIndex = getLastRowIndex(rows); rowIndex >= 28; rowIndex--) {
             int gkr = 3280500;
             for (String column : getColumns(rows[rowIndex], " ")) {
-                solRads.add(initSolRad(gkh, gkr, column, month, year));
+                solRads.add(initSolRad(gkh, gkr, column, dateAsInt));
                 gkr = increment(gkr);
             }
             gkh = increment(gkh);
@@ -147,11 +148,11 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
         return version.equals("Datensatz_Version=V003") || version.equals("Datensatz_Version=V0.3");
     }
 
-    private ISolRad initSolRad(int gkh, int gkr, String column, int month, int year) throws Exception {
+    private ISolRad initSolRad(int gkh, int gkr, String column, int dateAsInt) throws Exception {
         ISolRad solRad = solRadClass.getDeclaredConstructor().newInstance();
         solRad.setRadiationValue(Float.parseFloat(column));
         solRad.setRadiationType(solRadType.name());
-        solRad.setRadiationDate(Integer.valueOf(getDate(year, month)));
+        solRad.setRadiationDate(dateAsInt);
         solRad.setGkhMin(gkh);
         solRad.setGkhMax(gkh + 1000);
         solRad.setGkrMin(gkr);
@@ -159,7 +160,7 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
         return solRad;
     }
 
-    private String getDate(final Integer year, final Integer month) {
+    private String getDate(final int year, final Integer month) {
         StringBuilder date = new StringBuilder();
         date.append(year);
         if (month.toString().length() == 2) {
@@ -176,15 +177,15 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
         return this.solRadType.name().toLowerCase(Locale.ENGLISH);
     }
 
-    private String getUrl(String currentTargetFile) {
-        return targetUrl + currentTargetFile;
+    private String getUrl(String targetFile) {
+        return targetUrl + targetFile;
     }
 
-    private String getPathnameZip(String currentTargetFile) {
-        return targetDir + currentTargetFile;
+    private String getPathnameZip(String targetFile) {
+        return targetDir + targetFile;
     }
 
-    private String getPathnameAsc(String currentTargetFile) {
-        return targetDir + currentTargetFile.replace(".zip", ".asc");
+    private String getPathnameAsc(String targetFile) {
+        return targetDir + targetFile.replace(".zip", ".asc");
     }
 }
