@@ -59,6 +59,7 @@ public final class SolRadInsertHandler implements IHandler {
             } else {
                 tokenService.execute(this);
             }
+            LOGGER.info(solRadCrawler.getSolRadType() + " - start");
         } catch (Exception e) {
             LOGGER.info(e.getMessage());
         }
