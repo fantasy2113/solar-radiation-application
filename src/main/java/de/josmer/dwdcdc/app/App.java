@@ -1,10 +1,8 @@
 package de.josmer.dwdcdc.app;
 
-import de.josmer.dwdcdc.app.entities.SolRad;
 import de.josmer.dwdcdc.app.repositories.SolRadRepository;
-import de.josmer.dwdcdc.app.utils.AppContext;
+import de.josmer.dwdcdc.app.spring.AppContext;
 import de.josmer.dwdcdc.app.utils.FileReader;
-import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.handler.SolRadInsertHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,24 +22,27 @@ public class App {
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-        startInsertHandler();
     }
 
-    private static void startInsertHandler() {
-        new SolRadInsertHandler<>(SolRadTypes.GLOBAL, SolRad.class,
+    @Bean
+    public void startInsertHandler() {
+        new SolRadInsertHandler(
+                AppContext.getCrawler("crawlerGlobal"),
                 AppContext.get(SolRadRepository.class),
-                AppContext.get(FileReader.class))
-                .start();
+                AppContext.get(FileReader.class)
+        ).start();
 
-        new SolRadInsertHandler<>(SolRadTypes.DIFFUSE, SolRad.class,
+        new SolRadInsertHandler(
+                AppContext.getCrawler("crawlerDirect"),
                 AppContext.get(SolRadRepository.class),
-                AppContext.get(FileReader.class))
-                .start();
+                AppContext.get(FileReader.class)
+        ).start();
 
-        new SolRadInsertHandler<>(SolRadTypes.DIRECT, SolRad.class,
+        new SolRadInsertHandler(
+                AppContext.getCrawler("crawlerDiffuse"),
                 AppContext.get(SolRadRepository.class),
-                AppContext.get(FileReader.class))
-                .start();
+                AppContext.get(FileReader.class)
+        ).start();
     }
 
     @Bean

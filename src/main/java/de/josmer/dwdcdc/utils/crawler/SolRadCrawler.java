@@ -29,24 +29,24 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
     private final String targetDir;
     private final SolRadTypes solRadType;
     private final Class<T> solRadClass;
-    private final int month;
-    private final int year;
+    private int month;
+    private int year;
     private String currentTargetFile;
 
-    public SolRadCrawler(SolRadTypes solRadType, Class<T> solRadClass, int month, int year) {
+    public SolRadCrawler(SolRadTypes solRadType, Class<T> solRadClass) {
         this.solRadType = solRadType;
         this.templateTargetFile = "grids_germany_monthly_radiation_{radiation}_{date}.zip"
-                .replace("{radiation}", getSolRadType());
+                .replace("{radiation}", getSolRadTypeAsString());
         this.targetUrl = "ftp://ftp-cdc.dwd.de/pub/CDC/grids_germany/monthly/radiation_{radiation}/"
-                .replace("{radiation}", getSolRadType());
+                .replace("{radiation}", getSolRadTypeAsString());
         this.targetDir = "./temp/";
-        this.month = month;
-        this.year = year;
         this.solRadClass = solRadClass;
     }
 
     @Override
-    public void insert(IBasicSolRad basicSolRad, IDataReader fileReader) {
+    public void insert(IBasicSolRad basicSolRad, IDataReader fileReader, int month, int year) {
+        this.month = month;
+        this.year = year;
         try {
             if (basicSolRad.isAlreadyExist(Integer.valueOf(getDate(year, month)), solRadType)) {
                 LOGGER.info("month already exists");
@@ -60,6 +60,11 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
         } finally {
             delete();
         }
+    }
+
+    @Override
+    public SolRadTypes getSolRadType() {
+        return this.solRadType;
     }
 
     private void setCurrentTargetFile(final String date) {
@@ -92,7 +97,6 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
             zipInputStream.closeEntry();
         }
     }
-
 
     private void insertRadiation(IBasicSolRad basicSolRad, IDataReader fileReader) throws Exception {
         basicSolRad.save(getSolRads(fileReader));
@@ -171,7 +175,7 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
     }
 
 
-    private String getSolRadType() {
+    private String getSolRadTypeAsString() {
         return this.solRadType.name().toLowerCase(Locale.ENGLISH);
     }
 

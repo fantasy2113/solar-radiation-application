@@ -1,5 +1,6 @@
-package de.josmer.dwdcdc.app.utils;
+package de.josmer.dwdcdc.app.spring;
 
+import de.josmer.dwdcdc.utils.interfaces.ISolRadCrawler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -14,14 +15,17 @@ public class AppContext implements ApplicationContextAware {
         return context.getBean(beanClass);
     }
 
-    public static Object getBean(String beanName) {
+    public static Object get(String beanName) {
         return context.getBean(beanName);
+    }
+
+    public static ISolRadCrawler getCrawler(String beanName) {
+        return (ISolRadCrawler) context.getBean(beanName);
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         context = applicationContext;
     }
-
 }
 
