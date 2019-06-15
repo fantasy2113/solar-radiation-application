@@ -40,7 +40,7 @@ public class TokenControllerTest {
     private IJwtToken jwtToken;
 
     @BeforeClass
-    public void setUpClass() throws Exception {
+    public static void setUpClass() throws Exception {
         App.isTest = true;
     }
 
