@@ -27,7 +27,7 @@ public final class RadController extends AppController {
     public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate,
                           @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat,
                           @RequestParam("type") final String type) throws Exception {
-        LOGGER.info("get - export_rad");
+        LOGGER.info("getBean - export_rad");
         if (!isAccess(token)) {
             return;
         }
@@ -36,7 +36,7 @@ public final class RadController extends AppController {
 
     @GetMapping("/rad")
     public LinkedList<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
-        LOGGER.info("get - rad");
+        LOGGER.info("getBean - rad");
         if (!isAccess(token)) {
             return new LinkedList<>();
         }
@@ -51,7 +51,7 @@ public final class RadController extends AppController {
     @GetMapping(value = "/number_of_rad")
     public WebInfo getNumberOfRad(@CookieValue("token") final String token) {
         WebInfo webInfo = new WebInfo();
-        LOGGER.info("get - number_of_rad");
+        LOGGER.info("getBean - number_of_rad");
         if (!isAccess(token)) {
             return webInfo;
         }

@@ -3,7 +3,6 @@ package de.josmer.dwdcdc.utils.handler;
 import de.josmer.dwdcdc.app.interfaces.ISolRadRepository;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.interfaces.IDataReader;
-import de.josmer.dwdcdc.utils.interfaces.ISolRad;
 import de.josmer.dwdcdc.utils.interfaces.ISolRadCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,16 +16,18 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-public final class SolRadInsertHandler<T extends ISolRad> implements Runnable {
+public final class SolRadInsertHandler implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(SolRadInsertHandler.class.getName());
     private final ISolRadRepository solRadRepository;
     private final IDataReader fileReader;
     private final ISolRadCrawler solRadCrawler;
+    private boolean isStart;
 
     public SolRadInsertHandler(ISolRadCrawler solRadCrawler, ISolRadRepository solRadRepository, IDataReader fileReader) {
         this.solRadCrawler = solRadCrawler;
         this.solRadRepository = solRadRepository;
         this.fileReader = fileReader;
+        this.isStart = false;
     }
 
     @Override
@@ -43,7 +44,12 @@ public final class SolRadInsertHandler<T extends ISolRad> implements Runnable {
     }
 
     public void start() {
+        if (isStart) {
+            return;
+        }
+
         try {
+            isStart = true;
             ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
             long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
             if (System.getenv("INSERT_ALL") == null) {

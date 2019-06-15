@@ -1,7 +1,8 @@
 package de.josmer.dwdcdc.app;
 
 import de.josmer.dwdcdc.app.repositories.SolRadRepository;
-import de.josmer.dwdcdc.app.spring.AppContext;
+import de.josmer.dwdcdc.app.spring.Beans;
+import de.josmer.dwdcdc.app.spring.Context;
 import de.josmer.dwdcdc.app.utils.FileReader;
 import de.josmer.dwdcdc.utils.handler.SolRadInsertHandler;
 import org.slf4j.Logger;
@@ -27,21 +28,21 @@ public class App {
     @Bean
     public void startInsertHandler() {
         new SolRadInsertHandler(
-                AppContext.getCrawler("crawlerGlobal"),
-                AppContext.get(SolRadRepository.class),
-                AppContext.get(FileReader.class)
+                Context.getCrawler(Beans.CRAWLER_GLOBAL),
+                Context.getBean(SolRadRepository.class),
+                Context.getBean(FileReader.class)
         ).start();
 
         new SolRadInsertHandler(
-                AppContext.getCrawler("crawlerDirect"),
-                AppContext.get(SolRadRepository.class),
-                AppContext.get(FileReader.class)
+                Context.getCrawler(Beans.CRAWLER_DIRECT),
+                Context.getBean(SolRadRepository.class),
+                Context.getBean(FileReader.class)
         ).start();
 
         new SolRadInsertHandler(
-                AppContext.getCrawler("crawlerDiffuse"),
-                AppContext.get(SolRadRepository.class),
-                AppContext.get(FileReader.class)
+                Context.getCrawler(Beans.CRAWLER_DIFFUSE),
+                Context.getBean(SolRadRepository.class),
+                Context.getBean(FileReader.class)
         ).start();
     }
 

@@ -7,15 +7,15 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AppContext implements ApplicationContextAware {
+public class Context implements ApplicationContextAware {
 
     private static ApplicationContext context;
 
-    public static <T> T get(Class<T> beanClass) {
+    public static <T> T getBean(Class<T> beanClass) {
         return context.getBean(beanClass);
     }
 
-    public static Object get(String beanName) {
+    public static Object getBean(String beanName) {
         return context.getBean(beanName);
     }
 
