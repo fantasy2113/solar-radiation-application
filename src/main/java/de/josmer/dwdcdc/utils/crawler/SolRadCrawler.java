@@ -55,7 +55,7 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
             unzip(targetFile);
             insertRadiation(basicSolRad, fileReader, dateAsInt, targetFile);
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         } finally {
             delete(targetFile);
         }
@@ -105,7 +105,7 @@ public final class SolRadCrawler<T extends ISolRad> implements ISolRadCrawler {
             Files.delete(Path.of(getPathnameZip(targetFile)));
             Files.delete(Path.of(getPathnameAsc(targetFile)));
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
     }
 

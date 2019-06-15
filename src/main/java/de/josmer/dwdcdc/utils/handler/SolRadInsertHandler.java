@@ -40,7 +40,7 @@ public final class SolRadInsertHandler implements IHandler {
                 insertAll();
             }
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
     }
 
@@ -61,7 +61,7 @@ public final class SolRadInsertHandler implements IHandler {
             }
             LOGGER.info(solRadCrawler.getSolRadType() + " - start");
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
     }
 
@@ -95,7 +95,7 @@ public final class SolRadInsertHandler implements IHandler {
                 solRadCrawler.insert(solRadRepository, fileReader, month, year);
             }
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
     }
 

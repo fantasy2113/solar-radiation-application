@@ -56,7 +56,7 @@ public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements
 
             exports.add(exportCalc);
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
         return exports;
     }

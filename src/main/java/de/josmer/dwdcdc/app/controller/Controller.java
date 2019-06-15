@@ -34,7 +34,7 @@ abstract class Controller {
             Optional<User> userOptional = userRep.get(Integer.valueOf(jwtToken.decode(token).getId()));
             return userOptional.isPresent() && userOptional.get().isActive();
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
         return false;
     }

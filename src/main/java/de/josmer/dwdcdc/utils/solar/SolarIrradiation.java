@@ -40,7 +40,7 @@ public final class SolarIrradiation {
         try {
             IntStream.range(0, limit).sequential().mapToObj(this::computeMonth).collect(Collectors.toList()).forEach(this::insertComputedMonth);
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
     }
 
@@ -53,7 +53,7 @@ public final class SolarIrradiation {
         try {
             IntStream.range(0, limit).parallel().mapToObj(this::computeMonth).collect(Collectors.toList()).forEach(this::insertComputedMonth);
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
     }
 

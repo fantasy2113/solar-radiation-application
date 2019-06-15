@@ -41,7 +41,7 @@ public final class ViewController extends Controller {
                 return chooseHtml(webCookie.getApp());
             }
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
         LOGGER.info("return - login");
         return loginHtml;

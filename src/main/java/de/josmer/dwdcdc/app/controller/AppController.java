@@ -30,7 +30,7 @@ abstract class AppController extends Controller {
         try {
             return Integer.valueOf(date.replace("-", "").replace("#", ""));
         } catch (NumberFormatException e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
             return 0;
         }
     }
