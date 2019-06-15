@@ -26,14 +26,22 @@ public final class SolIrrRepository implements ISolIrrRepository {
         for (int monthIndex = 0; monthIndex < 12; monthIndex++) {
             if (isAdd(computedYear, monthIndex)) {
                 SolIrr solIrr = new SolIrr();
-                solIrr.seteGlobHor(computedYear.getMonthHor(monthIndex) / 1000);
-                solIrr.seteGlobGen(computedYear.getMonthInc(monthIndex) / 1000);
+                solIrr.seteGlobHor(toKiloWatt(computedYear.getMonthHor(monthIndex)));
+                solIrr.seteGlobGen(toKiloWatt(computedYear.getMonthInc(monthIndex)));
                 solIrr.setAe(ae);
                 solIrr.setYe(ye);
-                solIrr.setCalculatedDate(getDate(year, (monthIndex + 1)));
+                solIrr.setCalculatedDate(getDate(year, toMonth(monthIndex)));
                 irradiation.add(solIrr);
             }
         }
+    }
+
+    private int toMonth(int monthIndex) {
+        return monthIndex + 1;
+    }
+
+    private double toKiloWatt(double monthHor) {
+        return monthHor / 1000;
     }
 
     private boolean isAdd(ComputedYear computedYear, int monthIndex) {
