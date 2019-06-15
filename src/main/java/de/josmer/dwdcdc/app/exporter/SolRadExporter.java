@@ -46,7 +46,7 @@ public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements
             addSum(solRadExps, avgSum / sumCnt, export);
 
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
         return solRadExps;
     }

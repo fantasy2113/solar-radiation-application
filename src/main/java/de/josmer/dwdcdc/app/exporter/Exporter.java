@@ -26,7 +26,7 @@ abstract class Exporter<TOut, TInput> {
         try {
             return date.substring(0, 4) + "-" + date.substring(4);
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
             return "undefined";
         }
     }

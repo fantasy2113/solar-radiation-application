@@ -31,7 +31,7 @@ public final class IrrController extends AppController {
 
     @GetMapping("/irr")
     public LinkedList<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
-        LOGGER.info("get - irr");
+        LOGGER.info("getBean - irr");
         if (!isAccess(token)) {
             return new LinkedList<>();
         }
@@ -42,7 +42,7 @@ public final class IrrController extends AppController {
     public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("year") final int year,
                           @RequestParam("lon") final double lon, @RequestParam("lat") final double lat, @RequestParam("ae") final int ae,
                           @RequestParam("ye") final int ye) throws Exception {
-        LOGGER.info("get - export_irr");
+        LOGGER.info("getBean - export_irr");
         if (!isAccess(token)) {
             return;
         }

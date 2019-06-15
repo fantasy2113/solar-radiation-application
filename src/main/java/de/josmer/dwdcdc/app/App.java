@@ -1,10 +1,9 @@
 package de.josmer.dwdcdc.app;
 
-import de.josmer.dwdcdc.app.entities.SolRad;
 import de.josmer.dwdcdc.app.repositories.SolRadRepository;
-import de.josmer.dwdcdc.app.utils.AppContext;
+import de.josmer.dwdcdc.app.spring.Beans;
+import de.josmer.dwdcdc.app.spring.Context;
 import de.josmer.dwdcdc.app.utils.FileReader;
-import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.handler.SolRadInsertHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,35 +12,40 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.Arrays;
 
-@Configuration
 @SpringBootApplication
 public class App {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class.getName());
+    public static boolean isTest = false;
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-        startInsertHandler();
     }
 
-    private static void startInsertHandler() {
-        new SolRadInsertHandler<>(SolRadTypes.GLOBAL, SolRad.class,
-                AppContext.get(SolRadRepository.class),
-                AppContext.get(FileReader.class))
-                .start();
+    @Bean
+    public void startInsertHandler() {
+        if (App.isTest) {
+            return;
+        }
+        new SolRadInsertHandler(
+                Context.getCrawler(Beans.CRAWLER_GLOBAL),
+                Context.getBean(SolRadRepository.class),
+                Context.getBean(FileReader.class)
+        ).start();
 
-        new SolRadInsertHandler<>(SolRadTypes.DIFFUSE, SolRad.class,
-                AppContext.get(SolRadRepository.class),
-                AppContext.get(FileReader.class))
-                .start();
+        new SolRadInsertHandler(
+                Context.getCrawler(Beans.CRAWLER_DIRECT),
+                Context.getBean(SolRadRepository.class),
+                Context.getBean(FileReader.class)
+        ).start();
 
-        new SolRadInsertHandler<>(SolRadTypes.DIRECT, SolRad.class,
-                AppContext.get(SolRadRepository.class),
-                AppContext.get(FileReader.class))
-                .start();
+        new SolRadInsertHandler(
+                Context.getCrawler(Beans.CRAWLER_DIFFUSE),
+                Context.getBean(SolRadRepository.class),
+                Context.getBean(FileReader.class)
+        ).start();
     }
 
     @Bean

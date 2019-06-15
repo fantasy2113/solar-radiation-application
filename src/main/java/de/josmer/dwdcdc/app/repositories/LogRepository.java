@@ -33,8 +33,8 @@ public final class LogRepository implements ILogRepository {
     private List<String> getLogs(String path) {
         try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.ISO_8859_1)) {
             return lines.collect(Collectors.toList());
-        } catch (IOException ex) {
-            LOGGER.info(ex.getMessage());
+        } catch (IOException e) {
+            LOGGER.info(e.toString());
             return new ArrayList<>();
         }
     }

@@ -40,7 +40,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
                 return rs.next();
             }
         } catch (SQLException | URISyntaxException e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
         return false;
     }
@@ -80,7 +80,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
                 }
             }
         } catch (SQLException | URISyntaxException e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
         return radiations;
     }
@@ -107,7 +107,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
             }
             connection.commit();
         } catch (SQLException | URISyntaxException e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
     }
 
@@ -120,7 +120,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
                 return (int) rs.getLong(1);
             }
         } catch (SQLException | URISyntaxException e) {
-            LOGGER.info(e.getMessage());
+            LOGGER.info(e.toString());
         }
         return -1;
     }
