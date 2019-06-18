@@ -20,19 +20,14 @@ public class SolRadInsertAllHandler extends SolRadHandler {
 
     @Override
     protected void startHandler() {
-        try {
-            started = true;
-            ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
-            tokenService.execute(this);
-            LOGGER.info(solRadCrawler.getSolRadType() + " - start");
-        } catch (Exception e) {
-            LOGGER.info(e.toString());
-        }
+        started = true;
+        ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
+        tokenService.execute(this);
+        LOGGER.info(solRadCrawler.getSolRadType() + " - start");
     }
 
-
     @Override
-    protected void insert() {
+    protected void runInsert() {
         LocalDate localDate = LocalDate.now();
         if (parallel) {
             IntStream.range(getStartYear(), getEndYear(localDate)).parallel().forEach(this::insertYear);
@@ -44,7 +39,7 @@ public class SolRadInsertAllHandler extends SolRadHandler {
     private void insertYear(int year) {
         try {
             for (int month = 1; month < 13; month++) {
-                LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", month, year, solRadCrawler.getSolRadType()));
+                LOGGER.info(MessageFormat.format("try to runInsert: month: {0}, Year: {1} -> {2}", month, year, solRadCrawler.getSolRadType()));
                 solRadCrawler.insert(solRadRepository, fileReader, month, year);
             }
         } catch (Exception e) {

@@ -27,7 +27,7 @@ abstract class SolRadHandler implements IHandler {
     @Override
     public void run() {
         try {
-            insert();
+            runInsert();
         } catch (Exception e) {
             LOGGER.info(e.toString());
         }
@@ -38,10 +38,14 @@ abstract class SolRadHandler implements IHandler {
         if (started) {
             return;
         }
-        startHandler();
+        try {
+            startHandler();
+        } catch (Exception e) {
+            LOGGER.info(e.toString());
+        }
     }
 
-    protected abstract void insert();
+    protected abstract void runInsert();
 
     protected abstract void startHandler();
 

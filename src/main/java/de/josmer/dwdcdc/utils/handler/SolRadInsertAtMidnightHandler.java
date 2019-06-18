@@ -21,21 +21,17 @@ public final class SolRadInsertAtMidnightHandler extends SolRadHandler {
 
     @Override
     protected void startHandler() {
-        try {
-            started = true;
-            ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
-            long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
-            tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
-            LOGGER.info(solRadCrawler.getSolRadType() + " - start");
-        } catch (Exception e) {
-            LOGGER.info(e.toString());
-        }
+        started = true;
+        ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
+        long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
+        tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
+        LOGGER.info(solRadCrawler.getSolRadType() + " - start");
     }
 
     @Override
-    protected void insert() {
+    protected void runInsert() {
         LocalDate localDate = getLocalDate();
-        LOGGER.info(MessageFormat.format("try to insert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), solRadCrawler.getSolRadType()));
+        LOGGER.info(MessageFormat.format("try to runInsert: month: {0}, Year: {1} -> {2}", localDate.getMonth().getValue(), localDate.getYear(), solRadCrawler.getSolRadType()));
         solRadCrawler.insert(solRadRepository, fileReader, localDate.getMonth().getValue(), localDate.getYear());
     }
 }
