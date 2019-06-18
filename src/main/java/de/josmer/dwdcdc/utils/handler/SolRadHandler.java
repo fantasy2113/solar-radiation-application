@@ -15,7 +15,7 @@ abstract class SolRadHandler implements IHandler {
     final ISolRadRepository solRadRepository;
     final IDataReader fileReader;
     final ISolRadCrawler solRadCrawler;
-    boolean started;
+    private boolean started;
 
     SolRadHandler(ISolRadCrawler solRadCrawler, ISolRadRepository solRadRepository, IDataReader fileReader) {
         this.solRadCrawler = solRadCrawler;
@@ -35,10 +35,11 @@ abstract class SolRadHandler implements IHandler {
 
     @Override
     public void start() {
-        if (started) {
+        if (isStarted()) {
             return;
         }
         try {
+            handlerStarted();
             startHandler();
         } catch (Exception e) {
             LOGGER.info(e.toString());
@@ -66,5 +67,13 @@ abstract class SolRadHandler implements IHandler {
             return 1991;
         }
         return 2015;
+    }
+
+    private void handlerStarted() {
+        this.started = true;
+    }
+
+    boolean isStarted() {
+        return started;
     }
 }

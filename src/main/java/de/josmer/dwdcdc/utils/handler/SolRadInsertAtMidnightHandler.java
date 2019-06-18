@@ -16,12 +16,10 @@ public final class SolRadInsertAtMidnightHandler extends SolRadHandler {
 
     public SolRadInsertAtMidnightHandler(ISolRadCrawler solRadCrawler, ISolRadRepository solRadRepository, IDataReader fileReader) {
         super(solRadCrawler, solRadRepository, fileReader);
-        super.started = false;
     }
 
     @Override
     protected void startHandler() {
-        started = true;
         ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
         long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
         tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);

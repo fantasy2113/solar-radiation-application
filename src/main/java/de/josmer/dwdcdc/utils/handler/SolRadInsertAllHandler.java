@@ -20,7 +20,6 @@ public final class SolRadInsertAllHandler extends SolRadHandler {
 
     @Override
     protected void startHandler() {
-        started = true;
         ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
         tokenService.execute(this);
         LOGGER.info(solRadCrawler.getSolRadType() + " - start");
