@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.stream.IntStream;
 
-public class SolRadInsertAllHandler extends SolRadHandler {
+public final class SolRadInsertAllHandler extends SolRadHandler {
     private final boolean parallel;
 
     public SolRadInsertAllHandler(ISolRadCrawler solRadCrawler, ISolRadRepository solRadRepository, IDataReader fileReader, boolean parallel) {
