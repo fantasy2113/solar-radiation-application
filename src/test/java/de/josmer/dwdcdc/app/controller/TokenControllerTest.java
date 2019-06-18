@@ -41,7 +41,7 @@ public class TokenControllerTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        App.isTest = true;
+        App.setTest(true);
     }
 
     @Before
