@@ -23,7 +23,7 @@ public final class SolRadInsertAtMidnightHandler extends SolRadHandler {
         ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
         long midnight = LocalDateTime.now().until(LocalDate.now().plusDays(1).atStartOfDay(), ChronoUnit.MINUTES);
         tokenService.scheduleAtFixedRate(this, midnight, 1440, TimeUnit.MINUTES);
-        LOGGER.info(solRadCrawler.getSolRadType() + " - start");
+        logStart();
     }
 
     @Override

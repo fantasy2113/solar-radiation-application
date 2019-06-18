@@ -22,7 +22,7 @@ public final class SolRadInsertAllHandler extends SolRadHandler {
     protected void startHandler() {
         ScheduledExecutorService tokenService = Executors.newScheduledThreadPool(1);
         tokenService.execute(this);
-        LOGGER.info(solRadCrawler.getSolRadType() + " - start");
+        logStart();
     }
 
     @Override

@@ -69,11 +69,15 @@ abstract class SolRadHandler implements IHandler {
         return 2015;
     }
 
-    private void handlerStarted() {
-        this.started = true;
+    void logStart() {
+        LOGGER.info(solRadCrawler.getSolRadType() + " - started");
     }
 
     boolean isStarted() {
         return started;
+    }
+
+    private void handlerStarted() {
+        this.started = true;
     }
 }
