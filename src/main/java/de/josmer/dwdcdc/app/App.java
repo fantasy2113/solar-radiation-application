@@ -19,7 +19,7 @@ import java.util.Arrays;
 @SpringBootApplication
 public class App {
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class.getName());
-    public static boolean isTest = false;
+    private static boolean test = false;
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
@@ -33,16 +33,8 @@ public class App {
         };
     }
 
-    @Bean
-    public void startInsertHandler() {
-        if (App.isTest) {
-            return;
-        }
-        if (isInsertAll()) {
-            startInsertAllHandler();
-        } else {
-            startInsertAtMidnight();
-        }
+    public static void setTest(boolean test) {
+        App.test = test;
     }
 
     private void startInsertAtMidnight() {
@@ -72,6 +64,18 @@ public class App {
         new SolRadInsertAllHandler(Context.getCrawler(Beans.CRAWLER_DIFFUSE),
                 Context.getBean(SolRadRepository.class),
                 Context.getBean(FileReader.class), parallel).start();
+    }
+
+    @Bean
+    public void startInsertHandler() {
+        if (App.test) {
+            return;
+        }
+        if (isInsertAll()) {
+            startInsertAllHandler();
+        } else {
+            startInsertAtMidnight();
+        }
     }
 
     private boolean isInsertAllParallel() {
