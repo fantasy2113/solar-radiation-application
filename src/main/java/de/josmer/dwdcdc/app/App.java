@@ -4,7 +4,7 @@ import de.josmer.dwdcdc.app.repositories.SolRadRepository;
 import de.josmer.dwdcdc.app.spring.Beans;
 import de.josmer.dwdcdc.app.spring.Context;
 import de.josmer.dwdcdc.app.utils.FileReader;
-import de.josmer.dwdcdc.utils.handler.SolRadInsertHandler;
+import de.josmer.dwdcdc.utils.handler.SolRadInsertAtMidnightHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -29,19 +29,21 @@ public class App {
         if (App.isTest) {
             return;
         }
-        new SolRadInsertHandler(
+        System.getenv("INSERT_ALL").equals("parallel")
+        System.getenv("INSERT_ALL") == null
+        new SolRadInsertAtMidnightHandler(
                 Context.getCrawler(Beans.CRAWLER_GLOBAL),
                 Context.getBean(SolRadRepository.class),
                 Context.getBean(FileReader.class)
         ).start();
 
-        new SolRadInsertHandler(
+        new SolRadInsertAtMidnightHandler(
                 Context.getCrawler(Beans.CRAWLER_DIRECT),
                 Context.getBean(SolRadRepository.class),
                 Context.getBean(FileReader.class)
         ).start();
 
-        new SolRadInsertHandler(
+        new SolRadInsertAtMidnightHandler(
                 Context.getCrawler(Beans.CRAWLER_DIFFUSE),
                 Context.getBean(SolRadRepository.class),
                 Context.getBean(FileReader.class)
