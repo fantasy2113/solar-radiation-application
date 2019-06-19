@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.controller.cache;
 
 import de.josmer.dwdcdc.app.controller.requests.IrrRequest;
+import de.josmer.dwdcdc.app.entities.DbCache;
 import de.josmer.dwdcdc.app.entities.SolIrrExp;
 import de.josmer.dwdcdc.app.interfaces.IDbCacheRepository;
 import de.josmer.dwdcdc.app.interfaces.ISolIrrExpCache;
@@ -21,7 +22,7 @@ public class SolIrrExpDbCache implements ISolIrrExpCache {
 
     @Override
     public void add(IrrRequest irrRequest, LinkedList<SolIrrExp> solIrrExps) {
-
+        dbCacheRepository.save(new DbCache(irrRequest.getKey(), solIrrExps));
     }
 
     @Override

@@ -4,7 +4,12 @@ import java.util.LinkedList;
 
 public class DbCache {
     private String key;
-    private LinkedList<Double> year;
+    private LinkedList<SolIrrExp> year;
+
+    public DbCache(String key, LinkedList<SolIrrExp> year) {
+        this.key = key;
+        this.year = year;
+    }
 
     public DbCache() {
         this.key = "";
