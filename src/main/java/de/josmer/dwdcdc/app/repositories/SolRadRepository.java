@@ -6,8 +6,6 @@ import de.josmer.dwdcdc.utils.enums.SolRadTypes;
 import de.josmer.dwdcdc.utils.geo.GaussKruger;
 import de.josmer.dwdcdc.utils.geo.GkConverter;
 import de.josmer.dwdcdc.utils.interfaces.ISolRad;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
@@ -20,7 +18,6 @@ import java.util.stream.IntStream;
 
 @Component
 public final class SolRadRepository extends Repository<SolRad> implements ISolRadRepository {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SolRadRepository.class.getName());
 
     public SolRadRepository(final String databaseUrl) {
         super(databaseUrl);

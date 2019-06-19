@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 public final class IrrController extends AppController {
-    public static final String CACHE = "SolIrrExpRamCache";
+    private static final String CACHE = "SolIrrExpDbCache";
     private final ISolIrrExporter solIrrExp;
     private final ISolIrrRepository solIrrRep;
     private final ISolIrrExpCache solIrrExpCache;

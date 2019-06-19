@@ -6,16 +6,21 @@ import de.josmer.dwdcdc.app.interfaces.IDbCacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 
 @Component
-public class DbCacheRepository implements IDbCacheRepository {
+public class DbCacheRepository extends Repository<DbCache> implements IDbCacheRepository {
 
-    private final IDbCacheJsonParser dbCacheJsonParser;
+    private final IDbCacheJsonParser parser;
 
     @Autowired
-    public DbCacheRepository(IDbCacheJsonParser dbCacheJsonParser) {
-        this.dbCacheJsonParser = dbCacheJsonParser;
+    public DbCacheRepository(IDbCacheJsonParser parser) {
+        this.parser = parser;
     }
 
     @Override
@@ -25,6 +30,19 @@ public class DbCacheRepository implements IDbCacheRepository {
 
     @Override
     public void save(DbCache dbCache) {
+        try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
+            statement.executeUpdate(getSaveQuery(dbCache));
+        } catch (SQLException | URISyntaxException e) {
+            LOGGER.info(e.toString());
+        }
+    }
 
+    private String getSaveQuery(DbCache dbCache) {
+        return "INSERT INTO irradiation VALUES ('" + parser.toJson(dbCache) + "');";
+    }
+
+    @Override
+    protected DbCache mapToEntity(ResultSet rs) throws SQLException {
+        return null;
     }
 }

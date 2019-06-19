@@ -1,11 +1,12 @@
 -- Table: public."irradiation"
 
--- DROP TABLE public."irradiation";
+DROP TABLE public."irradiation";
 
 CREATE TABLE public."irradiation"
 (
-    db_cache jsonb NOT NULL,
-    CONSTRAINT "irradiation_pkey" PRIMARY KEY (db_cache)
+    id       bigserial NOT NULL UNIQUE,
+    db_cache jsonb     NOT NULL,
+    unique (db_cache)
 )
     WITH (
         OIDS = FALSE
