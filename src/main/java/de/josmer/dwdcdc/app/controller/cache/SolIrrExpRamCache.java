@@ -9,24 +9,24 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
-public class SolIrrExpCache implements ISolIrrExpCache {
+@Component("SolIrrExpRamCache")
+public class SolIrrExpRamCache implements ISolIrrExpCache {
     private static final int LIMIT = 10000;
     private final ConcurrentHashMap<String, LinkedList<SolIrrExp>> computedSolIrrExps;
 
-    public SolIrrExpCache() {
+    public SolIrrExpRamCache() {
         this.computedSolIrrExps = new ConcurrentHashMap<>();
     }
 
     @Override
     public void add(final IrrRequest irrRequest, final LinkedList<SolIrrExp> solIrrExps) {
         cleaning();
-        computedSolIrrExps.putIfAbsent(irrRequest.toString(), solIrrExps);
+        computedSolIrrExps.putIfAbsent(irrRequest.getKey(), solIrrExps);
     }
 
     @Override
     public Optional<LinkedList<SolIrrExp>> get(final IrrRequest irrRequest) {
-        return Optional.ofNullable(computedSolIrrExps.get(irrRequest.toString()));
+        return Optional.ofNullable(computedSolIrrExps.get(irrRequest.getKey()));
     }
 
     private void cleaning() {
