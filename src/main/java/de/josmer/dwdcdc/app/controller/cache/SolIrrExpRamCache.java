@@ -25,32 +25,40 @@ public class SolIrrExpRamCache implements ISolIrrExpCache<IrrRequest> {
 
     @Override
     public void add(final IrrRequest irrRequest, final LinkedList<SolIrrExp> solIrrExps) {
-        cleaning();
-        solIrrExpDbCache.add(irrRequest, solIrrExps);
-        computedSolIrrExps.putIfAbsent(irrRequest.getKey(), solIrrExps);
+        addCache(irrRequest, solIrrExps);
     }
 
     @Override
     public Optional<LinkedList<SolIrrExp>> get(final IrrRequest irrRequest) {
-        Optional<LinkedList<SolIrrExp>> optionalCache = getCache(irrRequest);
-        if (optionalCache.isPresent()) {
-            return optionalCache;
+        Optional<LinkedList<SolIrrExp>> optionalRamCache = getCache(irrRequest);
+        if (optionalRamCache.isPresent()) {
+            return optionalRamCache;
         }
 
-        Optional<LinkedList<SolIrrExp>> solIrrExps = solIrrExpDbCache.get(irrRequest);
-        if (solIrrExps.isPresent()) {
-            add(irrRequest, solIrrExps.get());
-            return solIrrExps;
+        Optional<LinkedList<SolIrrExp>> optionalDbCache = solIrrExpDbCache.get(irrRequest);
+        if (optionalDbCache.isPresent()) {
+            addRamCache(irrRequest, optionalDbCache.get());
+            return optionalDbCache;
         }
 
         return Optional.empty();
+    }
+
+    private void addRamCache(IrrRequest irrRequest, LinkedList<SolIrrExp> solIrrExps) {
+        cleanRamCache();
+        computedSolIrrExps.putIfAbsent(irrRequest.getKey(), solIrrExps);
+    }
+
+    private void addCache(IrrRequest irrRequest, LinkedList<SolIrrExp> solIrrExps) {
+        addRamCache(irrRequest, solIrrExps);
+        solIrrExpDbCache.add(irrRequest, solIrrExps);
     }
 
     private Optional<LinkedList<SolIrrExp>> getCache(IrrRequest irrRequest) {
         return Optional.ofNullable(computedSolIrrExps.get(irrRequest.getKey()));
     }
 
-    private void cleaning() {
+    private void cleanRamCache() {
         if (computedSolIrrExps.size() >= LIMIT) {
             computedSolIrrExps.remove(computedSolIrrExps.keys().nextElement());
         }
