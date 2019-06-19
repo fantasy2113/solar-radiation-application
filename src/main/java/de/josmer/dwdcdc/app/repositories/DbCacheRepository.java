@@ -46,17 +46,24 @@ public class DbCacheRepository extends Repository<DbCache> implements IDbCacheRe
         }
     }
 
-
     @Override
     protected DbCache mapTo(ResultSet rs) throws Exception {
         return parser.getDbCache(rs.getString("db_cache"));
     }
 
     private String getSaveQuery(DbCache dbCache) {
-        return "INSERT INTO irradiation (id, db_cache) VALUES (" + dbCache.getKey().hashCode() + ",'" + parser.toJson(dbCache) + "');";
+        return "INSERT INTO irradiation (id, db_cache) VALUES (" + getId(dbCache) + ",'" + getDbCache(dbCache) + "');";
     }
 
     private String getFindQuery(String key) {
         return "SELECT * FROM irradiation WHERE db_cache->>'key' = '" + key + "';";
+    }
+
+    private int getId(DbCache dbCache) {
+        return dbCache.getKey().hashCode();
+    }
+
+    private String getDbCache(DbCache dbCache) {
+        return parser.toJson(dbCache);
     }
 }
