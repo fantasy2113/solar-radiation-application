@@ -73,7 +73,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
             preparedStatement.setInt(6, getLimit(startDate, endDate));
             try (ResultSet rs = preparedStatement.executeQuery()) {
                 while (rs.next()) {
-                    radiations.add(mapToEntity(rs));
+                    radiations.add(mapTo(rs));
                 }
             }
         } catch (SQLException | URISyntaxException e) {
@@ -123,7 +123,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
     }
 
     @Override
-    protected SolRad mapToEntity(ResultSet rs) throws SQLException {
+    protected SolRad mapTo(ResultSet rs) throws SQLException {
         SolRad solRad = new SolRad();
         solRad.setRadiationType(rs.getString("radiation_type"));
         solRad.setRadiationDate(rs.getInt("radiation_date"));
