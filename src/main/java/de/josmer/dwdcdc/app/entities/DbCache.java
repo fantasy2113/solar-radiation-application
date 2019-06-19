@@ -24,11 +24,11 @@ public class DbCache {
         this.key = key;
     }
 
-    public LinkedList<Double> getYear() {
+    public LinkedList<SolIrrExp> getYear() {
         return year;
     }
 
-    public void setYear(LinkedList<Double> year) {
+    public void setYear(LinkedList<SolIrrExp> year) {
         this.year = year;
     }
 }
