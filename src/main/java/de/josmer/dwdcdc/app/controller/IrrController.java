@@ -19,12 +19,12 @@ public final class IrrController extends AppController {
     private static final String CACHE = "SolIrrExpRamCache";
     private final ISolIrrExporter solIrrExp;
     private final ISolIrrRepository solIrrRep;
-    private final ISolIrrExpCache solIrrExpCache;
+    private final ISolIrrExpCache<IrrRequest> solIrrExpCache;
 
     @Autowired
     public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
                          ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep,
-                         @Qualifier(CACHE) ISolIrrExpCache solIrrExpCache) {
+                         @Qualifier(CACHE) ISolIrrExpCache<IrrRequest> solIrrExpCache) {
         super(userRep, jwtToken, userBCrypt, solRadRep);
         this.solIrrExp = solIrrExp;
         this.solIrrRep = solIrrRep;
@@ -57,11 +57,16 @@ public final class IrrController extends AppController {
         if (optionalSolIrrExps.isPresent()) {
             return optionalSolIrrExps.get();
         }
-        LinkedList<SolIrrExp> solIrrExps = solIrrExp.getItems(
-                solIrrRep.getIrradiation(
-                        solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(),
-                                req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()), req.getLon(), req.getLat());
+        LinkedList<SolIrrExp> solIrrExps = getItems(req);
         solIrrExpCache.add(req, solIrrExps);
         return solIrrExps;
+    }
+
+    private LinkedList<SolIrrExp> getItems(IrrRequest req) {
+        return solIrrExp.getItems(
+                solIrrRep.getIrradiation(
+                        solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(),
+                                req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()),
+                req.getLon(), req.getLat());
     }
 }
