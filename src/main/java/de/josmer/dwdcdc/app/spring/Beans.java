@@ -1,5 +1,6 @@
 package de.josmer.dwdcdc.app.spring;
 
+import com.google.gson.Gson;
 import de.josmer.dwdcdc.app.entities.SolRad;
 import de.josmer.dwdcdc.utils.crawler.SolRadCrawler;
 import de.josmer.dwdcdc.utils.enums.SolRadTypes;
@@ -27,5 +28,10 @@ public class Beans {
     @Bean(CRAWLER_DIFFUSE)
     public ISolRadCrawler getSolRadCrawlerDiffuse() {
         return new SolRadCrawler<>(SolRadTypes.DIFFUSE, SolRad.class);
+    }
+
+    @Bean
+    public Gson getGson() {
+        return new Gson();
     }
 }
