@@ -4,6 +4,7 @@ import de.josmer.dwdcdc.app.controller.requests.IrrRequest;
 import de.josmer.dwdcdc.app.entities.SolIrrExp;
 import de.josmer.dwdcdc.app.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,18 +16,20 @@ import java.util.Optional;
 
 @RestController
 public final class IrrController extends AppController {
-
+    public static final String CACHE = "SolIrrExpRamCache";
     private final ISolIrrExporter solIrrExp;
     private final ISolIrrRepository solIrrRep;
     private final ISolIrrExpCache solIrrExpCache;
 
     @Autowired
     public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
-                         ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep, ISolIrrExpCache solIrrExpCache) {
+                         ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep,
+                         @Qualifier(CACHE) ISolIrrExpCache solIrrExpCache) {
         super(userRep, jwtToken, userBCrypt, solRadRep);
         this.solIrrExp = solIrrExp;
         this.solIrrRep = solIrrRep;
         this.solIrrExpCache = solIrrExpCache;
+        LOGGER.info("init with " + CACHE);
     }
 
     @GetMapping("/irr")

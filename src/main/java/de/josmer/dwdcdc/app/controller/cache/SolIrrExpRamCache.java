@@ -9,12 +9,12 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
-public class SolIrrExpCache implements ISolIrrExpCache {
+@Component("SolIrrExpRamCache")
+public class SolIrrExpRamCache implements ISolIrrExpCache {
     private static final int LIMIT = 10000;
     private final ConcurrentHashMap<String, LinkedList<SolIrrExp>> computedSolIrrExps;
 
-    public SolIrrExpCache() {
+    public SolIrrExpRamCache() {
         this.computedSolIrrExps = new ConcurrentHashMap<>();
     }
 
