@@ -1,8 +1,8 @@
 package de.josmer.dwdcdc.app.utils;
 
 import com.google.gson.Gson;
-import de.josmer.dwdcdc.app.entities.DbCache;
-import de.josmer.dwdcdc.app.interfaces.IDbCacheJsonParser;
+import de.josmer.dwdcdc.app.base.entities.cache.DbCache;
+import de.josmer.dwdcdc.app.base.interfaces.IDbCacheJsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
