@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component("SolIrrExpRamCache")
-public class SolIrrExpRamCache implements ISolIrrExpCache {
+public class SolIrrExpRamCache implements ISolIrrExpCache<IrrRequest> {
     private static final int LIMIT = 10000;
     private final ConcurrentHashMap<String, LinkedList<SolIrrExp>> computedSolIrrExps;
 
