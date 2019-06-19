@@ -4,9 +4,9 @@ import de.josmer.dwdcdc.app.entities.DbCache;
 
 import java.util.Optional;
 
-public interface IDbCacheRepository {
+public interface IDbCacheRepository<T extends IJsonb> {
 
     Optional<DbCache> find(String key);
 
-    void save(DbCache dbCache);
+    void save(T dbCache);
 }

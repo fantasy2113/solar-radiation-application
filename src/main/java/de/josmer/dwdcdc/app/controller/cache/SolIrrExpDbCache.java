@@ -12,8 +12,8 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 @Component("SolIrrExpDbCache")
-public class SolIrrExpDbCache implements ISolIrrExpCache {
-    private final IDbCacheRepository dbCacheRepository;
+public class SolIrrExpDbCache implements ISolIrrExpCache<IrrRequest> {
+    private final IDbCacheRepository<DbCache> dbCacheRepository;
 
     @Autowired
     public SolIrrExpDbCache(IDbCacheRepository dbCacheRepository) {
