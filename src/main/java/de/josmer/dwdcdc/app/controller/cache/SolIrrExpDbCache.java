@@ -26,6 +26,6 @@ public class SolIrrExpDbCache implements ISolIrrExpCache {
 
     @Override
     public Optional<LinkedList<SolIrrExp>> get(IrrRequest irrRequest) {
-        return Optional.empty();
+        return dbCacheRepository.find(irrRequest.getKey());
     }
 }
