@@ -22,7 +22,7 @@ public class SolIrrExpDbCache implements ISolIrrExpCache {
 
     @Override
     public void add(IrrRequest irrRequest, LinkedList<SolIrrExp> solIrrExps) {
-        this.dbCacheRepository.save(new DbCache(irrRequest.getKey(), solIrrExps));
+        dbCacheRepository.save(new DbCache(irrRequest.getKey(), solIrrExps));
     }
 
     @Override
