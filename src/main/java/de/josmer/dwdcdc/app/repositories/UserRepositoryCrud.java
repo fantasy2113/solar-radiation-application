@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.repositories;
 
-import de.josmer.dwdcdc.app.entities.User;
+import de.josmer.dwdcdc.app.base.entities.User;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,8 @@
 package de.josmer.dwdcdc.app.controller;
 
-import de.josmer.dwdcdc.app.controller.requests.IrrRequest;
-import de.josmer.dwdcdc.app.entities.SolIrrExp;
-import de.josmer.dwdcdc.app.interfaces.*;
+import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.base.interfaces.*;
+import de.josmer.dwdcdc.app.requests.IrrRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 public final class IrrController extends AppController {
-    private static final String CACHE = "SolIrrExpDbCache";
+    private static final String CACHE = "SolIrrExpRamCache";
     private final ISolIrrExporter solIrrExp;
     private final ISolIrrRepository solIrrRep;
     private final ISolIrrExpCache solIrrExpCache;

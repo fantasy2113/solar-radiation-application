@@ -1,10 +1,10 @@
 package de.josmer.dwdcdc.app.controller;
 
-import de.josmer.dwdcdc.app.controller.web.WebToken;
-import de.josmer.dwdcdc.app.entities.User;
-import de.josmer.dwdcdc.app.interfaces.IJwtToken;
-import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
-import de.josmer.dwdcdc.app.interfaces.IUserRepository;
+import de.josmer.dwdcdc.app.base.entities.User;
+import de.josmer.dwdcdc.app.base.entities.web.WebToken;
+import de.josmer.dwdcdc.app.base.interfaces.IJwtToken;
+import de.josmer.dwdcdc.app.base.interfaces.IUserBCrypt;
+import de.josmer.dwdcdc.app.base.interfaces.IUserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,11 @@
 package de.josmer.dwdcdc.app.repositories;
 
-import de.josmer.dwdcdc.app.entities.SolRad;
-import de.josmer.dwdcdc.app.interfaces.ISolRadRepository;
-import de.josmer.dwdcdc.utils.enums.SolRadTypes;
-import de.josmer.dwdcdc.utils.geo.GaussKruger;
-import de.josmer.dwdcdc.utils.geo.GkConverter;
-import de.josmer.dwdcdc.utils.interfaces.ISolRad;
+import de.josmer.dwdcdc.app.base.entities.SolRad;
+import de.josmer.dwdcdc.app.base.interfaces.ISolRadRepository;
+import de.josmer.dwdcdc.library.enums.SolRadTypes;
+import de.josmer.dwdcdc.library.geotrans.GaussKruger;
+import de.josmer.dwdcdc.library.geotrans.GkConverter;
+import de.josmer.dwdcdc.library.interfaces.ISolRad;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
