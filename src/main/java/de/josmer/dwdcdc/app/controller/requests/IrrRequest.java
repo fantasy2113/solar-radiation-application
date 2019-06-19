@@ -43,4 +43,8 @@ public final class IrrRequest extends Request {
     public String toString() {
         return "lon=" + this.lon + ";" + "lat=" + this.lat + ";" + "ae=" + this.ae + ";" + "ye=" + this.ye + ";" + "year=" + this.year;
     }
+
+    public String getKey() {
+        return this.toString();
+    }
 }

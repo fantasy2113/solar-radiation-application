@@ -21,12 +21,12 @@ public class SolIrrExpRamCache implements ISolIrrExpCache {
     @Override
     public void add(final IrrRequest irrRequest, final LinkedList<SolIrrExp> solIrrExps) {
         cleaning();
-        computedSolIrrExps.putIfAbsent(irrRequest.toString(), solIrrExps);
+        computedSolIrrExps.putIfAbsent(irrRequest.getKey(), solIrrExps);
     }
 
     @Override
     public Optional<LinkedList<SolIrrExp>> get(final IrrRequest irrRequest) {
-        return Optional.ofNullable(computedSolIrrExps.get(irrRequest.toString()));
+        return Optional.ofNullable(computedSolIrrExps.get(irrRequest.getKey()));
     }
 
     private void cleaning() {
