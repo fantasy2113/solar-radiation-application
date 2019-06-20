@@ -62,7 +62,8 @@ public class DbCacheRepository extends Repository<DbCache> implements IDbCacheRe
 
     private String getSaveQuery(IJsonb item, LinkedList<SolIrrExp> solIrrExps) {
         DbCache dbCache = new DbCache(item.getKey(), solIrrExps);
-        return "INSERT INTO irradiation (id, db_cache) VALUES (" + item.getId() + ",'" + getDbCache(dbCache) + "');";
+        return "INSERT INTO irradiation (id, db_cache) VALUES (" + item.getId() + ",'"
+                + getDbCache(dbCache) + "');";
     }
 
     private String getFindQuery(String key) {

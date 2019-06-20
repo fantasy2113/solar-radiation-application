@@ -16,7 +16,8 @@ public final class IrrRequest extends Request implements IJsonb {
 
     public IrrRequest() {
     }
-
+    
+    @Override
     public int getYear() {
         return year;
     }
