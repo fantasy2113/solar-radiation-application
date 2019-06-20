@@ -11,13 +11,6 @@ public class DbCache {
     private LocalDateTime created;
     private LinkedList<SolIrrExp> months;
 
-    public DbCache(String key, LinkedList<SolIrrExp> months, LocalDateTime created) {
-        this.key = key;
-        this.months = months;
-        this.id = this.key.hashCode();
-        this.created = created;
-    }
-
     public DbCache(String key, LinkedList<SolIrrExp> months) {
         this.key = key;
         this.months = months;
