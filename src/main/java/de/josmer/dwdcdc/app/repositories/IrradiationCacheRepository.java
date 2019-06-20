@@ -57,6 +57,7 @@ public class IrradiationCacheRepository extends Repository<IIrradiationCache> im
 
     @Override
     protected IIrradiationCache mapTo(ResultSet rs) throws Exception {
+        IIrradiationCache db_cache = parser.getDbCache(rs.getString("db_cache"));
         return parser.getDbCache(rs.getString("db_cache"));
     }
 

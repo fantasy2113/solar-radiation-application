@@ -14,23 +14,24 @@ import java.util.concurrent.ConcurrentHashMap;
 public class IrradiationRamCaching implements IIrradiationCaching {
     private static final int LIMIT = 10000;
     private final ConcurrentHashMap<String, IIrradiationCache> irradiationRamCache;
-    private final IIrradiationCaching irradiationCaching;
+    private final IIrradiationCaching irradiationDbCaching;
 
     @Autowired
-    public IrradiationRamCaching(@Qualifier("IrradiationDbCaching") IIrradiationCaching irradiationCaching) {
+    public IrradiationRamCaching(@Qualifier("IrradiationDbCaching") IIrradiationCaching irradiationDbCaching) {
         this.irradiationRamCache = new ConcurrentHashMap<>();
-        this.irradiationCaching = irradiationCaching;
+        this.irradiationDbCaching = irradiationDbCaching;
     }
 
     @Override
     public void add(IIrradiationCache irradiationCache) {
         putCache(irradiationCache);
-        irradiationCaching.add(irradiationCache);
+        irradiationDbCaching.add(irradiationCache);
     }
 
     @Override
     public Optional<IIrradiationCache> get(IrrRequest irrRequest) {
-        return getIrradiationCache(irrRequest).map(c -> loadCache(irrRequest, c));
+        return getIrradiationCache(irrRequest).map(c -> loadCache(irrRequest, c))
+                .or(() -> Optional.ofNullable(getCacheFromDb(irrRequest)));
     }
 
     private IIrradiationCache loadCache(IrrRequest irrRequest, IIrradiationCache irradiationCache) {
@@ -43,7 +44,7 @@ public class IrradiationRamCaching implements IIrradiationCaching {
     }
 
     private IIrradiationCache getCacheFromDb(IrrRequest irrRequest) {
-        return irradiationCaching.get(irrRequest).map(c -> {
+        return irradiationDbCaching.get(irrRequest).map(c -> {
             putCache(c);
             return c;
         }).orElse(null);
