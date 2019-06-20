@@ -19,12 +19,12 @@ public final class IrrController extends AppController {
     private static final String CACHE = "SolIrrExpRamCache";
     private final ISolIrrExporter solIrrExp;
     private final ISolIrrRepository solIrrRep;
-    private final ISolIrrExpCache<IrrRequest> solIrrExpCache;
+    private final ISolIrrExpCache solIrrExpCache;
 
     @Autowired
     public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
                          ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep,
-                         @Qualifier(CACHE) ISolIrrExpCache<IrrRequest> solIrrExpCache) {
+                         @Qualifier(CACHE) ISolIrrExpCache solIrrExpCache) {
         super(userRep, jwtToken, userBCrypt, solRadRep);
         this.solIrrExp = solIrrExp;
         this.solIrrRep = solIrrRep;

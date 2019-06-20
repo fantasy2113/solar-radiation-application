@@ -1,12 +1,12 @@
 package de.josmer.dwdcdc.app.base.interfaces;
 
-import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.base.entities.cache.DbCache;
+import de.josmer.dwdcdc.app.requests.IrrRequest;
 
-import java.util.LinkedList;
 import java.util.Optional;
 
-public interface ISolIrrExpCache<T extends IJsonb> {
-    void add(T irrRequest, LinkedList<SolIrrExp> solIrrExps);
+public interface ISolIrrExpCache {
+    void add(DbCache dbCache);
 
-    Optional<LinkedList<SolIrrExp>> get(T irrRequest);
+    Optional<DbCache> get(IrrRequest irrRequest);
 }
