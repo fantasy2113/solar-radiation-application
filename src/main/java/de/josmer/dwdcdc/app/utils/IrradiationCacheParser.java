@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.utils;
 
 import com.google.gson.Gson;
+import de.josmer.dwdcdc.app.base.entities.cache.IrradiationCache;
 import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCache;
 import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCacheParser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,6 @@ public class IrradiationCacheParser implements IIrradiationCacheParser {
 
     @Override
     public IIrradiationCache getDbCache(String json) {
-        return gson.fromJson(json, IIrradiationCache.class);
+        return gson.fromJson(json, IrradiationCache.class);
     }
 }
