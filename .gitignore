@@ -5,6 +5,6 @@ target/
 *.asc
 *.zip
 *.log
-app.iml
+dwdcdc-app.iml
 .project
 .classpath
