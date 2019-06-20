@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.controller;
 
 import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.base.entities.cache.IrradiationCache;
 import de.josmer.dwdcdc.app.base.interfaces.*;
 import de.josmer.dwdcdc.app.requests.IrrRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +17,18 @@ import java.util.Optional;
 
 @RestController
 public final class IrrController extends AppController {
-    private static final String CACHE = "SolIrrExpRamCache";
     private final ISolIrrExporter solIrrExp;
     private final ISolIrrRepository solIrrRep;
-    private final ISolIrrExpCache<IrrRequest> solIrrExpCache;
+    private final IIrradiationCaching irradiationCaching;
 
     @Autowired
     public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
                          ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep,
-                         @Qualifier(CACHE) ISolIrrExpCache<IrrRequest> solIrrExpCache) {
+                         @Qualifier("IrradiationRamCaching") IIrradiationCaching irradiationCaching) {
         super(userRep, jwtToken, userBCrypt, solRadRep);
         this.solIrrExp = solIrrExp;
         this.solIrrRep = solIrrRep;
-        this.solIrrExpCache = solIrrExpCache;
-        LOGGER.info("init with " + CACHE);
+        this.irradiationCaching = irradiationCaching;
     }
 
     @GetMapping("/irr")
@@ -53,18 +52,17 @@ public final class IrrController extends AppController {
     }
 
     private LinkedList<SolIrrExp> getSolIrrExps(final IrrRequest req) {
-        Optional<LinkedList<SolIrrExp>> optionalSolIrrExps = solIrrExpCache.get(req);
-        if (optionalSolIrrExps.isPresent()) {
-            return optionalSolIrrExps.get();
+        Optional<IIrradiationCache> optionalDbCache = irradiationCaching.get(req);
+        if (optionalDbCache.isPresent()) {
+            return optionalDbCache.get().getMonths();
         }
         LinkedList<SolIrrExp> solIrrExps = getItems(req);
-        solIrrExpCache.add(req, solIrrExps);
+        irradiationCaching.add(new IrradiationCache(req.getKey(), solIrrExps));
         return solIrrExps;
     }
 
     private LinkedList<SolIrrExp> getItems(IrrRequest req) {
-        return solIrrExp.getItems(
-                solIrrRep.getIrradiation(
+        return solIrrExp.getItems(solIrrRep.getIrradiation(
                         solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()), req.getLon(),
                                 req.getLat()), req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()),
                 req.getLon(), req.getLat());

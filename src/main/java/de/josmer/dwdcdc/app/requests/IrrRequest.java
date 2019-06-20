@@ -1,8 +1,7 @@
 package de.josmer.dwdcdc.app.requests;
 
-import de.josmer.dwdcdc.app.base.interfaces.IJsonb;
 
-public final class IrrRequest extends Request implements IJsonb {
+public final class IrrRequest extends Request {
     private int year;
     private int ae;
     private int ye;
@@ -46,12 +45,10 @@ public final class IrrRequest extends Request implements IJsonb {
         return "lon=" + this.lon + ";" + "lat=" + this.lat + ";" + "ae=" + this.ae + ";" + "ye=" + this.ye + ";" + "year=" + this.year;
     }
 
-    @Override
     public String getKey() {
         return this.toString();
     }
 
-    @Override
     public int getId() {
         return getKey().hashCode();
     }
