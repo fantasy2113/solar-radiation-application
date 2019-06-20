@@ -8,16 +8,16 @@ import java.util.LinkedList;
 public class DbCache implements IJsonb {
     private int id;
     private String key;
-    private LinkedList<SolIrrExp> year;
+    private LinkedList<SolIrrExp> months;
 
-    public DbCache(String key, LinkedList<SolIrrExp> year) {
+    public DbCache(String key, LinkedList<SolIrrExp> months) {
         this.key = key;
-        this.year = year;
+        this.months = months;
     }
 
     public DbCache() {
         this.key = "";
-        this.year = new LinkedList<>();
+        this.months = new LinkedList<>();
     }
 
     @Override
@@ -34,12 +34,12 @@ public class DbCache implements IJsonb {
         this.key = key;
     }
 
-    public LinkedList<SolIrrExp> getYear() {
-        return year;
+    public LinkedList<SolIrrExp> getMonths() {
+        return months;
     }
 
-    public void setYear(LinkedList<SolIrrExp> year) {
-        this.year = year;
+    public void setMonths(LinkedList<SolIrrExp> months) {
+        this.months = months;
     }
 
     public void setId(int id) {

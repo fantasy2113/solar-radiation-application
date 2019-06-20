@@ -47,6 +47,11 @@ public class DbCacheRepository extends Repository<DbCache> implements IDbCacheRe
     }
 
     @Override
+    public void delete(String key) {
+
+    }
+
+    @Override
     protected DbCache mapTo(ResultSet rs) throws Exception {
         DbCache dbCache = parser.getDbCache(rs.getString("db_cache"));
         dbCache.setId(rs.getInt("id"));

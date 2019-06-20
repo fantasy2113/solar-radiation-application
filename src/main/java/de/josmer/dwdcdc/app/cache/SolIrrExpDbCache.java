@@ -27,6 +27,6 @@ public class SolIrrExpDbCache implements ISolIrrExpDbCache {
 
     @Override
     public Optional<LinkedList<SolIrrExp>> get(IrrRequest irrRequest) {
-        return dbCacheRepository.find(irrRequest.getKey()).map(DbCache::getYear);
+        return dbCacheRepository.find(irrRequest.getKey()).map(DbCache::getMonths);
     }
 }
