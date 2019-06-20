@@ -41,14 +41,14 @@ public class IrradiationRamCaching implements IIrradiationCaching {
         return Optional.empty();
     }
 
-    private void addRamCache(IIrradiationCache dbCache) {
+    private void addRamCache(IIrradiationCache irradiationCache) {
         cleanRamCache();
-        computedIrradiationCache.putIfAbsent(dbCache.getKey(), dbCache);
+        computedIrradiationCache.putIfAbsent(irradiationCache.getKey(), irradiationCache);
     }
 
-    private void addCache(IIrradiationCache dbCache) {
-        addRamCache(dbCache);
-        irradiationCaching.add(dbCache);
+    private void addCache(IIrradiationCache irradiationCache) {
+        addRamCache(irradiationCache);
+        irradiationCaching.add(irradiationCache);
     }
 
     private Optional<IIrradiationCache> getCache(IrrRequest irrRequest) {
