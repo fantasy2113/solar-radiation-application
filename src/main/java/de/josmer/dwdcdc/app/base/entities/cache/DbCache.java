@@ -1,12 +1,11 @@
 package de.josmer.dwdcdc.app.base.entities.cache;
 
 import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
-import de.josmer.dwdcdc.app.base.interfaces.IJsonb;
+import de.josmer.dwdcdc.app.base.interfaces.IKey;
 
 import java.util.LinkedList;
 
-public class DbCache implements IJsonb {
-    private int id;
+public class DbCache implements IKey {
     private String key;
     private LinkedList<SolIrrExp> months;
 
@@ -25,11 +24,6 @@ public class DbCache implements IJsonb {
         return key;
     }
 
-    @Override
-    public int getId() {
-        return getKey().hashCode();
-    }
-
     public void setKey(String key) {
         this.key = key;
     }
@@ -40,9 +34,5 @@ public class DbCache implements IJsonb {
 
     public void setMonths(LinkedList<SolIrrExp> months) {
         this.months = months;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
