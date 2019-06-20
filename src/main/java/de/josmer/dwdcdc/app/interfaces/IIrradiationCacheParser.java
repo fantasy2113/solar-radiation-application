@@ -1,4 +1,4 @@
-package de.josmer.dwdcdc.app.base.interfaces;
+package de.josmer.dwdcdc.app.interfaces;
 
 public interface IIrradiationCacheParser {
     String toJson(IIrradiationCache irradiationCache);

@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.controller;
 
-import de.josmer.dwdcdc.app.base.interfaces.ILogRepository;
+import de.josmer.dwdcdc.app.interfaces.ILogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

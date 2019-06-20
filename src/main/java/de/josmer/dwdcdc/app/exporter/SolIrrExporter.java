@@ -1,8 +1,8 @@
 package de.josmer.dwdcdc.app.exporter;
 
-import de.josmer.dwdcdc.app.base.entities.SolIrr;
-import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
-import de.josmer.dwdcdc.app.base.interfaces.ISolIrrExporter;
+import de.josmer.dwdcdc.app.entities.SolIrr;
+import de.josmer.dwdcdc.app.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.interfaces.ISolIrrExporter;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;

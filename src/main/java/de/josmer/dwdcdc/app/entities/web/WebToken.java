@@ -1,4 +1,4 @@
-package de.josmer.dwdcdc.app.base.entities.web;
+package de.josmer.dwdcdc.app.entities.web;
 
 public final class WebToken {
     private String secret;

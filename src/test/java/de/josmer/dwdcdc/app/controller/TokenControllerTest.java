@@ -1,10 +1,10 @@
 package de.josmer.dwdcdc.app.controller;
 
 import de.josmer.dwdcdc.app.App;
-import de.josmer.dwdcdc.app.base.entities.User;
-import de.josmer.dwdcdc.app.base.entities.web.WebToken;
-import de.josmer.dwdcdc.app.base.interfaces.IJwtToken;
-import de.josmer.dwdcdc.app.base.interfaces.IUserRepository;
+import de.josmer.dwdcdc.app.entities.User;
+import de.josmer.dwdcdc.app.entities.web.WebToken;
+import de.josmer.dwdcdc.app.interfaces.IJwtToken;
+import de.josmer.dwdcdc.app.interfaces.IUserRepository;
 import io.jsonwebtoken.Claims;
 import org.junit.Before;
 import org.junit.BeforeClass;

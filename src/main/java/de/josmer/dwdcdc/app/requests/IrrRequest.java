@@ -1,7 +1,7 @@
 package de.josmer.dwdcdc.app.requests;
 
 
-import de.josmer.dwdcdc.app.base.interfaces.Identifiable;
+import de.josmer.dwdcdc.app.interfaces.Identifiable;
 
 public final class IrrRequest extends Request implements Identifiable {
     private int year;

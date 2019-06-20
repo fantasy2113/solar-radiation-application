@@ -1,8 +1,8 @@
 package de.josmer.dwdcdc.app.repositories;
 
-import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCache;
-import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCacheParser;
-import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCacheRepository;
+import de.josmer.dwdcdc.app.interfaces.IIrradiationCache;
+import de.josmer.dwdcdc.app.interfaces.IIrradiationCacheParser;
+import de.josmer.dwdcdc.app.interfaces.IIrradiationCacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

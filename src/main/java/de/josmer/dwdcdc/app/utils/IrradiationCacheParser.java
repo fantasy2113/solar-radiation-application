@@ -1,9 +1,9 @@
 package de.josmer.dwdcdc.app.utils;
 
 import com.google.gson.Gson;
-import de.josmer.dwdcdc.app.base.entities.cache.IrradiationCache;
-import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCache;
-import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCacheParser;
+import de.josmer.dwdcdc.app.entities.cache.IrradiationCache;
+import de.josmer.dwdcdc.app.interfaces.IIrradiationCache;
+import de.josmer.dwdcdc.app.interfaces.IIrradiationCacheParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
