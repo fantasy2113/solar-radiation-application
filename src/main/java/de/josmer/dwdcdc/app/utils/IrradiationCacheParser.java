@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component("gson")
-public class DbCacheJsonParser implements IIrradiationCacheParser {
+public class IrradiationCacheParser implements IIrradiationCacheParser {
     private final Gson gson;
 
     @Autowired
-    public DbCacheJsonParser(Gson gson) {
+    public IrradiationCacheParser(Gson gson) {
         this.gson = gson;
     }
 
