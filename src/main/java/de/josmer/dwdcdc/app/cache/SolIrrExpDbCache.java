@@ -27,12 +27,12 @@ public class SolIrrExpDbCache implements ISolIrrExpCache {
     @Override
     public Optional<DbCache> get(IrrRequest irrRequest) {
         LocalDateTime dtNow = LocalDateTime.now();
-        Optional<DbCache> optionalDbCache = dbCacheRep.find(irrRequest.getKey());
+        Optional<DbCache> optionalDbCache = dbCacheRep.get(irrRequest.getKey());
         if (optionalDbCache.isEmpty()) {
             return Optional.empty();
         }
         if (isOldCache(dtNow, optionalDbCache.get())) {
-            dbCacheRep.delete(irrRequest.getKey());
+            dbCacheRep.delete(irrRequest.getId());
             return Optional.empty();
         }
         return optionalDbCache;

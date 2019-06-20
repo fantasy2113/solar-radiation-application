@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.controller;
 
 import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.base.entities.cache.DbCache;
 import de.josmer.dwdcdc.app.base.interfaces.*;
 import de.josmer.dwdcdc.app.requests.IrrRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +54,12 @@ public final class IrrController extends AppController {
     }
 
     private LinkedList<SolIrrExp> getSolIrrExps(final IrrRequest req) {
-        Optional<LinkedList<SolIrrExp>> optionalSolIrrExps = solIrrExpCache.get(req);
-        if (optionalSolIrrExps.isPresent()) {
-            return optionalSolIrrExps.get();
+        Optional<DbCache> optionalDbCache = solIrrExpCache.get(req);
+        if (optionalDbCache.isPresent()) {
+            return optionalDbCache.get().getMonths();
         }
         LinkedList<SolIrrExp> solIrrExps = getItems(req);
-        solIrrExpCache.add(req, solIrrExps);
+        solIrrExpCache.add(new DbCache(req.getKey(), solIrrExps));
         return solIrrExps;
     }
 
