@@ -1,5 +1,7 @@
 package de.josmer.dwdcdc.app.base.interfaces;
 
-public interface IJsonb extends IKey {
+public interface IJsonb {
     int getId();
+
+    String getKey();
 }

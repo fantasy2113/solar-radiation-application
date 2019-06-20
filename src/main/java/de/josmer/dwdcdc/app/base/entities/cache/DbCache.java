@@ -1,11 +1,10 @@
 package de.josmer.dwdcdc.app.base.entities.cache;
 
 import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
-import de.josmer.dwdcdc.app.base.interfaces.IKey;
 
 import java.util.LinkedList;
 
-public class DbCache implements IKey {
+public class DbCache {
     private String key;
     private LinkedList<SolIrrExp> months;
 
@@ -19,7 +18,6 @@ public class DbCache implements IKey {
         this.months = new LinkedList<>();
     }
 
-    @Override
     public String getKey() {
         return key;
     }
