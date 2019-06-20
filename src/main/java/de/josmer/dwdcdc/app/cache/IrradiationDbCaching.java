@@ -7,7 +7,6 @@ import de.josmer.dwdcdc.app.requests.IrrRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component("IrradiationDbCaching")
@@ -26,12 +25,11 @@ public class IrradiationDbCaching implements IIrradiationCaching {
 
     @Override
     public Optional<IIrradiationCache> get(IrrRequest irrRequest) {
-        LocalDateTime dtNow = LocalDateTime.now();
         Optional<IIrradiationCache> optionalDbCache = dbCacheRep.get(irrRequest.getKey());
         if (optionalDbCache.isEmpty()) {
             return Optional.empty();
         }
-        if (isOldCache(dtNow, optionalDbCache.get())) {
+        if (isOldCache(optionalDbCache.get())) {
             dbCacheRep.delete(irrRequest.getId());
             return Optional.empty();
         }

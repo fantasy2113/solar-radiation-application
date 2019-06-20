@@ -13,51 +13,54 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component("IrradiationRamCaching")
 public class IrradiationRamCaching implements IIrradiationCaching {
     private static final int LIMIT = 10000;
-    private final ConcurrentHashMap<String, IIrradiationCache> computedIrradiationCache;
+    private final ConcurrentHashMap<String, IIrradiationCache> irradiationRamCache;
     private final IIrradiationCaching irradiationCaching;
 
     @Autowired
     public IrradiationRamCaching(@Qualifier("IrradiationDbCaching") IIrradiationCaching irradiationCaching) {
-        this.computedIrradiationCache = new ConcurrentHashMap<>();
+        this.irradiationRamCache = new ConcurrentHashMap<>();
         this.irradiationCaching = irradiationCaching;
     }
 
     @Override
     public void add(IIrradiationCache irradiationCache) {
-        addCache(irradiationCache);
+        putCache(irradiationCache);
+        irradiationCaching.add(irradiationCache);
     }
 
     @Override
     public Optional<IIrradiationCache> get(IrrRequest irrRequest) {
-        Optional<IIrradiationCache> optionalRamCache = getCache(irrRequest);
-        if (optionalRamCache.isPresent()) {
-            return optionalRamCache;
-        }
-        Optional<IIrradiationCache> optionalDbCache = irradiationCaching.get(irrRequest);
-        if (optionalDbCache.isPresent()) {
-            addRamCache(optionalDbCache.get());
-            return optionalDbCache;
-        }
-        return Optional.empty();
+        return getIrradiationCache(irrRequest).map(c -> loadCache(irrRequest, c));
     }
 
-    private void addRamCache(IIrradiationCache irradiationCache) {
+    private IIrradiationCache loadCache(IrrRequest irrRequest, IIrradiationCache irradiationCache) {
+        if (isOldCache(irradiationCache)) {
+            irradiationRamCache.remove(irrRequest.getKey());
+            return getCacheFromDb(irrRequest);
+        } else {
+            return irradiationCache;
+        }
+    }
+
+    private IIrradiationCache getCacheFromDb(IrrRequest irrRequest) {
+        return irradiationCaching.get(irrRequest).map(c -> {
+            putCache(c);
+            return c;
+        }).orElse(null);
+    }
+
+    private void putCache(IIrradiationCache irradiationCache) {
         cleanRamCache();
-        computedIrradiationCache.putIfAbsent(irradiationCache.getKey(), irradiationCache);
+        irradiationRamCache.putIfAbsent(irradiationCache.getKey(), irradiationCache);
     }
 
-    private void addCache(IIrradiationCache irradiationCache) {
-        addRamCache(irradiationCache);
-        irradiationCaching.add(irradiationCache);
-    }
-
-    private Optional<IIrradiationCache> getCache(IrrRequest irrRequest) {
-        return Optional.ofNullable(computedIrradiationCache.get(irrRequest.getKey()));
+    private Optional<IIrradiationCache> getIrradiationCache(IrrRequest irrRequest) {
+        return Optional.ofNullable(irradiationRamCache.get(irrRequest.getKey()));
     }
 
     private void cleanRamCache() {
-        if (computedIrradiationCache.size() >= LIMIT) {
-            computedIrradiationCache.remove(computedIrradiationCache.keys().nextElement());
+        if (irradiationRamCache.size() >= LIMIT) {
+            irradiationRamCache.remove(irradiationRamCache.keys().nextElement());
         }
     }
 }

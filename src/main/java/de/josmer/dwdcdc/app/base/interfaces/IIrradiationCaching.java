@@ -10,7 +10,8 @@ public interface IIrradiationCaching {
 
     Optional<IIrradiationCache> get(IrrRequest irrRequest);
 
-    default boolean isOldCache(LocalDateTime dtNow, IIrradiationCache irradiationCache) {
+    default boolean isOldCache(IIrradiationCache irradiationCache) {
+        LocalDateTime dtNow = LocalDateTime.now();
         return irradiationCache.getCreated().getYear() == dtNow.getYear()
                 && irradiationCache.getCreated().getMonthValue() != dtNow.getMonthValue();
     }
