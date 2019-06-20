@@ -5,20 +5,20 @@ import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
-public class DbCache {
+public class IrradiationCache {
     private int id;
     private String key;
     private LocalDateTime created;
     private LinkedList<SolIrrExp> months;
 
-    public DbCache(String key, LinkedList<SolIrrExp> months) {
+    public IrradiationCache(String key, LinkedList<SolIrrExp> months) {
         this.key = key;
         this.months = months;
         this.id = this.key.hashCode();
         this.created = LocalDateTime.now();
     }
 
-    public DbCache() {
+    public IrradiationCache() {
         this.key = "";
         this.months = new LinkedList<>();
     }
