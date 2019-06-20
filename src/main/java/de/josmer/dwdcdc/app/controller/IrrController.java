@@ -52,7 +52,7 @@ public final class IrrController extends AppController {
     }
 
     private LinkedList<SolIrrExp> getSolIrrExps(final IrrRequest req) {
-        Optional<IrradiationCache> optionalDbCache = irradiationCaching.get(req);
+        Optional<IIrradiationCache> optionalDbCache = irradiationCaching.get(req);
         if (optionalDbCache.isPresent()) {
             return optionalDbCache.get().getMonths();
         }

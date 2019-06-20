@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.repositories;
 
-import de.josmer.dwdcdc.app.base.entities.cache.IrradiationCache;
+import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCache;
 import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCacheParser;
 import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCacheRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.Optional;
 
 @Component
-public class IrradiationCacheRepository extends Repository<IrradiationCache> implements IIrradiationCacheRepository {
+public class IrradiationCacheRepository extends Repository<IIrradiationCache> implements IIrradiationCacheRepository {
 
     private final IIrradiationCacheParser parser;
 
@@ -24,7 +24,7 @@ public class IrradiationCacheRepository extends Repository<IrradiationCache> imp
     }
 
     @Override
-    public Optional<IrradiationCache> get(String key) {
+    public Optional<IIrradiationCache> get(String key) {
         try (Connection connection = getConnection();
              Statement statement = connection.createStatement();
              ResultSet rs = statement.executeQuery(getFindQuery(key))) {
@@ -38,8 +38,8 @@ public class IrradiationCacheRepository extends Repository<IrradiationCache> imp
     }
 
     @Override
-    public void save(IrradiationCache dbCache) {
-        executeUpdate(getSaveQuery(dbCache));
+    public void save(IIrradiationCache irradiationCache) {
+        executeUpdate(getSaveQuery(irradiationCache));
     }
 
     @Override
@@ -56,21 +56,21 @@ public class IrradiationCacheRepository extends Repository<IrradiationCache> imp
     }
 
     @Override
-    protected IrradiationCache mapTo(ResultSet rs) throws Exception {
+    protected IIrradiationCache mapTo(ResultSet rs) throws Exception {
         return parser.getDbCache(rs.getString("db_cache"));
     }
 
-    private String getDbCache(IrradiationCache dbCache) {
-        return parser.toJson(dbCache);
+    private String getDbCache(IIrradiationCache irradiationCache) {
+        return parser.toJson(irradiationCache);
     }
 
     private String getDeleteQuery(int id) {
         return "DELETE FROM irradiation WHERE id=" + id + ";";
     }
 
-    private String getSaveQuery(IrradiationCache dbCache) {
-        return "INSERT INTO irradiation (id, db_cache) VALUES (" + dbCache.getId() + ",'"
-                + getDbCache(dbCache) + "');";
+    private String getSaveQuery(IIrradiationCache irradiationCache) {
+        return "INSERT INTO irradiation (id, db_cache) VALUES (" + irradiationCache.getId() + ",'"
+                + getDbCache(irradiationCache) + "');";
     }
 
     private String getFindQuery(String key) {

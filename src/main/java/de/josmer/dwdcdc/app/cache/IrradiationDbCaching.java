@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.cache;
 
-import de.josmer.dwdcdc.app.base.entities.cache.IrradiationCache;
+import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCache;
 import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCacheRepository;
 import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCaching;
 import de.josmer.dwdcdc.app.requests.IrrRequest;
@@ -10,24 +10,24 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-@Component("IrradiationCacheDbCaching")
-public class IrradiationCacheDbCaching implements IIrradiationCaching {
+@Component("IrradiationDbCaching")
+public class IrradiationDbCaching implements IIrradiationCaching {
     private final IIrradiationCacheRepository dbCacheRep;
 
     @Autowired
-    public IrradiationCacheDbCaching(IIrradiationCacheRepository dbCacheRepository) {
+    public IrradiationDbCaching(IIrradiationCacheRepository dbCacheRepository) {
         this.dbCacheRep = dbCacheRepository;
     }
 
     @Override
-    public void add(IrradiationCache irradiationCache) {
+    public void add(IIrradiationCache irradiationCache) {
         dbCacheRep.save(irradiationCache);
     }
 
     @Override
-    public Optional<IrradiationCache> get(IrrRequest irrRequest) {
+    public Optional<IIrradiationCache> get(IrrRequest irrRequest) {
         LocalDateTime dtNow = LocalDateTime.now();
-        Optional<IrradiationCache> optionalDbCache = dbCacheRep.get(irrRequest.getKey());
+        Optional<IIrradiationCache> optionalDbCache = dbCacheRep.get(irrRequest.getKey());
         if (optionalDbCache.isEmpty()) {
             return Optional.empty();
         }

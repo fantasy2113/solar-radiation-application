@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.cache;
 
-import de.josmer.dwdcdc.app.base.entities.cache.IrradiationCache;
+import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCache;
 import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCaching;
 import de.josmer.dwdcdc.app.requests.IrrRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,47 +13,45 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component("IrradiationRamCaching")
 public class IrradiationRamCaching implements IIrradiationCaching {
     private static final int LIMIT = 10000;
-    private final ConcurrentHashMap<String, IrradiationCache> computedIrradiationCache;
+    private final ConcurrentHashMap<String, IIrradiationCache> computedIrradiationCache;
     private final IIrradiationCaching irradiationCaching;
 
     @Autowired
-    public IrradiationRamCaching(@Qualifier("IrradiationCacheDbCaching") IIrradiationCaching irradiationCaching) {
+    public IrradiationRamCaching(@Qualifier("IrradiationDbCaching") IIrradiationCaching irradiationCaching) {
         this.computedIrradiationCache = new ConcurrentHashMap<>();
         this.irradiationCaching = irradiationCaching;
     }
 
     @Override
-    public void add(IrradiationCache irradiationCache) {
+    public void add(IIrradiationCache irradiationCache) {
         addCache(irradiationCache);
     }
 
     @Override
-    public Optional<IrradiationCache> get(IrrRequest irrRequest) {
-        Optional<IrradiationCache> optionalRamCache = getCache(irrRequest);
+    public Optional<IIrradiationCache> get(IrrRequest irrRequest) {
+        Optional<IIrradiationCache> optionalRamCache = getCache(irrRequest);
         if (optionalRamCache.isPresent()) {
             return optionalRamCache;
         }
-
-        Optional<IrradiationCache> optionalDbCache = irradiationCaching.get(irrRequest);
+        Optional<IIrradiationCache> optionalDbCache = irradiationCaching.get(irrRequest);
         if (optionalDbCache.isPresent()) {
             addRamCache(optionalDbCache.get());
             return optionalDbCache;
         }
-
         return Optional.empty();
     }
 
-    private void addRamCache(IrradiationCache dbCache) {
+    private void addRamCache(IIrradiationCache dbCache) {
         cleanRamCache();
         computedIrradiationCache.putIfAbsent(dbCache.getKey(), dbCache);
     }
 
-    private void addCache(IrradiationCache dbCache) {
+    private void addCache(IIrradiationCache dbCache) {
         addRamCache(dbCache);
         irradiationCaching.add(dbCache);
     }
 
-    private Optional<IrradiationCache> getCache(IrrRequest irrRequest) {
+    private Optional<IIrradiationCache> getCache(IrrRequest irrRequest) {
         return Optional.ofNullable(computedIrradiationCache.get(irrRequest.getKey()));
     }
 

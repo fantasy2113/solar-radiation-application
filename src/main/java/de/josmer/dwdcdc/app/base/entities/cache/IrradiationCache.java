@@ -1,11 +1,12 @@
 package de.josmer.dwdcdc.app.base.entities.cache;
 
 import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCache;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
-public class IrradiationCache {
+public class IrradiationCache implements IIrradiationCache {
     private int id;
     private String key;
     private LocalDateTime created;
@@ -23,6 +24,7 @@ public class IrradiationCache {
         this.months = new LinkedList<>();
     }
 
+    @Override
     public String getKey() {
         return key;
     }
@@ -31,6 +33,7 @@ public class IrradiationCache {
         this.key = key;
     }
 
+    @Override
     public LinkedList<SolIrrExp> getMonths() {
         return months;
     }
@@ -39,6 +42,7 @@ public class IrradiationCache {
         this.months = months;
     }
 
+    @Override
     public int getId() {
         return id;
     }
@@ -47,6 +51,7 @@ public class IrradiationCache {
         this.id = id;
     }
 
+    @Override
     public LocalDateTime getCreated() {
         return created;
     }
