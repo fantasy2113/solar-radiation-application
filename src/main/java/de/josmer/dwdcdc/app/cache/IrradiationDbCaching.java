@@ -25,14 +25,14 @@ public class IrradiationDbCaching implements IIrradiationCaching {
 
     @Override
     public Optional<IIrradiationCache> get(Identifiable identifiable) {
-        Optional<IIrradiationCache> optionalDbCache = dbCacheRep.get(identifiable.getKey());
-        if (optionalDbCache.isEmpty()) {
+        Optional<IIrradiationCache> optionalIIrradiationCache = dbCacheRep.get(identifiable.getKey());
+        if (optionalIIrradiationCache.isEmpty()) {
             return Optional.empty();
         }
-        if (isOldCache(optionalDbCache.get())) {
+        if (isOldCache(optionalIIrradiationCache.get())) {
             dbCacheRep.delete(identifiable.getId());
             return Optional.empty();
         }
-        return optionalDbCache;
+        return optionalIIrradiationCache;
     }
 }
