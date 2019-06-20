@@ -2,7 +2,7 @@ package de.josmer.dwdcdc.app.cache;
 
 import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCache;
 import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCaching;
-import de.josmer.dwdcdc.app.requests.IrrRequest;
+import de.josmer.dwdcdc.app.base.interfaces.Identifiable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -29,22 +29,22 @@ public class IrradiationRamCaching implements IIrradiationCaching {
     }
 
     @Override
-    public Optional<IIrradiationCache> get(IrrRequest irrRequest) {
-        return getIrradiationCache(irrRequest).map(c -> loadCache(irrRequest, c))
-                .or(() -> Optional.ofNullable(getCacheFromDb(irrRequest)));
+    public Optional<IIrradiationCache> get(Identifiable identifiable) {
+        return getIrradiationCache(identifiable).map(c -> loadCache(identifiable, c))
+                .or(() -> Optional.ofNullable(getCacheFromDb(identifiable)));
     }
 
-    private IIrradiationCache loadCache(IrrRequest irrRequest, IIrradiationCache irradiationCache) {
+    private IIrradiationCache loadCache(Identifiable identifiable, IIrradiationCache irradiationCache) {
         if (isOldCache(irradiationCache)) {
-            irradiationRamCache.remove(irrRequest.getKey());
-            return getCacheFromDb(irrRequest);
+            irradiationRamCache.remove(identifiable.getKey());
+            return getCacheFromDb(identifiable);
         } else {
             return irradiationCache;
         }
     }
 
-    private IIrradiationCache getCacheFromDb(IrrRequest irrRequest) {
-        return irradiationDbCaching.get(irrRequest).map(c -> {
+    private IIrradiationCache getCacheFromDb(Identifiable identifiable) {
+        return irradiationDbCaching.get(identifiable).map(c -> {
             putCache(c);
             return c;
         }).orElse(null);
@@ -55,8 +55,8 @@ public class IrradiationRamCaching implements IIrradiationCaching {
         irradiationRamCache.putIfAbsent(irradiationCache.getKey(), irradiationCache);
     }
 
-    private Optional<IIrradiationCache> getIrradiationCache(IrrRequest irrRequest) {
-        return Optional.ofNullable(irradiationRamCache.get(irrRequest.getKey()));
+    private Optional<IIrradiationCache> getIrradiationCache(Identifiable identifiable) {
+        return Optional.ofNullable(irradiationRamCache.get(identifiable.getKey()));
     }
 
     private void cleanRamCache() {
