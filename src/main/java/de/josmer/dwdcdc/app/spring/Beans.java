@@ -1,7 +1,7 @@
 package de.josmer.dwdcdc.app.spring;
 
 import com.google.gson.Gson;
-import de.josmer.dwdcdc.app.base.entities.SolRad;
+import de.josmer.dwdcdc.app.entities.SolRad;
 import de.josmer.dwdcdc.library.crawler.SolRadCrawler;
 import de.josmer.dwdcdc.library.enums.SolRadTypes;
 import de.josmer.dwdcdc.library.interfaces.ISolRadCrawler;

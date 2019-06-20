@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.security;
 
-import de.josmer.dwdcdc.app.base.interfaces.IJwtToken;
+import de.josmer.dwdcdc.app.interfaces.IJwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;

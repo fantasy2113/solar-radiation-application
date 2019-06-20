@@ -1,7 +1,7 @@
-package de.josmer.dwdcdc.app.base.entities.cache;
+package de.josmer.dwdcdc.app.entities.cache;
 
-import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
-import de.josmer.dwdcdc.app.base.interfaces.IIrradiationCache;
+import de.josmer.dwdcdc.app.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.interfaces.IIrradiationCache;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;

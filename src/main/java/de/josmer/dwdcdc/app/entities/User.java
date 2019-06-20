@@ -1,4 +1,4 @@
-package de.josmer.dwdcdc.app.base.entities;
+package de.josmer.dwdcdc.app.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;

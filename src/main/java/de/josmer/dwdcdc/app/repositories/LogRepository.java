@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.repositories;
 
-import de.josmer.dwdcdc.app.base.interfaces.ILogRepository;
+import de.josmer.dwdcdc.app.interfaces.ILogRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

@@ -1,4 +1,4 @@
-package de.josmer.dwdcdc.app.base.interfaces;
+package de.josmer.dwdcdc.app.interfaces;
 
 import java.util.LinkedList;
 import java.util.List;

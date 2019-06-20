@@ -1,8 +1,8 @@
 package de.josmer.dwdcdc.app.controller;
 
-import de.josmer.dwdcdc.app.base.entities.SolRadExp;
-import de.josmer.dwdcdc.app.base.entities.web.WebInfo;
-import de.josmer.dwdcdc.app.base.interfaces.*;
+import de.josmer.dwdcdc.app.entities.SolRadExp;
+import de.josmer.dwdcdc.app.entities.web.WebInfo;
+import de.josmer.dwdcdc.app.interfaces.*;
 import de.josmer.dwdcdc.app.requests.RadRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CookieValue;

@@ -1,8 +1,8 @@
 package de.josmer.dwdcdc.app.controller;
 
-import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
-import de.josmer.dwdcdc.app.base.entities.cache.IrradiationCache;
-import de.josmer.dwdcdc.app.base.interfaces.*;
+import de.josmer.dwdcdc.app.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.entities.cache.IrradiationCache;
+import de.josmer.dwdcdc.app.interfaces.*;
 import de.josmer.dwdcdc.app.requests.IrrRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

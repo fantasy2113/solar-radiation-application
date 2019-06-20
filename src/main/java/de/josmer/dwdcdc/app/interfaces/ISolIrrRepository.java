@@ -1,6 +1,6 @@
-package de.josmer.dwdcdc.app.base.interfaces;
+package de.josmer.dwdcdc.app.interfaces;
 
-import de.josmer.dwdcdc.app.base.entities.SolIrr;
+import de.josmer.dwdcdc.app.entities.SolIrr;
 
 import java.util.LinkedList;
 

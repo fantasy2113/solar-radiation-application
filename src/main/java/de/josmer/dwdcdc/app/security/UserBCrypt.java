@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.security;
 
-import de.josmer.dwdcdc.app.base.interfaces.IUserBCrypt;
+import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 

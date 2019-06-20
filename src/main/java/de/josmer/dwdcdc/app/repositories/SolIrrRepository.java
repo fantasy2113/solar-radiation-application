@@ -1,7 +1,7 @@
 package de.josmer.dwdcdc.app.repositories;
 
-import de.josmer.dwdcdc.app.base.entities.SolIrr;
-import de.josmer.dwdcdc.app.base.interfaces.ISolIrrRepository;
+import de.josmer.dwdcdc.app.entities.SolIrr;
+import de.josmer.dwdcdc.app.interfaces.ISolIrrRepository;
 import de.josmer.dwdcdc.library.irradiation.ComputedYear;
 import de.josmer.dwdcdc.library.irradiation.SolarIrradiation;
 import org.springframework.stereotype.Component;

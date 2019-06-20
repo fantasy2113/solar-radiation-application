@@ -1,9 +1,9 @@
 package de.josmer.dwdcdc.app.controller;
 
-import de.josmer.dwdcdc.app.base.entities.web.WebCookie;
-import de.josmer.dwdcdc.app.base.interfaces.IJwtToken;
-import de.josmer.dwdcdc.app.base.interfaces.IUserBCrypt;
-import de.josmer.dwdcdc.app.base.interfaces.IUserRepository;
+import de.josmer.dwdcdc.app.entities.web.WebCookie;
+import de.josmer.dwdcdc.app.interfaces.IJwtToken;
+import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
+import de.josmer.dwdcdc.app.interfaces.IUserRepository;
 import de.josmer.dwdcdc.library.interfaces.IDataReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,7 +1,7 @@
 package de.josmer.dwdcdc.app.repositories;
 
-import de.josmer.dwdcdc.app.base.entities.SolRad;
-import de.josmer.dwdcdc.app.base.interfaces.ISolRadRepository;
+import de.josmer.dwdcdc.app.entities.SolRad;
+import de.josmer.dwdcdc.app.interfaces.ISolRadRepository;
 import de.josmer.dwdcdc.library.enums.SolRadTypes;
 import de.josmer.dwdcdc.library.geotrans.GaussKruger;
 import de.josmer.dwdcdc.library.geotrans.GkConverter;

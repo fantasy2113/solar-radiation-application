@@ -1,6 +1,6 @@
-package de.josmer.dwdcdc.app.base.interfaces;
+package de.josmer.dwdcdc.app.interfaces;
 
-import de.josmer.dwdcdc.app.base.entities.SolIrrExp;
+import de.josmer.dwdcdc.app.entities.SolIrrExp;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
