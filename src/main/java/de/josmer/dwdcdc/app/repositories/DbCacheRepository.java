@@ -39,21 +39,33 @@ public class DbCacheRepository extends Repository<DbCache> implements IDbCacheRe
 
     @Override
     public void save(DbCache dbCache) {
+        executeUpdate(getSaveQuery(dbCache));
+    }
+
+    @Override
+    public void delete(int id) {
+        executeUpdate(getDeleteQuery(id));
+    }
+
+    private void executeUpdate(String query) {
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
-            statement.executeUpdate(getSaveQuery(dbCache));
+            statement.executeUpdate(query);
         } catch (SQLException | URISyntaxException e) {
             LOGGER.info(e.toString());
         }
     }
 
     @Override
-    public void delete(int id) {
-
-    }
-
-    @Override
     protected DbCache mapTo(ResultSet rs) throws Exception {
         return parser.getDbCache(rs.getString("db_cache"));
+    }
+
+    private String getDbCache(DbCache dbCache) {
+        return parser.toJson(dbCache);
+    }
+
+    private String getDeleteQuery(int id) {
+        return "DELETE FROM irradiation WHERE id=" + id + ";";
     }
 
     private String getSaveQuery(DbCache dbCache) {
@@ -63,9 +75,5 @@ public class DbCacheRepository extends Repository<DbCache> implements IDbCacheRe
 
     private String getFindQuery(String key) {
         return "SELECT * FROM irradiation WHERE db_cache->>'key' = '" + key + "';";
-    }
-
-    private String getDbCache(DbCache dbCache) {
-        return parser.toJson(dbCache);
     }
 }
