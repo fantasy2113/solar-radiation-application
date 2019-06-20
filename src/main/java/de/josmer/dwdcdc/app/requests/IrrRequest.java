@@ -1,7 +1,9 @@
 package de.josmer.dwdcdc.app.requests;
 
 
-public final class IrrRequest extends Request {
+import de.josmer.dwdcdc.app.base.interfaces.Identifiable;
+
+public final class IrrRequest extends Request implements Identifiable {
     private int year;
     private int ae;
     private int ye;
@@ -45,10 +47,12 @@ public final class IrrRequest extends Request {
         return "lon=" + this.lon + ";" + "lat=" + this.lat + ";" + "ae=" + this.ae + ";" + "ye=" + this.ye + ";" + "year=" + this.year;
     }
 
+    @Override
     public String getKey() {
         return this.toString();
     }
 
+    @Override
     public int getId() {
         return getKey().hashCode();
     }

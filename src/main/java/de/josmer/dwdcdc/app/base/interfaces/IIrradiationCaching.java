@@ -1,14 +1,12 @@
 package de.josmer.dwdcdc.app.base.interfaces;
 
-import de.josmer.dwdcdc.app.requests.IrrRequest;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface IIrradiationCaching {
     void add(IIrradiationCache irradiationCache);
 
-    Optional<IIrradiationCache> get(IrrRequest irrRequest);
+    Optional<IIrradiationCache> get(Identifiable irrRequest);
 
     default boolean isOldCache(IIrradiationCache irradiationCache) {
         LocalDateTime dtNow = LocalDateTime.now();
