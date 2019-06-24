@@ -14,3 +14,6 @@ TZ=Europe/Berlin
 // after initialization delete this environment
 // use parallel only on high-end hardware!!!
 INSERT_ALL=<parallel> or <normal>
+
+MVN_ARTI_READ
+MVN_ARTI_WRITE
