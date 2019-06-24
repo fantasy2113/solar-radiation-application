@@ -11,7 +11,7 @@
     <repositories>
         <repository>
             <id>myMavenRepoRead</id>
-            <url>https://mymavenrepo.com/repo/SobmqS55xSNYxkhIqZPi/</url>
+            <url>${env.MVN_ARTI_READ}</url>
         </repository>
     </repositories>
 
