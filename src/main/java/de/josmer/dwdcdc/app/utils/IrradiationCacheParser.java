@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component("gson")
 public class IrradiationCacheParser implements IIrradiationCacheParser {
+
     private final Gson gson;
 
     @Autowired

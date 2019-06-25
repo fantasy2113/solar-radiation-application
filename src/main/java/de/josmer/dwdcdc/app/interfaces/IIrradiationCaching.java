@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface IIrradiationCaching {
+
     void add(IIrradiationCache irradiationCache);
 
     Optional<IIrradiationCache> get(Identifiable irrRequest);

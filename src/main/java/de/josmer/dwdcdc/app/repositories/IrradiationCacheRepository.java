@@ -3,18 +3,18 @@ package de.josmer.dwdcdc.app.repositories;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCache;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCacheParser;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCacheRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class IrradiationCacheRepository extends Repository<IIrradiationCache> implements IIrradiationCacheRepository {
+
     private final IIrradiationCacheParser parser;
 
     @Autowired
@@ -25,8 +25,8 @@ public class IrradiationCacheRepository extends Repository<IIrradiationCache> im
     @Override
     public Optional<IIrradiationCache> get(String key) {
         try (Connection connection = getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet rs = statement.executeQuery(getFindQuery(key))) {
+                Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery(getFindQuery(key))) {
             if (rs.next()) {
                 return Optional.of(mapTo(rs));
             }

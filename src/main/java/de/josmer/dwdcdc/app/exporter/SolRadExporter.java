@@ -3,10 +3,9 @@ package de.josmer.dwdcdc.app.exporter;
 import de.josmer.dwdcdc.app.entities.SolRad;
 import de.josmer.dwdcdc.app.entities.SolRadExp;
 import de.josmer.dwdcdc.app.interfaces.ISolRadExporter;
-import org.springframework.stereotype.Component;
-
 import java.util.LinkedList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements ISolRadExporter {

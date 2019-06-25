@@ -3,15 +3,15 @@ package de.josmer.dwdcdc.app.repositories;
 import de.josmer.dwdcdc.app.entities.User;
 import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
 import de.josmer.dwdcdc.app.interfaces.IUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public final class UserRepository implements IUserRepository {
+
     private final UserRepositoryCrud userRepositoryCrud;
     private final IUserBCrypt userBCrypt;
 

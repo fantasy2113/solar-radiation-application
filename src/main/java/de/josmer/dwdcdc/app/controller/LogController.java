@@ -1,15 +1,15 @@
 package de.josmer.dwdcdc.app.controller;
 
 import de.josmer.dwdcdc.app.interfaces.ILogRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 public class LogController {
+
     private final ILogRepository logRepository;
 
     @Autowired

@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.entities.web;
 
 public class WebInfo {
+
     private int numberOfRad;
 
     public int getNumberOfRad() {

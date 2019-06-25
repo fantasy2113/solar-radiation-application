@@ -2,11 +2,11 @@ package de.josmer.dwdcdc.app.entities.cache;
 
 import de.josmer.dwdcdc.app.entities.SolIrrExp;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCache;
-
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 public class IrradiationCache implements IIrradiationCache {
+
     private int id;
     private String key;
     private LocalDateTime created;

@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.entities.web;
 
 public class WebCookie {
+
     private String token;
     private String app;
 

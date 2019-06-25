@@ -28,4 +28,3 @@ public class Context implements ApplicationContextAware {
         context = applicationContext;
     }
 }
-

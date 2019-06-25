@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.requests;
 
 abstract class Request {
+
     protected double lat;
     protected double lon;
 
