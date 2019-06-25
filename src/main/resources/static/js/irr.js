@@ -74,8 +74,8 @@ jQuery(document).ready(function () {
 
 function getExportIrrQuery() {
     return 'year=' + $('input[id=year]').val()
-            + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
-            + '&ae=' + $('input[id=alignment]').val() + '&ye=' + $('input[id=tilt]').val();
+        + '&lat=' + $('input[id=lat]').val() + '&lon=' + $('input[id=lon]').val()
+        + '&ae=' + $('input[id=alignment]').val() + '&ye=' + $('input[id=tilt]').val();
 }
 
 function getYears() {

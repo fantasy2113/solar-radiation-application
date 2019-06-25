@@ -5,14 +5,15 @@ import de.josmer.dwdcdc.app.interfaces.IJwtToken;
 import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
 import de.josmer.dwdcdc.app.interfaces.IUserRepository;
 import de.josmer.dwdcdc.library.interfaces.IDataReader;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public final class ViewController extends Controller {

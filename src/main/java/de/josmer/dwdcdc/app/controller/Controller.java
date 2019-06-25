@@ -5,11 +5,12 @@ import de.josmer.dwdcdc.app.interfaces.IJwtToken;
 import de.josmer.dwdcdc.app.interfaces.IUserBCrypt;
 import de.josmer.dwdcdc.app.interfaces.IUserRepository;
 import de.josmer.dwdcdc.library.enums.SolRadTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 abstract class Controller {
 

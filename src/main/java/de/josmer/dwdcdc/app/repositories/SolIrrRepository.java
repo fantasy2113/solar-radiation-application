@@ -4,9 +4,10 @@ import de.josmer.dwdcdc.app.entities.SolIrr;
 import de.josmer.dwdcdc.app.interfaces.ISolIrrRepository;
 import de.josmer.dwdcdc.library.irradiation.ComputedYear;
 import de.josmer.dwdcdc.library.irradiation.SolarIrradiation;
+import org.springframework.stereotype.Component;
+
 import java.util.LinkedList;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 @Component
 public final class SolIrrRepository implements ISolIrrRepository {

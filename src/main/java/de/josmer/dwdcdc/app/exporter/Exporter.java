@@ -1,9 +1,10 @@
 package de.josmer.dwdcdc.app.exporter;
 
-import java.util.Locale;
 import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Locale;
 
 abstract class Exporter<TOut, TInput> {
 

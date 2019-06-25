@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.interfaces;
 
 import de.josmer.dwdcdc.app.entities.SolIrr;
+
 import java.util.LinkedList;
 
 public interface ISolIrrRepository {

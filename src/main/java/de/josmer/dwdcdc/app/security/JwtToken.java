@@ -5,11 +5,12 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import java.security.Key;
-import java.util.Date;
+import org.springframework.stereotype.Component;
+
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
-import org.springframework.stereotype.Component;
+import java.security.Key;
+import java.util.Date;
 
 @Component
 public final class JwtToken implements IJwtToken {

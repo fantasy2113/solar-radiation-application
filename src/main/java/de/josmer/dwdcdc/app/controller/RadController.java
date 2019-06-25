@@ -4,13 +4,14 @@ import de.josmer.dwdcdc.app.entities.SolRadExp;
 import de.josmer.dwdcdc.app.entities.web.WebInfo;
 import de.josmer.dwdcdc.app.interfaces.*;
 import de.josmer.dwdcdc.app.requests.RadRequest;
-import java.util.LinkedList;
-import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedList;
 
 @RestController
 public final class RadController extends AppController {
@@ -25,8 +26,8 @@ public final class RadController extends AppController {
 
     @GetMapping("/export_rad")
     public void exportRad(HttpServletResponse response, @CookieValue("token") final String token, @RequestParam("startDate") final String startDate,
-            @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat,
-            @RequestParam("type") final String type) throws Exception {
+                          @RequestParam("endDate") final String endDate, @RequestParam("lon") final double lon, @RequestParam("lat") final double lat,
+                          @RequestParam("type") final String type) throws Exception {
         LOGGER.info("getBean - export_rad");
         if (!isAccess(token)) {
             return;

@@ -3,9 +3,10 @@ package de.josmer.dwdcdc.app.exporter;
 import de.josmer.dwdcdc.app.entities.SolIrr;
 import de.josmer.dwdcdc.app.entities.SolIrrExp;
 import de.josmer.dwdcdc.app.interfaces.ISolIrrExporter;
+import org.springframework.stereotype.Component;
+
 import java.util.LinkedList;
 import java.util.List;
-import org.springframework.stereotype.Component;
 
 @Component
 public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements ISolIrrExporter {
