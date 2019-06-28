@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 abstract class Controller {
@@ -38,5 +39,9 @@ abstract class Controller {
             LOGGER.info(e.toString());
         }
         return false;
+    }
+
+    final void executeTask(Runnable task) {
+        Executors.newSingleThreadExecutor().execute(task);
     }
 }

@@ -58,7 +58,10 @@ public final class IrrController extends AppController {
             return optionalDbCache.get().getMonths();
         }
         LinkedList<SolIrrExp> solIrrExps = getItems(req);
-        irradiationCaching.add(new IrradiationCache(req.getKey(), solIrrExps));
+        executeTask(() -> {
+            irradiationCaching.add(new IrradiationCache(req.getKey(), solIrrExps));
+            LOGGER.info("Create DbCache: " + req.getKey());
+        });
         return solIrrExps;
     }
 
