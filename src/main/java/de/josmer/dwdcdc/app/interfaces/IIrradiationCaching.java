@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.interfaces;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Optional;
 
 public interface IIrradiationCaching {
@@ -10,8 +10,8 @@ public interface IIrradiationCaching {
     Optional<IIrradiationCache> get(Identifiable irrRequest);
 
     default boolean isOldCache(IIrradiationCache irradiationCache) {
-        LocalDateTime dtNow = LocalDateTime.now();
-        return irradiationCache.getCreated().getYear() == dtNow.getYear()
-                && irradiationCache.getCreated().getMonthValue() != dtNow.getMonthValue();
+        LocalDate localDate = LocalDate.now();
+        return irradiationCache.getCreated().getYear() == localDate.getYear()
+                && irradiationCache.getCreated().getMonthValue() != localDate.getMonthValue();
     }
 }
