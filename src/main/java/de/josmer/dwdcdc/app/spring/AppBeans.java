@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class Beans {
+public class AppBeans {
 
     public static final String CRAWLER_GLOBAL = "crawlerGlobal";
     public static final String CRAWLER_DIRECT = "crawlerDirect";
