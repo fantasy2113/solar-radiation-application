@@ -10,6 +10,7 @@ import java.util.List;
 
 @Component
 public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements ISolIrrExporter {
+
     @Override
     public LinkedList<SolIrrExp> getItems(LinkedList<SolIrr> items, double lon, double lat) {
         LinkedList<SolIrrExp> exports = new LinkedList<>();

@@ -15,6 +15,7 @@ import java.util.LinkedList;
 
 @RestController
 public final class RadController extends AppController {
+
     private final ISolRadExporter solRadExp;
 
     @Autowired

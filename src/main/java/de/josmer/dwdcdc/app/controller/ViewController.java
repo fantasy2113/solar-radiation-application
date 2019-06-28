@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public final class ViewController extends Controller {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class.getName());
     private final String loginHtml;
     private final String irrHtml;
@@ -28,8 +29,10 @@ public final class ViewController extends Controller {
         this.loginHtml = fileReader.getDataAsString("src/main/resources/static/html/login.html");
         this.irrHtml = fileReader.getDataAsString("src/main/resources/static/html/irr.html");
         this.radHtml = fileReader.getDataAsString("src/main/resources/static/html/rad.html");
-        createUser("admin", System.getenv("APP_ADMIN_PASSWORD"));
-        createUser("user", System.getenv("APP_USER_PASSWORD"));
+        executeTask(() -> {
+            createUser("admin", System.getenv("APP_ADMIN_PASSWORD"));
+            createUser("user", System.getenv("APP_USER_PASSWORD"));
+        });
     }
 
     @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
@@ -70,6 +73,7 @@ public final class ViewController extends Controller {
 
     private void createUser(String username, String plainPassword) {
         if (userRep.get(username).isEmpty()) {
+            LOGGER.info("Create user: " + username);
             userRep.createUser(username, plainPassword);
         }
     }

@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.entities;
 
 public final class SolIrr {
+
     private String calculatedDate;
     private double ae;
     private double ye;

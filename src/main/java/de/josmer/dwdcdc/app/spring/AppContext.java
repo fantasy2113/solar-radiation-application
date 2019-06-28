@@ -7,25 +7,24 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Context implements ApplicationContextAware {
+public class AppContext implements ApplicationContextAware {
 
-    private static ApplicationContext context;
+    private static ApplicationContext appContext;
 
     public static <T> T getBean(Class<T> beanClass) {
-        return context.getBean(beanClass);
+        return appContext.getBean(beanClass);
     }
 
     public static Object getBean(String beanName) {
-        return context.getBean(beanName);
+        return appContext.getBean(beanName);
     }
 
     public static ISolRadCrawler getCrawler(String beanName) {
-        return (ISolRadCrawler) context.getBean(beanName);
+        return (ISolRadCrawler) appContext.getBean(beanName);
     }
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        context = applicationContext;
+        appContext = applicationContext;
     }
 }
-

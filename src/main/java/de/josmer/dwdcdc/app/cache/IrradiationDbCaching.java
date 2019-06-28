@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Component("IrradiationDbCaching")
 public class IrradiationDbCaching implements IIrradiationCaching {
+
     private final IIrradiationCacheRepository dbCacheRep;
 
     @Autowired

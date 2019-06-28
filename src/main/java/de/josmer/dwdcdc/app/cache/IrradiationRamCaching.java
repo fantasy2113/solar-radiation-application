@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component("IrradiationRamCaching")
 public class IrradiationRamCaching implements IIrradiationCaching {
+
     private static final int LIMIT = 10000;
     private final ConcurrentHashMap<String, IIrradiationCache> irradiationRamCache;
     private final IIrradiationCaching irradiationDbCaching;

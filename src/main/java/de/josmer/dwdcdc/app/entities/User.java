@@ -9,6 +9,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "user_tab")
 public final class User implements Serializable {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = IDENTITY)

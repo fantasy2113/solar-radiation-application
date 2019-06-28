@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Component
 public final class UserRepository implements IUserRepository {
+
     private final UserRepositoryCrud userRepositoryCrud;
     private final IUserBCrypt userBCrypt;
 

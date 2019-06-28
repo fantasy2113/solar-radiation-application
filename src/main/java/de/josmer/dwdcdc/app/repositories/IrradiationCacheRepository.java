@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Component
 public class IrradiationCacheRepository extends Repository<IIrradiationCache> implements IIrradiationCacheRepository {
+
     private final IIrradiationCacheParser parser;
 
     @Autowired

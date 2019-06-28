@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.requests;
 
 public final class RadRequest extends Request {
+
     private String startDate;
     private String endDate;
     private String type;

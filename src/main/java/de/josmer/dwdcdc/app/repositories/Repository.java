@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 abstract class Repository<E> {
+
     static final Logger LOGGER = LoggerFactory.getLogger(SolRadRepository.class.getName());
     private final String databaseUrl;
 

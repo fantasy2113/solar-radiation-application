@@ -1,6 +1,6 @@
 package de.josmer.dwdcdc.app.controller;
 
-import de.josmer.dwdcdc.app.App;
+import de.josmer.dwdcdc.app.Application;
 import de.josmer.dwdcdc.app.entities.User;
 import de.josmer.dwdcdc.app.entities.web.WebToken;
 import de.josmer.dwdcdc.app.interfaces.IJwtToken;
@@ -25,10 +25,10 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TokenControllerTest {
+
     @LocalServerPort
     private int port;
     private URL base;
@@ -41,7 +41,7 @@ public class TokenControllerTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        App.setTest(true);
+        Application.setTest(true);
     }
 
     @Before

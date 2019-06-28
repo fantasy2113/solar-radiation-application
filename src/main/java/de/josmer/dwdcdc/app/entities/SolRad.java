@@ -3,6 +3,7 @@ package de.josmer.dwdcdc.app.entities;
 import de.josmer.dwdcdc.library.interfaces.ISolRad;
 
 public final class SolRad implements ISolRad {
+
     private int radiationDate;
     private int gkhMin;
     private int gkhMax;

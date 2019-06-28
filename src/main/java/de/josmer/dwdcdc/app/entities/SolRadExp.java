@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.entities;
 
 public final class SolRadExp extends Export {
+
     private String type;
     private double value;
 

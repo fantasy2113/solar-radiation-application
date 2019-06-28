@@ -1,6 +1,7 @@
 package de.josmer.dwdcdc.app.entities;
 
 public final class SolIrrExp extends Export {
+
     private String ae;
     private String ye;
     private double eGlobHor;

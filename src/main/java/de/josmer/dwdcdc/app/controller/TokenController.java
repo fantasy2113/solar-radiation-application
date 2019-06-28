@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 public final class TokenController extends Controller {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenController.class.getName());
 
     @Autowired

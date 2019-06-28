@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @RestController
 public final class UserController extends Controller {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class.getName());
 
     @Autowired

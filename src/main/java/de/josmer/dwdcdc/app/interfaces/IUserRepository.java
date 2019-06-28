@@ -5,6 +5,7 @@ import de.josmer.dwdcdc.app.entities.User;
 import java.util.Optional;
 
 public interface IUserRepository {
+
     Optional<User> get(Integer id);
 
     Optional<User> get(String username);

@@ -10,9 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 abstract class Controller {
+
     protected static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
     static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
     final IUserRepository userRep;
@@ -37,5 +39,9 @@ abstract class Controller {
             LOGGER.info(e.toString());
         }
         return false;
+    }
+
+    final void executeTask(Runnable task) {
+        Executors.newSingleThreadExecutor().execute(task);
     }
 }

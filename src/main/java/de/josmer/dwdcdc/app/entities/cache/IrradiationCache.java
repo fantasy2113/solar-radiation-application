@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 
 public class IrradiationCache implements IIrradiationCache {
+
     private int id;
     private String key;
     private LocalDateTime created;

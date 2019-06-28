@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 
 @Component
 public final class LogRepository implements ILogRepository {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(LogRepository.class.getName());
 
     @Override

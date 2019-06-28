@@ -14,6 +14,7 @@ import java.util.Date;
 
 @Component
 public final class JwtToken implements IJwtToken {
+
     private final String secretKey;
 
     public JwtToken() {
