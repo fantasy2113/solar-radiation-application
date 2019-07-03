@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -69,8 +67,8 @@ public class IrradiationCacheRepository extends Repository<IIrradiationCache> im
     }
 
     private String getSaveQuery(IIrradiationCache irradiationCache) {
-        return "INSERT INTO irradiation (id, db_cache) VALUES (" + irradiationCache.getId() + ",'"
-                + getDbCache(irradiationCache) + "');";
+        return "INSERT INTO irradiation (id, db_cache, created) VALUES (" + irradiationCache.getId() + ",'"
+                + getDbCache(irradiationCache) + "', '" + Timestamp.valueOf(LocalDateTime.now()) + "');";
     }
 
     private String getFindQuery(String key) {
