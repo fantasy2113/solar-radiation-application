@@ -45,10 +45,12 @@ public class IrradiationRamCaching implements IIrradiationCaching {
     }
 
     private IIrradiationCache getCacheFromDb(Identifiable identifiable) {
-        return irradiationDbCaching.get(identifiable).map(c -> {
-            putCache(c);
-            return c;
-        }).orElse(null);
+        return irradiationDbCaching.get(identifiable)
+                .map(c -> {
+                    putCache(c);
+                    return c;
+                })
+                .orElse(null);
     }
 
     private void putCache(IIrradiationCache irradiationCache) {

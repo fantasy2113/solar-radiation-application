@@ -1,7 +1,5 @@
-.idea/libraries/
-.idea/sonarlint/
-.idea/workspace.xml
-.idea/uiDesigner.xml
+.idea/
+*.iml
 target/
 *.asc
 *.zip
