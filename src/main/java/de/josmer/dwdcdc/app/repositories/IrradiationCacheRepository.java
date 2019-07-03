@@ -68,7 +68,7 @@ public class IrradiationCacheRepository extends Repository<IIrradiationCache> im
 
     private String getSaveQuery(IIrradiationCache irradiationCache) {
         return "INSERT INTO irradiation (id, db_cache, created) VALUES (" + irradiationCache.getId() + ",'"
-                + getDbCache(irradiationCache) + "', '" + Timestamp.valueOf(LocalDateTime.now()) + "';";
+                + getDbCache(irradiationCache) + "', '" + Timestamp.valueOf(LocalDateTime.now()) + "');";
     }
 
     private String getFindQuery(String key) {
