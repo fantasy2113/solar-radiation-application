@@ -12,6 +12,7 @@ public interface IIrradiationCaching {
     default boolean isOldCache(IIrradiationCache irradiationCache) {
         LocalDate localDate = LocalDate.now();
         return irradiationCache.getCreated().getYear() == localDate.getYear()
-                && irradiationCache.getCreated().getMonthValue() != localDate.getMonthValue();
+                && irradiationCache.getMonths().stream()
+                .anyMatch(c -> c.geteGlobGen() == 0 || c.geteGlobHor() == 0);
     }
 }
