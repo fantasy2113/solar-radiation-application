@@ -10,9 +10,11 @@ public interface IIrradiationCaching {
     Optional<IIrradiationCache> get(Identifiable irrRequest);
 
     default boolean isOldCache(IIrradiationCache irradiationCache) {
-        LocalDate localDate = LocalDate.now();
+        final LocalDate localDate = LocalDate.now();
+        final int validMonth = localDate.getDayOfMonth() > 15 ? localDate.getMonthValue() - 1 : localDate.getMonthValue() - 2;
         return irradiationCache.getCreated().getYear() == localDate.getYear()
-                && irradiationCache.getMonths().stream()
-                .anyMatch(c -> c.geteGlobGen() == 0 || c.geteGlobHor() == 0);
+                && irradiationCache.getMonths()
+                .stream().filter(m -> m.geteGlobGen() != 0)
+                .count() == validMonth;
     }
 }
