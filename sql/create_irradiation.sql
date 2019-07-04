@@ -6,7 +6,6 @@ CREATE TABLE public."irradiation"
 (
     id       integer NOT NULL,
     db_cache jsonb   NOT NULL,
-     created    timestamp without time zone                        NOT NULL,
     CONSTRAINT irradiation_pkey PRIMARY KEY (id)
 )
     WITH (
