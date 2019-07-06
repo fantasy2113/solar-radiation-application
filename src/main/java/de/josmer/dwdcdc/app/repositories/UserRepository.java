@@ -66,13 +66,13 @@ public final class UserRepository implements IUserRepository {
     }
 
     private User initUser(final String username, final String plainTextPassword) {
-        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
         User user = new User();
         user.setPassword(userBCrypt.hashPassword(plainTextPassword));
         user.setUsername(username);
-        user.setCreated(Timestamp.valueOf(localDateTime));
-        user.setModified(Timestamp.valueOf(localDateTime));
-        user.setLastLogin(Timestamp.valueOf(localDateTime));
+        user.setCreated(Timestamp.valueOf(now));
+        user.setModified(Timestamp.valueOf(now));
+        user.setLastLogin(Timestamp.valueOf(now));
         user.setIsActive(true);
         return user;
     }
