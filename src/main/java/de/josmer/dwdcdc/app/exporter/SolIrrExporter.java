@@ -23,7 +23,7 @@ public final class SolIrrExporter extends Exporter<SolIrrExp, SolIrr> implements
                 solIrrExps.add(mapToExport(lon, lat, solIrr));
             }
             solIrrExps.add(getSolIrrExpSum(items, lon, lat, eGlobHor, eGlobGen));
-            solIrrExps.add( extracted(eGlobHor, eGlobGen));
+            solIrrExps.add(extracted(eGlobHor, eGlobGen));
         } catch (Exception e) {
             LOGGER.info(e.toString());
         }
