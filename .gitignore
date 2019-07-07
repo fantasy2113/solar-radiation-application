@@ -1,6 +1,10 @@
 .idea/
-*.iml
+.settings/
+.vscode/
 target/
+.classpath
+.project
+*.iml
 *.asc
 *.zip
 *.log
