@@ -12,7 +12,7 @@ jQuery(document).ready(function () {
         method: 'GET',
         dataType: "json",
         success: function (result) {
-            $('#rows').append('<b>Datenanzahl: </b>' + result.numberOfRad);
+            $('#rows').append(result.numberOfRad);
         }
     });
 

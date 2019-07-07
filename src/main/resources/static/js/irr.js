@@ -27,7 +27,7 @@ jQuery(document).ready(function () {
     calc_irr_button.bind('click', function () {
         $('html,body').css('cursor', 'wait');
         $('#jsGrid').empty();
-        $('#jsGrid').append('<b>Berechnung läuft ...</b>');
+        $('#info').append('Berechnung läuft ...');
         $.ajax({
             method: 'GET',
             url: getPath() + 'irr',
@@ -41,7 +41,7 @@ jQuery(document).ready(function () {
                 ye: $('input[id=tilt]').val()
             },
             success: function (json) {
-                $('#jsGrid').empty();
+                $('#info').empty();
                 $("#jsGrid").jsGrid({
                     width: "620",
                     height: "700",
@@ -58,6 +58,7 @@ jQuery(document).ready(function () {
                 $('html,body').css('cursor', 'default');
             },
             error: function (request, status, error) {
+                $('#info').empty();
                 $('#jsGrid').empty();
                 $('html,body').css('cursor', 'default');
             }
@@ -67,7 +68,7 @@ jQuery(document).ready(function () {
     var calc_irr_export_button = jQuery('#calc_irr_export_button');
     calc_irr_export_button.bind('click', function () {
         $('#jsGrid').empty();
-        $('#jsGrid').append('<b>Export läuft ...</b>');
+        $('#info').append('Export läuft ...');
         $(location).attr('href', getPath() + 'export_irr?' + getExportIrrQuery());
     });
 });

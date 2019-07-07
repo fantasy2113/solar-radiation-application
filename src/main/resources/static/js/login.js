@@ -14,16 +14,16 @@ function getToken(username, password, path) {
         dataType: "json",
         success: function (result) {
             if (path === 'create_user' && result.error) {
-                $("#alert").append('<b>' + ERROR_MSG_1 + '</b>');
+                $("#alert").append(ERROR_MSG_1);
             } else if (path === 'create_user' && result.userError) {
-                $("#alert").append('<b>' + ERROR_MSG_4 + '</b>');
+                $("#alert").append(ERROR_MSG_4);
             } else if (!result.authorized) {
-                $("#alert").append('<b>' + ERROR_MSG_3 + '</b>');
+                $("#alert").append(ERROR_MSG_3);
             } else if (result.authorized) {
                 document.cookie = 'token=' + result.token + ';app=' + 'rad' + ';';
                 $(location).attr('href', getPath());
             } else {
-                $("#alert").append('<b>' + ERROR_MSG_1 + '</b>');
+                $("#alert").append(ERROR_MSG_1);
             }
         }
     });
@@ -32,7 +32,7 @@ function getToken(username, password, path) {
 function login(path, username, password) {
     clear();
     if (username === '' || password === '' || username === undefined || password === undefined) {
-        $("#alert").append('<b>' + ERROR_MSG_2 + '</b>');
+        $("#alert").append(ERROR_MSG_2);
     } else {
         getToken(username, password, path);
     }
@@ -40,7 +40,7 @@ function login(path, username, password) {
 
 function clear() {
     $("#alert").empty();
-    $("#alert").append('<b>&nbsp;</b>');
+    $("#alert").append('&nbsp;');
 }
 
 jQuery(document).ready(function () {
