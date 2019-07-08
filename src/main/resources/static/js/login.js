@@ -2,7 +2,7 @@ var ERROR_MSG_1 = 'Etwas ist schief gelaufen';
 var ERROR_MSG_2 = 'Bitte Passwort UND Benutzername eingeben';
 var ERROR_MSG_3 = 'Passwort oder Benutzername falsch';
 var ERROR_MSG_4 = 'Benutzer existiert bereits';
-var PATH = 'create_user';
+var CREATE_USER_PATH = 'create_user';
 
 function getToken(username, password, path) {
     $.ajax({
@@ -14,9 +14,9 @@ function getToken(username, password, path) {
         method: 'GET',
         dataType: "json",
         success: function (result) {
-            if (path === PATH && result.error) {
+            if (path === CREATE_USER_PATH && result.error) {
                 $("#alert").append(ERROR_MSG_1);
-            } else if (path === PATH && result.userError) {
+            } else if (path === CREATE_USER_PATH && result.userError) {
                 $("#alert").append(ERROR_MSG_4);
             } else if (!result.authorized) {
                 $("#alert").append(ERROR_MSG_3);
@@ -26,13 +26,21 @@ function getToken(username, password, path) {
             } else {
                 $("#alert").append(ERROR_MSG_1);
             }
+        },
+        error: function (request, status, error) {
+            showError('#alert', request, status, error);
         }
     });
 }
 
+function isLogin(path, username, password) {
+    return username === '' || password === ''
+        || username === undefined || password === undefined;
+}
+
 function login(path, username, password) {
     clear();
-    if (username === '' || password === '' || username === undefined || password === undefined) {
+    if (isLogin(path, username, password)) {
         $("#alert").append(ERROR_MSG_2);
     } else {
         getToken(username, password, path);
@@ -52,7 +60,7 @@ jQuery(document).ready(function () {
 
     var create_button = jQuery('#create_button');
     create_button.bind('click', function () {
-        login(PATH, $('input[id=username]').val(), $('input[id=password]').val());
+        login(CREATE_USER_PATH, $('input[id=username]').val(), $('input[id=password]').val());
     });
 
 

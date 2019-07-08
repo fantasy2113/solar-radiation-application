@@ -13,6 +13,9 @@ jQuery(document).ready(function () {
         dataType: "json",
         success: function (result) {
             $('#rows').append(result.numberOfRad);
+        },
+        error: function (request, status, error) {
+            showError('#rows', request, status, error);
         }
     });
 
@@ -75,6 +78,9 @@ jQuery(document).ready(function () {
                         {name: "dim", title: "Dim.", type: "text"}
                     ]
                 });
+            },
+            error: function (request, status, error) {
+                showError('#jsGrid', request, status, error);
             }
         });
     });
