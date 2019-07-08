@@ -2,6 +2,7 @@ var ERROR_MSG_1 = 'Etwas ist schief gelaufen';
 var ERROR_MSG_2 = 'Bitte Passwort UND Benutzername eingeben';
 var ERROR_MSG_3 = 'Passwort oder Benutzername falsch';
 var ERROR_MSG_4 = 'Benutzer existiert bereits';
+var PATH = 'create_user';
 
 function getToken(username, password, path) {
     $.ajax({
@@ -13,9 +14,9 @@ function getToken(username, password, path) {
         method: 'GET',
         dataType: "json",
         success: function (result) {
-            if (path === 'create_user' && result.error) {
+            if (path === PATH && result.error) {
                 $("#alert").append(ERROR_MSG_1);
-            } else if (path === 'create_user' && result.userError) {
+            } else if (path === PATH && result.userError) {
                 $("#alert").append(ERROR_MSG_4);
             } else if (!result.authorized) {
                 $("#alert").append(ERROR_MSG_3);
@@ -51,7 +52,7 @@ jQuery(document).ready(function () {
 
     var create_button = jQuery('#create_button');
     create_button.bind('click', function () {
-        login('create_user', $('input[id=username]').val(), $('input[id=password]').val());
+        login(PATH, $('input[id=username]').val(), $('input[id=password]').val());
     });
 
 
