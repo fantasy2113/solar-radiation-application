@@ -63,6 +63,7 @@ public final class UserController extends Controller {
                 || login.contains(";") || login.contains("$")
                 || login.contains("#") || login.contains("\"")
                 || login.contains("'") || login.contains("+")
+                || login.contains("?") || login.contains("%")
                 || login.contains("/") || login.contains("\\");
     }
 
