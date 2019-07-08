@@ -20,6 +20,11 @@ jQuery(document).ready(function () {
     });
 });
 
+function showError(id, request, status, error) {
+    $(id).append('Request: ' + request.toString() + ", 'Status: '"
+        + status.toString() + ", Error: " + error.toString());
+}
+
 function getCookie(cname) {
     var name = cname + "=";
     var ca = document.cookie.split(';');

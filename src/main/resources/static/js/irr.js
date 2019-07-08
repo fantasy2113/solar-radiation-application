@@ -61,6 +61,7 @@ jQuery(document).ready(function () {
                 $('#info').empty();
                 $('#jsGrid').empty();
                 $('html,body').css('cursor', 'default');
+                showError('#info', request, status, error);
             }
         });
     });
