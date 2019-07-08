@@ -27,7 +27,7 @@ public final class UserController extends Controller {
     @GetMapping(value = "/create_user")
     public WebToken createUser(@RequestHeader("login") final String login, @RequestHeader("password") final String password) {
         WebToken webToken = new WebToken();
-        if (!isParameter(login, password) && userRep.get(login).isEmpty()) {
+        if (checkLogin(login, password)) {
             Optional<User> optionalUser = getCreatedUser(login, password);
             if (optionalUser.isPresent() && optionalUser.get().isActive()) {
                 webToken.setToken(jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), TTL_MILLIS));
@@ -43,10 +43,28 @@ public final class UserController extends Controller {
         return webToken;
     }
 
+    private boolean checkLogin(String login, String password) {
+        return !isParameter(login, password) && !isCrossInjection(login) && userRep.get(login).isEmpty();
+    }
+
     private Optional<User> getCreatedUser(String username, String password) {
         LOGGER.info("create: " + username);
         userRep.createUser(username, password);
         return userRep.get(username);
+    }
+
+    private boolean isCrossInjection(final String login) {
+        return login.contains("{") || login.contains("}")
+                || login.contains("(") || login.contains(")")
+                || login.contains("[") || login.contains("]")
+                || login.contains("<") || login.contains(">")
+                || login.contains("=") || login.contains("&")
+                || login.contains("|") || login.contains(":")
+                || login.contains(";") || login.contains("$")
+                || login.contains("#") || login.contains("\"")
+                || login.contains("'") || login.contains("+")
+                || login.contains("?") || login.contains("%")
+                || login.contains("/") || login.contains("\\");
     }
 
     private boolean isParameter(String login, String password) {
