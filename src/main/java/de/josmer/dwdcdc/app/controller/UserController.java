@@ -44,7 +44,7 @@ public final class UserController extends Controller {
     }
 
     private boolean checkLogin(String login, String password) {
-        return !isParameter(login, password) && isCrossInjection(login) && userRep.get(login).isEmpty();
+        return !isParameter(login, password) && !isCrossInjection(login) && userRep.get(login).isEmpty();
     }
 
     private Optional<User> getCreatedUser(String username, String password) {

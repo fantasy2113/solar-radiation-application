@@ -1,7 +1,7 @@
 var ERROR_MSG_1 = 'Etwas ist schief gelaufen';
 var ERROR_MSG_2 = 'Bitte Passwort UND Benutzername eingeben';
 var ERROR_MSG_3 = 'Passwort oder Benutzername falsch';
-var ERROR_MSG_4 = 'Benutzer existiert bereits';
+var ERROR_MSG_4 = 'Benutzer existiert bereits oder beinhaltet ungültige Zeichen';
 var CREATE_USER_PATH = 'create_user';
 
 function getToken(username, password, path) {
