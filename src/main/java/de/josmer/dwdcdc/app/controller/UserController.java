@@ -63,8 +63,7 @@ public final class UserController extends Controller {
                 || login.contains(";") || login.contains("$")
                 || login.contains("#") || login.contains("\"")
                 || login.contains("'") || login.contains("+")
-                || login.contains("-") || login.contains("/")
-                || login.contains("\\");
+                || login.contains("/") || login.contains("\\");
     }
 
     private boolean isParameter(String login, String password) {
