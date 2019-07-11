@@ -21,8 +21,8 @@ jQuery(document).ready(function () {
 });
 
 function showError(id, request, status, error) {
-    $(id).append('Request: ' + request.toString() + ", 'Status: '"
-        + status.toString() + ", Error: " + error.toString());
+    $(id).append('Request: ' + request + ", 'Status: '"
+        + status + ", Error: " + error);
 }
 
 function getCookie(cname) {
