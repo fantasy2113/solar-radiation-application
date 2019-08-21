@@ -61,21 +61,9 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
             return radiations;
         }
 
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement
-                     = connection.prepareStatement("SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
-                     + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? ORDER BY radiation_date ASC LIMIT ?;")) {
-            preparedStatement.setInt(1, hochwert);
-            preparedStatement.setInt(2, hochwert + 1000);
-            preparedStatement.setInt(3, optionalRechtswert.getAsInt());
-            preparedStatement.setInt(4, optionalRechtswert.getAsInt() + 1000);
-            preparedStatement.setString(5, solRadTypes.name());
-            preparedStatement.setInt(6, getLimit(startDate, endDate));
-            try (ResultSet rs = preparedStatement.executeQuery()) {
-                while (rs.next()) {
-                    radiations.add(mapTo(rs));
-                }
-            }
+        try (Connection conn = getConnection(); PreparedStatement prepStmt = conn.prepareStatement(getSelectSql(startDate, endDate))) {
+            setSelectStmt(startDate, endDate, solRadTypes, hochwert, optionalRechtswert.getAsInt(), prepStmt);
+            executeQuery(radiations, prepStmt);
         } catch (SQLException | URISyntaxException e) {
             LOGGER.info(e.toString());
         }
@@ -87,22 +75,10 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         if (radiations.isEmpty()) {
             return;
         }
-
-        try (Connection connection = getConnection();
-             PreparedStatement preparedStatement
-                     = connection.prepareStatement("INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)")) {
-            connection.setAutoCommit(false);
-            for (ISolRad solRad : radiations) {
-                preparedStatement.setString(1, solRad.getRadiationType());
-                preparedStatement.setInt(2, solRad.getRadiationDate());
-                preparedStatement.setInt(3, solRad.getGkrMin());
-                preparedStatement.setInt(4, solRad.getGkrMax());
-                preparedStatement.setInt(5, solRad.getGkhMin());
-                preparedStatement.setInt(6, solRad.getGkhMax());
-                preparedStatement.setFloat(7, solRad.getRadiationValue());
-                preparedStatement.executeUpdate();
-            }
-            connection.commit();
+        try (Connection conn = getConnection(); PreparedStatement prepStmt = conn.prepareStatement(getInsertSql())) {
+            conn.setAutoCommit(false);
+            executeUpdates(radiations, prepStmt);
+            conn.commit();
         } catch (SQLException | URISyntaxException e) {
             LOGGER.info(e.toString());
         }
@@ -141,6 +117,49 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         } else {
             radiation.setRadiationValue(0);
         }
+    }
+
+    private void executeQuery(LinkedList<SolRad> radiations, PreparedStatement prepStmt) throws SQLException {
+        try (ResultSet rs = prepStmt.executeQuery()) {
+            while (rs.next()) {
+                radiations.add(mapTo(rs));
+            }
+        }
+    }
+
+    private void setSelectStmt(int startDate, int endDate, SolRadTypes solRadTypes, int hochwert, int rechtswert, PreparedStatement prepStmt) throws SQLException {
+        prepStmt.setInt(1, hochwert);
+        prepStmt.setInt(2, hochwert + 1000);
+        prepStmt.setInt(3, rechtswert);
+        prepStmt.setInt(4, rechtswert + 1000);
+        prepStmt.setString(5, solRadTypes.name());
+        prepStmt.setInt(6, getLimit(startDate, endDate));
+    }
+
+    private String getSelectSql(int startDate, int endDate) {
+        return "SELECT * FROM radiation WHERE radiation_date " + getInDates(startDate, endDate)
+                + " AND gkh_min = ? AND gkh_max = ? AND gkr_min = ? AND gkr_max = ? AND radiation_type = ? ORDER BY radiation_date ASC LIMIT ?;";
+    }
+
+    private String getInsertSql() {
+        return "INSERT INTO radiation (radiation_type,radiation_date,gkr_min,gkr_max,gkh_min,gkh_max,radiation_value) VALUES (?,?,?,?,?,?,?)";
+    }
+
+    private void executeUpdates(List<ISolRad> radiations, PreparedStatement prepStmt) throws SQLException {
+        for (ISolRad solRad : radiations) {
+            executeUpdate(prepStmt, solRad);
+        }
+    }
+
+    private void executeUpdate(PreparedStatement prepStmt, ISolRad solRad) throws SQLException {
+        prepStmt.setString(1, solRad.getRadiationType());
+        prepStmt.setInt(2, solRad.getRadiationDate());
+        prepStmt.setInt(3, solRad.getGkrMin());
+        prepStmt.setInt(4, solRad.getGkrMax());
+        prepStmt.setInt(5, solRad.getGkhMin());
+        prepStmt.setInt(6, solRad.getGkhMax());
+        prepStmt.setFloat(7, solRad.getRadiationValue());
+        prepStmt.executeUpdate();
     }
 
     private String getInDates(final int startDate, final int endDate) {
