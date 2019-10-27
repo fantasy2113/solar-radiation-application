@@ -50,40 +50,35 @@ public class Application {
         }
     }
 
+    private void startInsertAtMidnight() {        
+        initInsertAtMidnight(AppBeans.CRAWLER_GLOBAL);
+        initInsertAtMidnight(AppBeans.CRAWLER_DIRECT);
+        initInsertAtMidnight(AppBeans.CRAWLER_DIFFUSE);
+    }
+
+    private void startInsertAllHandler() {
+        initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_GLOBAL);
+        initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_DIRECT);
+        initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_DIFFUSE);
+    }
+    
+    private void initInsertAllHandler(final boolean parallel, final String crawler) {
+    	new SolRadInsertAllHandler(AppContext.getCrawler(crawler),
+                AppContext.getBean(SolRadRepository.class),
+                AppContext.getBean(FileReader.class), parallel).start();
+    }
+    
+    private void initInsertAtMidnight(final String crawler) {
+    	new SolRadInsertAtMidnightHandler(AppContext.getCrawler(crawler),
+                AppContext.getBean(SolRadRepository.class),
+                AppContext.getBean(FileReader.class)).start();
+    }
+    
     private boolean isInsertAllParallel() {
         return isInsertAll() && System.getenv("INSERT_ALL").equals("parallel");
     }
 
     private boolean isInsertAll() {
         return System.getenv("INSERT_ALL") != null;
-    }
-
-    private void startInsertAtMidnight() {
-        new SolRadInsertAtMidnightHandler(AppContext.getCrawler(AppBeans.CRAWLER_GLOBAL),
-                AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class)).start();
-
-        new SolRadInsertAtMidnightHandler(AppContext.getCrawler(AppBeans.CRAWLER_DIRECT),
-                AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class)).start();
-
-        new SolRadInsertAtMidnightHandler(AppContext.getCrawler(AppBeans.CRAWLER_DIFFUSE),
-                AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class)).start();
-    }
-
-    private void startInsertAllHandler() {
-        final boolean parallel = isInsertAllParallel();
-        new SolRadInsertAllHandler(AppContext.getCrawler(AppBeans.CRAWLER_GLOBAL),
-                AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class), parallel).start();
-
-        new SolRadInsertAllHandler(AppContext.getCrawler(AppBeans.CRAWLER_DIRECT),
-                AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class), parallel).start();
-
-        new SolRadInsertAllHandler(AppContext.getCrawler(AppBeans.CRAWLER_DIFFUSE),
-                AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class), parallel).start();
     }
 }
