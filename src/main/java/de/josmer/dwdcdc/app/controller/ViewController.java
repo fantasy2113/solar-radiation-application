@@ -20,8 +20,8 @@ import de.josmer.dwdcdc.library.interfaces.IDataReader;
 public final class ViewController extends Controller {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class.getName());
-	private final String loginHtml;
 	private final String irrHtml;
+	private final String loginHtml;
 	private final String radHtml;
 
 	@Autowired
@@ -34,6 +34,23 @@ public final class ViewController extends Controller {
 			createUser("admin", System.getenv("APP_ADMIN_PASSWORD"));
 			createUser("user", System.getenv("APP_USER_PASSWORD"));
 		});
+	}
+
+	private String chooseHtml(String app) {
+		if (app.equals("irr")) {
+			LOGGER.info("return - irr");
+			return irrHtml;
+		} else {
+			LOGGER.info("return - rad");
+			return radHtml;
+		}
+	}
+
+	private void createUser(String username, String plainPassword) {
+		if (userRep.get(username).isEmpty()) {
+			LOGGER.info("Create user: " + username);
+			userRep.createUser(username, plainPassword);
+		}
 	}
 
 	@GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
@@ -51,16 +68,6 @@ public final class ViewController extends Controller {
 		return loginHtml;
 	}
 
-	private String chooseHtml(String app) {
-		if (app.equals("irr")) {
-			LOGGER.info("return - irr");
-			return irrHtml;
-		} else {
-			LOGGER.info("return - rad");
-			return radHtml;
-		}
-	}
-
 	private void setWebCookie(WebCookie webCookie, Cookie[] cookies) {
 		for (Cookie cookie : cookies) {
 			if (cookie.getName().equals("token")) {
@@ -69,13 +76,6 @@ public final class ViewController extends Controller {
 			if (cookie.getName().equals("app")) {
 				webCookie.setApp(cookie.getValue());
 			}
-		}
-	}
-
-	private void createUser(String username, String plainPassword) {
-		if (userRep.get(username).isEmpty()) {
-			LOGGER.info("Create user: " + username);
-			userRep.createUser(username, plainPassword);
 		}
 	}
 }

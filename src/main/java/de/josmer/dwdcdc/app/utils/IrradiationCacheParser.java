@@ -20,12 +20,12 @@ public class IrradiationCacheParser implements IIrradiationCacheParser {
 	}
 
 	@Override
-	public String toJson(IIrradiationCache irradiationCache) {
-		return gson.toJson(irradiationCache);
+	public IIrradiationCache getDbCache(String json) {
+		return gson.fromJson(json, IrradiationCache.class);
 	}
 
 	@Override
-	public IIrradiationCache getDbCache(String json) {
-		return gson.fromJson(json, IrradiationCache.class);
+	public String toJson(IIrradiationCache irradiationCache) {
+		return gson.toJson(irradiationCache);
 	}
 }

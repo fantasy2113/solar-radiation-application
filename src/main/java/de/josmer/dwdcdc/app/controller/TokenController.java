@@ -25,6 +25,10 @@ public final class TokenController extends Controller {
 		super(userRep, jwtToken, userBCrypt);
 	}
 
+	private boolean check(String password, User user) {
+		return userBCrypt.isPassword(password, user.getPassword()) && user.isActive();
+	}
+
 	@GetMapping(value = "/token")
 	public WebToken getToken(@RequestHeader("login") final String login,
 			@RequestHeader("password") final String password) {
@@ -40,10 +44,6 @@ public final class TokenController extends Controller {
 		}
 		LOGGER.info("login failed");
 		return webToken;
-	}
-
-	private boolean check(String password, User user) {
-		return userBCrypt.isPassword(password, user.getPassword()) && user.isActive();
 	}
 
 	private String initToken(User user) {

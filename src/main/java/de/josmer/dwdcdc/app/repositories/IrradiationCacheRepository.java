@@ -25,25 +25,6 @@ public class IrradiationCacheRepository extends Repository<IIrradiationCache> im
 	}
 
 	@Override
-	public Optional<IIrradiationCache> get(String key) {
-		try (Connection connection = getConnection();
-				Statement statement = connection.createStatement();
-				ResultSet rs = statement.executeQuery(getFindQuery(key))) {
-			if (rs.next()) {
-				return Optional.of(mapTo(rs));
-			}
-		} catch (Exception e) {
-			LOGGER.info(e.toString());
-		}
-		return Optional.empty();
-	}
-
-	@Override
-	public void save(IIrradiationCache irradiationCache) {
-		executeUpdate(getSaveQuery(irradiationCache));
-	}
-
-	@Override
 	public void delete(int id) {
 		executeUpdate(getDeleteQuery(id));
 	}
@@ -57,8 +38,17 @@ public class IrradiationCacheRepository extends Repository<IIrradiationCache> im
 	}
 
 	@Override
-	protected IIrradiationCache mapTo(ResultSet rs) throws Exception {
-		return parser.getDbCache(rs.getString("db_cache"));
+	public Optional<IIrradiationCache> get(String key) {
+		try (Connection connection = getConnection();
+				Statement statement = connection.createStatement();
+				ResultSet rs = statement.executeQuery(getFindQuery(key))) {
+			if (rs.next()) {
+				return Optional.of(mapTo(rs));
+			}
+		} catch (Exception e) {
+			LOGGER.info(e.toString());
+		}
+		return Optional.empty();
 	}
 
 	private String getDbCache(IIrradiationCache irradiationCache) {
@@ -69,12 +59,22 @@ public class IrradiationCacheRepository extends Repository<IIrradiationCache> im
 		return "DELETE FROM irradiation WHERE id=" + id + ";";
 	}
 
+	private String getFindQuery(String key) {
+		return "SELECT * FROM irradiation WHERE db_cache->>'key' = '" + key + "';";
+	}
+
 	private String getSaveQuery(IIrradiationCache irradiationCache) {
 		return "INSERT INTO irradiation (id, db_cache) VALUES (" + irradiationCache.getId() + ",'"
 				+ getDbCache(irradiationCache) + "');";
 	}
 
-	private String getFindQuery(String key) {
-		return "SELECT * FROM irradiation WHERE db_cache->>'key' = '" + key + "';";
+	@Override
+	protected IIrradiationCache mapTo(ResultSet rs) throws Exception {
+		return parser.getDbCache(rs.getString("db_cache"));
+	}
+
+	@Override
+	public void save(IIrradiationCache irradiationCache) {
+		executeUpdate(getSaveQuery(irradiationCache));
 	}
 }

@@ -10,18 +10,6 @@ abstract class Exporter<TOut, TInput> {
 
 	static final Logger LOGGER = LoggerFactory.getLogger(Exporter.class.getName());
 
-	String roundToString(double value, int scale) {
-		return String.format(Locale.ENGLISH, "%." + scale + "f", Precision.round(value, scale));
-	}
-
-	double getValue(double val) {
-		return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", val));
-	}
-
-	String parseDate(final int date) {
-		return getDate(String.valueOf(date));
-	}
-
 	private String getDate(final String date) {
 		try {
 			return date.substring(0, 4) + "-" + date.substring(4);
@@ -31,5 +19,17 @@ abstract class Exporter<TOut, TInput> {
 		}
 	}
 
+	double getValue(double val) {
+		return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", val));
+	}
+
 	protected abstract TOut mapToExport(double lon, double lat, TInput item);
+
+	String parseDate(final int date) {
+		return getDate(String.valueOf(date));
+	}
+
+	String roundToString(double value, int scale) {
+		return String.format(Locale.ENGLISH, "%." + scale + "f", Precision.round(value, scale));
+	}
 }

@@ -7,7 +7,7 @@ import de.josmer.dwdcdc.app.entities.SolIrrExp;
 
 public interface IIrradiationCache extends Identifiable {
 
-	LinkedList<SolIrrExp> getMonths();
-
 	LocalDateTime getCreated();
+
+	LinkedList<SolIrrExp> getMonths();
 }

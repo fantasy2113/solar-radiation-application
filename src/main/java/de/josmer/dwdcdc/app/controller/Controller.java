@@ -18,14 +18,18 @@ abstract class Controller {
 
 	protected static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
 	static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
-	final IUserRepository userRep;
 	final IJwtToken jwtToken;
 	IUserBCrypt userBCrypt;
+	final IUserRepository userRep;
 
 	Controller(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt) {
 		this.userRep = userRep;
 		this.jwtToken = jwtToken;
 		this.userBCrypt = userBCrypt;
+	}
+
+	final void executeTask(Runnable task) {
+		Executors.newSingleThreadExecutor().execute(task);
 	}
 
 	final SolRadTypes getSolRadTypes(String type) {
@@ -40,9 +44,5 @@ abstract class Controller {
 			LOGGER.info(e.toString());
 		}
 		return false;
-	}
-
-	final void executeTask(Runnable task) {
-		Executors.newSingleThreadExecutor().execute(task);
 	}
 }

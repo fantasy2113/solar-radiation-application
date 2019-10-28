@@ -30,25 +30,20 @@ import io.jsonwebtoken.Claims;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TokenControllerTest {
 
-	@LocalServerPort
-	private int port;
-	private URL base;
-	@Autowired
-	private TestRestTemplate template;
-	@Autowired
-	private IUserRepository userRepository;
-	@Autowired
-	private IJwtToken jwtToken;
-
 	@BeforeClass
 	public static void setUpClass() throws Exception {
 		Application.setTest(true);
 	}
+	private URL base;
+	@Autowired
+	private IJwtToken jwtToken;
+	@LocalServerPort
+	private int port;
+	@Autowired
+	private TestRestTemplate template;
 
-	@Before
-	public void setUp() throws Exception {
-		this.base = new URL("http://localhost:" + port + "/token");
-	}
+	@Autowired
+	private IUserRepository userRepository;
 
 	@Test
 	public void getToken() throws Exception {
@@ -64,5 +59,10 @@ public class TokenControllerTest {
 
 		assertEquals(optionalUser.get().getId(), (int) Integer.valueOf(decode.getId()));
 		assertEquals(optionalUser.get().getUsername(), decode.getSubject());
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		this.base = new URL("http://localhost:" + port + "/token");
 	}
 }

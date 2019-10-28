@@ -2,10 +2,10 @@ package de.josmer.dwdcdc.app.entities.web;
 
 public final class WebToken {
 
-	private String secret;
-	private String token;
 	private boolean authorized;
 	private boolean error;
+	private String secret;
+	private String token;
 	private boolean userError;
 
 	public WebToken() {
@@ -20,36 +20,36 @@ public final class WebToken {
 		return secret;
 	}
 
-	public void setSecret(String secret) {
-		this.secret = secret;
-	}
-
 	public String getToken() {
 		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
 	}
 
 	public boolean isAuthorized() {
 		return authorized;
 	}
 
-	public void setAuthorized(boolean authorized) {
-		this.authorized = authorized;
-	}
-
 	public boolean isError() {
 		return error;
+	}
+
+	public boolean isUserError() {
+		return userError;
+	}
+
+	public void setAuthorized(boolean authorized) {
+		this.authorized = authorized;
 	}
 
 	public void setError(boolean error) {
 		this.error = error;
 	}
 
-	public boolean isUserError() {
-		return userError;
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public void setUserError(boolean userError) {

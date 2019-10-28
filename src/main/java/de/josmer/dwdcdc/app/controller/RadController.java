@@ -45,6 +45,17 @@ public final class RadController extends AppController {
 				solRadExp.getHeaders());
 	}
 
+	@GetMapping(value = "/number_of_rad")
+	public WebInfo getNumberOfRad(@CookieValue("token") final String token) {
+		WebInfo webInfo = new WebInfo();
+		LOGGER.info("getBean - number_of_rad");
+		if (!isAccess(token)) {
+			return webInfo;
+		}
+		webInfo.setNumberOfRad(solRadRep.getNumberOfRadiations());
+		return webInfo;
+	}
+
 	@GetMapping("/rad")
 	public LinkedList<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
 		LOGGER.info("getBean - rad");
@@ -57,16 +68,5 @@ public final class RadController extends AppController {
 	private LinkedList<SolRadExp> getSolRadExps(RadRequest req) {
 		return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()),
 				getSolRadTypes(req.getType()), req.getLon(), req.getLat()), req.getLon(), req.getLat());
-	}
-
-	@GetMapping(value = "/number_of_rad")
-	public WebInfo getNumberOfRad(@CookieValue("token") final String token) {
-		WebInfo webInfo = new WebInfo();
-		LOGGER.info("getBean - number_of_rad");
-		if (!isAccess(token)) {
-			return webInfo;
-		}
-		webInfo.setNumberOfRad(solRadRep.getNumberOfRadiations());
-		return webInfo;
 	}
 }

@@ -25,6 +25,10 @@ public final class UserController extends Controller {
 		super(userRep, jwtToken, userBCrypt);
 	}
 
+	private boolean checkLogin(String login, String password) {
+		return !isParameter(login, password) && !isCrossInjection(login) && userRep.get(login).isEmpty();
+	}
+
 	@GetMapping(value = "/create_user")
 	public WebToken createUser(@RequestHeader("login") final String login,
 			@RequestHeader("password") final String password) {
@@ -44,10 +48,6 @@ public final class UserController extends Controller {
 		}
 		webToken.setError(true);
 		return webToken;
-	}
-
-	private boolean checkLogin(String login, String password) {
-		return !isParameter(login, password) && !isCrossInjection(login) && userRep.get(login).isEmpty();
 	}
 
 	private Optional<User> getCreatedUser(String username, String password) {

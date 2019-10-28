@@ -24,12 +24,6 @@ public final class JwtToken implements IJwtToken {
 	}
 
 	@Override
-	public Claims decode(String token) {
-		return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).parseClaimsJws(token)
-				.getBody();
-	}
-
-	@Override
 	public String create(String id, String issuer, String subject, long ttlMillis) {
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 		long nowMillis = System.currentTimeMillis();
@@ -44,6 +38,12 @@ public final class JwtToken implements IJwtToken {
 			builder.setExpiration(exp);
 		}
 		return builder.compact();
+	}
+
+	@Override
+	public Claims decode(String token) {
+		return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).parseClaimsJws(token)
+				.getBody();
 	}
 
 	@Override

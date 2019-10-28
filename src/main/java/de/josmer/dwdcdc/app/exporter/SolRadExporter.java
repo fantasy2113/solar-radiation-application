@@ -12,40 +12,18 @@ import de.josmer.dwdcdc.app.interfaces.ISolRadExporter;
 @Component
 public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements ISolRadExporter {
 
-	@Override
-	public LinkedList<SolRadExp> getItems(final LinkedList<SolRad> items, final double lon, final double lat) {
-		LinkedList<SolRadExp> solRadExps = new LinkedList<>();
-		try {
-			addValues(items, lon, lat, solRadExps);
-			addSumEnd(solRadExps);
-		} catch (Exception e) {
-			LOGGER.info(e.toString());
-		}
-		return solRadExps;
-	}
-
-	@Override
-	public List<String> getHeaders() {
-		return List.of("Datum", "Lat", "Lon", "Art", "EGlobHor", "Einheit", "Dim", "Quelle");
-	}
-
-	@Override
-	public String getProps() {
-		return "date, lat, lon, type, value, unit, dim, source, ";
-	}
-
-	@Override
-	protected SolRadExp mapToExport(double lon, double lat, SolRad item) {
-		SolRadExp solRadExp = new SolRadExp();
-		solRadExp.setDate(parseDate(item.getRadiationDate()));
-		solRadExp.setLat(roundToString(lat, 3));
-		solRadExp.setLon(roundToString(lon, 3));
-		solRadExp.setType(item.getRadiationType());
-		solRadExp.setValue(getValue(item.getRadiationValue()));
+	private void addSolRadExp(List<SolRadExp> solRadExps, double eGlobHorSum, SolRadExp solRadExp) {
+		solRadExp.setLat("");
+		solRadExp.setLon("");
+		solRadExp.setType("");
+		solRadExp.setValue(Double.valueOf(roundToString(eGlobHorSum, 2)));
 		solRadExp.setUnit("kWh/m2");
 		solRadExp.setDim("1 km2");
 		solRadExp.setSource("DWD CDC");
-		return solRadExp;
+		if (Double.isNaN(solRadExp.getValue())) {
+			solRadExp.setValue(0);
+		}
+		solRadExps.add(solRadExp);
 	}
 
 	private void addSumEnd(LinkedList<SolRadExp> solRadExps) {
@@ -60,20 +38,6 @@ public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements
 		SolRadExp solRadExp = new SolRadExp();
 		solRadExp.setDate("Summe Mittel");
 		addSolRadExp(solRadExps, avgSum / sumCnt, solRadExp);
-	}
-
-	private void addSolRadExp(List<SolRadExp> solRadExps, double eGlobHorSum, SolRadExp solRadExp) {
-		solRadExp.setLat("");
-		solRadExp.setLon("");
-		solRadExp.setType("");
-		solRadExp.setValue(Double.valueOf(roundToString(eGlobHorSum, 2)));
-		solRadExp.setUnit("kWh/m2");
-		solRadExp.setDim("1 km2");
-		solRadExp.setSource("DWD CDC");
-		if (Double.isNaN(solRadExp.getValue())) {
-			solRadExp.setValue(0);
-		}
-		solRadExps.add(solRadExp);
 	}
 
 	private void addValues(final LinkedList<SolRad> items, final double lon, final double lat,
@@ -94,5 +58,41 @@ public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements
 			export.setDate("Summe " + solRadExps.get(solRadExps.size() - 1).getDate().substring(0, 4));
 			addSolRadExp(solRadExps, eGlobHorSum, export);
 		}
+	}
+
+	@Override
+	public List<String> getHeaders() {
+		return List.of("Datum", "Lat", "Lon", "Art", "EGlobHor", "Einheit", "Dim", "Quelle");
+	}
+
+	@Override
+	public LinkedList<SolRadExp> getItems(final LinkedList<SolRad> items, final double lon, final double lat) {
+		LinkedList<SolRadExp> solRadExps = new LinkedList<>();
+		try {
+			addValues(items, lon, lat, solRadExps);
+			addSumEnd(solRadExps);
+		} catch (Exception e) {
+			LOGGER.info(e.toString());
+		}
+		return solRadExps;
+	}
+
+	@Override
+	public String getProps() {
+		return "date, lat, lon, type, value, unit, dim, source, ";
+	}
+
+	@Override
+	protected SolRadExp mapToExport(double lon, double lat, SolRad item) {
+		SolRadExp solRadExp = new SolRadExp();
+		solRadExp.setDate(parseDate(item.getRadiationDate()));
+		solRadExp.setLat(roundToString(lat, 3));
+		solRadExp.setLon(roundToString(lon, 3));
+		solRadExp.setType(item.getRadiationType());
+		solRadExp.setValue(getValue(item.getRadiationValue()));
+		solRadExp.setUnit("kWh/m2");
+		solRadExp.setDim("1 km2");
+		solRadExp.setSource("DWD CDC");
+		return solRadExp;
 	}
 }
