@@ -4,9 +4,9 @@ import java.util.Optional;
 
 public interface IIrradiationCacheRepository {
 
-    Optional<IIrradiationCache> get(String key);
+	Optional<IIrradiationCache> get(String key);
 
-    void save(IIrradiationCache dbCache);
+	void save(IIrradiationCache dbCache);
 
-    void delete(int id);
+	void delete(int id);
 }

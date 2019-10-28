@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface ISolExporter<TOut, TIn> {
 
-    LinkedList<TOut> getItems(LinkedList<TIn> items, double lon, double lat);
+	LinkedList<TOut> getItems(LinkedList<TIn> items, double lon, double lat);
 
-    List<String> getHeaders();
+	List<String> getHeaders();
 
-    String getProps();
+	String getProps();
 }

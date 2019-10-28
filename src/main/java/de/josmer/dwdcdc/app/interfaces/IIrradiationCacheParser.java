@@ -2,7 +2,7 @@ package de.josmer.dwdcdc.app.interfaces;
 
 public interface IIrradiationCacheParser {
 
-    String toJson(IIrradiationCache irradiationCache);
+	String toJson(IIrradiationCache irradiationCache);
 
-    IIrradiationCache getDbCache(String json);
+	IIrradiationCache getDbCache(String json);
 }
