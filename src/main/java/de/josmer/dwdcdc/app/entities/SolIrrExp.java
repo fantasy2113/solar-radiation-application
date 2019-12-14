@@ -2,40 +2,40 @@ package de.josmer.dwdcdc.app.entities;
 
 public final class SolIrrExp extends Export {
 
-	private String ae;
-	private double eGlobGen;
-	private double eGlobHor;
-	private String ye;
+    private String ae;
+    private double eGlobGen;
+    private double eGlobHor;
+    private String ye;
 
-	public String getAe() {
-		return ae;
-	}
+    public String getAe() {
+        return ae;
+    }
 
-	public double geteGlobGen() {
-		return eGlobGen;
-	}
+    public void setAe(String ae) {
+        this.ae = ae;
+    }
 
-	public double geteGlobHor() {
-		return eGlobHor;
-	}
+    public double geteGlobGen() {
+        return eGlobGen;
+    }
 
-	public String getYe() {
-		return ye;
-	}
+    public void seteGlobGen(double eGlobGen) {
+        this.eGlobGen = eGlobGen;
+    }
 
-	public void setAe(String ae) {
-		this.ae = ae;
-	}
+    public double geteGlobHor() {
+        return eGlobHor;
+    }
 
-	public void seteGlobGen(double eGlobGen) {
-		this.eGlobGen = eGlobGen;
-	}
+    public void seteGlobHor(double eGlobHor) {
+        this.eGlobHor = eGlobHor;
+    }
 
-	public void seteGlobHor(double eGlobHor) {
-		this.eGlobHor = eGlobHor;
-	}
+    public String getYe() {
+        return ye;
+    }
 
-	public void setYe(String ye) {
-		this.ye = ye;
-	}
+    public void setYe(String ye) {
+        this.ye = ye;
+    }
 }
