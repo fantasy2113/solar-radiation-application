@@ -1,5 +1,6 @@
 package de.josmer.dwdcdc.app.controller;
 
+import de.josmer.dwdcdc.app.Application;
 import de.josmer.dwdcdc.app.entities.SolIrrExp;
 import de.josmer.dwdcdc.app.entities.cache.IrradiationCache;
 import de.josmer.dwdcdc.app.interfaces.*;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,8 +52,8 @@ public final class IrrController extends AppController {
     @GetMapping("/irr")
     public List<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
         LOGGER.info("getBean - irr");
-        if (!isAccess(token)) {
-            return new LinkedList<>();
+        if (!isAccess(token) || Application.isDemoMode()) {
+            return new ArrayList<>();
         }
         return getSolIrrExps(req);
     }
@@ -68,6 +69,9 @@ public final class IrrController extends AppController {
     }
 
     private List<SolIrrExp> getSolIrrExps(final IrrRequest req) {
+        if (Application.isDemoMode()) {
+            return new ArrayList<>();
+        }
         Optional<IIrradiationCache> optionalDbCache = irradiationCaching.get(req);
         if (optionalDbCache.isPresent()) {
             return optionalDbCache.get().getMonths();

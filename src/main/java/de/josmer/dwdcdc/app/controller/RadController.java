@@ -1,5 +1,6 @@
 package de.josmer.dwdcdc.app.controller;
 
+import de.josmer.dwdcdc.app.Application;
 import de.josmer.dwdcdc.app.entities.SolRadExp;
 import de.josmer.dwdcdc.app.entities.web.WebInfo;
 import de.josmer.dwdcdc.app.interfaces.*;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,7 +45,7 @@ public final class RadController extends AppController {
     public WebInfo getNumberOfRad(@CookieValue("token") final String token) {
         WebInfo webInfo = new WebInfo();
         LOGGER.info("getBean - number_of_rad");
-        if (!isAccess(token)) {
+        if (!isAccess(token) || Application.isDemoMode()) {
             return webInfo;
         }
         webInfo.setNumberOfRad(solRadRep.getNumberOfRadiations());
@@ -54,13 +55,16 @@ public final class RadController extends AppController {
     @GetMapping("/rad")
     public List<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
         LOGGER.info("getBean - rad");
-        if (!isAccess(token)) {
-            return new LinkedList<>();
+        if (!isAccess(token) || Application.isDemoMode()) {
+            return new ArrayList<>();
         }
         return getSolRadExps(req);
     }
 
     private List<SolRadExp> getSolRadExps(RadRequest req) {
+        if (Application.isDemoMode()) {
+            return new ArrayList<>();
+        }
         return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()),
                 getSolRadTypes(req.getType()), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
