@@ -20,14 +20,16 @@ import java.util.Arrays;
 public class Application {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
-    private static boolean test = false;
+    private static boolean junitTest = false;
+    private static boolean demoMode = true;
+    private static final String test = Application.isDemoMode() ? "IrradiationRamCaching" : "IrradiationRamCaching";
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
-    public static void setTest(boolean test) {
-        Application.test = test;
+    public static void setJunitTest(boolean junitTest) {
+        Application.junitTest = junitTest;
     }
 
     @Bean
@@ -68,9 +70,13 @@ public class Application {
         initInsertAtMidnight(AppBeans.CRAWLER_DIFFUSE);
     }
 
+    public static boolean isDemoMode() {
+        return demoMode;
+    }
+
     @Bean
     public void startInsertHandler() {
-        if (Application.test) {
+        if (junitTest || demoMode) {
             return;
         }
         if (isInsertAll()) {

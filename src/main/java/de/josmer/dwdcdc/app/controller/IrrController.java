@@ -4,8 +4,10 @@ import de.josmer.dwdcdc.app.entities.SolIrrExp;
 import de.josmer.dwdcdc.app.entities.cache.IrradiationCache;
 import de.josmer.dwdcdc.app.interfaces.*;
 import de.josmer.dwdcdc.app.requests.IrrRequest;
+import de.josmer.dwdcdc.app.spring.AppContext;
+import de.josmer.dwdcdc.app.spring.BeanNames;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@DependsOn(BeanNames.APP_CONTEXT)
 @RestController
 public final class IrrController extends AppController {
 
@@ -24,13 +27,12 @@ public final class IrrController extends AppController {
     private final ISolIrrRepository solIrrRep;
 
     @Autowired
-    public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt,
-                         ISolRadRepository solRadRep, ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep,
-                         @Qualifier("IrradiationRamCaching") IIrradiationCaching irradiationCaching) {
+    public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
+                         ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep) {
         super(userRep, jwtToken, userBCrypt, solRadRep);
         this.solIrrExp = solIrrExp;
         this.solIrrRep = solIrrRep;
-        this.irradiationCaching = irradiationCaching;
+        this.irradiationCaching = AppContext.getIIrradiationCaching();
     }
 
     @GetMapping("/export_irr")

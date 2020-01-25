@@ -14,6 +14,7 @@ public class AppBeans {
     public static final String CRAWLER_DIFFUSE = "crawlerDiffuse";
     public static final String CRAWLER_DIRECT = "crawlerDirect";
     public static final String CRAWLER_GLOBAL = "crawlerGlobal";
+    public static final String IrradiationCaching = "irradiationCaching";
 
     @Bean
     public Gson getGson() {

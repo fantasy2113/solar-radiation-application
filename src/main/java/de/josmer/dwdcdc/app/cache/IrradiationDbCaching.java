@@ -4,12 +4,13 @@ import de.josmer.dwdcdc.app.interfaces.IIrradiationCache;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCacheRepository;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCaching;
 import de.josmer.dwdcdc.app.interfaces.Identifiable;
+import de.josmer.dwdcdc.app.spring.BeanNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("IrradiationDbCaching")
+@Component(BeanNames.IRRADIATION_DB_CACHING)
 public class IrradiationDbCaching implements IIrradiationCaching {
 
     private final IIrradiationCacheRepository dbCacheRep;

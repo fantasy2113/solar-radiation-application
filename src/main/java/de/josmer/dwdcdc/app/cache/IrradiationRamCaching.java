@@ -3,6 +3,7 @@ package de.josmer.dwdcdc.app.cache;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCache;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCaching;
 import de.josmer.dwdcdc.app.interfaces.Identifiable;
+import de.josmer.dwdcdc.app.spring.BeanNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -10,15 +11,14 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component("IrradiationRamCaching")
+@Component(BeanNames.IRRADIATION_RAM_CACHING)
 public class IrradiationRamCaching implements IIrradiationCaching {
-
     private static final int LIMIT = 10000;
     private final IIrradiationCaching irradiationDbCaching;
     private final ConcurrentHashMap<String, IIrradiationCache> irradiationRamCache;
 
     @Autowired
-    public IrradiationRamCaching(@Qualifier("IrradiationDbCaching") IIrradiationCaching irradiationDbCaching) {
+    public IrradiationRamCaching(@Qualifier(BeanNames.IRRADIATION_DB_CACHING) IIrradiationCaching irradiationDbCaching) {
         this.irradiationRamCache = new ConcurrentHashMap<>();
         this.irradiationDbCaching = irradiationDbCaching;
     }
