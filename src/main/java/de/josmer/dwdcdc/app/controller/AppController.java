@@ -20,7 +20,7 @@ abstract class AppController extends Controller {
 
     final int getDate(final String date) {
         try {
-            return Integer.valueOf(date.replace("-", "").replace("#", ""));
+            return Integer.parseInt(date.replace("-", "").replace("#", ""));
         } catch (NumberFormatException e) {
             LOGGER.info(e.toString());
             return 0;

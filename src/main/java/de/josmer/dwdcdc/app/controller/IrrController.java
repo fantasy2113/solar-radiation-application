@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -46,7 +47,7 @@ public final class IrrController extends AppController {
     }
 
     @GetMapping("/irr")
-    public LinkedList<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
+    public List<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
         LOGGER.info("getBean - irr");
         if (!isAccess(token)) {
             return new LinkedList<>();
@@ -54,7 +55,7 @@ public final class IrrController extends AppController {
         return getSolIrrExps(req);
     }
 
-    private LinkedList<SolIrrExp> getItems(IrrRequest req) {
+    private List<SolIrrExp> getItems(IrrRequest req) {
         return solIrrExp
                 .getItems(
                         solIrrRep.getIrradiation(
@@ -64,12 +65,12 @@ public final class IrrController extends AppController {
                         req.getLon(), req.getLat());
     }
 
-    private LinkedList<SolIrrExp> getSolIrrExps(final IrrRequest req) {
+    private List<SolIrrExp> getSolIrrExps(final IrrRequest req) {
         Optional<IIrradiationCache> optionalDbCache = irradiationCaching.get(req);
         if (optionalDbCache.isPresent()) {
             return optionalDbCache.get().getMonths();
         }
-        LinkedList<SolIrrExp> solIrrExps = getItems(req);
+        List<SolIrrExp> solIrrExps = getItems(req);
         executeTask(() -> {
             irradiationCaching.add(new IrradiationCache(req.getKey(), solIrrExps));
             LOGGER.info("Create DbCache: " + req.getKey());

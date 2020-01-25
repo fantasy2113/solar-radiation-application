@@ -39,7 +39,7 @@ public final class SolRadRepository extends Repository<SolRad> implements ISolRa
         return Double.parseDouble(String.format(Locale.ENGLISH, "%.2f", value)) * 1000;
     }
 
-    private void executeQuery(LinkedList<SolRad> radiations, PreparedStatement prepStmt) throws SQLException {
+    private void executeQuery(List<SolRad> radiations, PreparedStatement prepStmt) throws SQLException {
         try (ResultSet rs = prepStmt.executeQuery()) {
             while (rs.next()) {
                 radiations.add(mapTo(rs));

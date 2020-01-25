@@ -5,20 +5,21 @@ import de.josmer.dwdcdc.app.interfaces.IIrradiationCache;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
+import java.util.List;
 
 public class IrradiationCache implements IIrradiationCache {
 
     private LocalDateTime created;
     private int id;
     private String key;
-    private LinkedList<SolIrrExp> months;
+    private List<SolIrrExp> months;
 
     public IrradiationCache() {
         this.key = "";
         this.months = new LinkedList<>();
     }
 
-    public IrradiationCache(String key, LinkedList<SolIrrExp> months) {
+    public IrradiationCache(String key, List<SolIrrExp> months) {
         this.key = key;
         this.months = months;
         this.id = this.key.hashCode();
@@ -53,7 +54,7 @@ public class IrradiationCache implements IIrradiationCache {
     }
 
     @Override
-    public LinkedList<SolIrrExp> getMonths() {
+    public List<SolIrrExp> getMonths() {
         return months;
     }
 

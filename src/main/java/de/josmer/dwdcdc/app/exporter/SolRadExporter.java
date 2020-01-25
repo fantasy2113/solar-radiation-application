@@ -5,7 +5,7 @@ import de.josmer.dwdcdc.app.entities.SolRadExp;
 import de.josmer.dwdcdc.app.interfaces.ISolRadExporter;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -25,7 +25,7 @@ public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements
         solRadExps.add(solRadExp);
     }
 
-    private void addSumEnd(LinkedList<SolRadExp> solRadExps) {
+    private void addSumEnd(List<SolRadExp> solRadExps) {
         int sumCnt = 0;
         double avgSum = 0.0;
         for (SolRadExp solRadExp : solRadExps) {
@@ -39,8 +39,8 @@ public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements
         addSolRadExp(solRadExps, avgSum / sumCnt, solRadExp);
     }
 
-    private void addValues(final LinkedList<SolRad> items, final double lon, final double lat,
-                           LinkedList<SolRadExp> solRadExps) {
+    private void addValues(final List<SolRad> items, final double lon, final double lat,
+                           List<SolRadExp> solRadExps) {
         double eGlobHorSum = 0.0;
         for (SolRad solRad : items) {
             solRadExps.add(mapToExport(lon, lat, solRad));
@@ -65,8 +65,8 @@ public final class SolRadExporter extends Exporter<SolRadExp, SolRad> implements
     }
 
     @Override
-    public LinkedList<SolRadExp> getItems(final LinkedList<SolRad> items, final double lon, final double lat) {
-        LinkedList<SolRadExp> solRadExps = new LinkedList<>();
+    public List<SolRadExp> getItems(final List<SolRad> items, final double lon, final double lat) {
+        List<SolRadExp> solRadExps = new ArrayList<>();
         try {
             addValues(items, lon, lat, solRadExps);
             addSumEnd(solRadExps);

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedList;
+import java.util.List;
 
 @RestController
 public final class RadController extends AppController {
@@ -51,7 +52,7 @@ public final class RadController extends AppController {
     }
 
     @GetMapping("/rad")
-    public LinkedList<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
+    public List<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
         LOGGER.info("getBean - rad");
         if (!isAccess(token)) {
             return new LinkedList<>();
@@ -59,7 +60,7 @@ public final class RadController extends AppController {
         return getSolRadExps(req);
     }
 
-    private LinkedList<SolRadExp> getSolRadExps(RadRequest req) {
+    private List<SolRadExp> getSolRadExps(RadRequest req) {
         return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()),
                 getSolRadTypes(req.getType()), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
