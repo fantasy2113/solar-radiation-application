@@ -3,12 +3,14 @@ package de.josmer.dwdcdc.app.cache;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCache;
 import de.josmer.dwdcdc.app.interfaces.IIrradiationCaching;
 import de.josmer.dwdcdc.app.interfaces.Identifiable;
+import de.josmer.dwdcdc.app.spring.BeanNames;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
-@Component("NoCaching")
+@Component(BeanNames.NO_IRRADIATION_CACHING)
 public class NoCaching implements IIrradiationCaching {
+
     @Override
     public void add(IIrradiationCache irradiationCache) {
         // do nothing

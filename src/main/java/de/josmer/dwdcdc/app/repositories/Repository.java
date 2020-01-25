@@ -15,12 +15,12 @@ abstract class Repository<E> {
     static final Logger LOGGER = LoggerFactory.getLogger(SolRadRepository.class.getName());
     private final String databaseUrl;
 
-    Repository(final String databaseUrl) {
-        this.databaseUrl = databaseUrl;
-    }
-
     Repository() {
         this.databaseUrl = System.getenv("DATABASE_URL");
+    }
+
+    Repository(final String databaseUrl) {
+        this.databaseUrl = databaseUrl;
     }
 
     Connection getConnection() throws URISyntaxException, SQLException {

@@ -11,18 +11,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppBeans {
 
-    public static final String CRAWLER_GLOBAL = "crawlerGlobal";
-    public static final String CRAWLER_DIRECT = "crawlerDirect";
     public static final String CRAWLER_DIFFUSE = "crawlerDiffuse";
+    public static final String CRAWLER_DIRECT = "crawlerDirect";
+    public static final String CRAWLER_GLOBAL = "crawlerGlobal";
+    public static final String IrradiationCaching = "irradiationCaching";
 
-    @Bean(CRAWLER_GLOBAL)
-    public ISolRadCrawler getSolRadCrawlerGlobal() {
-        return new SolRadCrawler<>(SolRadTypes.GLOBAL, SolRad.class);
-    }
-
-    @Bean(CRAWLER_DIRECT)
-    public ISolRadCrawler getSolRadCrawlerDirect() {
-        return new SolRadCrawler<>(SolRadTypes.DIRECT, SolRad.class);
+    @Bean
+    public Gson getGson() {
+        return new Gson();
     }
 
     @Bean(CRAWLER_DIFFUSE)
@@ -30,8 +26,13 @@ public class AppBeans {
         return new SolRadCrawler<>(SolRadTypes.DIFFUSE, SolRad.class);
     }
 
-    @Bean
-    public Gson getGson() {
-        return new Gson();
+    @Bean(CRAWLER_DIRECT)
+    public ISolRadCrawler getSolRadCrawlerDirect() {
+        return new SolRadCrawler<>(SolRadTypes.DIRECT, SolRad.class);
+    }
+
+    @Bean(CRAWLER_GLOBAL)
+    public ISolRadCrawler getSolRadCrawlerGlobal() {
+        return new SolRadCrawler<>(SolRadTypes.GLOBAL, SolRad.class);
     }
 }

@@ -2,19 +2,11 @@ package de.josmer.dwdcdc.app.entities;
 
 public final class SolIrr {
 
-    private String calculatedDate;
     private double ae;
-    private double ye;
-    private double eGlobHor;
+    private String calculatedDate;
     private double eGlobGen;
-
-    public String getCalculatedDate() {
-        return calculatedDate;
-    }
-
-    public void setCalculatedDate(String calculatedDate) {
-        this.calculatedDate = calculatedDate;
-    }
+    private double eGlobHor;
+    private double ye;
 
     public double getAe() {
         return ae;
@@ -24,12 +16,20 @@ public final class SolIrr {
         this.ae = ae;
     }
 
-    public double getYe() {
-        return ye;
+    public String getCalculatedDate() {
+        return calculatedDate;
     }
 
-    public void setYe(double ye) {
-        this.ye = ye;
+    public void setCalculatedDate(String calculatedDate) {
+        this.calculatedDate = calculatedDate;
+    }
+
+    public double geteGlobGen() {
+        return eGlobGen;
+    }
+
+    public void seteGlobGen(double eGlobGen) {
+        this.eGlobGen = eGlobGen;
     }
 
     public double geteGlobHor() {
@@ -40,11 +40,11 @@ public final class SolIrr {
         this.eGlobHor = eGlobHor;
     }
 
-    public double geteGlobGen() {
-        return eGlobGen;
+    public double getYe() {
+        return ye;
     }
 
-    public void seteGlobGen(double eGlobGen) {
-        this.eGlobGen = eGlobGen;
+    public void setYe(double ye) {
+        this.ye = ye;
     }
 }

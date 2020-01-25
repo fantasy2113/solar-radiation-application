@@ -25,12 +25,6 @@ public final class LogRepository implements ILogRepository {
         return readLog("logs/spring-boot-logger.log");
     }
 
-    private List<String> readLog(final String path) {
-        List<String> logs = getLogs(path);
-        Collections.reverse(logs);
-        return logs;
-    }
-
     private List<String> getLogs(String path) {
         try (Stream<String> lines = Files.lines(Paths.get(path), StandardCharsets.ISO_8859_1)) {
             return lines.collect(Collectors.toList());
@@ -38,6 +32,12 @@ public final class LogRepository implements ILogRepository {
             LOGGER.info(e.toString());
             return new ArrayList<>();
         }
+    }
+
+    private List<String> readLog(final String path) {
+        List<String> logs = getLogs(path);
+        Collections.reverse(logs);
+        return logs;
     }
 
 }

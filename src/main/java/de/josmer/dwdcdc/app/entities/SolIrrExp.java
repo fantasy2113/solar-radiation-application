@@ -3,9 +3,9 @@ package de.josmer.dwdcdc.app.entities;
 public final class SolIrrExp extends Export {
 
     private String ae;
-    private String ye;
-    private double eGlobHor;
     private double eGlobGen;
+    private double eGlobHor;
+    private String ye;
 
     public String getAe() {
         return ae;
@@ -15,12 +15,12 @@ public final class SolIrrExp extends Export {
         this.ae = ae;
     }
 
-    public String getYe() {
-        return ye;
+    public double geteGlobGen() {
+        return eGlobGen;
     }
 
-    public void setYe(String ye) {
-        this.ye = ye;
+    public void seteGlobGen(double eGlobGen) {
+        this.eGlobGen = eGlobGen;
     }
 
     public double geteGlobHor() {
@@ -31,11 +31,11 @@ public final class SolIrrExp extends Export {
         this.eGlobHor = eGlobHor;
     }
 
-    public double geteGlobGen() {
-        return eGlobGen;
+    public String getYe() {
+        return ye;
     }
 
-    public void seteGlobGen(double eGlobGen) {
-        this.eGlobGen = eGlobGen;
+    public void setYe(String ye) {
+        this.ye = ye;
     }
 }

@@ -20,14 +20,16 @@ import java.util.Arrays;
 public class Application {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
-    private static boolean test = false;
+    private static boolean junitTest = false;
+    private static boolean demoMode = true;
+    private static final String test = Application.isDemoMode() ? "IrradiationRamCaching" : "IrradiationRamCaching";
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 
-    public static void setTest(boolean test) {
-        Application.test = test;
+    public static void setJunitTest(boolean junitTest) {
+        Application.junitTest = junitTest;
     }
 
     @Bean
@@ -38,22 +40,22 @@ public class Application {
         };
     }
 
-    @Bean
-    public void startInsertHandler() {
-        if (Application.test) {
-            return;
-        }
-        if (isInsertAll()) {
-            startInsertAllHandler();
-        } else {
-            startInsertAtMidnight();
-        }
+    private void initInsertAllHandler(final boolean parallel, final String crawler) {
+        new SolRadInsertAllHandler(AppContext.getCrawler(crawler), AppContext.getBean(SolRadRepository.class),
+                AppContext.getBean(FileReader.class), parallel).start();
     }
 
-    private void startInsertAtMidnight() {        
-        initInsertAtMidnight(AppBeans.CRAWLER_GLOBAL);
-        initInsertAtMidnight(AppBeans.CRAWLER_DIRECT);
-        initInsertAtMidnight(AppBeans.CRAWLER_DIFFUSE);
+    private void initInsertAtMidnight(final String crawler) {
+        new SolRadInsertAtMidnightHandler(AppContext.getCrawler(crawler), AppContext.getBean(SolRadRepository.class),
+                AppContext.getBean(FileReader.class)).start();
+    }
+
+    private boolean isInsertAll() {
+        return System.getenv("INSERT_ALL") != null;
+    }
+
+    private boolean isInsertAllParallel() {
+        return isInsertAll() && System.getenv("INSERT_ALL").equals("parallel");
     }
 
     private void startInsertAllHandler() {
@@ -61,24 +63,26 @@ public class Application {
         initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_DIRECT);
         initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_DIFFUSE);
     }
-    
-    private void initInsertAllHandler(final boolean parallel, final String crawler) {
-    	new SolRadInsertAllHandler(AppContext.getCrawler(crawler),
-                AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class), parallel).start();
-    }
-    
-    private void initInsertAtMidnight(final String crawler) {
-    	new SolRadInsertAtMidnightHandler(AppContext.getCrawler(crawler),
-                AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class)).start();
-    }
-    
-    private boolean isInsertAllParallel() {
-        return isInsertAll() && System.getenv("INSERT_ALL").equals("parallel");
+
+    private void startInsertAtMidnight() {
+        initInsertAtMidnight(AppBeans.CRAWLER_GLOBAL);
+        initInsertAtMidnight(AppBeans.CRAWLER_DIRECT);
+        initInsertAtMidnight(AppBeans.CRAWLER_DIFFUSE);
     }
 
-    private boolean isInsertAll() {
-        return System.getenv("INSERT_ALL") != null;
+    public static boolean isDemoMode() {
+        return demoMode;
+    }
+
+    @Bean
+    public void startInsertHandler() {
+        if (junitTest || demoMode) {
+            return;
+        }
+        if (isInsertAll()) {
+            startInsertAllHandler();
+        } else {
+            startInsertAtMidnight();
+        }
     }
 }

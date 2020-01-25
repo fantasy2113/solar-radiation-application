@@ -3,11 +3,27 @@ package de.josmer.dwdcdc.app.entities;
 abstract class Export {
 
     private String date;
+    private String dim;
     private String lat;
     private String lon;
-    private String unit;
-    private String dim;
     private String source;
+    private String unit;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDim() {
+        return dim;
+    }
+
+    public void setDim(String dim) {
+        this.dim = dim;
+    }
 
     public String getLat() {
         return lat;
@@ -25,22 +41,6 @@ abstract class Export {
         this.lon = lon;
     }
 
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public String getDim() {
-        return dim;
-    }
-
-    public void setDim(String dim) {
-        this.dim = dim;
-    }
-
     public String getSource() {
         return source;
     }
@@ -49,11 +49,11 @@ abstract class Export {
         this.source = source;
     }
 
-    public String getDate() {
-        return date;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

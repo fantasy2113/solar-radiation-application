@@ -29,24 +29,19 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TokenControllerTest {
 
+    private URL base;
+    @Autowired
+    private IJwtToken jwtToken;
     @LocalServerPort
     private int port;
-    private URL base;
     @Autowired
     private TestRestTemplate template;
     @Autowired
     private IUserRepository userRepository;
-    @Autowired
-    private IJwtToken jwtToken;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Application.setTest(true);
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        this.base = new URL("http://localhost:" + port + "/token");
+        Application.setJunitTest(true);
     }
 
     @Test
@@ -55,11 +50,18 @@ public class TokenControllerTest {
         HttpHeaders headers = new HttpHeaders();
         headers.add("login", "admin");
         headers.add("password", System.getenv("APP_ADMIN_PASSWORD"));
-        final String token = jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol", optionalUser.get().getUsername(), Controller.TTL_MILLIS);
-        ResponseEntity<WebToken> response = template.exchange(base.toString(), HttpMethod.GET, new HttpEntity<>(headers), WebToken.class);
+        final String token = jwtToken.create(String.valueOf(optionalUser.get().getId()), "sol",
+                optionalUser.get().getUsername(), Controller.TTL_MILLIS);
+        ResponseEntity<WebToken> response = template.exchange(base.toString(), HttpMethod.GET,
+                new HttpEntity<>(headers), WebToken.class);
         Claims decode = jwtToken.decode(response.getBody().getToken());
 
         assertEquals(optionalUser.get().getId(), (int) Integer.valueOf(decode.getId()));
         assertEquals(optionalUser.get().getUsername(), decode.getSubject());
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        this.base = new URL("http://localhost:" + port + "/token");
     }
 }

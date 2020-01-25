@@ -3,11 +3,11 @@ package de.josmer.dwdcdc.app.interfaces;
 import de.josmer.dwdcdc.app.entities.SolIrrExp;
 
 import java.time.LocalDateTime;
-import java.util.LinkedList;
+import java.util.List;
 
 public interface IIrradiationCache extends Identifiable {
 
-    LinkedList<SolIrrExp> getMonths();
-
     LocalDateTime getCreated();
+
+    List<SolIrrExp> getMonths();
 }

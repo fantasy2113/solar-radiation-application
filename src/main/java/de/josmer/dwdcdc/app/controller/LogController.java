@@ -33,7 +33,8 @@ public class LogController {
         html.append("<th style=\"border:1px solid black\">Logs:</th>");
         html.append("</tr>");
 
-        logs.stream().map(log -> "<tr><td style=\"border:1px solid black;text-align:left;\">" + log + "</td></tr>").forEach(html::append);
+        logs.stream().map(log -> "<tr><td style=\"border:1px solid black;text-align:left;\">" + log + "</td></tr>")
+                .forEach(html::append);
 
         html.append("</table></body></html>");
 

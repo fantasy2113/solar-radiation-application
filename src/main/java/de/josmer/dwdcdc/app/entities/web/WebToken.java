@@ -2,10 +2,10 @@ package de.josmer.dwdcdc.app.entities.web;
 
 public final class WebToken {
 
-    private String secret;
-    private String token;
     private boolean authorized;
     private boolean error;
+    private String secret;
+    private String token;
     private boolean userError;
 
     public WebToken() {

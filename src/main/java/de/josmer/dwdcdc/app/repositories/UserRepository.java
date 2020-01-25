@@ -13,13 +13,32 @@ import java.util.Optional;
 @Component
 public final class UserRepository implements IUserRepository {
 
-    private final UserRepositoryCrud userRepositoryCrud;
     private final IUserBCrypt userBCrypt;
+    private final UserRepositoryCrud userRepositoryCrud;
 
     @Autowired
     public UserRepository(UserRepositoryCrud userRepositoryCrud, IUserBCrypt userBCrypt) {
         this.userRepositoryCrud = userRepositoryCrud;
         this.userBCrypt = userBCrypt;
+    }
+
+    @Override
+    public void activateUser(User user) {
+        user.setIsActive(true);
+        userRepositoryCrud.save(user);
+    }
+
+    @Override
+    public void createUser(final String username, final String plainPassword) {
+        if (userRepositoryCrud.findByUsername(username).isEmpty()) {
+            userRepositoryCrud.save(initUser(username, plainPassword));
+        }
+    }
+
+    @Override
+    public void deactivateUser(User user) {
+        user.setIsActive(false);
+        userRepositoryCrud.save(user);
     }
 
     @Override
@@ -40,31 +59,6 @@ public final class UserRepository implements IUserRepository {
         return Optional.empty();
     }
 
-    @Override
-    public void createUser(final String username, final String plainPassword) {
-        if (userRepositoryCrud.findByUsername(username).isEmpty()) {
-            userRepositoryCrud.save(initUser(username, plainPassword));
-        }
-    }
-
-    @Override
-    public void updateLastLogin(User user) {
-        user.setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
-        userRepositoryCrud.save(user);
-    }
-
-    @Override
-    public void deactivateUser(User user) {
-        user.setIsActive(false);
-        userRepositoryCrud.save(user);
-    }
-
-    @Override
-    public void activateUser(User user) {
-        user.setIsActive(true);
-        userRepositoryCrud.save(user);
-    }
-
     private User initUser(final String username, final String plainTextPassword) {
         LocalDateTime now = LocalDateTime.now();
         User user = new User();
@@ -79,5 +73,11 @@ public final class UserRepository implements IUserRepository {
 
     private boolean isValid(User user) {
         return user.isActive();
+    }
+
+    @Override
+    public void updateLastLogin(User user) {
+        user.setLastLogin(Timestamp.valueOf(LocalDateTime.now()));
+        userRepositoryCrud.save(user);
     }
 }
