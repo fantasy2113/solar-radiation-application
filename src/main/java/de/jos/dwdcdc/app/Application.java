@@ -32,7 +32,7 @@ public class Application {
         Application.junitTest = junitTest;
     }
 
-    @Bean
+    //@Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
             LOGGER.info("Let's inspect the beans provided by Spring Boot:");
