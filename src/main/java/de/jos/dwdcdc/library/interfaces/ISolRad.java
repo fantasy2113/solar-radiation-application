@@ -2,31 +2,31 @@ package de.jos.dwdcdc.library.interfaces;
 
 public interface ISolRad {
 
-    int getGkhMax();
+  int getGkhMax();
 
-    void setGkhMax(int gkhMax);
+  void setGkhMax(int gkhMax);
 
-    int getGkhMin();
+  int getGkhMin();
 
-    void setGkhMin(int gkhMin);
+  void setGkhMin(int gkhMin);
 
-    int getGkrMax();
+  int getGkrMax();
 
-    void setGkrMax(int gkrMax);
+  void setGkrMax(int gkrMax);
 
-    int getGkrMin();
+  int getGkrMin();
 
-    void setGkrMin(int gkrMin);
+  void setGkrMin(int gkrMin);
 
-    int getRadiationDate();
+  int getRadiationDate();
 
-    void setRadiationDate(int radiationDate);
+  void setRadiationDate(int radiationDate);
 
-    String getRadiationType();
+  String getRadiationType();
 
-    void setRadiationType(String radiationType);
+  void setRadiationType(String radiationType);
 
-    float getRadiationValue();
+  float getRadiationValue();
 
-    void setRadiationValue(float radiationValue);
+  void setRadiationValue(float radiationValue);
 }

@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IBasicSolRad {
 
-    boolean isAlreadyExist(int date, SolRadTypes solRadTypes);
+  boolean isAlreadyExist(int date, SolRadTypes solRadTypes);
 
-    void save(List<ISolRad> solRads);
+  void save(List<ISolRad> solRads);
 }

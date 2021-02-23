@@ -2,11 +2,11 @@ package de.jos.dwdcdc.library.interfaces;
 
 public interface IGaussKruger {
 
-    void compute();
+  void compute();
 
-    double getHochwert();
+  double getHochwert();
 
-    int getMeridianstreifen();
+  int getMeridianstreifen();
 
-    double getRechtswert();
+  double getRechtswert();
 }

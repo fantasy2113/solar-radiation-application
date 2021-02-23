@@ -11,13 +11,13 @@ import java.util.Optional;
 @Component(BeanNames.NO_IRRADIATION_CACHING)
 public class NoCaching implements IIrradiationCaching {
 
-    @Override
-    public void add(IIrradiationCache irradiationCache) {
-        // do nothing
-    }
+  @Override
+  public void add(IIrradiationCache irradiationCache) {
+    // do nothing
+  }
 
-    @Override
-    public Optional<IIrradiationCache> get(Identifiable irrRequest) {
-        return Optional.empty();
-    }
+  @Override
+  public Optional<IIrradiationCache> get(Identifiable irrRequest) {
+    return Optional.empty();
+  }
 }

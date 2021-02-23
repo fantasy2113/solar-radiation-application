@@ -15,33 +15,33 @@ import java.util.concurrent.TimeUnit;
 
 abstract class Controller {
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
-    static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
-    final IJwtToken jwtToken;
-    final IUserRepository userRep;
-    IUserBCrypt userBCrypt;
+  protected static final Logger LOGGER = LoggerFactory.getLogger(AppController.class.getName());
+  static final Long TTL_MILLIS = TimeUnit.DAYS.toMillis(5);
+  final IJwtToken jwtToken;
+  final IUserRepository userRep;
+  IUserBCrypt userBCrypt;
 
-    Controller(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt) {
-        this.userRep = userRep;
-        this.jwtToken = jwtToken;
-        this.userBCrypt = userBCrypt;
-    }
+  Controller(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt) {
+    this.userRep = userRep;
+    this.jwtToken = jwtToken;
+    this.userBCrypt = userBCrypt;
+  }
 
-    final void executeTask(Runnable task) {
-        Executors.newSingleThreadExecutor().execute(task);
-    }
+  final void executeTask(Runnable task) {
+    Executors.newSingleThreadExecutor().execute(task);
+  }
 
-    final SolRadTypes getSolRadTypes(String type) {
-        return SolRadTypes.valueOf(type.toUpperCase(Locale.ENGLISH));
-    }
+  final SolRadTypes getSolRadTypes(String type) {
+    return SolRadTypes.valueOf(type.toUpperCase(Locale.ENGLISH));
+  }
 
-    final boolean isAccess(final String token) {
-        try {
-            Optional<User> userOptional = userRep.get(Integer.valueOf(jwtToken.decode(token).getId()));
-            return userOptional.isPresent() && userOptional.get().isActive();
-        } catch (Exception e) {
-            LOGGER.info(e.toString());
-        }
-        return false;
+  final boolean isAccess(final String token) {
+    try {
+      Optional<User> userOptional = userRep.get(Integer.valueOf(jwtToken.decode(token).getId()));
+      return userOptional.isPresent() && userOptional.get().isActive();
+    } catch (Exception e) {
+      LOGGER.info(e.toString());
     }
+    return false;
+  }
 }

@@ -40,12 +40,12 @@ public class Application {
 
     private void initInsertAllHandler(final boolean parallel, final String crawler) {
         new SolRadInsertAllHandler(AppContext.getCrawler(crawler), AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class), parallel).start();
+            AppContext.getBean(FileReader.class), parallel).start();
     }
 
     private void initInsertAtMidnight(final String crawler) {
         new SolRadInsertAtMidnightHandler(AppContext.getCrawler(crawler), AppContext.getBean(SolRadRepository.class),
-                AppContext.getBean(FileReader.class)).start();
+            AppContext.getBean(FileReader.class)).start();
     }
 
     private boolean isInsertAll() {

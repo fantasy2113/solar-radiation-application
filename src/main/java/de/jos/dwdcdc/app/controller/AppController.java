@@ -11,37 +11,37 @@ import java.util.List;
 
 abstract class AppController extends Controller {
 
-    final ISolRadRepository solRadRep;
+  final ISolRadRepository solRadRep;
 
-    AppController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep) {
-        super(userRep, jwtToken, userBCrypt);
-        this.solRadRep = solRadRep;
-    }
+  AppController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep) {
+    super(userRep, jwtToken, userBCrypt);
+    this.solRadRep = solRadRep;
+  }
 
-    final int getDate(final String date) {
-        try {
-            return Integer.parseInt(date.replace("-", "").replace("#", ""));
-        } catch (NumberFormatException e) {
-            LOGGER.info(e.toString());
-            return 0;
-        }
+  final int getDate(final String date) {
+    try {
+      return Integer.parseInt(date.replace("-", "").replace("#", ""));
+    } catch (NumberFormatException e) {
+      LOGGER.info(e.toString());
+      return 0;
     }
+  }
 
-    final Integer getEndDate(int year) {
-        return Integer.valueOf(year + "12");
-    }
+  final Integer getEndDate(int year) {
+    return Integer.valueOf(year + "12");
+  }
 
-    final Integer getStartDate(int year) {
-        return Integer.valueOf(year + "01");
-    }
+  final Integer getStartDate(int year) {
+    return Integer.valueOf(year + "01");
+  }
 
-    final void initExcelExport(HttpServletResponse response, String exportName, List<?> items, String props,
-                               List<String> headers) throws Exception {
-        response.addHeader("Content-disposition",
-                "attachment; filename=" + exportName + System.currentTimeMillis() + ".xls");
-        response.setContentType("application/vnd.ms-excel");
-        new SimpleExporter().gridExport(headers, items, props, response.getOutputStream());
-        response.flushBuffer();
-    }
+  final void initExcelExport(HttpServletResponse response, String exportName, List<?> items, String props,
+                             List<String> headers) throws Exception {
+    response.addHeader("Content-disposition",
+        "attachment; filename=" + exportName + System.currentTimeMillis() + ".xls");
+    response.setContentType("application/vnd.ms-excel");
+    new SimpleExporter().gridExport(headers, items, props, response.getOutputStream());
+    response.flushBuffer();
+  }
 
 }

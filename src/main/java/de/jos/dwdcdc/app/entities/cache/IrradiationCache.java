@@ -9,56 +9,56 @@ import java.util.List;
 
 public class IrradiationCache implements IIrradiationCache {
 
-    private LocalDateTime created;
-    private int id;
-    private String key;
-    private List<SolIrrExp> months;
+  private LocalDateTime created;
+  private int id;
+  private String key;
+  private List<SolIrrExp> months;
 
-    public IrradiationCache() {
-        this.key = "";
-        this.months = new LinkedList<>();
-    }
+  public IrradiationCache() {
+    this.key = "";
+    this.months = new LinkedList<>();
+  }
 
-    public IrradiationCache(String key, List<SolIrrExp> months) {
-        this.key = key;
-        this.months = months;
-        this.id = this.key.hashCode();
-        this.created = LocalDateTime.now();
-    }
+  public IrradiationCache(String key, List<SolIrrExp> months) {
+    this.key = key;
+    this.months = months;
+    this.id = this.key.hashCode();
+    this.created = LocalDateTime.now();
+  }
 
-    @Override
-    public LocalDateTime getCreated() {
-        return created;
-    }
+  @Override
+  public LocalDateTime getCreated() {
+    return created;
+  }
 
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
+  public void setCreated(LocalDateTime created) {
+    this.created = created;
+  }
 
-    @Override
-    public int getId() {
-        return id;
-    }
+  @Override
+  public int getId() {
+    return id;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    @Override
-    public String getKey() {
-        return key;
-    }
+  @Override
+  public String getKey() {
+    return key;
+  }
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+  public void setKey(String key) {
+    this.key = key;
+  }
 
-    @Override
-    public List<SolIrrExp> getMonths() {
-        return months;
-    }
+  @Override
+  public List<SolIrrExp> getMonths() {
+    return months;
+  }
 
-    public void setMonths(LinkedList<SolIrrExp> months) {
-        this.months = months;
-    }
+  public void setMonths(LinkedList<SolIrrExp> months) {
+    this.months = months;
+  }
 }

@@ -18,63 +18,63 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public final class ViewController extends Controller {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class.getName());
-    private final String irrHtml;
-    private final String loginHtml;
-    private final String radHtml;
+  private static final Logger LOGGER = LoggerFactory.getLogger(ViewController.class.getName());
+  private final String irrHtml;
+  private final String loginHtml;
+  private final String radHtml;
 
-    @Autowired
-    public ViewController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, IDataReader fileReader) {
-        super(userRep, jwtToken, userBCrypt);
-        this.loginHtml = fileReader.getDataAsString("src/main/resources/static/html/login.html");
-        this.irrHtml = fileReader.getDataAsString("src/main/resources/static/html/irr.html");
-        this.radHtml = fileReader.getDataAsString("src/main/resources/static/html/rad.html");
-        executeTask(() -> {
-            createUser("admin", System.getenv("APP_ADMIN_PASSWORD"));
-            createUser("user", System.getenv("APP_USER_PASSWORD"));
-        });
-    }
+  @Autowired
+  public ViewController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, IDataReader fileReader) {
+    super(userRep, jwtToken, userBCrypt);
+    this.loginHtml = fileReader.getDataAsString("src/main/resources/static/html/login.html");
+    this.irrHtml = fileReader.getDataAsString("src/main/resources/static/html/irr.html");
+    this.radHtml = fileReader.getDataAsString("src/main/resources/static/html/rad.html");
+    executeTask(() -> {
+      createUser("admin", System.getenv("APP_ADMIN_PASSWORD"));
+      createUser("user", System.getenv("APP_USER_PASSWORD"));
+    });
+  }
 
-    private String chooseHtml(String app) {
-        if (app.equals("irr")) {
-            LOGGER.info("return - irr");
-            return irrHtml;
-        } else {
-            LOGGER.info("return - rad");
-            return radHtml;
-        }
+  private String chooseHtml(String app) {
+    if (app.equals("irr")) {
+      LOGGER.info("return - irr");
+      return irrHtml;
+    } else {
+      LOGGER.info("return - rad");
+      return radHtml;
     }
+  }
 
-    private void createUser(String username, String plainPassword) {
-        if (userRep.get(username).isEmpty()) {
-            LOGGER.info("Create user: " + username);
-            userRep.createUser(username, plainPassword);
-        }
+  private void createUser(String username, String plainPassword) {
+    if (userRep.get(username).isEmpty()) {
+      LOGGER.info("Create user: " + username);
+      userRep.createUser(username, plainPassword);
     }
+  }
 
-    @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
-    public String getHtml(HttpServletRequest req) {
-        try {
-            WebCookie webCookie = new WebCookie();
-            setWebCookie(webCookie, req.getCookies());
-            if (isAccess(webCookie.getToken())) {
-                return chooseHtml(webCookie.getApp());
-            }
-        } catch (Exception e) {
-            LOGGER.info(e.toString());
-        }
-        LOGGER.info("return - login");
-        return loginHtml;
+  @GetMapping(value = "/", produces = MediaType.TEXT_HTML_VALUE)
+  public String getHtml(HttpServletRequest req) {
+    try {
+      WebCookie webCookie = new WebCookie();
+      setWebCookie(webCookie, req.getCookies());
+      if (isAccess(webCookie.getToken())) {
+        return chooseHtml(webCookie.getApp());
+      }
+    } catch (Exception e) {
+      LOGGER.info(e.toString());
     }
+    LOGGER.info("return - login");
+    return loginHtml;
+  }
 
-    private void setWebCookie(WebCookie webCookie, Cookie[] cookies) {
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("token")) {
-                webCookie.setToken(cookie.getValue());
-            }
-            if (cookie.getName().equals("app")) {
-                webCookie.setApp(cookie.getValue());
-            }
-        }
+  private void setWebCookie(WebCookie webCookie, Cookie[] cookies) {
+    for (Cookie cookie : cookies) {
+      if (cookie.getName().equals("token")) {
+        webCookie.setToken(cookie.getValue());
+      }
+      if (cookie.getName().equals("app")) {
+        webCookie.setApp(cookie.getValue());
+      }
     }
+  }
 }

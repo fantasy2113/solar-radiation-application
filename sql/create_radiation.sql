@@ -15,7 +15,7 @@ CREATE TABLE public.radiation
 )
     WITH (
         OIDS = FALSE
-    )
+        )
     TABLESPACE pg_default;
 
 ALTER TABLE public.radiation

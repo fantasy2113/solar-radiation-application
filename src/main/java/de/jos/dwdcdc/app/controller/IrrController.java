@@ -39,13 +39,13 @@ public final class IrrController extends AppController {
     public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token,
                           @RequestParam("year") final int year, @RequestParam("lon") final double lon,
                           @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye)
-            throws Exception {
+        throws Exception {
         LOGGER.info("getBean - export_irr");
         if (!isAccess(token)) {
             return;
         }
         initExcelExport(response, "umrechnung_", getSolIrrExps(new IrrRequest(lat, lon, year, ae, ye)),
-                solIrrExp.getProps(), solIrrExp.getHeaders());
+            solIrrExp.getProps(), solIrrExp.getHeaders());
     }
 
     @GetMapping("/irr")
@@ -59,12 +59,12 @@ public final class IrrController extends AppController {
 
     private List<SolIrrExp> getItems(IrrRequest req) {
         return solIrrExp
-                .getItems(
-                        solIrrRep.getIrradiation(
-                                solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()),
-                                        req.getLon(), req.getLat()),
-                                req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()),
-                        req.getLon(), req.getLat());
+            .getItems(
+                solIrrRep.getIrradiation(
+                    solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()),
+                        req.getLon(), req.getLat()),
+                    req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()),
+                req.getLon(), req.getLat());
     }
 
     private List<SolIrrExp> getSolIrrExps(final IrrRequest req) {

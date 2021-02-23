@@ -4,57 +4,57 @@ import de.jos.dwdcdc.app.interfaces.Identifiable;
 
 public final class IrrRequest extends Request implements Identifiable {
 
-    private int ae;
-    private int ye;
-    private int year;
+  private int ae;
+  private int ye;
+  private int year;
 
-    public IrrRequest() {
-    }
+  public IrrRequest() {
+  }
 
-    public IrrRequest(double lat, double lon, int year, int ae, int ye) {
-        super(lat, lon);
-        this.year = year;
-        this.ae = ae;
-        this.ye = ye;
-    }
+  public IrrRequest(double lat, double lon, int year, int ae, int ye) {
+    super(lat, lon);
+    this.year = year;
+    this.ae = ae;
+    this.ye = ye;
+  }
 
-    public int getAe() {
-        return ae;
-    }
+  public int getAe() {
+    return ae;
+  }
 
-    public void setAe(int ae) {
-        this.ae = ae;
-    }
+  public void setAe(int ae) {
+    this.ae = ae;
+  }
 
-    @Override
-    public int getId() {
-        return getKey().hashCode();
-    }
+  @Override
+  public int getId() {
+    return getKey().hashCode();
+  }
 
-    @Override
-    public String getKey() {
-        return this.toString();
-    }
+  @Override
+  public String getKey() {
+    return this.toString();
+  }
 
-    public int getYe() {
-        return ye;
-    }
+  public int getYe() {
+    return ye;
+  }
 
-    public void setYe(int ye) {
-        this.ye = ye;
-    }
+  public void setYe(int ye) {
+    this.ye = ye;
+  }
 
-    public int getYear() {
-        return year;
-    }
+  public int getYear() {
+    return year;
+  }
 
-    public void setYear(int year) {
-        this.year = year;
-    }
+  public void setYear(int year) {
+    this.year = year;
+  }
 
-    @Override
-    public String toString() {
-        return "lon=" + this.lon + ";" + "lat=" + this.lat + ";" + "ae=" + this.ae + ";" + "ye=" + this.ye + ";"
-                + "year=" + this.year;
-    }
+  @Override
+  public String toString() {
+    return "lon=" + this.lon + ";" + "lat=" + this.lat + ";" + "ae=" + this.ae + ";" + "ye=" + this.ye + ";"
+        + "year=" + this.year;
+  }
 }

@@ -10,12 +10,12 @@ import java.nio.file.Paths;
 @Component
 public final class FileReader implements IDataReader {
 
-    @Override
-    public String getDataAsString(final String pathToData) {
-        try {
-            return new String(Files.readAllBytes(Paths.get(pathToData)));
-        } catch (IOException e) {
-            return e.toString();
-        }
+  @Override
+  public String getDataAsString(final String pathToData) {
+    try {
+      return new String(Files.readAllBytes(Paths.get(pathToData)));
+    } catch (IOException e) {
+      return e.toString();
     }
+  }
 }

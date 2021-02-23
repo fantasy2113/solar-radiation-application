@@ -38,7 +38,7 @@ public class IrradiationRamCaching implements IIrradiationCaching {
     @Override
     public Optional<IIrradiationCache> get(Identifiable identifiable) {
         return getIrradiationCache(identifiable).map(c -> loadCache(identifiable, c))
-                .or(() -> Optional.ofNullable(getCacheFromDb(identifiable)));
+            .or(() -> Optional.ofNullable(getCacheFromDb(identifiable)));
     }
 
     private IIrradiationCache getCacheFromDb(Identifiable identifiable) {

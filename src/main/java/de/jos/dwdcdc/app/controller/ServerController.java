@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @RestController
 public final class ServerController {
 
-    @RequestMapping("/server_time")
-    public String getServerTime() {
-        return "ServerTime: " + LocalDateTime.now();
-    }
+  @RequestMapping("/server_time")
+  public String getServerTime() {
+    return "ServerTime: " + LocalDateTime.now();
+  }
 }

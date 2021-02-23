@@ -13,28 +13,28 @@ import java.util.Optional;
 @Component(BeanNames.IRRADIATION_DB_CACHING)
 public class IrradiationDbCaching implements IIrradiationCaching {
 
-    private final IIrradiationCacheRepository dbCacheRep;
+  private final IIrradiationCacheRepository dbCacheRep;
 
-    @Autowired
-    public IrradiationDbCaching(IIrradiationCacheRepository dbCacheRepository) {
-        this.dbCacheRep = dbCacheRepository;
-    }
+  @Autowired
+  public IrradiationDbCaching(IIrradiationCacheRepository dbCacheRepository) {
+    this.dbCacheRep = dbCacheRepository;
+  }
 
-    @Override
-    public void add(IIrradiationCache irradiationCache) {
-        dbCacheRep.save(irradiationCache);
-    }
+  @Override
+  public void add(IIrradiationCache irradiationCache) {
+    dbCacheRep.save(irradiationCache);
+  }
 
-    @Override
-    public Optional<IIrradiationCache> get(Identifiable identifiable) {
-        Optional<IIrradiationCache> optionalIIrradiationCache = dbCacheRep.get(identifiable.getKey());
-        if (optionalIIrradiationCache.isEmpty()) {
-            return Optional.empty();
-        }
-        if (isOldCache(optionalIIrradiationCache.get())) {
-            dbCacheRep.delete(identifiable.getId());
-            return Optional.empty();
-        }
-        return optionalIIrradiationCache;
+  @Override
+  public Optional<IIrradiationCache> get(Identifiable identifiable) {
+    Optional<IIrradiationCache> optionalIIrradiationCache = dbCacheRep.get(identifiable.getKey());
+    if (optionalIIrradiationCache.isEmpty()) {
+      return Optional.empty();
     }
+    if (isOldCache(optionalIIrradiationCache.get())) {
+      dbCacheRep.delete(identifiable.getId());
+      return Optional.empty();
+    }
+    return optionalIIrradiationCache;
+  }
 }

@@ -4,7 +4,7 @@ import de.jos.dwdcdc.library.enums.SolRadTypes;
 
 public interface ISolRadCrawler {
 
-    SolRadTypes getSolRadType();
+  SolRadTypes getSolRadType();
 
-    void insert(IBasicSolRad solRadRepository, IDataReader fileReader, int month, int year);
+  void insert(IBasicSolRad solRadRepository, IDataReader fileReader, int month, int year);
 }

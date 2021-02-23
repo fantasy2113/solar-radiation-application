@@ -2,13 +2,13 @@ package de.jos.dwdcdc.app.entities.web;
 
 public class WebInfo {
 
-    private int numberOfRad;
+  private int numberOfRad;
 
-    public int getNumberOfRad() {
-        return numberOfRad;
-    }
+  public int getNumberOfRad() {
+    return numberOfRad;
+  }
 
-    public void setNumberOfRad(int numberOfRad) {
-        this.numberOfRad = numberOfRad;
-    }
+  public void setNumberOfRad(int numberOfRad) {
+    this.numberOfRad = numberOfRad;
+  }
 }

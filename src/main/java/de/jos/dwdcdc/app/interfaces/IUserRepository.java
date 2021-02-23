@@ -6,15 +6,15 @@ import java.util.Optional;
 
 public interface IUserRepository {
 
-    void activateUser(User user);
+  void activateUser(User user);
 
-    void createUser(String username, String plainPassword);
+  void createUser(String username, String plainPassword);
 
-    void deactivateUser(User user);
+  void deactivateUser(User user);
 
-    Optional<User> get(Integer id);
+  Optional<User> get(Integer id);
 
-    Optional<User> get(String username);
+  Optional<User> get(String username);
 
-    void updateLastLogin(User user);
+  void updateLastLogin(User user);
 }

@@ -10,20 +10,20 @@ import org.springframework.stereotype.Component;
 @Component("gson")
 public class IrradiationCacheParser implements IIrradiationCacheParser {
 
-    private final Gson gson;
+  private final Gson gson;
 
-    @Autowired
-    public IrradiationCacheParser(Gson gson) {
-        this.gson = gson;
-    }
+  @Autowired
+  public IrradiationCacheParser(Gson gson) {
+    this.gson = gson;
+  }
 
-    @Override
-    public IIrradiationCache getDbCache(String json) {
-        return gson.fromJson(json, IrradiationCache.class);
-    }
+  @Override
+  public IIrradiationCache getDbCache(String json) {
+    return gson.fromJson(json, IrradiationCache.class);
+  }
 
-    @Override
-    public String toJson(IIrradiationCache irradiationCache) {
-        return gson.toJson(irradiationCache);
-    }
+  @Override
+  public String toJson(IIrradiationCache irradiationCache) {
+    return gson.toJson(irradiationCache);
+  }
 }

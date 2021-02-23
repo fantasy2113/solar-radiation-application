@@ -5,17 +5,17 @@ package de.jos.dwdcdc.library.irradiation;
  */
 final class MonthSum {
 
-    private double value;
+  private double value;
 
-    MonthSum() {
-        this.value = 0;
-    }
+  MonthSum() {
+    this.value = 0;
+  }
 
-    void add(double value) {
-        this.value += value;
-    }
+  void add(double value) {
+    this.value += value;
+  }
 
-    double get() {
-        return value;
-    }
+  double get() {
+    return value;
+  }
 }

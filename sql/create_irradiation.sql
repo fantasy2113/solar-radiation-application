@@ -10,10 +10,11 @@ CREATE TABLE public."irradiation"
 )
     WITH (
         OIDS = FALSE
-    )
+        )
     TABLESPACE pg_default;
 
 ALTER TABLE public."irradiation"
     OWNER to postgres;
 
-CREATE INDEX db_cache_gin_key ON irradiation USING gin ((db_cache -> 'key'));
+CREATE
+INDEX db_cache_gin_key ON irradiation USING gin ((db_cache -> 'key'));

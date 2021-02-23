@@ -2,7 +2,7 @@ package de.jos.dwdcdc.app.interfaces;
 
 public interface Identifiable {
 
-    int getId();
+  int getId();
 
-    String getKey();
+  String getKey();
 }

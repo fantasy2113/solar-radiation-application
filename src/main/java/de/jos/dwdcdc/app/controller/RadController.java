@@ -36,8 +36,8 @@ public final class RadController extends AppController {
             return;
         }
         initExcelExport(response, "sonneneinstrahlung_",
-                getSolRadExps(new RadRequest(lat, lon, startDate, endDate, type)), solRadExp.getProps(),
-                solRadExp.getHeaders());
+            getSolRadExps(new RadRequest(lat, lon, startDate, endDate, type)), solRadExp.getProps(),
+            solRadExp.getHeaders());
     }
 
     @GetMapping(value = "/number_of_rad")
@@ -62,6 +62,6 @@ public final class RadController extends AppController {
 
     private List<SolRadExp> getSolRadExps(RadRequest req) {
         return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()),
-                getSolRadTypes(req.getType()), req.getLon(), req.getLat()), req.getLon(), req.getLat());
+            getSolRadTypes(req.getType()), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }
 }
