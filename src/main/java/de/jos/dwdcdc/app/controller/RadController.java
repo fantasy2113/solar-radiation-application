@@ -1,6 +1,5 @@
 package de.jos.dwdcdc.app.controller;
 
-import de.jos.dwdcdc.app.Application;
 import de.jos.dwdcdc.app.entities.SolRadExp;
 import de.jos.dwdcdc.app.entities.web.WebInfo;
 import de.jos.dwdcdc.app.interfaces.*;
@@ -45,7 +44,7 @@ public final class RadController extends AppController {
     public WebInfo getNumberOfRad(@CookieValue("token") final String token) {
         WebInfo webInfo = new WebInfo();
         LOGGER.info("getBean - number_of_rad");
-        if (!isAccess(token) || Application.isDemoMode()) {
+        if (!isAccess(token)) {
             return webInfo;
         }
         webInfo.setNumberOfRad(solRadRep.getNumberOfRadiations());
@@ -55,16 +54,13 @@ public final class RadController extends AppController {
     @GetMapping("/rad")
     public List<SolRadExp> getRad(@CookieValue("token") final String token, final RadRequest req) {
         LOGGER.info("getBean - rad");
-        if (!isAccess(token) || Application.isDemoMode()) {
+        if (!isAccess(token)) {
             return new ArrayList<>();
         }
         return getSolRadExps(req);
     }
 
     private List<SolRadExp> getSolRadExps(RadRequest req) {
-        if (Application.isDemoMode()) {
-            return new ArrayList<>();
-        }
         return solRadExp.getItems(solRadRep.find(getDate(req.getStartDate()), getDate(req.getEndDate()),
                 getSolRadTypes(req.getType()), req.getLon(), req.getLat()), req.getLon(), req.getLat());
     }

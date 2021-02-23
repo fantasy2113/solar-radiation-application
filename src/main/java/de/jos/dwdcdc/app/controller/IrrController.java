@@ -1,13 +1,12 @@
 package de.jos.dwdcdc.app.controller;
 
-import de.jos.dwdcdc.app.Application;
 import de.jos.dwdcdc.app.entities.SolIrrExp;
 import de.jos.dwdcdc.app.entities.cache.IrradiationCache;
 import de.jos.dwdcdc.app.interfaces.*;
 import de.jos.dwdcdc.app.requests.IrrRequest;
-import de.jos.dwdcdc.app.spring.AppContext;
 import de.jos.dwdcdc.app.spring.BeanNames;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +28,11 @@ public final class IrrController extends AppController {
 
     @Autowired
     public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
-                         ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep) {
+                         @Qualifier(BeanNames.IRRADIATION_RAM_CACHING) IIrradiationCaching irradiationCaching, ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep) {
         super(userRep, jwtToken, userBCrypt, solRadRep);
+        this.irradiationCaching = irradiationCaching;
         this.solIrrExp = solIrrExp;
         this.solIrrRep = solIrrRep;
-        this.irradiationCaching = AppContext.getIIrradiationCaching();
     }
 
     @GetMapping("/export_irr")
@@ -52,7 +51,7 @@ public final class IrrController extends AppController {
     @GetMapping("/irr")
     public List<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
         LOGGER.info("getBean - irr");
-        if (!isAccess(token) || Application.isDemoMode()) {
+        if (!isAccess(token)) {
             return new ArrayList<>();
         }
         return getSolIrrExps(req);
@@ -69,9 +68,6 @@ public final class IrrController extends AppController {
     }
 
     private List<SolIrrExp> getSolIrrExps(final IrrRequest req) {
-        if (Application.isDemoMode()) {
-            return new ArrayList<>();
-        }
         Optional<IIrradiationCache> optionalDbCache = irradiationCaching.get(req);
         if (optionalDbCache.isPresent()) {
             return optionalDbCache.get().getMonths();

@@ -21,8 +21,6 @@ public class Application {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
     private static boolean junitTest = false;
-    private static boolean demoMode = false;
-    private static final String test = Application.isDemoMode() ? "IrradiationRamCaching" : "IrradiationRamCaching";
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -70,13 +68,9 @@ public class Application {
         initInsertAtMidnight(AppBeans.CRAWLER_DIFFUSE);
     }
 
-    public static boolean isDemoMode() {
-        return demoMode;
-    }
-
     @Bean
     public void startInsertHandler() {
-        if (junitTest || demoMode) {
+        if (junitTest) {
             return;
         }
         if (isInsertAll()) {

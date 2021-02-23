@@ -1,7 +1,5 @@
 package de.jos.dwdcdc.app.spring;
 
-import de.jos.dwdcdc.app.Application;
-import de.jos.dwdcdc.app.interfaces.IIrradiationCaching;
 import de.jos.dwdcdc.library.interfaces.ISolRadCrawler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -23,11 +21,6 @@ public class AppContext implements ApplicationContextAware {
 
     public static ISolRadCrawler getCrawler(String beanName) {
         return (ISolRadCrawler) appContext.getBean(beanName);
-    }
-
-    public static IIrradiationCaching getIIrradiationCaching() {
-        return Application.isDemoMode() ? (IIrradiationCaching) appContext.getBean(BeanNames.NO_IRRADIATION_CACHING)
-                : (IIrradiationCaching) appContext.getBean(BeanNames.IRRADIATION_RAM_CACHING);
     }
 
     @Override
