@@ -1,16 +1,10 @@
-# heruko postgres 
+# heruko postgres
+
 https://devcenter.heroku.com/articles/heroku-postgresql
 https://devcenter.heroku.com/articles/connecting-to-relational-databases-on-heroku-with-java
 
-# for private maven repo dependency in solar-radiation-application pom.xml 
-# https://github.com/fantasy2113/solar-radiation-application <-- https://github.com/fantasy2113/dwdcdc-library
-MVN_ARTI_READ
-
-# for private maven repo in pom.xml
-# https://github.com/fantasy2113/dwdcdc-library --> maven repo deploy
-MVN_ARTI_WRITE
-
 # I: system environments on windows
+
 Variable: DATABASE_URL
 Value: postgres://<username>:<password>@<host>:<port>/<dbname>
 ---
@@ -31,14 +25,9 @@ Value: <password>
 ---
 Variable: APP_USER_PASSWORD
 Value: <password>
----
-Variable: MVN_ARTI_READ
-Value: <password>
----
-Variable: MVN_ARTI_WRITE
-Value: <password>
 
 # II: environments on linux (and subsystem on windows)
+
 nano ~/.bashrc
 export DATABASE_URL="postgres://<username>:<password>@<host>:<port>/<dbname>"
 export JDBC_DATABASE_URL="jdbc:postgresql://<host>:<port>/<dbname>?user=<username>&password=<password>"                     
@@ -46,12 +35,11 @@ export JDBC_DATABASE_USERNAME="<username>"
 export JDBC_DATABASE_PASSWORD="<password>"
 export APP_SECRET="<secret>"
 export APP_ADMIN_PASSWORD="<password>"                                                                                 
-export APP_USER_PASSWORD="<password>"                                                                                       
-export MVN_ARTI_READ="<read url>"                                               
-export MVN_ARTI_WRITE="<write url>"
+export APP_USER_PASSWORD="<password>"
 source ~/.bashrc
 
 # III: on ubuntu (not subsystem on windows)
+
 sudo -H gedit /etc/environment
 DATABASE_URL="postgres://<username>:<password>@<host>:<port>/<dbname>"
 JDBC_DATABASE_URL="jdbc:postgresql://<host>:<port>/<dbname>?user=<username>&password=<password>"                     
@@ -59,14 +47,31 @@ JDBC_DATABASE_USERNAME="<username>"
 JDBC_DATABASE_PASSWORD="<password>"
 APP_SECRET="<secret>"
 APP_ADMIN_PASSWORD="<password>"                                                                                 
-APP_USER_PASSWORD="<password>"                                                                                       
-MVN_ARTI_READ="<read url>"                                               
-MVN_ARTI_WRITE="<write url>"
+APP_USER_PASSWORD="<password>"
 
-# heroku only
+# IV heroku only
 TZ=x/y (TZ=Europe/Berlin)
+
+# V load data
 
 # only for database initialization
 # after initialization delete this environment
 # use parallel only on high-end hardware!!!
 INSERT_ALL=<parallel> or <normal>
+
+# VI docker-compose.yml setup
+
+run:
+docker-compose up -d
+docker exec -it solar-radiation-application_postgres_1 bash
+apt-get update
+apt-get install nano
+nano /var/lib/postgresql/data/pg_hba.conf
+-- go to end of file
+-- change 'host all all all md5' to 'host all all all trust'
+-- save
+cat /var/lib/postgresql/data/pg_hba.conf
+-- check output
+exit
+docker-compose stop
+docker-compose up -d
