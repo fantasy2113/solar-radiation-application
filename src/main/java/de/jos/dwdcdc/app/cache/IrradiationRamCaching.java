@@ -13,56 +13,56 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component(BeanNames.IRRADIATION_RAM_CACHING)
 public class IrradiationRamCaching implements IIrradiationCaching {
-    private static final int LIMIT = 10000;
-    private final IIrradiationCaching irradiationDbCaching;
-    private final ConcurrentHashMap<String, IIrradiationCache> irradiationRamCache;
+  private static final int LIMIT = 10000;
+  private final IIrradiationCaching irradiationDbCaching;
+  private final ConcurrentHashMap<String, IIrradiationCache> irradiationRamCache;
 
-    @Autowired
-    public IrradiationRamCaching(@Qualifier(BeanNames.IRRADIATION_DB_CACHING) IIrradiationCaching irradiationDbCaching) {
-        this.irradiationRamCache = new ConcurrentHashMap<>();
-        this.irradiationDbCaching = irradiationDbCaching;
-    }
+  @Autowired
+  public IrradiationRamCaching(@Qualifier(BeanNames.IRRADIATION_DB_CACHING) IIrradiationCaching irradiationDbCaching) {
+    this.irradiationRamCache = new ConcurrentHashMap<>();
+    this.irradiationDbCaching = irradiationDbCaching;
+  }
 
-    @Override
-    public void add(IIrradiationCache irradiationCache) {
-        putCache(irradiationCache);
-        irradiationDbCaching.add(irradiationCache);
-    }
+  @Override
+  public void add(IIrradiationCache irradiationCache) {
+    putCache(irradiationCache);
+    irradiationDbCaching.add(irradiationCache);
+  }
 
-    private void cleanRamCache() {
-        if (irradiationRamCache.size() >= LIMIT) {
-            irradiationRamCache.remove(irradiationRamCache.keys().nextElement());
-        }
+  private void cleanRamCache() {
+    if (irradiationRamCache.size() >= LIMIT) {
+      irradiationRamCache.remove(irradiationRamCache.keys().nextElement());
     }
+  }
 
-    @Override
-    public Optional<IIrradiationCache> get(Identifiable identifiable) {
-        return getIrradiationCache(identifiable).map(c -> loadCache(identifiable, c))
-            .or(() -> Optional.ofNullable(getCacheFromDb(identifiable)));
-    }
+  @Override
+  public Optional<IIrradiationCache> get(Identifiable identifiable) {
+    return getIrradiationCache(identifiable).map(c -> loadCache(identifiable, c))
+        .or(() -> Optional.ofNullable(getCacheFromDb(identifiable)));
+  }
 
-    private IIrradiationCache getCacheFromDb(Identifiable identifiable) {
-        return irradiationDbCaching.get(identifiable).map(c -> {
-            putCache(c);
-            return c;
-        }).orElse(null);
-    }
+  private IIrradiationCache getCacheFromDb(Identifiable identifiable) {
+    return irradiationDbCaching.get(identifiable).map(c -> {
+      putCache(c);
+      return c;
+    }).orElse(null);
+  }
 
-    private Optional<IIrradiationCache> getIrradiationCache(Identifiable identifiable) {
-        return Optional.ofNullable(irradiationRamCache.get(identifiable.getKey()));
-    }
+  private Optional<IIrradiationCache> getIrradiationCache(Identifiable identifiable) {
+    return Optional.ofNullable(irradiationRamCache.get(identifiable.getKey()));
+  }
 
-    private IIrradiationCache loadCache(Identifiable identifiable, IIrradiationCache irradiationCache) {
-        if (isOldCache(irradiationCache)) {
-            irradiationRamCache.remove(identifiable.getKey());
-            return getCacheFromDb(identifiable);
-        } else {
-            return irradiationCache;
-        }
+  private IIrradiationCache loadCache(Identifiable identifiable, IIrradiationCache irradiationCache) {
+    if (isOldCache(irradiationCache)) {
+      irradiationRamCache.remove(identifiable.getKey());
+      return getCacheFromDb(identifiable);
+    } else {
+      return irradiationCache;
     }
+  }
 
-    private void putCache(IIrradiationCache irradiationCache) {
-        cleanRamCache();
-        irradiationRamCache.putIfAbsent(irradiationCache.getKey(), irradiationCache);
-    }
+  private void putCache(IIrradiationCache irradiationCache) {
+    cleanRamCache();
+    irradiationRamCache.putIfAbsent(irradiationCache.getKey(), irradiationCache);
+  }
 }

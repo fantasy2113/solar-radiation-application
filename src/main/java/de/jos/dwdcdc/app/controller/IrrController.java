@@ -22,61 +22,61 @@ import java.util.Optional;
 @RestController
 public final class IrrController extends AppController {
 
-    private final IIrradiationCaching irradiationCaching;
-    private final ISolIrrExporter solIrrExp;
-    private final ISolIrrRepository solIrrRep;
+  private final IIrradiationCaching irradiationCaching;
+  private final ISolIrrExporter solIrrExp;
+  private final ISolIrrRepository solIrrRep;
 
-    @Autowired
-    public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
-                         @Qualifier(BeanNames.IRRADIATION_RAM_CACHING) IIrradiationCaching irradiationCaching, ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep) {
-        super(userRep, jwtToken, userBCrypt, solRadRep);
-        this.irradiationCaching = irradiationCaching;
-        this.solIrrExp = solIrrExp;
-        this.solIrrRep = solIrrRep;
-    }
+  @Autowired
+  public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
+                       @Qualifier(BeanNames.IRRADIATION_RAM_CACHING) IIrradiationCaching irradiationCaching, ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep) {
+    super(userRep, jwtToken, userBCrypt, solRadRep);
+    this.irradiationCaching = irradiationCaching;
+    this.solIrrExp = solIrrExp;
+    this.solIrrRep = solIrrRep;
+  }
 
-    @GetMapping("/export_irr")
-    public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token,
-                          @RequestParam("year") final int year, @RequestParam("lon") final double lon,
-                          @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye)
-        throws Exception {
-        LOGGER.info("getBean - export_irr");
-        if (!isAccess(token)) {
-            return;
-        }
-        initExcelExport(response, "umrechnung_", getSolIrrExps(new IrrRequest(lat, lon, year, ae, ye)),
-            solIrrExp.getProps(), solIrrExp.getHeaders());
+  @GetMapping("/export_irr")
+  public void exportIrr(HttpServletResponse response, @CookieValue("token") final String token,
+                        @RequestParam("year") final int year, @RequestParam("lon") final double lon,
+                        @RequestParam("lat") final double lat, @RequestParam("ae") final int ae, @RequestParam("ye") final int ye)
+      throws Exception {
+    LOGGER.info("getBean - export_irr");
+    if (!isAccess(token)) {
+      return;
     }
+    initExcelExport(response, "umrechnung_", getSolIrrExps(new IrrRequest(lat, lon, year, ae, ye)),
+        solIrrExp.getProps(), solIrrExp.getHeaders());
+  }
 
-    @GetMapping("/irr")
-    public List<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
-        LOGGER.info("getBean - irr");
-        if (!isAccess(token)) {
-            return new ArrayList<>();
-        }
-        return getSolIrrExps(req);
+  @GetMapping("/irr")
+  public List<SolIrrExp> getIrr(@CookieValue("token") final String token, final IrrRequest req) {
+    LOGGER.info("getBean - irr");
+    if (!isAccess(token)) {
+      return new ArrayList<>();
     }
+    return getSolIrrExps(req);
+  }
 
-    private List<SolIrrExp> getItems(IrrRequest req) {
-        return solIrrExp
-            .getItems(
-                solIrrRep.getIrradiation(
-                    solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()),
-                        req.getLon(), req.getLat()),
-                    req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()),
-                req.getLon(), req.getLat());
-    }
+  private List<SolIrrExp> getItems(IrrRequest req) {
+    return solIrrExp
+        .getItems(
+            solIrrRep.getIrradiation(
+                solRadRep.findGlobal(getStartDate(req.getYear()), getEndDate(req.getYear()),
+                    req.getLon(), req.getLat()),
+                req.getLon(), req.getLat(), req.getAe(), req.getYe(), req.getYear()),
+            req.getLon(), req.getLat());
+  }
 
-    private List<SolIrrExp> getSolIrrExps(final IrrRequest req) {
-        Optional<IIrradiationCache> optionalDbCache = irradiationCaching.get(req);
-        if (optionalDbCache.isPresent()) {
-            return optionalDbCache.get().getMonths();
-        }
-        List<SolIrrExp> solIrrExps = getItems(req);
-        executeTask(() -> {
-            irradiationCaching.add(new IrradiationCache(req.getKey(), solIrrExps));
-            LOGGER.info("Create DbCache: " + req.getKey());
-        });
-        return solIrrExps;
+  private List<SolIrrExp> getSolIrrExps(final IrrRequest req) {
+    Optional<IIrradiationCache> optionalDbCache = irradiationCaching.get(req);
+    if (optionalDbCache.isPresent()) {
+      return optionalDbCache.get().getMonths();
     }
+    List<SolIrrExp> solIrrExps = getItems(req);
+    executeTask(() -> {
+      irradiationCaching.add(new IrradiationCache(req.getKey(), solIrrExps));
+      LOGGER.info("Create DbCache: " + req.getKey());
+    });
+    return solIrrExps;
+  }
 }

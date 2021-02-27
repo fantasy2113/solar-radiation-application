@@ -19,64 +19,64 @@ import java.util.Arrays;
 @SpringBootApplication
 public class Application {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
-    private static boolean junitTest = false;
+  private static final Logger LOGGER = LoggerFactory.getLogger(Application.class.getName());
+  private static boolean junitTest = false;
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 
-    public static void setJunitTest(boolean junitTest) {
-        Application.junitTest = junitTest;
-    }
+  public static void setJunitTest(boolean junitTest) {
+    Application.junitTest = junitTest;
+  }
 
-    //@Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
-            LOGGER.info("Let's inspect the beans provided by Spring Boot:");
-            Arrays.stream(ctx.getBeanDefinitionNames()).sorted().forEachOrdered(LOGGER::info);
-        };
-    }
+  //@Bean
+  public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+    return args -> {
+      LOGGER.info("Let's inspect the beans provided by Spring Boot:");
+      Arrays.stream(ctx.getBeanDefinitionNames()).sorted().forEachOrdered(LOGGER::info);
+    };
+  }
 
-    private void initInsertAllHandler(final boolean parallel, final String crawler) {
-        new SolRadInsertAllHandler(AppContext.getCrawler(crawler), AppContext.getBean(SolRadRepository.class),
-            AppContext.getBean(FileReader.class), parallel).start();
-    }
+  private void initInsertAllHandler(final boolean parallel, final String crawler) {
+    new SolRadInsertAllHandler(AppContext.getCrawler(crawler), AppContext.getBean(SolRadRepository.class),
+        AppContext.getBean(FileReader.class), parallel).start();
+  }
 
-    private void initInsertAtMidnight(final String crawler) {
-        new SolRadInsertAtMidnightHandler(AppContext.getCrawler(crawler), AppContext.getBean(SolRadRepository.class),
-            AppContext.getBean(FileReader.class)).start();
-    }
+  private void initInsertAtMidnight(final String crawler) {
+    new SolRadInsertAtMidnightHandler(AppContext.getCrawler(crawler), AppContext.getBean(SolRadRepository.class),
+        AppContext.getBean(FileReader.class)).start();
+  }
 
-    private boolean isInsertAll() {
-        return System.getenv("INSERT_ALL") != null;
-    }
+  private boolean isInsertAll() {
+    return System.getenv("INSERT_ALL") != null;
+  }
 
-    private boolean isInsertAllParallel() {
-        return isInsertAll() && System.getenv("INSERT_ALL").equals("parallel");
-    }
+  private boolean isInsertAllParallel() {
+    return isInsertAll() && System.getenv("INSERT_ALL").equals("parallel");
+  }
 
-    private void startInsertAllHandler() {
-        initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_GLOBAL);
-        initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_DIRECT);
-        initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_DIFFUSE);
-    }
+  private void startInsertAllHandler() {
+    initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_GLOBAL);
+    initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_DIRECT);
+    initInsertAllHandler(isInsertAllParallel(), AppBeans.CRAWLER_DIFFUSE);
+  }
 
-    private void startInsertAtMidnight() {
-        initInsertAtMidnight(AppBeans.CRAWLER_GLOBAL);
-        initInsertAtMidnight(AppBeans.CRAWLER_DIRECT);
-        initInsertAtMidnight(AppBeans.CRAWLER_DIFFUSE);
-    }
+  private void startInsertAtMidnight() {
+    initInsertAtMidnight(AppBeans.CRAWLER_GLOBAL);
+    initInsertAtMidnight(AppBeans.CRAWLER_DIRECT);
+    initInsertAtMidnight(AppBeans.CRAWLER_DIFFUSE);
+  }
 
-    @Bean
-    public void startInsertHandler() {
-        if (junitTest) {
-            return;
-        }
-        if (isInsertAll()) {
-            startInsertAllHandler();
-        } else {
-            startInsertAtMidnight();
-        }
+  @Bean
+  public void startInsertHandler() {
+    if (junitTest) {
+      return;
     }
+    if (isInsertAll()) {
+      startInsertAllHandler();
+    } else {
+      startInsertAtMidnight();
+    }
+  }
 }
