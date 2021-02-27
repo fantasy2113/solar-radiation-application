@@ -1,6 +1,6 @@
 package de.jos.dwdcdc.app.utils;
 
-import de.jos.dwdcdc.library.interfaces.IDataReader;
+import de.jos.dwdcdc.share.IDataReader;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;

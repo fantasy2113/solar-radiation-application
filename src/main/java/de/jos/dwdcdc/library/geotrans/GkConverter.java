@@ -1,6 +1,6 @@
 package de.jos.dwdcdc.library.geotrans;
 
-import de.jos.dwdcdc.library.interfaces.IGaussKruger;
+import de.jos.dwdcdc.share.IGaussKruger;
 
 import java.util.OptionalInt;
 

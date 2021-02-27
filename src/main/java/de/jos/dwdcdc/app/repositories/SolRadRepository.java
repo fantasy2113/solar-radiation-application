@@ -5,7 +5,7 @@ import de.jos.dwdcdc.app.interfaces.ISolRadRepository;
 import de.jos.dwdcdc.library.enums.SolRadTypes;
 import de.jos.dwdcdc.library.geotrans.GaussKruger;
 import de.jos.dwdcdc.library.geotrans.GkConverter;
-import de.jos.dwdcdc.library.interfaces.ISolRad;
+import de.jos.dwdcdc.share.ISolRad;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;

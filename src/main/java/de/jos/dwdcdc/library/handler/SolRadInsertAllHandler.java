@@ -1,8 +1,8 @@
 package de.jos.dwdcdc.library.handler;
 
-import de.jos.dwdcdc.library.interfaces.IBasicSolRad;
-import de.jos.dwdcdc.library.interfaces.IDataReader;
-import de.jos.dwdcdc.library.interfaces.ISolRadCrawler;
+import de.jos.dwdcdc.share.IBasicSolRad;
+import de.jos.dwdcdc.share.IDataReader;
+import de.jos.dwdcdc.share.ISolRadCrawler;
 
 import java.time.LocalDate;
 import java.util.concurrent.Executors;

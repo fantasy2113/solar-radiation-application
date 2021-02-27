@@ -58,20 +58,3 @@ TZ=x/y (TZ=Europe/Berlin)
 # after initialization delete this environment
 # use parallel only on high-end hardware!!!
 INSERT_ALL=<parallel> or <normal>
-
-# VI docker-compose.yml setup
-
-run:
-docker-compose up -d
-docker exec -it solar-radiation-application_postgres_1 bash
-apt-get update
-apt-get install nano
-nano /var/lib/postgresql/data/pg_hba.conf
--- go to end of file
--- change 'host all all all md5' to 'host all all all trust'
--- save
-cat /var/lib/postgresql/data/pg_hba.conf
--- check output
-exit
-docker-compose stop
-docker-compose up -d

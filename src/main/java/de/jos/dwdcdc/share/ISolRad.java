@@ -1,4 +1,4 @@
-package de.jos.dwdcdc.library.interfaces;
+package de.jos.dwdcdc.share;
 
 public interface ISolRad {
 
