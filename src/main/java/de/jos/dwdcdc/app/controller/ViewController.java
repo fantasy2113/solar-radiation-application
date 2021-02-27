@@ -4,6 +4,7 @@ import de.jos.dwdcdc.app.entities.web.WebCookie;
 import de.jos.dwdcdc.app.interfaces.IJwtToken;
 import de.jos.dwdcdc.app.interfaces.IUserBCrypt;
 import de.jos.dwdcdc.app.interfaces.IUserRepository;
+import de.jos.dwdcdc.app.utils.Resource;
 import de.jos.dwdcdc.library.interfaces.IDataReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +27,9 @@ public final class ViewController extends Controller {
   @Autowired
   public ViewController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, IDataReader fileReader) {
     super(userRep, jwtToken, userBCrypt);
-    this.loginHtml = fileReader.getDataAsString("src/main/resources/static/html/login.html");
-    this.irrHtml = fileReader.getDataAsString("src/main/resources/static/html/irr.html");
-    this.radHtml = fileReader.getDataAsString("src/main/resources/static/html/rad.html");
+    this.loginHtml = Resource.get("static/html/login.html");
+    this.irrHtml = Resource.get("static/html/irr.html");
+    this.radHtml = Resource.get("static/html/rad.html");
     executeTask(() -> {
       createUser("admin", System.getenv("APP_ADMIN_PASSWORD"));
       createUser("user", System.getenv("APP_USER_PASSWORD"));
