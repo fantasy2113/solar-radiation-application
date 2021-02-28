@@ -3,6 +3,7 @@ package de.jos.dwdcdc.app.repositories;
 import de.jos.dwdcdc.app.interfaces.IIrradiationCache;
 import de.jos.dwdcdc.app.interfaces.IIrradiationCacheParser;
 import de.jos.dwdcdc.app.interfaces.IIrradiationCacheRepository;
+import de.jos.dwdcdc.app.spring.EnvService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,8 @@ public class IrradiationCacheRepository extends Repository<IIrradiationCache> im
   private final IIrradiationCacheParser parser;
 
   @Autowired
-  public IrradiationCacheRepository(IIrradiationCacheParser parser) {
+  public IrradiationCacheRepository(IIrradiationCacheParser parser, EnvService envService) {
+    super(envService);
     this.parser = parser;
   }
 

@@ -22,9 +22,6 @@ Value: <secret>
 ---
 Variable: APP_ADMIN_PASSWORD
 Value: <password>
----
-Variable: APP_USER_PASSWORD
-Value: <password>
 
 # II: environments on linux (and subsystem on windows)
 
@@ -34,8 +31,7 @@ export JDBC_DATABASE_URL="jdbc:postgresql://<host>:<port>/<dbname>?user=<usernam
 export JDBC_DATABASE_USERNAME="<username>"
 export JDBC_DATABASE_PASSWORD="<password>"
 export APP_SECRET="<secret>"
-export APP_ADMIN_PASSWORD="<password>"                                                                                 
-export APP_USER_PASSWORD="<password>"
+export APP_ADMIN_PASSWORD="<password>"
 source ~/.bashrc
 
 # III: on ubuntu (not subsystem on windows)
@@ -46,8 +42,7 @@ JDBC_DATABASE_URL="jdbc:postgresql://<host>:<port>/<dbname>?user=<username>&pass
 JDBC_DATABASE_USERNAME="<username>"
 JDBC_DATABASE_PASSWORD="<password>"
 APP_SECRET="<secret>"
-APP_ADMIN_PASSWORD="<password>"                                                                                 
-APP_USER_PASSWORD="<password>"
+APP_ADMIN_PASSWORD="<password>"
 
 # IV heroku only
 TZ=x/y (TZ=Europe/Berlin)

@@ -1,5 +1,6 @@
 package de.jos.dwdcdc.app.repositories;
 
+import de.jos.dwdcdc.app.spring.EnvService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +16,8 @@ abstract class Repository<E> {
   static final Logger LOGGER = LoggerFactory.getLogger(Repository.class.getName());
   private final String databaseUrl;
 
-  Repository() {
-    this.databaseUrl = System.getenv("DATABASE_URL");
+  Repository(EnvService envService) {
+    this.databaseUrl = envService.getDatabaseUrl();
   }
 
   Repository(final String databaseUrl) {

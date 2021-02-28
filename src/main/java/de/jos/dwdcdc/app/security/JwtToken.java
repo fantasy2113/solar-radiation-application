@@ -1,10 +1,12 @@
 package de.jos.dwdcdc.app.security;
 
 import de.jos.dwdcdc.app.interfaces.IJwtToken;
+import de.jos.dwdcdc.app.spring.EnvService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -17,8 +19,9 @@ public final class JwtToken implements IJwtToken {
 
   private final String secretKey;
 
-  public JwtToken() {
-    this.secretKey = System.getenv("APP_SECRET");
+  @Autowired
+  public JwtToken(EnvService envService) {
+    this.secretKey = envService.getAppSecret();
   }
 
   @Override

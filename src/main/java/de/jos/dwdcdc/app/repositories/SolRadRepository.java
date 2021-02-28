@@ -2,10 +2,12 @@ package de.jos.dwdcdc.app.repositories;
 
 import de.jos.dwdcdc.app.entities.SolRad;
 import de.jos.dwdcdc.app.interfaces.ISolRadRepository;
+import de.jos.dwdcdc.app.spring.EnvService;
 import de.jos.dwdcdc.library.enums.SolRadTypes;
 import de.jos.dwdcdc.library.geotrans.GaussKruger;
 import de.jos.dwdcdc.library.geotrans.GkConverter;
 import de.jos.dwdcdc.shared.ISolRad;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URISyntaxException;
@@ -19,8 +21,9 @@ import java.util.stream.IntStream;
 @Component
 public final class SolRadRepository extends Repository<SolRad> implements ISolRadRepository {
 
-  public SolRadRepository() {
-    super();
+  @Autowired
+  public SolRadRepository(EnvService envService) {
+    super(envService);
   }
 
   public SolRadRepository(final String databaseUrl) {

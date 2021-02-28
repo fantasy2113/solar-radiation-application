@@ -4,8 +4,8 @@ import de.jos.dwdcdc.app.entities.web.WebCookie;
 import de.jos.dwdcdc.app.interfaces.IJwtToken;
 import de.jos.dwdcdc.app.interfaces.IUserBCrypt;
 import de.jos.dwdcdc.app.interfaces.IUserRepository;
+import de.jos.dwdcdc.app.spring.EnvService;
 import de.jos.dwdcdc.app.utils.Resource;
-import de.jos.dwdcdc.shared.IDataReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,13 @@ public final class ViewController extends Controller {
   private final String radHtml;
 
   @Autowired
-  public ViewController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, IDataReader fileReader) {
+  public ViewController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, EnvService envService) {
     super(userRep, jwtToken, userBCrypt);
     this.loginHtml = Resource.get("static/html/login.html");
     this.irrHtml = Resource.get("static/html/irr.html");
     this.radHtml = Resource.get("static/html/rad.html");
     executeTask(() -> {
-      createUser("admin", System.getenv("APP_ADMIN_PASSWORD"));
-      createUser("user", System.getenv("APP_USER_PASSWORD"));
+      createUser("admin", envService.getAppAdminPassword());
     });
   }
 

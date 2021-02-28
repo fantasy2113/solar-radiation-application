@@ -23,6 +23,10 @@ public class AppContext implements ApplicationContextAware {
     return (ISolRadCrawler) appContext.getBean(beanName);
   }
 
+  public static EnvService getEnvService() {
+    return appContext.getBean(EnvService.class);
+  }
+
   @Override
   public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
     appContext = applicationContext;
