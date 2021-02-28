@@ -35,7 +35,7 @@ public final class SolIrrRepository implements ISolIrrRepository {
   public LinkedList<SolIrr> getIrradiation(double[] eGlobHorMonthly, double lon, double lat, int ae, int ye, int year) {
     LinkedList<SolIrr> irradiation = new LinkedList<>();
     SolarIrradiation solarIrradiation = new SolarIrradiation(lat, lon, eGlobHorMonthly, year, ye, ae);
-    solarIrradiation.computeParallel();
+    solarIrradiation.compute();
     ComputedYear computedYear = solarIrradiation.getComputedYear();
     addIrradiation(ae, ye, irradiation, year, computedYear);
     return irradiation;

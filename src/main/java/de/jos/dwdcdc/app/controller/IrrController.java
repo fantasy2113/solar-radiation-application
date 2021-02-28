@@ -28,7 +28,7 @@ public final class IrrController extends AppController {
 
   @Autowired
   public IrrController(IUserRepository userRep, IJwtToken jwtToken, IUserBCrypt userBCrypt, ISolRadRepository solRadRep,
-                       @Qualifier(BeanNames.IRRADIATION_RAM_CACHING) IIrradiationCaching irradiationCaching, ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep) {
+                       @Qualifier(BeanNames.NO_IRRADIATION_CACHING) IIrradiationCaching irradiationCaching, ISolIrrExporter solIrrExp, ISolIrrRepository solIrrRep) {
     super(userRep, jwtToken, userBCrypt, solRadRep);
     this.irradiationCaching = irradiationCaching;
     this.solIrrExp = solIrrExp;
