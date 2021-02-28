@@ -1,10 +1,10 @@
 package de.jos.dwdcdc.library.handler;
 
 import de.jos.dwdcdc.library.enums.SolRadTypes;
-import de.jos.dwdcdc.share.IBasicSolRad;
-import de.jos.dwdcdc.share.IDataReader;
-import de.jos.dwdcdc.share.IHandler;
-import de.jos.dwdcdc.share.ISolRadCrawler;
+import de.jos.dwdcdc.shared.IBasicSolRad;
+import de.jos.dwdcdc.shared.IDataReader;
+import de.jos.dwdcdc.shared.IHandler;
+import de.jos.dwdcdc.shared.ISolRadCrawler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

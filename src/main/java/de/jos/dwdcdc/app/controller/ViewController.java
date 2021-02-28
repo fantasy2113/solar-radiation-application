@@ -5,7 +5,7 @@ import de.jos.dwdcdc.app.interfaces.IJwtToken;
 import de.jos.dwdcdc.app.interfaces.IUserBCrypt;
 import de.jos.dwdcdc.app.interfaces.IUserRepository;
 import de.jos.dwdcdc.app.utils.Resource;
-import de.jos.dwdcdc.share.IDataReader;
+import de.jos.dwdcdc.shared.IDataReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

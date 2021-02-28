@@ -1,6 +1,6 @@
 package de.jos.dwdcdc.app.spring;
 
-import de.jos.dwdcdc.share.ISolRadCrawler;
+import de.jos.dwdcdc.shared.ISolRadCrawler;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;

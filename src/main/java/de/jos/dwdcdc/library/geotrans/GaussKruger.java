@@ -1,6 +1,6 @@
 package de.jos.dwdcdc.library.geotrans;
 
-import de.jos.dwdcdc.share.IGaussKruger;
+import de.jos.dwdcdc.shared.IGaussKruger;
 
 public final class GaussKruger implements IGaussKruger {
 

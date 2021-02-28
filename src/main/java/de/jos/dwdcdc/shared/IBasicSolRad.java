@@ -1,4 +1,4 @@
-package de.jos.dwdcdc.share;
+package de.jos.dwdcdc.shared;
 
 import de.jos.dwdcdc.library.enums.SolRadTypes;
 

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import de.jos.dwdcdc.app.entities.SolRad;
 import de.jos.dwdcdc.library.crawler.SolRadCrawler;
 import de.jos.dwdcdc.library.enums.SolRadTypes;
-import de.jos.dwdcdc.share.ISolRadCrawler;
+import de.jos.dwdcdc.shared.ISolRadCrawler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,4 +1,4 @@
-package de.jos.dwdcdc.share;
+package de.jos.dwdcdc.shared;
 
 public interface IDataReader {
 

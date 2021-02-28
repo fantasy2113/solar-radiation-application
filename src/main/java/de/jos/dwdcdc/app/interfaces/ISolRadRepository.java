@@ -2,7 +2,7 @@ package de.jos.dwdcdc.app.interfaces;
 
 import de.jos.dwdcdc.app.entities.SolRad;
 import de.jos.dwdcdc.library.enums.SolRadTypes;
-import de.jos.dwdcdc.share.IBasicSolRad;
+import de.jos.dwdcdc.shared.IBasicSolRad;
 
 import java.util.LinkedList;
 

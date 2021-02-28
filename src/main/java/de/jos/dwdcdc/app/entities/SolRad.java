@@ -1,6 +1,6 @@
 package de.jos.dwdcdc.app.entities;
 
-import de.jos.dwdcdc.share.ISolRad;
+import de.jos.dwdcdc.shared.ISolRad;
 
 public final class SolRad implements ISolRad {
 
