@@ -1,5 +1,8 @@
 package de.jos.dwdcdc.library.irradiation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,6 +13,7 @@ import java.util.SplittableRandom;
  * Beware: Not Thread-Safety because of SplittableRandom
  */
 final class SolarSynthesiser {
+  private static final Logger LOGGER = LoggerFactory.getLogger(SolarSynthesiser.class.getName());
 
   private final SplittableRandom random;
 
@@ -103,7 +107,12 @@ final class SolarSynthesiser {
   }
 
   private double[] getBestHours(Map<Double, double[]> validHours) {
-    return validHours.get(Collections.min(validHours.keySet()));
+    try {
+      return validHours.get(Collections.min(validHours.keySet()));
+    } catch (Exception e) {
+      LOGGER.info(e.toString());
+      return new double[24];
+    }
   }
 
   private Map<Double, double[]> getValidHours(double[] sunYOfH, double hE0Hor, double kt, double phi) {
