@@ -20,7 +20,7 @@ CREATE TABLE radiation
     PRIMARY KEY (radiation_type, radiation_date, gkr_min, gkr_max, gkh_min, gkh_max)
 );
 
-CREATE TABLE user_tab
+CREATE TABLE users
 (
     id         bigserial                   NOT NULL UNIQUE,
     username   character varying(60)       NOT NULL,
@@ -31,4 +31,16 @@ CREATE TABLE user_tab
     modified   timestamp without time zone NOT NULL,
     PRIMARY KEY (id, username),
     UNIQUE (username)
+);
+
+CREATE TABLE precalculated
+(
+    id        bigserial     NOT NULL UNIQUE,
+    tilt      NUMERIC(2)    NOT NULL,
+    alignment NUMERIC(3)    NOT NULL,
+    value     NUMERIC(7, 4) NOT NULL,
+    longitude NUMERIC(2)    NOT NULL,
+    latitude  NUMERIC(2)    NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE (tilt, alignment, longitude, latitude)
 );

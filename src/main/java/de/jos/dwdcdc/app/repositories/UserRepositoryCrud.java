@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-interface UserRepositoryCrud extends CrudRepository<User, Integer> {
+interface UserRepositoryCrud extends CrudRepository<User, Long> {
 
   Optional<User> findByUsername(@Param("username") String username);
 }

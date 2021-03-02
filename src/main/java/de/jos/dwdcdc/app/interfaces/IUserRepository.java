@@ -12,7 +12,7 @@ public interface IUserRepository {
 
   void deactivateUser(User user);
 
-  Optional<User> get(Integer id);
+  Optional<User> get(Long id);
 
   Optional<User> get(String username);
 

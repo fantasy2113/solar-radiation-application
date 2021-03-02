@@ -37,7 +37,7 @@ abstract class Controller {
 
   final boolean isAccess(final String token) {
     try {
-      Optional<User> userOptional = userRep.get(Integer.valueOf(jwtToken.decode(token).getId()));
+      Optional<User> userOptional = userRep.get(Long.valueOf(jwtToken.decode(token).getId()));
       return userOptional.isPresent() && userOptional.get().isActive();
     } catch (Exception e) {
       LOGGER.info(e.toString());

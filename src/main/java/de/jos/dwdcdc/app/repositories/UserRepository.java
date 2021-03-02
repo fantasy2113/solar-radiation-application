@@ -42,7 +42,7 @@ public final class UserRepository implements IUserRepository {
   }
 
   @Override
-  public Optional<User> get(final Integer id) {
+  public Optional<User> get(final Long id) {
     Optional<User> optionalUser = userRepositoryCrud.findById(id);
     if (optionalUser.isPresent() && isValid(optionalUser.get())) {
       return optionalUser;

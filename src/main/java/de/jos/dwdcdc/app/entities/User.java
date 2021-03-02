@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "user_tab")
+@Table(name = "users")
 public final class User implements Serializable {
 
   @Column(name = "created")
@@ -15,7 +15,7 @@ public final class User implements Serializable {
   @Id
   @Column(name = "id")
   @GeneratedValue(strategy = IDENTITY)
-  private int id;
+  private Long id;
   @Column(name = "is_active")
   private boolean isActive;
   @Column(name = "last_login")
@@ -35,11 +35,11 @@ public final class User implements Serializable {
     this.created = created;
   }
 
-  public int getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
